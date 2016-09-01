@@ -1,0 +1,45 @@
+# =============== #
+# Unity generated #
+# =============== #
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+ExportedObj/
+obj/
+*.svd
+*.userprefs
+*.csproj
+*.pidb
+*.suo
+*.sln
+*.user
+#.unityproj
+*.booproj
+
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+/HexDX/[Ll]ibrary/
+/HexDX/[Tt]emp/
+/HexDX/[Oo]bj/
+/HexDX/[Bb]uild/
+/HexDX/[Bb]uilds/
+#/HexDX/Assets/AssetStoreTools*
+
+# Unity3D generated meta files
+*.pidb.meta
+
+# Unity3D Generated File On Crash Reports
+sysinfo.txt
+
+# Builds
+*.apk
