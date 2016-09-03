@@ -2,19 +2,21 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class HexMap : MonoBehaviour {
-    public List<List<Tile>> mapArray;
+  private HexDimension hexDimension;
+  public List<List<Tile>> mapArray;
 
-    public void SetMap(List<List<Tile>> map){
-        mapArray = map;
+  // Use this for initialization
+  void Start () {
+    hexDimension = this.gameObject.GetComponent<HexDimension>();
+    ////// DEBUG CODE //////
+    if (hexDimension == null)
+    {
+      Debug.Log("Error :: No Defined Hex Dimension for Hex Map - HexMap.cs");
     }
+    ////////////////////////
+  }
 
-    // Use this for initialization
-    void Start () {
-
-    }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+  public void SetMap(List<List<Tile>> map){
+    mapArray = map;
+  }
 }

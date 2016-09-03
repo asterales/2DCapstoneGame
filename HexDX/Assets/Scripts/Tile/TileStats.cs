@@ -2,14 +2,5 @@
 using System.Collections;
 
 public class TileStats : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+  // this class will eventually contain the stats of a tile
 }

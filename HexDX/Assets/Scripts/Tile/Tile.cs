@@ -2,23 +2,26 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Tile : MonoBehaviour{
-    protected int type;
-    protected Sprite sprite;
-    public bool isPathable;
+public class Tile : MonoBehaviour {
+  //protected Sprite sprite; // not needed + causes errors with MakeTile
+  public int type; // made public for testing purposes -> public variables are
+                   // seen from the Unity GUI
+  public bool isPathable;
+  private TileStats tileStats;
 
-    public void MakeTile(int type, Sprite sprite)
+  public void Start() {
+    tileStats = this.gameObject.GetComponent<TileStats>();
+    ////// DEBUG CODE //////
+    if (tileStats == null)
     {
-        this.type = type;
-        this.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
+      Debug.Log("Error :: Object Must Have TileStats Object -> Tile.cs");
     }
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    ////////////////////////
+  }
+
+  public void MakeTile(int type, Sprite sprite)
+  {
+      this.type = type;
+      this.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
+  }
 }

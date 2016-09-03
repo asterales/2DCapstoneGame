@@ -5,7 +5,7 @@ using System.IO;
 
 public class MapLoader : MonoBehaviour {
     public List<Sprite> sprites;
-    public string csvMapFile; //test: paste Assets/Maps/test.csv into the field in unity
+    public string csvMapFile = "Assets/Maps/test.csv";
 
     // Use this for initialization
     // row and colum indices start at 0 at upper left corner
@@ -50,9 +50,4 @@ public class MapLoader : MonoBehaviour {
         // Set the tiles to keep track of in the HexMap script
         hexMap.SetMap(map);
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }
