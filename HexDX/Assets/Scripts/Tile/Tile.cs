@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Tile : MonoBehaviour {
-    public int type; // made public for testing purposes
-    public bool isPathable;
+    public TileType type; // made public for testing purposes
     private TileStats tileStats;
 
     public void Start() {
@@ -17,9 +16,13 @@ public class Tile : MonoBehaviour {
         ////////////////////////
     }
 
-    public void MakeTile(int type, Sprite sprite)
+    public void SetTile(TileType type, Sprite sprite)
     {
         this.type = type;
         this.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
+    }
+
+    public bool IsPathable(){
+        return type.IsPathable(); // && not occupied by unit?
     }
 }

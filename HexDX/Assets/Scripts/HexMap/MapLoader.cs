@@ -51,7 +51,6 @@ public class MapLoader : MonoBehaviour {
         {
             // Create new object for row in map, make it a subobject of hexMap
             // row objects are useless other than for organizational purposes so putting DEBUG around them
-
             ////// DEBUG CODE //////
             GameObject rowObj = new GameObject("Row " + rowIndex);
             rowObj.transform.parent = battleMap.transform;
@@ -67,13 +66,13 @@ public class MapLoader : MonoBehaviour {
                 // replace this with a prefab in the future -> use CreateTileFromPrefab
                 // <--
                 GameObject tileObj = new GameObject(string.Format("Tile ({0}, {1})", rowIndex, columnIndex));
-                tileObj.transform.parent = battleMap.transform;
+                tileObj.transform.parent = rowObj.transform;
                 tileObj.transform.localPosition = new Vector3(x, y, 0);
 
                 Tile tile = tileObj.AddComponent<Tile>();
                 tileObj.AddComponent<SpriteRenderer>();
                 sprite = sprites[int.Parse(num)];
-                tile.MakeTile(int.Parse(num), sprite);
+                tile.SetTile((TileType)int.Parse(num), sprite);
                 // -->
 
                 row.Add(tile);
@@ -92,5 +91,30 @@ public class MapLoader : MonoBehaviour {
     {
         Debug.Log("TO BE IMPLEMENTED");
         return null;
+    }
+
+    private GameObject CreateHexMapObj(Vector3 upperLeftPos){
+        GameObject mapObj = new GameObject("HexMap");
+        mapObj.AddComponent<HexMap>();
+        mapObj.AddComponent<HexDimension>();
+        mapObj.transform.position = upperLeftPos;
+        return mapObj;
+    }
+
+    private GameObject CreateewRowObj(Vector3 startPos, GameObject mapObj, int rowIndex){
+        GameObject rowObj = new GameObject("Row " + rowIndex);
+        rowObj.transform.position = startPos;
+        rowObj.transform.parent = mapObj.transform;
+        return rowObj;
+    }
+
+    private GameObject CreateNewTileObj(Vector3 pos, GameObject rowObj, int row, int col){
+        GameObject tileObj = new GameObject(string.Format("Tile ({0}, {1})", row, col));
+        tileObj.AddComponent<Tile>();
+        tileObj.AddComponent<SpriteRenderer>();
+        tileObj.AddComponent<TileStats>();
+        tileObj.transform.position = pos;
+        tileObj.transform.parent = rowObj.transform;
+        return tileObj;
     }
 }
