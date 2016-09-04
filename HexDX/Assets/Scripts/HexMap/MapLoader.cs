@@ -10,26 +10,25 @@ public class MapLoader : MonoBehaviour {
     private HexMap battleMap;
     private HexDimension hexDimension;
 
-    // row and colum indices start at 0 at upper left corner
-    void Start () {
+    void Awake() {
         battleMap = this.gameObject.GetComponent<HexMap>();
         hexDimension = this.gameObject.GetComponent<HexDimension>();
 
         ////// DEBUG CODE //////
-        bool valid = true;
         if (battleMap == null)
         {
             Debug.Log("BattleMap needs to be set -> MapLoader.cs");
-            valid = false;
         }
         if (hexDimension == null)
         {
             Debug.Log("HexDimension needs to be set -> MapLoader.cs");
-            valid = false;
         }
         ////////////////////////
+    }
 
-        if (valid)
+    // row and colum indices start at 0 at upper left corner
+    void Start() {
+        if (battleMap != null && hexDimension != null)
         {
             // load the test battle map
             LoadHexMap(csvMapFile);
@@ -52,9 +51,7 @@ public class MapLoader : MonoBehaviour {
             // Create new object for row in map, make it a subobject of hexMap
             // row objects are useless other than for organizational purposes so putting DEBUG around them
             ////// DEBUG CODE //////
-            GameObject rowObj = new GameObject("Row " + rowIndex);
-            rowObj.transform.parent = battleMap.transform;
-            rowObj.transform.localPosition = new Vector3(0, 0, 0);
+            GameObject rowObj = CreateNewRowObj(rowIndex);
             ////////////////////////
 
             row = new List<Tile>();
@@ -65,12 +62,8 @@ public class MapLoader : MonoBehaviour {
             {
                 // replace this with a prefab in the future -> use CreateTileFromPrefab
                 // <--
-                GameObject tileObj = new GameObject(string.Format("Tile ({0}, {1})", rowIndex, columnIndex));
-                tileObj.transform.parent = rowObj.transform;
-                tileObj.transform.localPosition = new Vector3(x, y, 0);
-
+                GameObject tileObj = CreateNewTileObj(new Vector3(x, y, 0), rowObj, rowIndex, columnIndex);
                 Tile tile = tileObj.AddComponent<Tile>();
-                tileObj.AddComponent<SpriteRenderer>();
                 sprite = sprites[int.Parse(num)];
                 tile.SetTile((TileType)int.Parse(num), sprite);
                 // -->
@@ -93,27 +86,21 @@ public class MapLoader : MonoBehaviour {
         return null;
     }
 
-    private GameObject CreateHexMapObj(Vector3 upperLeftPos){
-        GameObject mapObj = new GameObject("HexMap");
-        mapObj.AddComponent<HexMap>();
-        mapObj.AddComponent<HexDimension>();
-        mapObj.transform.position = upperLeftPos;
-        return mapObj;
-    }
-
-    private GameObject CreateewRowObj(Vector3 startPos, GameObject mapObj, int rowIndex){
+    // Debug/organizational purposes - can be removed later
+    private GameObject CreateNewRowObj(int rowIndex){
         GameObject rowObj = new GameObject("Row " + rowIndex);
-        rowObj.transform.position = startPos;
-        rowObj.transform.parent = mapObj.transform;
+        rowObj.transform.localPosition = new Vector3(0, 0, 0);
+        rowObj.transform.parent = battleMap.transform;
         return rowObj;
     }
 
+    // Remove later
     private GameObject CreateNewTileObj(Vector3 pos, GameObject rowObj, int row, int col){
         GameObject tileObj = new GameObject(string.Format("Tile ({0}, {1})", row, col));
         tileObj.AddComponent<Tile>();
         tileObj.AddComponent<SpriteRenderer>();
         tileObj.AddComponent<TileStats>();
-        tileObj.transform.position = pos;
+        tileObj.transform.localPosition = pos;
         tileObj.transform.parent = rowObj.transform;
         return tileObj;
     }

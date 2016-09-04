@@ -6,7 +6,7 @@ public class Tile : MonoBehaviour {
     public TileType type; // made public for testing purposes
     private TileStats tileStats;
 
-    public void Start() {
+    public void Awake () {
         tileStats = this.gameObject.GetComponent<TileStats>();
         ////// DEBUG CODE //////
         if (tileStats == null)
@@ -14,6 +14,10 @@ public class Tile : MonoBehaviour {
             Debug.Log("Error :: Object Must Have TileStats Object -> Tile.cs");
         }
         ////////////////////////
+    }
+
+    public void Start(){
+
     }
 
     public void SetTile(TileType type, Sprite sprite)
