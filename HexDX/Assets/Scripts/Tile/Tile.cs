@@ -3,9 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Tile : MonoBehaviour {
-    //protected Sprite sprite; // not needed + causes errors with MakeTile
-    public int type; // made public for testing purposes -> public variables are
-                     // seen from the Unity GUI
+    public int type; // made public for testing purposes
     public bool isPathable;
     private TileStats tileStats;
 

@@ -7,15 +7,39 @@ public class HexMap : MonoBehaviour {
     
     void Start () {
         hexDimension = this.gameObject.GetComponent<HexDimension>();
+        mapArray = new List<List<Tile>>();
         ////// DEBUG CODE //////
         if (hexDimension == null)
         {
             Debug.Log("Error :: No Defined Hex Dimension for Hex Map - HexMap.cs");
         }
+        this.gameObject.transform.position = new Vector3(-5, 5, 0); // temp
         ////////////////////////
     }
 
-    public void SetMap(List<List<Tile>> map){
-        mapArray = map;
+    // TODO :: think of a way to cache game objects later
+
+    public void ClearMap()
+    {
+        Debug.Log("TO BE TESTED");
+        // remove and delete all current tiles
+        for (int i = 0; i < mapArray.Count; i++)
+        {
+            while (mapArray[i].Count > 0)
+            {
+                int lastIndex = mapArray[i].Count - 1;
+                Tile tile = mapArray[i][lastIndex];
+                mapArray[i].RemoveAt(lastIndex);
+                // maybe do more cleanup or caching here
+                Destroy(tile);
+            }
+        }
+
+        // delete all lists in mapArray
+        while (mapArray.Count > 0)
+        {
+            int lastIndex = mapArray.Count - 1;
+            mapArray.RemoveAt(lastIndex);
+        }
     }
 }

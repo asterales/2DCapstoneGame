@@ -27,5 +27,8 @@ public class HexDimension : MonoBehaviour {
     public float minorApex;  // dist from c to b
     public float width;      // dist from b to d
 
+    public float globalTopLeftX = -5.0f;
+    public float globalTopLeftY = 5.0f;
+
     // all other lengths or angles can be calculated with the above values
 }
