@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class HexMap : MonoBehaviour {
     private HexDimension hexDimension;
     public List<List<Tile>> mapArray;
-    
+
     void Awake() {
         hexDimension = this.gameObject.GetComponent<HexDimension>();
         mapArray = new List<List<Tile>>();
@@ -15,10 +15,6 @@ public class HexMap : MonoBehaviour {
         }
         this.gameObject.transform.position = new Vector3(hexDimension.globalTopLeftX, hexDimension.globalTopLeftY, 0); // temp
         ////////////////////////
-    }
-
-    void Start(){
-        
     }
 
     // TODO :: think of a way to cache game objects later

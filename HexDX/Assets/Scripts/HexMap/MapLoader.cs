@@ -89,8 +89,8 @@ public class MapLoader : MonoBehaviour {
     // Debug/organizational purposes - can be removed later
     private GameObject CreateNewRowObj(int rowIndex){
         GameObject rowObj = new GameObject("Row " + rowIndex);
-        rowObj.transform.localPosition = new Vector3(0, 0, 0);
         rowObj.transform.parent = battleMap.transform;
+        rowObj.transform.localPosition = new Vector3(0, 0, 0);
         return rowObj;
     }
 
@@ -100,8 +100,8 @@ public class MapLoader : MonoBehaviour {
         tileObj.AddComponent<Tile>();
         tileObj.AddComponent<SpriteRenderer>();
         tileObj.AddComponent<TileStats>();
-        tileObj.transform.localPosition = pos;
         tileObj.transform.parent = rowObj.transform;
+        tileObj.transform.localPosition = pos;
         return tileObj;
     }
 }
