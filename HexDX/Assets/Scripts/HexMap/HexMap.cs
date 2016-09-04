@@ -13,7 +13,7 @@ public class HexMap : MonoBehaviour {
         {
             Debug.Log("Error :: No Defined Hex Dimension for Hex Map - HexMap.cs");
         }
-        this.gameObject.transform.position = new Vector3(-5, 5, 0); // temp
+        this.gameObject.transform.position = new Vector3(hexDimension.globalTopLeftX, hexDimension.globalTopLeftY, 0); // temp
         ////////////////////////
     }
 
