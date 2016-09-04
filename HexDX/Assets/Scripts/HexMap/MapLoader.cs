@@ -16,28 +16,19 @@ public class MapLoader : MonoBehaviour {
         float x = -5;
         float y = 5;
         Sprite sprite = null;
-        // Create new object for map and attach a new HexMap script to it
-        GameObject mapObj = new GameObject("HexMap");
-        HexMap hexMap = mapObj.AddComponent<HexMap>();
-        mapObj.transform.position = new Vector3(x, y, 0);
+        GameObject mapObj = GetHexMapObj(new Vector3(x, y, 0));
         int rowIndex = 0;
         while (!reader.EndOfStream)
         {
-            //Create new object for row in map, make it a subobject of mapObj
-            GameObject rowObj = new GameObject("Row " + rowIndex);
-            rowObj.transform.position = new Vector3(x, y, 0);
-            rowObj.transform.parent = mapObj.transform;
+            GameObject rowObj = GetNewRowObj(new Vector3(x, y, 0), mapObj, rowIndex);
             row = new List<Tile>();
             int columnIndex = 0;
             string[] line = reader.ReadLine().Split(',');
             foreach (string num in line) {
-                GameObject tileObj = new GameObject(string.Format("Tile ({0}, {1})", rowIndex, columnIndex));
-                tileObj.transform.position = new Vector3(x,y,0);
-                tileObj.transform.parent = rowObj.transform;
-                Tile tile = tileObj.AddComponent<Tile>();
-                tileObj.AddComponent<SpriteRenderer>();
+                GameObject tileObj = GetNewTileObj(new Vector3(x, y, 0), rowObj, rowIndex, columnIndex);
+                Tile tile = tileObj.GetComponent<Tile>();
                 sprite = sprites[int.Parse(num)];
-                tile.MakeTile(int.Parse(num),sprite);
+                tile.SetTile((TileType)int.Parse(num),sprite);
                 row.Add(tile);
                 x += 2*sprite.bounds.extents.x;
                 columnIndex++;
@@ -48,6 +39,31 @@ public class MapLoader : MonoBehaviour {
             rowIndex++;
         }
         // Set the tiles to keep track of in the HexMap script
-        hexMap.SetMap(map);
+        mapObj.GetComponent<HexMap>().SetMap(map);
+    }
+
+    private GameObject GetHexMapObj(Vector3 upperLeftPos){
+        GameObject mapObj = new GameObject("HexMap");
+        mapObj.AddComponent<HexMap>();
+        mapObj.AddComponent<HexDimension>();
+        mapObj.transform.position = upperLeftPos;
+        return mapObj;
+    }
+
+    private GameObject GetNewRowObj(Vector3 startPos, GameObject mapObj, int rowIndex){
+        GameObject rowObj = new GameObject("Row " + rowIndex);
+        rowObj.transform.position = startPos;
+        rowObj.transform.parent = mapObj.transform;
+        return rowObj;
+    }
+
+    private GameObject GetNewTileObj(Vector3 pos, GameObject rowObj, int row, int col){
+        GameObject tileObj = new GameObject(string.Format("Tile ({0}, {1})", row, col));
+        tileObj.AddComponent<Tile>();
+        tileObj.AddComponent<SpriteRenderer>();
+        tileObj.AddComponent<TileStats>();
+        tileObj.transform.position = pos;
+        tileObj.transform.parent = rowObj.transform;
+        return tileObj;
     }
 }
