@@ -23,6 +23,10 @@ public class MapLoader : MonoBehaviour {
         {
             Debug.Log("HexDimension needs to be set -> MapLoader.cs");
         }
+        if (battleMap.selectionController == null)
+        {
+            Debug.Log("Major Error :: Hex Map Needs Selection Controller");
+        }
         ////////////////////////
     }
 
@@ -63,9 +67,9 @@ public class MapLoader : MonoBehaviour {
                 // replace this with a prefab in the future -> use CreateTileFromPrefab
                 // <--
                 GameObject tileObj = CreateNewTileObj(new Vector3(x, y, 0), rowObj, rowIndex, columnIndex);
-                Tile tile = tileObj.AddComponent<Tile>();
+                Tile tile = tileObj.GetComponent<Tile>();
                 sprite = sprites[int.Parse(num)];
-                tile.SetTile((TileType)int.Parse(num), sprite);
+                tile.SetTile((TileType)int.Parse(num), sprite, battleMap.selectionController);
                 // -->
 
                 row.Add(tile);
@@ -97,11 +101,19 @@ public class MapLoader : MonoBehaviour {
     // Remove later
     private GameObject CreateNewTileObj(Vector3 pos, GameObject rowObj, int row, int col){
         GameObject tileObj = new GameObject(string.Format("Tile ({0}, {1})", row, col));
-        tileObj.AddComponent<Tile>();
         tileObj.AddComponent<SpriteRenderer>();
         tileObj.AddComponent<TileStats>();
+        tileObj.AddComponent<TileLocation>();
+        tileObj.AddComponent<BoxCollider2D>();
+        tileObj.AddComponent<Tile>();
         tileObj.transform.parent = rowObj.transform;
         tileObj.transform.localPosition = pos;
+        // tile location in the map
+        TileLocation location = tileObj.GetComponent<TileLocation>();
+        location.xpos = col;
+        location.ypos = row;
+        // box collider initial settings (temp values)
+        tileObj.GetComponent<BoxCollider2D>().size = new Vector2(2.22f, 1.03f);
         return tileObj;
     }
 }
