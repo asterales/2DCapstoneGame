@@ -19,10 +19,11 @@ public class HexMap : MonoBehaviour {
     }
 
     // TODO :: think of a way to cache game objects later
+    // Is this method even needed ??
 
     public void ClearMap()
     {
-        Debug.Log("TO BE TESTED");
+        Debug.Log("TO BE TESTED -> HexMap.cs");
         // remove and delete all current tiles
         for (int i = 0; i < mapArray.Count; i++)
         {
