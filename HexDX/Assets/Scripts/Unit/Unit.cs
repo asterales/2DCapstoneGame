@@ -3,7 +3,7 @@ using System.Collections;
 
 // this class represents a Unit and stores its data
 
-public class UnitController : MonoBehaviour {
+public class Unit : MonoBehaviour {
     private UnitStats unitStats;
 	private UnitFacing facingBonus;
 	private UnitMovementCache movementCache;

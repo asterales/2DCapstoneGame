@@ -18,6 +18,7 @@ public class SelectionController : MonoBehaviour {
         selectedSpace.AddComponent<SpriteRenderer>();
         selectedSpace.transform.position = new Vector3(-1000, -1000, 0);
         selectedSpace.GetComponent<SpriteRenderer>().sprite = selectedSprite;
+        selectedSpace.GetComponent<SpriteRenderer>().color = new Vector4(1.0f, 1.0f, 1.0f, .5f);
     }
 	
 	// Update is called once per frame
@@ -31,7 +32,7 @@ public class SelectionController : MonoBehaviour {
         {
             // update position of selected space
             Vector3 pos = selectedTile.transform.position;
-            selectedSpace.transform.position = new Vector3(pos.x, pos.y, -0.00000001f);
+            selectedSpace.transform.position = new Vector3(pos.x, pos.y, -0.001f);
         }
 	}
 }
