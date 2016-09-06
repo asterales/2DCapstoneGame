@@ -11,6 +11,7 @@ public class LEController : MonoBehaviour {
     public LEMapLoader mapLoader;
     public LEMapWriter mapWriter;
     public LESelectionController selectionController;
+    public LESpriteCache spriteCache;
     public string fileName;
 
     void Start()
@@ -20,6 +21,7 @@ public class LEController : MonoBehaviour {
         hexMap = this.gameObject.GetComponent<LEHexMap>();
         mapLoader = this.gameObject.GetComponent<LEMapLoader>();
         mapWriter = this.gameObject.GetComponent<LEMapWriter>();
+        spriteCache = this.gameObject.GetComponent<LESpriteCache>();
         selectionController = this.gameObject.GetComponent<LESelectionController>();
 
         ////// DEBUG CODE //////
@@ -47,10 +49,17 @@ public class LEController : MonoBehaviour {
         {
             Debug.Log("MAJOR ERROR :: SelectionController Object not Defined -> LEController.cs");
         }
+        if (spriteCache == null)
+        {
+            Debug.Log("MAJOR ERROR :: Sprite Cache Object not Defined -> LEController.cs");
+        }
         ////////////////////////
 
         // setting of connections between instance variables
         saveButton.mapWriter = mapWriter;
         loadButton.mapLoader = mapLoader;
+        mapWriter.hexMap = hexMap;
+        mapLoader.hexMap = hexMap;
+        hexMap.spriteCache = spriteCache;
     }
 }

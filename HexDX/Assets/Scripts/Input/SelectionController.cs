@@ -31,7 +31,7 @@ public class SelectionController : MonoBehaviour {
         {
             // update position of selected space
             Vector3 pos = selectedTile.transform.position;
-            selectedSpace.transform.position = new Vector3(pos.x, pos.y, -0.00000001f);
+            selectedSpace.transform.position = new Vector3(pos.x, pos.y, -0.001f);
         }
 	}
 }
