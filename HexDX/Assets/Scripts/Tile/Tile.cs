@@ -7,6 +7,7 @@ public class Tile : MonoBehaviour {
     public TileLocation position;
     public SelectionController selectionController; // hack for movement
     private TileStats tileStats;
+    public Unit currentUnit;
 
     public void Awake () {
         tileStats = this.gameObject.GetComponent<TileStats>();
