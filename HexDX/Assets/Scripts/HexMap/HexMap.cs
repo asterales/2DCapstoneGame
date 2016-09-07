@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class HexMap : MonoBehaviour {
     private HexDimension hexDimension;
-    public List<List<Tile>> mapArray;
+    public static List<List<Tile>> mapArray;
     public SelectionController selectionController; // ref to hack
 
     void Awake() {
@@ -42,6 +42,17 @@ public class HexMap : MonoBehaviour {
         {
             int lastIndex = mapArray.Count - 1;
             mapArray.RemoveAt(lastIndex);
+        }
+    }
+
+    public static void ClearMovementTiles()
+    {
+        foreach (List<Tile> row in mapArray){
+            foreach (Tile t in row){
+                if (t.movementTile.transform.position.z < 0){
+                    t.movementTile.transform.position = new Vector3(t.movementTile.transform.position.x, t.movementTile.transform.position.y, -t.movementTile.transform.position.z);
+                }
+            }
         }
     }
 }
