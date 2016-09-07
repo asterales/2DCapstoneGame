@@ -99,7 +99,7 @@ public class MapLoader : MonoBehaviour {
             knight = Instantiate(Resources.Load("Units/Swordsman")) as GameObject;
             knight.transform.parent = tileObj.transform;
             tile.currentUnit = knight.GetComponent<Unit>();
-            tile.currentUnit.GetComponent<Unit>().currentTile = tile;
+            tile.currentUnit.currentTile = tile;
             knight.transform.position = tileObj.transform.position;
         }
         TileLocation location = tileObj.GetComponent<TileLocation>();

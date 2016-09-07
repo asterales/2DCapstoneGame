@@ -29,13 +29,15 @@ public class PlayerBattleController : MonoBehaviour {
 	}
 
 	private void MoveUnit() {
-		GameObject unit = unitTile.currentUnit.gameObject;
-		Vector3 distLeft = destinationTile.transform.position - unit.transform.position;
+		GameObject unitObj = unitTile.currentUnit.gameObject;
+		Vector3 distLeft = destinationTile.transform.position - unitObj.transform.position;
 		if (distLeft.magnitude == 0){
-			destinationTile.currentUnit = unitTile.currentUnit;
+			Unit unit = unitTile.currentUnit;
+			destinationTile.currentUnit = unit;
+			unit.currentTile = destinationTile;
 			unitTile.currentUnit = null;
-			unit.transform.parent = destinationTile.transform;
-			unit.transform.localPosition = new Vector3(0, 0, 0);
+			unitObj.transform.parent = destinationTile.transform;
+			unitObj.transform.localPosition = new Vector3(0, 0, 0);
 			unitTile = null;
 			destinationTile = null;
 			FinishedTurn = true;
@@ -44,11 +46,11 @@ public class PlayerBattleController : MonoBehaviour {
 			if(distLeft.x != 0) {
 				int direction = distLeft.x < 0 ? -1 : 1;
 				float xMvt = Mathf.Min(Mathf.Abs(distLeft.x), unitTranslationSpeed * Time.deltaTime );
-				unit.transform.position += new Vector3(direction * xMvt, 0, 0);
+				unitObj.transform.position += new Vector3(direction * xMvt, 0, 0);
 			} else if (distLeft.y != 0) {
 				int direction = distLeft.y < 0 ? -1 : 1;
 				float yMvt = Mathf.Min(Mathf.Abs(distLeft.y), unitTranslationSpeed * Time.deltaTime );
-				unit.transform.position += new Vector3(0, direction * yMvt, 0);
+				unitObj.transform.position += new Vector3(0, direction * yMvt, 0);
 			}
 		}
 
