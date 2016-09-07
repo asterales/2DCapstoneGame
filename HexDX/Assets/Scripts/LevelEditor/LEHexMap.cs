@@ -25,16 +25,24 @@ public class LEHexMap : MonoBehaviour {
 
         // create the tile array
         // this is a temporary size arbitrarily chosen
+        float x = 0.0f;
+        float y = 0.0f;
+        float z = 0.0f;
+
         for (int i=0;i<12;i++)
         {
             tileArray.Add(new List<LETile>());
             for (int j=0;j<16;j++)
             {
                 // TODO :: Replace with a prefab later
-                Vector3 pos = new Vector3(0, 0, 0); // to be changed
+                Vector3 pos = new Vector3(x, y, z); // to be changed
                 GameObject newTile = CreateTileObject(pos, i, j);
                 tileArray[i].Add(newTile.GetComponent<LETile>());
+                x += 2 * hexDimension.width;
             }
+            y -= 2 * hexDimension.apex - hexDimension.minorApex;
+            x -= 2 * hexDimension.width * 16 + hexDimension.width;
+            z -= .001f;
         }
     }
 
@@ -48,8 +56,8 @@ public class LEHexMap : MonoBehaviour {
         newTile.transform.localPosition = pos;
         // tile location in the map
         TileLocation location = newTile.GetComponent<TileLocation>();
-        location.xpos = col;
-        location.ypos = row;
+        location.col = col;
+        location.row = row;
         // box collider initial settings (temp values)
         newTile.GetComponent<BoxCollider2D>().size = new Vector2(2.22f, 1.03f);
         newTile.GetComponent<LETile>().spriteCache = spriteCache;

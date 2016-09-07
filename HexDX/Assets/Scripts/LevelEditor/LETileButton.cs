@@ -2,12 +2,16 @@
 using System.Collections;
 
 public class LETileButton : MonoBehaviour {
-    private GameObject buttonBackgroundObj;
-    private GameObject tileSelectedObj;
-    private GameObject tileTypeObj;
+    // these will be automatically generated later
+    // but for now we are hard coding everything
+    //private GameObject buttonBackgroundObj;
+    //private GameObject tileSelectedObj;
+    //private GameObject tileTypeObj;
+
     public Sprite buttonBackgroundImg;
     public Sprite tileSelectedImg;
     public Sprite tileTypeImg;
+    public int tileType;
 
     void Start()
     {
