@@ -47,7 +47,6 @@ public class MapLoader : MonoBehaviour {
         List<Tile> row;
         float x = 0;
         float y = 0;
-        Sprite sprite = null;
         int rowIndex = 0;
 
         while (!reader.EndOfStream)
@@ -64,30 +63,44 @@ public class MapLoader : MonoBehaviour {
 
             foreach (string num in line)
             {
-                // replace this with a prefab in the future -> use CreateTileFromPrefab
-                // <--
-                GameObject tileObj = CreateNewTileObj(new Vector3(x, y, 0), rowObj, rowIndex, columnIndex);
+                GameObject tileObj = CreateTileFromPrefab(int.Parse(num),new Vector3(x, y, 0), rowObj, rowIndex, columnIndex);
                 Tile tile = tileObj.GetComponent<Tile>();
-                sprite = sprites[int.Parse(num)];
-                tile.SetTile((TileType)int.Parse(num), sprite, battleMap.selectionController);
-                // -->
-
+                tile.selectionController = battleMap.selectionController;
                 row.Add(tile);
-                x += 2 * sprite.bounds.extents.x;
+                x += 2 * hexDimension.width;
                 columnIndex++;
             }
 
             battleMap.mapArray.Add(row);
-            y -= 1.5f * sprite.bounds.extents.y;
-            x -= 2 * sprite.bounds.extents.x * line.Length + sprite.bounds.extents.x;
+            y -= 2*hexDimension.apex-hexDimension.minorApex;
+            x -= 2 * hexDimension.width * line.Length + hexDimension.width;
             rowIndex++;
         }
     }
 
-    private GameObject CreateTileFromPrefab(int type)
+    private GameObject CreateTileFromPrefab(int type, Vector3 pos, GameObject rowObj, int row, int col)
     {
-        Debug.Log("TO BE IMPLEMENTED");
-        return null;
+        GameObject tileObj = null;
+        GameObject knight = null;
+        switch (type)
+        {
+            case 0:
+                tileObj = Instantiate(Resources.Load("Tiles/GrassTile")) as GameObject;
+                break;
+        }
+        tileObj.name = string.Format("Tile ({0}, {1})", row, col);
+        tileObj.transform.parent = rowObj.transform;
+        tileObj.transform.localPosition = pos;
+        if (row ==0 && col==0)
+        {
+            knight = Instantiate(Resources.Load("Units/Swordsman")) as GameObject;
+            tileObj.GetComponent<Tile>().currentUnit = knight.GetComponent<Unit>();
+            knight.transform.position = tileObj.transform.position;
+        }
+        TileLocation location = tileObj.GetComponent<TileLocation>();
+        location.xpos = col;
+        location.ypos = row;
+        return tileObj;
     }
 
     // Debug/organizational purposes - can be removed later
@@ -96,24 +109,5 @@ public class MapLoader : MonoBehaviour {
         rowObj.transform.parent = battleMap.transform;
         rowObj.transform.localPosition = new Vector3(0, 0, 0);
         return rowObj;
-    }
-
-    // Remove later
-    private GameObject CreateNewTileObj(Vector3 pos, GameObject rowObj, int row, int col){
-        GameObject tileObj = new GameObject(string.Format("Tile ({0}, {1})", row, col));
-        tileObj.AddComponent<SpriteRenderer>();
-        tileObj.AddComponent<TileStats>();
-        tileObj.AddComponent<TileLocation>();
-        tileObj.AddComponent<BoxCollider2D>();
-        tileObj.AddComponent<Tile>();
-        tileObj.transform.parent = rowObj.transform;
-        tileObj.transform.localPosition = pos;
-        // tile location in the map
-        TileLocation location = tileObj.GetComponent<TileLocation>();
-        location.xpos = col;
-        location.ypos = row;
-        // box collider initial settings (temp values)
-        tileObj.GetComponent<BoxCollider2D>().size = new Vector2(2.22f, 1.03f);
-        return tileObj;
     }
 }

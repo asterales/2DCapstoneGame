@@ -25,11 +25,8 @@ public class Tile : MonoBehaviour {
         ////////////////////////
     }
 
-    public void SetTile(TileType type, Sprite sprite, SelectionController sc)
+    public void Update()
     {
-        this.type = type;
-        this.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
-        selectionController = sc;
     }
 
     public bool IsPathable(){
