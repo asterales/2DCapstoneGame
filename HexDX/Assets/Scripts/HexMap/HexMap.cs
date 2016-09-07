@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class HexMap : MonoBehaviour {
     private HexDimension hexDimension;
-    public List<List<Tile>> mapArray;
+    public static List<List<Tile>> mapArray;
     public SelectionController selectionController; // ref to hack
 
     void Awake() {

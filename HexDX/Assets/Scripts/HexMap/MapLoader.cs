@@ -71,7 +71,7 @@ public class MapLoader : MonoBehaviour {
                 columnIndex++;
             }
 
-            battleMap.mapArray.Add(row);
+            HexMap.mapArray.Add(row);
             y -= 2*hexDimension.apex-hexDimension.minorApex;
             x -= 2 * hexDimension.width * line.Length + hexDimension.width;
             rowIndex++;
@@ -91,15 +91,19 @@ public class MapLoader : MonoBehaviour {
         tileObj.name = string.Format("Tile ({0}, {1})", row, col);
         tileObj.transform.parent = rowObj.transform;
         tileObj.transform.localPosition = pos;
+        Tile tile = tileObj.GetComponent<Tile>();
+        tile.movementTile = Instantiate(Resources.Load("Tiles/MovementTile")) as GameObject;
+        tile.movementTile.transform.position = tileObj.transform.position + new Vector3(0.0f, 0.0f, 0.1f) ;
         if (row ==0 && col==0)
         {
             knight = Instantiate(Resources.Load("Units/Swordsman")) as GameObject;
-            tileObj.GetComponent<Tile>().currentUnit = knight.GetComponent<Unit>();
+            tile.currentUnit = knight.GetComponent<Unit>();
+            tile.currentUnit.currentTile = tile;
             knight.transform.position = tileObj.transform.position;
         }
         TileLocation location = tileObj.GetComponent<TileLocation>();
-        location.xpos = col;
-        location.ypos = row;
+        location.col = col;
+        location.row = row;
         return tileObj;
     }
 

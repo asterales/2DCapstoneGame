@@ -4,7 +4,8 @@ using System.Collections;
 // this class represents a Unit and stores its data
 
 public class Unit : MonoBehaviour {
-    private UnitStats unitStats;
+    public Tile currentTile;
+    public UnitStats unitStats;
 	private UnitFacing facingBonus;
 	private UnitMovementCache movementCache;
 	private int type; // we may want to represent types by something else
@@ -29,5 +30,9 @@ public class Unit : MonoBehaviour {
             Debug.Log("Unit Needs MovementCache to be defined -> UnitController.cs");
         }
 	    ////////////////////////
+    }
+
+    void Update()
+    {
     }
 }
