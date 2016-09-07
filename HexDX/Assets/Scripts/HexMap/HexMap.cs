@@ -43,4 +43,15 @@ public class HexMap : MonoBehaviour {
             mapArray.RemoveAt(lastIndex);
         }
     }
+
+    public static void ClearMovementTiles()
+    {
+        foreach (List<Tile> row in mapArray){
+            foreach (Tile t in row){
+                if (t.movementTile.transform.position.z < 0){
+                    t.movementTile.transform.position = new Vector3(t.movementTile.transform.position.x, t.movementTile.transform.position.y, -t.movementTile.transform.position.z);
+                }
+            }
+        }
+    }
 }

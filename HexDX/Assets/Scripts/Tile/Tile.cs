@@ -32,14 +32,16 @@ public class Tile : MonoBehaviour {
 
     public void OnMouseDown()
     {
-        ClearMovementTiles();
+        HexMap.ClearMovementTiles();
         selectionController.clickedTile = this;
-        if (currentUnit)
-            ShowMovementTiles(currentUnit.unitStats.speed+1);
+        if (currentUnit) {
+            currentUnit.pathableTiles = ShowMovementTiles(currentUnit.unitStats.speed+1);
+        }
     }
 
-    public void ShowMovementTiles(int speed)
+    public List<Tile> ShowMovementTiles(int speed)
     {
+        List<Tile> pathableTiles = new List<Tile>();
         Queue<Tile> toCheck = new Queue<Tile>();
         Queue<int> dist = new Queue<int>();
         toCheck.Enqueue(this);
@@ -53,6 +55,11 @@ public class Tile : MonoBehaviour {
             if (pos.z > 0 && speed>0)
             {
                 t.movementTile.transform.position = new Vector3(pos.x, pos.y, -pos.z);
+                
+                if(!pathableTiles.Contains(t)){
+                    pathableTiles.Add(t);
+                }
+                
                 neighbors = t.GetNeighbors();
                 foreach (Tile neighbor in neighbors)
                 {
@@ -61,6 +68,7 @@ public class Tile : MonoBehaviour {
                 }
             }
         }
+        return pathableTiles;
     }
 
     public List<Tile> GetNeighbors()
@@ -99,11 +107,4 @@ public class Tile : MonoBehaviour {
 
     }
 
-    public void ClearMovementTiles()
-    {
-        foreach (List<Tile> row in HexMap.mapArray)
-            foreach (Tile t in row)
-                if (t.movementTile.transform.position.z < 0)
-                    t.movementTile.transform.position = new Vector3(t.movementTile.transform.position.x, t.movementTile.transform.position.y, -t.movementTile.transform.position.z);
-    }
 }

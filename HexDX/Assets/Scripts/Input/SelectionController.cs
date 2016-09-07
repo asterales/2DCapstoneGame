@@ -25,9 +25,8 @@ public class SelectionController : MonoBehaviour {
 	void Update () {
         if (Input.GetMouseButtonDown(1))
         {
-            selectedTile = null;
-            clickedTile = null;
-            selectedSpace.transform.position = new Vector3(-1000, -1000, 0);
+            ClearSelection();
+            HexMap.ClearMovementTiles();
         }
 	    if (clickedTile != null)
         {
@@ -41,4 +40,10 @@ public class SelectionController : MonoBehaviour {
             selectedSpace.transform.position = new Vector3(pos.x, pos.y, -0.001f);
         }
 	}
+
+    public void ClearSelection() {
+        selectedTile = null;
+        clickedTile = null;
+        selectedSpace.transform.position = new Vector3(-1000, -1000, 0);
+    }
 }
