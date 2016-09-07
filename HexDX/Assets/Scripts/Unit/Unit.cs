@@ -18,6 +18,7 @@ public class Unit : MonoBehaviour {
 		facingBonus = this.gameObject.GetComponent<UnitFacing>();
 		movementCache = this.gameObject.GetComponent<UnitMovementCache>();
 
+
         ////// DEBUG CODE //////
         if (unitStats == null)
         {
@@ -36,33 +37,19 @@ public class Unit : MonoBehaviour {
 
     void Update()
     {
+        if (transform.position != currentTile.transform.position)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, currentTile.transform.position, 0.2f);
+            transform.position = transform.position + new Vector3(0, 0, currentTile.transform.position.z-0.0001f);
+        }
     }
 
     public bool IsReachableTile(Tile destinationTile){
         return destinationTile != null && pathableTiles != null && destinationTile.pathable && pathableTiles.Contains(destinationTile);
     }
 
-    public bool Move(Tile destinationTile) {
-        if(pathableTiles != null && IsReachableTile(destinationTile)) {
-            GameObject unitObj = this.gameObject;
-            Vector3 distLeft = destinationTile.transform.position - unitObj.transform.position;
-            if (distLeft.magnitude == 0){
-                SetTile(destinationTile);
-                return true;
-            } else {
-                //walk rows, then columns (to be changed)
-                if(distLeft.x != 0) {
-                    int direction = distLeft.x < 0 ? -1 : 1;
-                    float xMvt = Mathf.Min(Mathf.Abs(distLeft.x), unitTranslationSpeed * Time.deltaTime );
-                    unitObj.transform.position += new Vector3(direction * xMvt, 0, 0);
-                } else if (distLeft.y != 0) {
-                    int direction = distLeft.y < 0 ? -1 : 1;
-                    float yMvt = Mathf.Min(Mathf.Abs(distLeft.y), unitTranslationSpeed * Time.deltaTime );
-                    unitObj.transform.position += new Vector3(0, direction * yMvt, 0);
-                }
-            }
-        }
-        return false;
+    public void Move(Tile destinationTile) {
+        currentTile = destinationTile;
     }
 
     public void SetTile(Tile newTile){

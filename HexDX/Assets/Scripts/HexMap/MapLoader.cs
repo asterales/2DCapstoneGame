@@ -47,6 +47,7 @@ public class MapLoader : MonoBehaviour {
         List<Tile> row;
         float x = 0;
         float y = 0;
+        float z = 0;
         int rowIndex = 0;
 
         while (!reader.EndOfStream)
@@ -63,7 +64,7 @@ public class MapLoader : MonoBehaviour {
 
             foreach (string num in line)
             {
-                GameObject tileObj = CreateTileFromPrefab(int.Parse(num),new Vector3(x, y, 0), rowObj, rowIndex, columnIndex);
+                GameObject tileObj = CreateTileFromPrefab(int.Parse(num),new Vector3(x, y, z), rowObj, rowIndex, columnIndex);
                 Tile tile = tileObj.GetComponent<Tile>();
                 tile.selectionController = battleMap.selectionController;
                 row.Add(tile);
@@ -74,6 +75,7 @@ public class MapLoader : MonoBehaviour {
             HexMap.mapArray.Add(row);
             y -= 2*hexDimension.apex-hexDimension.minorApex;
             x -= 2 * hexDimension.width * line.Length + hexDimension.width;
+            z -= .001f;
             rowIndex++;
         }
     }
@@ -87,6 +89,9 @@ public class MapLoader : MonoBehaviour {
             case 0:
                 tileObj = Instantiate(Resources.Load("Tiles/GrassTile")) as GameObject;
                 break;
+            case 1:
+                tileObj = Instantiate(Resources.Load("Tiles/MountainTile")) as GameObject;
+                break;
         }
         tileObj.name = string.Format("Tile ({0}, {1})", row, col);
         tileObj.transform.parent = rowObj.transform;
@@ -94,6 +99,7 @@ public class MapLoader : MonoBehaviour {
         Tile tile = tileObj.GetComponent<Tile>();
         tile.movementTile = Instantiate(Resources.Load("Tiles/MovementTile")) as GameObject;
         tile.movementTile.transform.position = tileObj.transform.position + new Vector3(0.0f, 0.0f, 0.1f) ;
+        tile.movementTile.GetComponent<MovementTile>().tile = tile;
         if (row ==0 && col==0)
         {
             knight = Instantiate(Resources.Load("Units/Swordsman")) as GameObject;

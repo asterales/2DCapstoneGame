@@ -52,7 +52,7 @@ public class Tile : MonoBehaviour {
             Tile t = toCheck.Dequeue();
             Vector3 pos = t.movementTile.transform.position;
             speed = dist.Dequeue();
-            if (pos.z > 0 && speed>0)
+            if (pos.z > 0 && speed>0 && t.pathable)
             {
                 t.movementTile.transform.position = new Vector3(pos.x, pos.y, -pos.z);
                 

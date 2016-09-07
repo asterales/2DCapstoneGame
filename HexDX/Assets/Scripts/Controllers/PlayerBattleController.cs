@@ -9,19 +9,14 @@ public class PlayerBattleController : MonoBehaviour {
 
 	void Start(){
 		FinishedTurn = false;
-		selectionController = GameObject.Find("HexMap").GetComponent<HexMap>().GetComponent<SelectionController>();
+		selectionController = GameObject.Find("TestHexMap").GetComponent<HexMap>().GetComponent<SelectionController>();
 	}
 
 	void Update(){
-		if(unitTile && destinationTile){
-			MoveUnit();
-		} else {
-			CheckTileSelection();
-		}
 	}
 
 	private void MoveUnit() {
-		bool reachedDestination = unitTile.currentUnit.Move(destinationTile);
+		bool reachedDestination = true;
 		if (reachedDestination){
 			unitTile = null;
         	destinationTile = null;
