@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 public class LEMapWriter : MonoBehaviour {
     public LEHexMap hexMap;
@@ -11,7 +13,7 @@ public class LEMapWriter : MonoBehaviour {
         string data = "";
         for (int i=0;i<tiles.Count;i++)
         {
-            for (int j=0;j<tiles[i].Count;i++)
+            for (int j=0;j<tiles[i].Count;j++)
             {
                 if (j==tiles[i].Count - 1)
                 {
@@ -25,5 +27,8 @@ public class LEMapWriter : MonoBehaviour {
             }
             data += "\n";
         }
+
+
+        File.WriteAllText(fileName, data);
     }
 }
