@@ -18,12 +18,12 @@ public class LESelectionController : MonoBehaviour {
 	void Update () {
 	    if (selectedTileButton == null)
         {
-            buttonSelectObj.transform.position = new Vector3(-1000, -1000, 0.9f);
+            //buttonSelectObj.transform.position = new Vector3(-1000, -1000, 0.9f);
         }
         else
         {
             Vector3 temp = selectedTileButton.transform.position;
-            buttonSelectObj.transform.position = new Vector3(temp.x, temp.y, 0.9f);
+            //buttonSelectObj.transform.position = new Vector3(temp.x, temp.y, 0.9f);
         }
 	}
 }

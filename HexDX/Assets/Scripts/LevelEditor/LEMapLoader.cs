@@ -18,6 +18,7 @@ public class LEMapLoader : MonoBehaviour {
             for (int j=0;j<16;j++)
             {
                 hexMap.tileArray[i][j].type = int.Parse(line[j]);
+                hexMap.tileArray[i][j].ChangeType(int.Parse(line[j]));
             }
         }
     }

@@ -8,6 +8,11 @@ public class LETileButton : MonoBehaviour {
     //private GameObject tileSelectedObj;
     //private GameObject tileTypeObj;
 
+    public GameObject tileSelectObj;
+    // HACKY AF
+    public LESelectionController reference;
+    public LETileButton other;
+
     public Sprite buttonBackgroundImg;
     public Sprite tileSelectedImg;
     public Sprite tileTypeImg;
@@ -33,6 +38,11 @@ public class LETileButton : MonoBehaviour {
 
     void OnMouseDown()
     {
-        // to be implemented
+        Vector3 otherPos = other.tileSelectObj.transform.localPosition;
+        Vector3 currentPos = tileSelectObj.transform.localPosition;
+        other.tileSelectObj.transform.localPosition = new Vector3(otherPos.x, otherPos.y, 0.05f);
+        tileSelectObj.transform.localPosition = new Vector3(currentPos.x, currentPos.y, -0.05f);
+
+        reference.selectedTileButton = this;
     }
 }
