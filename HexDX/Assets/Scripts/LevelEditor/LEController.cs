@@ -2,7 +2,7 @@
 using System.Collections;
 
 // global controller object for the level editor.
-// mayber in the future break this apart.
+// maybe in the future break this apart.
 
 public class LEController : MonoBehaviour {
     public LESaveButton saveButton;
@@ -59,7 +59,9 @@ public class LEController : MonoBehaviour {
         saveButton.mapWriter = mapWriter;
         loadButton.mapLoader = mapLoader;
         mapWriter.hexMap = hexMap;
+        mapWriter.fileName = fileName;
         mapLoader.hexMap = hexMap;
+        mapLoader.fileName = fileName;
         hexMap.spriteCache = spriteCache;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class LEMapLoader : MonoBehaviour {
     public LEHexMap hexMap;
+    public string fileName;
 
     public void LoadLevel()
     {
