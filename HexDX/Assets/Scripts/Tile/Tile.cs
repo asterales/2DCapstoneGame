@@ -33,13 +33,13 @@ public class Tile : MonoBehaviour {
     public void OnMouseDown()
     {
         HexMap.ClearMovementTiles();
-        selectionController.clickedTile = this;
+        SelectionController.clickedTile = this;
         if (currentUnit) {
-            currentUnit.pathableTiles = ShowMovementTiles(currentUnit.unitStats.speed+1);
+            ShowMovementTiles(currentUnit.unitStats.speed+1);
         }
     }
 
-    public List<Tile> ShowMovementTiles(int speed)
+    public void ShowMovementTiles(int speed)
     {
         List<Tile> pathableTiles = new List<Tile>();
         Queue<Tile> toCheck = new Queue<Tile>();
@@ -68,7 +68,6 @@ public class Tile : MonoBehaviour {
                 }
             }
         }
-        return pathableTiles;
     }
 
     public List<Tile> GetNeighbors()

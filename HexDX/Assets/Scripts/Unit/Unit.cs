@@ -6,17 +6,20 @@ using System.Collections.Generic;
 public class Unit : MonoBehaviour {
     public Tile currentTile;
     public UnitStats unitStats;
-    public List<Tile> pathableTiles;
+    public Queue<Vector3> path;
+    public int phase = 0;
 	private UnitFacing facingBonus;
 	private UnitMovementCache movementCache;
 	private int type; // we may want to represent types by something else
     public int unitTranslationSpeed = 10;
+
 
 	// Use this for initialization
 	void Start () {
         unitStats = this.gameObject.GetComponent<UnitStats>();
 		facingBonus = this.gameObject.GetComponent<UnitFacing>();
 		movementCache = this.gameObject.GetComponent<UnitMovementCache>();
+        path = new Queue<Vector3>();
 
 
         ////// DEBUG CODE //////
@@ -37,19 +40,19 @@ public class Unit : MonoBehaviour {
 
     void Update()
     {
-        if (transform.position != currentTile.transform.position)
+        Move();
+    }
+
+    private void Move() {
+        if (path.Count > 0)
         {
-            transform.position = Vector2.MoveTowards(transform.position, currentTile.transform.position, 0.2f);
-            transform.position = transform.position + new Vector3(0, 0, currentTile.transform.position.z-0.0001f);
+            Vector3 destination = path.Peek() + new Vector3(0, 0, 0.999f);
+            if (transform.position != destination)
+                transform.position = Vector3.MoveTowards(transform.position, destination, 0.2f);
+            else
+                path.Dequeue();
         }
-    }
 
-    public bool IsReachableTile(Tile destinationTile){
-        return destinationTile != null && pathableTiles != null && destinationTile.pathable && pathableTiles.Contains(destinationTile);
-    }
-
-    public void Move(Tile destinationTile) {
-        currentTile = destinationTile;
     }
 
     public void SetTile(Tile newTile){
@@ -58,7 +61,6 @@ public class Unit : MonoBehaviour {
         newTile.currentUnit = this;
         currentTile = newTile;
         unitObj.transform.parent = newTile.transform;
-        unitObj.transform.localPosition = new Vector3(0, 0, 0);
     }
 
 }

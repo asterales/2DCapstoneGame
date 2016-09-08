@@ -2,10 +2,10 @@
 using System.Collections;
 
 public class SelectionController : MonoBehaviour {
-    public Tile selectedTile;
-    public Tile clickedTile; // tile currently clicked
+    public static Tile selectedTile;
+    public static Tile clickedTile; // tile currently clicked
     public Sprite selectedSprite;
-
+    public static Unit selectedUnit;
     private GameObject selectedSpace; // object for selected space
 
 	// Use this for initialization
@@ -38,7 +38,9 @@ public class SelectionController : MonoBehaviour {
         {
             // update position of selected space
             Vector3 pos = selectedTile.transform.position;
-            selectedSpace.transform.position = new Vector3(pos.x, pos.y, -0.001f);
+            selectedSpace.transform.position = new Vector3(pos.x, pos.y, pos.z-0.1f);
+            if (selectedTile.currentUnit)
+                selectedUnit = selectedTile.currentUnit;
         }
 	}
 
