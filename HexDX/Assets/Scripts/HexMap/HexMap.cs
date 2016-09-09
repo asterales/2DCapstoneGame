@@ -54,5 +54,6 @@ public class HexMap : MonoBehaviour {
                 }
             }
         }
+        Object.Destroy(GameObject.Find("path"));
     }
 }

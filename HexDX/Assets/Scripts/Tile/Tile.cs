@@ -63,8 +63,11 @@ public class Tile : MonoBehaviour {
                 neighbors = t.GetNeighbors();
                 foreach (Tile neighbor in neighbors)
                 {
-                    toCheck.Enqueue(neighbor);
-                    dist.Enqueue(speed - 1);
+                    if (neighbor)
+                    {
+                        toCheck.Enqueue(neighbor);
+                        dist.Enqueue(speed - 1);
+                    }
                 }
             }
         }
@@ -75,33 +78,45 @@ public class Tile : MonoBehaviour {
         List<Tile> neighbors = new List<Tile>();
         try
         {
-            neighbors.Add(HexMap.mapArray[position.row + 1][position.col]);
-        } catch (System.ArgumentOutOfRangeException e) { };
+            neighbors.Add(HexMap.mapArray[position.row][position.col + 1]);
+        }
+        catch (System.ArgumentOutOfRangeException e) {
+            neighbors.Add(null);
+        };
         try
         {
             neighbors.Add(HexMap.mapArray[position.row - 1][position.col]);
         }
-        catch (System.ArgumentOutOfRangeException e) { };
-        try
-        {
-            neighbors.Add(HexMap.mapArray[position.row][position.col - 1]);
-        }
-        catch (System.ArgumentOutOfRangeException e) { };
-        try
-        {
-            neighbors.Add(HexMap.mapArray[position.row][position.col + 1]);
-        }
-        catch (System.ArgumentOutOfRangeException e) { };
-        try
-        {
-            neighbors.Add(HexMap.mapArray[position.row + 1][position.col + 1]);
-        }
-        catch (System.ArgumentOutOfRangeException e) { };
+        catch (System.ArgumentOutOfRangeException e) {
+            neighbors.Add(null);
+        };
         try
         {
             neighbors.Add(HexMap.mapArray[position.row - 1][position.col - 1]);
         }
-        catch (System.ArgumentOutOfRangeException e) { };
+        catch (System.ArgumentOutOfRangeException e) {
+            neighbors.Add(null);
+        };
+        try
+        {
+            neighbors.Add(HexMap.mapArray[position.row][position.col - 1]);
+        }
+        catch (System.ArgumentOutOfRangeException e) {
+            neighbors.Add(null);
+        };
+        try
+        {
+            neighbors.Add(HexMap.mapArray[position.row + 1][position.col]);
+        } catch (System.ArgumentOutOfRangeException e) {
+            neighbors.Add(null);
+        };
+        try
+        {
+            neighbors.Add(HexMap.mapArray[position.row + 1][position.col + 1]);
+        }
+        catch (System.ArgumentOutOfRangeException e) {
+            neighbors.Add(null);
+        };
         return neighbors;
 
     }

@@ -6,12 +6,15 @@ public class PlayerBattleController : MonoBehaviour {
 	private SelectionController selectionController;
 	private Tile unitTile;
 	private Tile destinationTile;
-    public LineRenderer pathDrawer;
+    
+    // path sprites
+    public Sprite circleSprite;
+    public Sprite[] lineSprites;
+    public Sprite[] arrowSprites;
 
 	void Start(){
 		FinishedTurn = false;
 		selectionController = GameObject.Find("TestHexMap").GetComponent<HexMap>().GetComponent<SelectionController>();
-        pathDrawer = gameObject.AddComponent<LineRenderer>();
 	}
 
 	void Update(){
