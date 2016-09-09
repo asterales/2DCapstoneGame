@@ -5,7 +5,7 @@ public class MovementTile : MonoBehaviour {
 
     public Tile tile;
     private SelectionController sc;
-    public static List<Vector3> path;
+    public static List<Tile> path;
     // Use this for initialization
     void Start () {
         sc = GameObject.Find("TestHexMap").GetComponent<HexMap>().GetComponent<SelectionController>();
@@ -15,8 +15,8 @@ public class MovementTile : MonoBehaviour {
     {
         if (SelectionController.selectedTile.Equals(tile))
         {
-            path = new List<Vector3>();
-            path.Add(tile.transform.position - new Vector3(0, 0, 1.0f));
+            path = new List<Tile>();
+            path.Add(tile);
         }
         //if (sc.selectedTile.currentUnit)
         //{
@@ -31,11 +31,9 @@ public class MovementTile : MonoBehaviour {
 
     public void OnMouseEnter()
     {
-        if (Input.GetMouseButton(0) && path!=null)
+        if (Input.GetMouseButton(0) && path!=null && path.Count<=SelectionController.selectedUnit.unitStats.speed)
         {
-            path.Add(tile.transform.position - new Vector3(0, 0, 1.0f));
-            SelectionController.selectedUnit.SetTile(tile);
-            Debug.Log(path.Count);
+            path.Add(tile);
         }
     }
 

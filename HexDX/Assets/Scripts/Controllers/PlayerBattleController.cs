@@ -19,14 +19,10 @@ public class PlayerBattleController : MonoBehaviour {
         //{
         if (MovementTile.path!=null)
         {
-            pathDrawer.SetVertexCount(MovementTile.path.Count);
-            pathDrawer.SetPositions(MovementTile.path.ToArray());
             if (!Input.GetMouseButton(0))
             {
-                SelectionController.selectedUnit.path = new Queue<Vector3>(MovementTile.path);
+                SelectionController.selectedUnit.path = new Queue<Tile>(MovementTile.path);
                 MovementTile.path = null;
-                pathDrawer.SetVertexCount(0);
-                pathDrawer.SetPositions(new Vector3[0]);
                 HexMap.ClearMovementTiles();
                 selectionController.ClearSelection();
             }

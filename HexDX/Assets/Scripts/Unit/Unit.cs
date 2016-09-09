@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class Unit : MonoBehaviour {
     public Tile currentTile;
     public UnitStats unitStats;
-    public Queue<Vector3> path;
+    public Queue<Tile> path;
     public int phase = 0;
 	private UnitFacing facingBonus;
 	private UnitMovementCache movementCache;
@@ -19,7 +19,7 @@ public class Unit : MonoBehaviour {
         unitStats = this.gameObject.GetComponent<UnitStats>();
 		facingBonus = this.gameObject.GetComponent<UnitFacing>();
 		movementCache = this.gameObject.GetComponent<UnitMovementCache>();
-        path = new Queue<Vector3>();
+        path = new Queue<Tile>();
 
 
         ////// DEBUG CODE //////
@@ -46,11 +46,13 @@ public class Unit : MonoBehaviour {
     private void Move() {
         if (path.Count > 0)
         {
-            Vector3 destination = path.Peek() + new Vector3(0, 0, 0.999f);
+            Vector3 destination = path.Peek().transform.position + new Vector3(0, 0,-.001f);
             if (transform.position != destination)
                 transform.position = Vector3.MoveTowards(transform.position, destination, 0.2f);
             else
-                path.Dequeue();
+            {
+                SetTile(path.Dequeue());
+            }
         }
 
     }
