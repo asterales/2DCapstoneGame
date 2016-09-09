@@ -46,7 +46,7 @@ public class Unit : MonoBehaviour {
     private void Move() {
         if (path.Count > 0)
         {
-            Vector3 destination = path.Peek().transform.position + new Vector3(0, 0,-.001f);
+            Vector3 destination = path.Peek().transform.position + new Vector3(0, 0,.001f);
             if (transform.position != destination)
                 transform.position = Vector3.MoveTowards(transform.position, destination, 0.2f);
             else
