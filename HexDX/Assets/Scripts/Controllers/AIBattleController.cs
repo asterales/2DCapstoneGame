@@ -10,7 +10,7 @@ public class AIBattleController : MonoBehaviour {
 	}
 
     void Update() {
-    	Debug.Log("AI Turn - not yet implemented");
+    	//Debug.Log("AI Turn - not yet implemented");
     	//FinishedTurn = true;
     }
 

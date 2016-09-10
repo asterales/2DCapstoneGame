@@ -18,6 +18,10 @@ public class PlayerBattleController : MonoBehaviour {
 	}
 
 	void Update(){
+        if (SelectionController.selectedUnit.phase == UnitTurn.Facing && Input.GetMouseButtonDown(0))
+        {
+            SelectionController.selectedUnit.MakeDone();
+        }
     }
 
     public void StartTurn()

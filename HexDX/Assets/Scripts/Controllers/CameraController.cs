@@ -2,10 +2,11 @@
 using System.Collections;
 
 public class CameraController : MonoBehaviour {
+    public static Camera camera;
 
 	// Use this for initialization
 	void Start () {
-	
+        camera = gameObject.GetComponent<Camera>();
 	}
 	
 	// Update is called once per frame
