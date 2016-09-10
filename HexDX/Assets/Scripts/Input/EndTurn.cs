@@ -12,8 +12,11 @@ public class EndTurn : MonoBehaviour {
 
     void OnMouseDown()
     {
-        spriteRenderer.color = new Color(0.3f, 0.3f, 0.3f);
-        battleController.EndCurrentTurn();
+        if (SelectionController.selectionMode == SelectionMode.Open)
+        {
+            spriteRenderer.color = new Color(0.3f, 0.3f, 0.3f);
+            battleController.EndCurrentTurn();
+        }
     }
 
     void OnMouseHover()

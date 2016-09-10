@@ -53,4 +53,9 @@ public class SelectionController : MonoBehaviour {
     {
         return selectionMode == SelectionMode.Open;
     }
+
+    public static bool TakingAIInput()
+    {
+        return selectionMode == SelectionMode.AITurn;
+    }
 }

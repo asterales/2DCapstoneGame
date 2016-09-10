@@ -53,6 +53,8 @@ public class Unit : MonoBehaviour {
 
     private void Move() {
         if (path.Count > 0) {
+            // disable the players ability to select
+            SelectionController.selectionMode = SelectionMode.Moving;
             Vector3 destination = path.Peek().transform.position;
             if (transform.position != destination) {
                 transform.position = Vector3.MoveTowards(transform.position, destination, maxMovement);
@@ -62,6 +64,11 @@ public class Unit : MonoBehaviour {
                 {
                     SetTile(path.Dequeue());
                     MakeDone();
+                    // re-enable the players ability to select
+                    if (!SelectionController.TakingInput() && !SelectionController.TakingAIInput())
+                    {
+                        SelectionController.selectionMode = SelectionMode.Open;
+                    }
                 }
                 else
                 {
