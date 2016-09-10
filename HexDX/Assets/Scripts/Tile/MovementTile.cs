@@ -16,12 +16,22 @@ public class MovementTile : MonoBehaviour {
 
     public void OnMouseEnter() {
         if (Input.GetMouseButton(0) && path != null ) {
-             if (path.Count <= SelectionController.selectedUnit.unitStats.mvtRange 
-                    && HexMap.AreNeighbors(tile, path[path.Count-1])) {
-                path.Add(tile);
-            } else {
-                path = new List<Tile>();
-                shortestPath(tile, SelectionController.selectedTile);
+            if (path.Count>1 && tile == path[path.Count - 2])
+            {
+                path.Remove(path[path.Count - 1]);
+            }
+            else
+            {
+                if (path.Count <= SelectionController.selectedUnit.unitStats.mvtRange
+                        && HexMap.AreNeighbors(tile, path[path.Count - 1]))
+                {
+                    path.Add(tile);
+                }
+                else
+                {
+                    path = new List<Tile>();
+                    shortestPath(tile, SelectionController.selectedTile);
+                }
             }
             drawPath();
         }
@@ -29,9 +39,9 @@ public class MovementTile : MonoBehaviour {
 
     //refactor later
     public void drawPath() {
+        PlayerBattleController pbc = GameObject.Find("TestHexMap").GetComponent<PlayerBattleController>();
+        Object.Destroy(GameObject.Find("path"));
         if (path!=null && path.Count > 1) {
-            PlayerBattleController pbc = GameObject.Find("TestHexMap").GetComponent<PlayerBattleController>();
-            Object.Destroy(GameObject.Find("path"));
             GameObject pathDraw = new GameObject("path");
             Tile prev = path[0];
             int direction= 0;
