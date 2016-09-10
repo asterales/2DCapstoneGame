@@ -9,10 +9,12 @@ public class MapLoader : MonoBehaviour {
 
     private HexMap battleMap;
     private HexDimension hexDimension;
+    private BattleController battleController;
 
     void Awake() {
         battleMap = this.gameObject.GetComponent<HexMap>();
         hexDimension = this.gameObject.GetComponent<HexDimension>();
+        battleController = this.gameObject.GetComponent<BattleController>();
 
         ////// DEBUG CODE //////
         if (battleMap == null)
@@ -116,6 +118,7 @@ public class MapLoader : MonoBehaviour {
         knight.transform.parent = tile.gameObject.transform;
         tile.currentUnit = knight.GetComponent<Unit>();
         tile.currentUnit.currentTile = tile;
-        knight.transform.position = tile.gameObject.transform.position; 
+        knight.transform.position = tile.gameObject.transform.position;
+        battleController.player.AddUnit(knight.GetComponent<Unit>());
     }
 }

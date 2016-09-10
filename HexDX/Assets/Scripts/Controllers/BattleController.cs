@@ -4,8 +4,8 @@ using System.Collections.Generic;
 // This class will be responsible for handling Game Loop States
 
 public class BattleController : MonoBehaviour {
-    private AIBattleController ai;
-    private PlayerBattleController player;
+    public AIBattleController ai;
+    public PlayerBattleController player;
     private bool playerTurn;
     public Unit currentUnit;
 
@@ -51,10 +51,30 @@ public class BattleController : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
-        if (TurnCompleted()){
-            playerTurn = !playerTurn;
-            SetControllerForTurn();
+    //void Update () {
+    //    if (TurnCompleted()){
+    //        playerTurn = !playerTurn;
+    //        SetControllerForTurn();
+    //    }
+    //}
+
+    public void EndCurrentTurn()
+    {
+        if (playerTurn)
+        {
+            player.EndTurn();
+            // Uncomment when AI is implemented
+            //ai.StartTurn();
+            //playerTurn = false;
+            ////// DEBUG CODE //////
+            player.StartTurn();
+            ////////////////////////
+        }
+        else
+        {
+            //ai.EndTurn();
+            //player.StartTurn();
+            //playerTurn = true;
         }
     }
 }

@@ -2,14 +2,37 @@
 using System.Collections;
 
 public class EndTurn : MonoBehaviour {
+    public BattleController battleController;
+    private SpriteRenderer spriteRenderer;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    void Start()
+    {
+        spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
+    }
+
+    void OnMouseDown()
+    {
+        spriteRenderer.color = new Color(0.3f, 0.3f, 0.3f);
+        battleController.EndCurrentTurn();
+    }
+
+    void OnMouseHover()
+    {
+        spriteRenderer.color = new Color(0.7f, 0.7f, 0.7f);
+    }
+
+    void OnMouseEnter()
+    {
+        spriteRenderer.color = new Color(0.7f, 0.7f, 0.7f);
+    }
+
+    void OnMouseUp()
+    {
+        spriteRenderer.color = new Color(0.7f, 0.7f, 0.7f);
+    }
+
+    void OnMouseExit()
+    {
+        spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f);
+    }
 }

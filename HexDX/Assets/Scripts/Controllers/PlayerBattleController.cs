@@ -12,7 +12,7 @@ public class PlayerBattleController : MonoBehaviour {
     public Sprite[] lineSprites;
     public Sprite[] arrowSprites;
 
-	void Start() {
+	void Awake() {
         units = new List<Unit>();
 		selectionController = GameObject.Find("TestHexMap").GetComponent<HexMap>().GetComponent<SelectionController>();
 	}

@@ -16,9 +16,17 @@ public class AIBattleController : MonoBehaviour {
 
     public void StartTurn()
     {
+        //for (int i = 0; i < units.Count; i++)
+        //{
+        //    units[i].phase = UnitTurn.Open;
+        //}
+    }
+
+    public void EndTurn()
+    {
         for (int i = 0; i < units.Count; i++)
         {
-            units[i].phase = UnitTurn.Open;
+            units[i].MakeOpen();
         }
     }
 }
