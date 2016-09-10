@@ -77,10 +77,6 @@ public class Unit : MonoBehaviour {
                 if (path.Count == 1) {
                     SetTile(path.Dequeue());
                     MakeFacing();
-                    // re-enable the players ability to select
-                    if (!SelectionController.TakingInput() && !SelectionController.TakingAIInput()) {
-                        SelectionController.selectionMode = SelectionMode.Open;
-                    }
                 } else {
                     path.Dequeue();
                 }
@@ -155,6 +151,11 @@ public class Unit : MonoBehaviour {
     {
         phase = UnitTurn.Done;
         spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
+        // re-enable the players ability to select
+        if (!SelectionController.TakingInput() && !SelectionController.TakingAIInput())
+        {
+            SelectionController.selectionMode = SelectionMode.Open;
+        }
     }
     ///////////////////////////
 }

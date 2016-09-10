@@ -18,7 +18,7 @@ public class PlayerBattleController : MonoBehaviour {
 	}
 
 	void Update(){
-        if (SelectionController.selectedUnit.phase == UnitTurn.Facing && Input.GetMouseButtonDown(0))
+        if (SelectionController.selectedUnit!=null && SelectionController.selectedUnit.phase == UnitTurn.Facing && Input.GetMouseButtonDown(0))
         {
             SelectionController.selectedUnit.MakeDone();
         }
