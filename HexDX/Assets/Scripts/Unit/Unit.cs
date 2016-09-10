@@ -14,10 +14,11 @@ public class Unit : MonoBehaviour {
     private UnitFacing facingBonus;
     private UnitMovementCache movementCache;
     private int type; // we may want to represent types by something else
-    private readonly float maxMovement = 0.2f;
+    private readonly float maxMovement = 0.2f; 
 
     private SpriteRenderer spriteRenderer;
     private Animator animator;
+    private Tile lastTile;
 
     // Use this for initialization
     void Start () {
@@ -55,7 +56,7 @@ public class Unit : MonoBehaviour {
 
     void Update() {
         switch(phase){
-            case UnitTurn.Open:
+            case UnitTurn.Moving:
                 Move();
                 break;
             case UnitTurn.Facing:
@@ -71,14 +72,23 @@ public class Unit : MonoBehaviour {
             // disable the players ability to select
             SelectionController.selectionMode = SelectionMode.Moving;
             Vector3 destination = path.Peek().transform.position;
+            lastTile = path.Peek();
+            
             if (transform.position != destination) {
                 transform.position = Vector3.MoveTowards(transform.position, destination, maxMovement);
             } else {
-                if (path.Count == 1) {
+
+                if (path.Count == 1)
+                {
                     SetTile(path.Dequeue());
                     MakeFacing();
-                } else {
+                }
+                else
+                {
                     path.Dequeue();
+                    facing = HexMap.GetNeighbors(lastTile).IndexOf(path.Peek());
+                    spriteRenderer.sprite = sprites.walking[facing];
+                    animator.runtimeAnimatorController = sprites.walkingAnim[facing];
                 }
             }
         }
@@ -129,6 +139,14 @@ public class Unit : MonoBehaviour {
     {
         phase = UnitTurn.Open;
         spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f);
+        spriteRenderer.sprite = sprites.idle[facing];
+        animator.runtimeAnimatorController = sprites.idleAnim[facing];
+    }
+
+    // Phase Change Methods //
+    public void MakeMoving()
+    {
+        phase = UnitTurn.Moving;
     }
 
     public void MakeChoosingAction()
@@ -138,7 +156,10 @@ public class Unit : MonoBehaviour {
 
     public void MakeAttacking()
     {
-
+        phase = UnitTurn.Attacking;
+        spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f);
+        spriteRenderer.sprite = sprites.attack[facing];
+        animator.runtimeAnimatorController = sprites.attackAnim[facing];
     }
 
     public void MakeFacing()

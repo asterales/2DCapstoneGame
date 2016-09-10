@@ -33,6 +33,7 @@ public class MovementTile : MonoBehaviour {
     public static void CommitPath() {
         if (path != null && path.Count > 1 && path[path.Count - 1].currentUnit == null) {
             SelectionController.selectedUnit.SetPath(path);
+            SelectionController.selectedUnit.phase = UnitTurn.Moving;
             path = null;
             HexMap.ClearMovementTiles();
             SelectionController.ClearSelection();
