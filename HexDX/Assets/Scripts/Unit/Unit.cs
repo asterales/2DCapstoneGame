@@ -14,10 +14,11 @@ public class Unit : MonoBehaviour {
     private UnitFacing facingBonus;
     private UnitMovementCache movementCache;
     private int type; // we may want to represent types by something else
-    private readonly float maxMovement = 0.2f;
+    private readonly float maxMovement = 0.2f; 
 
     private SpriteRenderer spriteRenderer;
     private Animator animator;
+    private Tile lastTile;
 
     // Use this for initialization
     void Start () {
@@ -55,7 +56,7 @@ public class Unit : MonoBehaviour {
 
     void Update() {
         switch(phase){
-            case UnitTurn.Open:
+            case UnitTurn.Moving:
                 Move();
                 break;
             case UnitTurn.Facing:
@@ -71,14 +72,23 @@ public class Unit : MonoBehaviour {
             // disable the players ability to select
             SelectionController.selectionMode = SelectionMode.Moving;
             Vector3 destination = path.Peek().transform.position;
+            lastTile = path.Peek();
+            
             if (transform.position != destination) {
                 transform.position = Vector3.MoveTowards(transform.position, destination, maxMovement);
             } else {
-                if (path.Count == 1) {
+
+                if (path.Count == 1)
+                {
                     SetTile(path.Dequeue());
                     MakeFacing();
-                } else {
+                }
+                else
+                {
                     path.Dequeue();
+                    facing = HexMap.GetNeighbors(lastTile).IndexOf(path.Peek());
+                    spriteRenderer.sprite = sprites.walking[facing];
+                    animator.runtimeAnimatorController = sprites.walkingAnim[facing];
                 }
             }
         }
@@ -129,6 +139,14 @@ public class Unit : MonoBehaviour {
     {
         phase = UnitTurn.Open;
         spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f);
+        spriteRenderer.sprite = sprites.idle[facing];
+        animator.runtimeAnimatorController = sprites.idleAnim[facing];
+    }
+
+    // Phase Change Methods //
+    public void MakeMoving()
+    {
+        phase = UnitTurn.Moving;
     }
 
     public void MakeChoosingAction()
@@ -138,7 +156,10 @@ public class Unit : MonoBehaviour {
 
     public void MakeAttacking()
     {
-
+        phase = UnitTurn.Attacking;
+        spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f);
+        spriteRenderer.sprite = sprites.attack[facing];
+        animator.runtimeAnimatorController = sprites.attackAnim[facing];
     }
 
     public void MakeFacing()
@@ -158,4 +179,54 @@ public class Unit : MonoBehaviour {
         }
     }
     ///////////////////////////
+    public bool CanPathThrough(Tile tile) {
+        return tile != null && tile.pathable &&
+                (!tile.currentUnit || isPlayerUnit == tile.currentUnit.isPlayerUnit);
+    }
+
+    public List<Tile> GetShortestPath(Tile dest) {
+        int bound = Cost(dest, currentTile);
+        List<Tile> shortestPath = new List<Tile>();
+        while (true) {
+            int t = Search(dest,currentTile, 0, bound, ref shortestPath);
+            if (t == -1) {
+                shortestPath.Add(dest);
+                break;
+            }
+            if (t == int.MaxValue) {
+                break;
+            }
+            bound = t;
+            shortestPath = new List<Tile>();
+        }
+        return shortestPath;
+    }
+
+    private int Search(Tile node, Tile dest, int g, int bound, ref List<Tile> currentPath) {
+        int f = g + Cost(node, dest);
+        if (f > bound) {
+            return f;
+        }
+        if (node == dest) {
+            return -1;
+        }
+        int min = int.MaxValue;
+        foreach (Tile neighbor in HexMap.GetNeighbors(node)) {
+            if (CanPathThrough(neighbor)) {
+                int t = Search(neighbor, dest, g + 1, bound, ref currentPath);
+                if (t == -1) {
+                    currentPath.Add(neighbor);
+                    return -1;
+                }
+                if (t < min) {
+                    min = t;
+                }
+            }
+        }
+        return min;
+    }
+        
+    private int Cost(Tile a, Tile b) {
+        return System.Math.Max(System.Math.Abs(a.position.row- b.position.row), System.Math.Abs(a.position.col - b.position.col))/2;
+    }
 }

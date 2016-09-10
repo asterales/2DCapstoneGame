@@ -19,10 +19,11 @@ public class MovementTile : MonoBehaviour {
                     path.RemoveAt(path.Count - 1);
                 } else {
                     if (path.Count <= SelectionController.selectedUnit.unitStats.mvtRange
-                            && HexMap.AreNeighbors(tile, path[path.Count - 1])) {
+                            && HexMap.AreNeighbors(tile, path[path.Count - 1])
+                            && SelectionController.selectedUnit.CanPathThrough(tile)) {
                         path.Add(tile);
-                    } else {
-                        path = HexMap.GetShortestPath(tile, SelectionController.selectedTile);
+                    } else if (SelectionController.selectedUnit.CanPathThrough(tile)) {
+                        path = SelectionController.selectedUnit.GetShortestPath(tile);
                     }
                 }
                 drawPath();
@@ -33,6 +34,7 @@ public class MovementTile : MonoBehaviour {
     public static void CommitPath() {
         if (path != null && path.Count > 1 && path[path.Count - 1].currentUnit == null) {
             SelectionController.selectedUnit.SetPath(path);
+            SelectionController.selectedUnit.phase = UnitTurn.Moving;
             path = null;
             HexMap.ClearMovementTiles();
             SelectionController.ClearSelection();
