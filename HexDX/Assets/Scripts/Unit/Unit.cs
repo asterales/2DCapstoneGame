@@ -64,7 +64,9 @@ public class Unit : MonoBehaviour {
                     MakeDone();
                 }
                 else
-                    currentTile = path.Dequeue();
+                {
+                    path.Dequeue();
+                }
             }
         }
     }
