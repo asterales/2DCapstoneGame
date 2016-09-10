@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
-using System.Collections;
+
+// global class to help with expanding bars
 
 public class LEExpansionController : MonoBehaviour {
+    public static LEHorizonBar extendedBar;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public static void DisableExpansion()
+    {
+        if (extendedBar != null)
+        {
+            extendedBar.DeExtend();
+        }
+        extendedBar = null;
+    }
 }
