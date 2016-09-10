@@ -7,15 +7,28 @@ public class MovementTile : MonoBehaviour {
     public static List<Tile> path;
    
     public void OnMouseDown() {
-        if (SelectionController.selectedTile == tile) {
-            path = new List<Tile>() { tile };
-        } else {
-            tile.OnMouseDown();
+        if (path != null)
+        {
+            SelectionController.selectedUnit.path = new Queue<Tile>(MovementTile.path);
+            MovementTile.path = null;
+            HexMap.ClearMovementTiles();
+            SelectionController.ClearSelection();
+        }
+    }
+    
+    public void OnMouseUp()
+    {
+        if (path != null && path.Count>1)
+        {
+            SelectionController.selectedUnit.path = new Queue<Tile>(MovementTile.path);
+            MovementTile.path = null;
+            HexMap.ClearMovementTiles();
+            SelectionController.ClearSelection();
         }
     }
 
     public void OnMouseEnter() {
-        if (Input.GetMouseButton(0) && path != null ) {
+        if (path != null ) {
             if (path.Count>1 && tile == path[path.Count - 2])
             {
                 path.Remove(path[path.Count - 1]);

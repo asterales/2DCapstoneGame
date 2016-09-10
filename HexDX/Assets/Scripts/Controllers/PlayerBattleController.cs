@@ -18,11 +18,5 @@ public class PlayerBattleController : MonoBehaviour {
 	}
 
 	void Update(){
-        if (!Input.GetMouseButton(0) && MovementTile.path != null) {
-            SelectionController.selectedUnit.path = new Queue<Tile>(MovementTile.path);
-            MovementTile.path = null;
-            HexMap.ClearMovementTiles();
-            selectionController.ClearSelection();
-        }
     }
 }

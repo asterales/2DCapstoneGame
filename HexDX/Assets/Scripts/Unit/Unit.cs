@@ -48,7 +48,10 @@ public class Unit : MonoBehaviour {
                 transform.position = Vector3.MoveTowards(transform.position, destination, maxMovement);
             }
             else {
-                SetTile(path.Dequeue());
+                if (path.Count == 1)
+                    SetTile(path.Dequeue());
+                else
+                    currentTile = path.Dequeue();
             }
         }
     }
