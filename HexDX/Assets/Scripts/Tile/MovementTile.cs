@@ -32,11 +32,12 @@ public class MovementTile : MonoBehaviour {
 
     public void OnMouseEnter()
     {
-        if (Input.GetMouseButton(0) && path!=null && path.Count<=SelectionController.selectedUnit.unitStats.speed)
+        if (Input.GetMouseButton(0) && path!=null && path.Count<=SelectionController.selectedUnit.unitStats.speed && path[path.Count-1].GetNeighbors().IndexOf(tile)!=-1)
         {
             path.Add(tile);
+            drawPath();
+
         }
-        drawPath();
     }
 
     public void drawPath()
@@ -63,6 +64,7 @@ public class MovementTile : MonoBehaviour {
                 SpriteRenderer line = temp.AddComponent<SpriteRenderer>();
                 line.color = new Color(1.0f, 1.0f, 1.0f, 0.6f);
                 line.sortingOrder = 1;
+                Debug.Log(direction);
                 line.sprite = pbc.lineSprites[direction];
                 line.transform.position = prev.transform.position;
                 prev = path[i];
