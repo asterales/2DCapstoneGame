@@ -50,14 +50,6 @@ public class BattleController : MonoBehaviour {
         return false;
     }
 
-    // Update is called once per frame
-    //void Update () {
-    //    if (TurnCompleted()){
-    //        playerTurn = !playerTurn;
-    //        SetControllerForTurn();
-    //    }
-    //}
-
     public void EndCurrentTurn()
     {
         if (playerTurn)

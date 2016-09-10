@@ -77,7 +77,6 @@ public class Tile : MonoBehaviour {
                 MovementTile.path = null;
                 HexMap.ClearMovementTiles();
                 SelectionController.ClearSelection();
-                //Debug.Log("HERERE");
             }
         }
     }
