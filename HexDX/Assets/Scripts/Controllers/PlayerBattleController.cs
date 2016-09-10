@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 public class PlayerBattleController : MonoBehaviour {
-	public bool FinishedTurn { get; set; }	
+    private List<Unit> units;
 	private SelectionController selectionController;
 	private Tile unitTile;
 	private Tile destinationTile;
@@ -12,8 +12,8 @@ public class PlayerBattleController : MonoBehaviour {
     public Sprite[] lineSprites;
     public Sprite[] arrowSprites;
 
-	void Start(){
-		FinishedTurn = false;
+	void Start() {
+        units = new List<Unit>();
 		selectionController = GameObject.Find("TestHexMap").GetComponent<HexMap>().GetComponent<SelectionController>();
 	}
 
@@ -24,5 +24,26 @@ public class PlayerBattleController : MonoBehaviour {
             HexMap.ClearMovementTiles();
             selectionController.ClearSelection();
         }
+    }
+
+    public void StartTurn()
+    {
+        //for (int i=0;i<units.Count;i++)
+        //{
+        //    units[i].phase = UnitTurn.Open;
+        //}
+    }
+
+    public void EndTurn()
+    {
+        for (int i = 0; i < units.Count; i++)
+        {
+            units[i].MakeOpen();
+        }
+    }
+
+    public void AddUnit(Unit unit)
+    {
+        units.Add(unit);
     }
 }

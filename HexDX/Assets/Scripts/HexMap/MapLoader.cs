@@ -91,13 +91,11 @@ public class MapLoader : MonoBehaviour {
     }
 
     private GameObject InstantiateTileFromPrefab(int type) {
-        switch(type){
+        switch(type) {
             case 0:
                 return Instantiate(Resources.Load("Tiles/GrassTile")) as GameObject;
-                break;
             case 1:
                 return Instantiate(Resources.Load("Tiles/MountainTile")) as GameObject;
-                break;
             default:
                 return null;
         }

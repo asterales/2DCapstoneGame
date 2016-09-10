@@ -9,12 +9,14 @@ public class Tile : MonoBehaviour {
     public Unit currentUnit;
     private TileStats tileStats;
     private GameObject movementTile;
+    private GameObject attackTile;
     private static readonly Vector3 visibilityOffset = new Vector3(0, 0, -0.01f);
 
     public void Awake() {
         tileStats = this.gameObject.GetComponent<TileStats>();
         position = this.gameObject.GetComponent<TileLocation>();
         InitMovementTile();
+        InitAttackTile();
         ////// DEBUG CODE //////
         if (tileStats == null)
         {
@@ -37,12 +39,24 @@ public class Tile : MonoBehaviour {
         }
     }
 
+    private void InitAttackTile()
+    {
+        // to be finished
+        //if (pathable)
+        //{
+        //    attackTile = Instantiate(Resources.Load("Tiles/AttackTile")) as GameObject;
+        //    attackTile.transform.parent = transform;
+        //    attackTile.GetComponent<AttackTile>().tile = this;
+        //    HideAttackTile();
+        //}
+    }
+
     public void Update() { }
 
     public void OnMouseDown() {
         HexMap.ClearMovementTiles();
         SelectionController.selectedTile = this;
-        if (currentUnit) {
+        if (currentUnit && currentUnit.phase != UnitTurn.Done) {
             HexMap.ShowMovementTiles(this, currentUnit.unitStats.mvtRange + 1);
         }
     }
@@ -56,6 +70,14 @@ public class Tile : MonoBehaviour {
     public void HideMovementTile() {
         if (movementTile) {
             movementTile.transform.localPosition = -visibilityOffset;
+        }
+    }
+
+    public void HideAttackTile()
+    {
+        if (attackTile)
+        {
+            attackTile.transform.localPosition = -visibilityOffset;
         }
     }
 

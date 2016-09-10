@@ -7,10 +7,12 @@ public class BattleController : MonoBehaviour {
     private AIBattleController ai;
     private PlayerBattleController player;
     private bool playerTurn;
+    public Unit currentUnit;
 
     void Awake () {
         ai = this.gameObject.GetComponent<AIBattleController>();
         player = this.gameObject.GetComponent<PlayerBattleController>();
+        currentUnit = null;
         ////// DEBUG CODE //////
         if (ai == null)
         {
@@ -34,17 +36,18 @@ public class BattleController : MonoBehaviour {
             Debug.Log("Player Turn enabled");
             ai.enabled = false;
             player.enabled = true;
-            player.FinishedTurn = false; //clear finished flag
+            //player.FinishedTurn = false; //clear finished flag
         }else {
             Debug.Log("AI Turn enabled");
             player.enabled = false;
             ai.enabled = true;
-            ai.FinishedTurn = false; //clear finished flag
+            //ai.FinishedTurn = false; //clear finished flag
         }
     }
 
     private bool TurnCompleted() {
-        return playerTurn ? player.FinishedTurn : ai.FinishedTurn;
+        //return playerTurn ? player.FinishedTurn : ai.FinishedTurn;
+        return false;
     }
 
     // Update is called once per frame

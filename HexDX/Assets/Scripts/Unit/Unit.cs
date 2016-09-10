@@ -7,11 +7,13 @@ public class Unit : MonoBehaviour {
     public Tile currentTile;
     public UnitStats unitStats;
     public Queue<Tile> path;
-    public int phase = 0;
+    public UnitTurn phase;
     private UnitFacing facingBonus;
     private UnitMovementCache movementCache;
     private int type; // we may want to represent types by something else
     private readonly float maxMovement = 0.2f;
+
+    private SpriteRenderer spriteRenderer;
 
 
     // Use this for initialization
@@ -20,6 +22,8 @@ public class Unit : MonoBehaviour {
         facingBonus = this.gameObject.GetComponent<UnitFacing>();
         movementCache = this.gameObject.GetComponent<UnitMovementCache>();
         path = new Queue<Tile>();
+
+        spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
 
         ////// DEBUG CODE //////
         if (unitStats == null)
@@ -34,7 +38,13 @@ public class Unit : MonoBehaviour {
         {
             Debug.Log("Unit Needs MovementCache to be defined -> UnitController.cs");
         }
+        if (spriteRenderer == null)
+        {
+            Debug.Log("Unit Needs SpriteRenderer to be defined -> UnitController.cs");
+        }
         ////////////////////////
+
+        MakeOpen();
     }
 
     void Update() {
@@ -61,4 +71,30 @@ public class Unit : MonoBehaviour {
         unitObj.transform.parent = newTile.transform;
     }
 
+    // Phase Change Methods //
+    public void MakeOpen()
+    {
+        spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f);
+    }
+
+    public void MakeChoosingAction()
+    {
+
+    }
+
+    public void MakeAttacking()
+    {
+
+    }
+
+    public void MakeFacing()
+    {
+
+    }
+
+    public void MakeDone()
+    {
+        spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
+    }
+    ///////////////////////////
 }
