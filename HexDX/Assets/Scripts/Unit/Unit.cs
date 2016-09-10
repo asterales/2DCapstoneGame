@@ -59,7 +59,10 @@ public class Unit : MonoBehaviour {
             }
             else {
                 if (path.Count == 1)
+                {
                     SetTile(path.Dequeue());
+                    MakeDone();
+                }
                 else
                     currentTile = path.Dequeue();
             }
@@ -77,6 +80,7 @@ public class Unit : MonoBehaviour {
     // Phase Change Methods //
     public void MakeOpen()
     {
+        phase = UnitTurn.Open;
         spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f);
     }
 
@@ -97,6 +101,7 @@ public class Unit : MonoBehaviour {
 
     public void MakeDone()
     {
+        phase = UnitTurn.Done;
         spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
     }
     ///////////////////////////
