@@ -54,24 +54,31 @@ public class Tile : MonoBehaviour {
     public void Update() { }
 
     public void OnMouseDown() {
-        HexMap.ClearMovementTiles();
-        SelectionController.selectedTile = this;
-        if (currentUnit && currentUnit.phase != UnitTurn.Done) {
-            Debug.Log("WHAt");
-            HexMap.ShowMovementTiles(this, currentUnit.unitStats.mvtRange + 1);
-            MovementTile.path = new List<Tile>() { this };
+        if (SelectionController.TakingInput())
+        {
+            HexMap.ClearMovementTiles();
+            SelectionController.selectedTile = this;
+            if (currentUnit && currentUnit.phase != UnitTurn.Done)
+            {
+                Debug.Log("WHAt");
+                HexMap.ShowMovementTiles(this, currentUnit.unitStats.mvtRange + 1);
+                MovementTile.path = new List<Tile>() { this };
+            }
         }
     }
 
     public void OnMouseUp()
     {
-        if (MovementTile.path != null && MovementTile.path.Count > 1)
+        if (SelectionController.TakingInput())
         {
-            SelectionController.selectedUnit.path = new Queue<Tile>(MovementTile.path);
-            MovementTile.path = null;
-            HexMap.ClearMovementTiles();
-            SelectionController.ClearSelection();
-            //Debug.Log("HERERE");
+            if (MovementTile.path != null && MovementTile.path.Count > 1)
+            {
+                SelectionController.selectedUnit.path = new Queue<Tile>(MovementTile.path);
+                MovementTile.path = null;
+                HexMap.ClearMovementTiles();
+                SelectionController.ClearSelection();
+                //Debug.Log("HERERE");
+            }
         }
     }
 

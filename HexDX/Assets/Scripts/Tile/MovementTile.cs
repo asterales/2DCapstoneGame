@@ -7,40 +7,45 @@ public class MovementTile : MonoBehaviour {
     public static List<Tile> path;
    
     public void OnMouseDown() {
-        if (path != null && tile.currentUnit == null)
+        if (SelectionController.TakingInput())
         {
-            SelectionController.selectedUnit.path = new Queue<Tile>(MovementTile.path);
-            //SelectionController.selectedUnit.currentTile.currentUnit = null;
-            MovementTile.path = null;
-            HexMap.ClearMovementTiles();
-            SelectionController.ClearSelection();
-
-
+            if (path != null && tile.currentUnit == null)
+            {
+                SelectionController.selectedUnit.path = new Queue<Tile>(MovementTile.path);
+                //SelectionController.selectedUnit.currentTile.currentUnit = null;
+                MovementTile.path = null;
+                HexMap.ClearMovementTiles();
+                SelectionController.ClearSelection();
+            }
         }
     }
     
  
 
     public void OnMouseEnter() {
-        if (path != null ) {
-            if (path.Count>1 && tile == path[path.Count - 2])
+        if (SelectionController.TakingInput())
+        {
+            if (path != null)
             {
-                path.Remove(path[path.Count - 1]);
-            }
-            else
-            {
-                if (path.Count <= SelectionController.selectedUnit.unitStats.mvtRange
-                        && HexMap.AreNeighbors(tile, path[path.Count - 1]))
+                if (path.Count > 1 && tile == path[path.Count - 2])
                 {
-                    path.Add(tile);
+                    path.Remove(path[path.Count - 1]);
                 }
                 else
                 {
-                    path = new List<Tile>();
-                    shortestPath(tile, SelectionController.selectedTile);
+                    if (path.Count <= SelectionController.selectedUnit.unitStats.mvtRange
+                            && HexMap.AreNeighbors(tile, path[path.Count - 1]))
+                    {
+                        path.Add(tile);
+                    }
+                    else
+                    {
+                        path = new List<Tile>();
+                        shortestPath(tile, SelectionController.selectedTile);
+                    }
                 }
+                drawPath();
             }
-            drawPath();
         }
     }
 
