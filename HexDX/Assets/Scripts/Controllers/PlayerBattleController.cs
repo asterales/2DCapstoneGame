@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 public class PlayerBattleController : MonoBehaviour {
-    private List<Unit> units;
+    public List<Unit> units;
 	private SelectionController selectionController;
 	private Tile unitTile;
 	private Tile destinationTile;

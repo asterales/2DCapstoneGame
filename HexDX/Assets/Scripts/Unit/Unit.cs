@@ -7,8 +7,9 @@ public class Unit : MonoBehaviour {
     public Tile currentTile;
     public UnitStats unitStats;
     public UnitSprites sprites;
-    public Queue<Tile> path;
+    private Queue<Tile> path;
     public UnitTurn phase;
+    public bool isPlayerUnit;
     public int facing;
     private UnitFacing facingBonus;
     private UnitMovementCache movementCache;
@@ -72,20 +73,15 @@ public class Unit : MonoBehaviour {
             Vector3 destination = path.Peek().transform.position;
             if (transform.position != destination) {
                 transform.position = Vector3.MoveTowards(transform.position, destination, maxMovement);
-            }
-            else {
-                if (path.Count == 1)
-                {
+            } else {
+                if (path.Count == 1) {
                     SetTile(path.Dequeue());
                     MakeFacing();
                     // re-enable the players ability to select
-                    if (!SelectionController.TakingInput() && !SelectionController.TakingAIInput())
-                    {
+                    if (!SelectionController.TakingInput() && !SelectionController.TakingAIInput()) {
                         SelectionController.selectionMode = SelectionMode.Open;
                     }
-                }
-                else
-                {
+                } else {
                     path.Dequeue();
                 }
             }
@@ -126,6 +122,10 @@ public class Unit : MonoBehaviour {
         newTile.currentUnit = this;
         currentTile = newTile;
         unitObj.transform.parent = newTile.transform;
+    }
+
+    public void SetPath(List<Tile> nextPath) {
+        path = new Queue<Tile>(nextPath);
     }
 
     // Phase Change Methods //

@@ -23,19 +23,15 @@ public class SelectionController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (SelectionController.TakingInput())
-        {
-            if (Input.GetMouseButtonDown(1))
-            {
+        if (SelectionController.TakingInput()) {
+            if (Input.GetMouseButtonDown(1)) {
                 ClearSelection();
                 HexMap.ClearMovementTiles();
             }
-            if (selectedTile != null)
-            {
+            if (selectedTile != null) {
                 // update position of selected space
                 selectedSpace.transform.position = selectedTile.transform.position + visibilityOffset;
-                if (selectedTile.currentUnit)
-                {
+                if (selectedTile.currentUnit) {
                     selectedUnit = selectedTile.currentUnit;
                 }
             }
@@ -57,5 +53,10 @@ public class SelectionController : MonoBehaviour {
     public static bool TakingAIInput()
     {
         return selectionMode == SelectionMode.AITurn;
+    }
+
+    //returns last known selection mode
+    public static void DisableSelection() {
+        selectionMode = SelectionMode.Moving;
     }
 }
