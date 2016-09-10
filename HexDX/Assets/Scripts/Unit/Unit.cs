@@ -19,6 +19,7 @@ public class Unit : MonoBehaviour {
         unitStats = this.gameObject.GetComponent<UnitStats>();
 		facingBonus = this.gameObject.GetComponent<UnitFacing>();
 		movementCache = this.gameObject.GetComponent<UnitMovementCache>();
+
         path = new Queue<Tile>();
 
 

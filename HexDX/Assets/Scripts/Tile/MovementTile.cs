@@ -32,12 +32,19 @@ public class MovementTile : MonoBehaviour {
 
     public void OnMouseEnter()
     {
-        if (Input.GetMouseButton(0) && path!=null && path.Count<=SelectionController.selectedUnit.unitStats.speed && path[path.Count-1].GetNeighbors().IndexOf(tile)!=-1)
-        {
-            path.Add(tile);
-            drawPath();
+        if (Input.GetMouseButton(0) && path != null)
+            if ( path.Count<=SelectionController.selectedUnit.unitStats.speed && path[path.Count-1].GetNeighbors().IndexOf(tile)!=-1)
+            {
+                path.Add(tile);
+                drawPath();
 
-        }
+            }
+            else
+            {
+                path = new List<Tile>();
+                shortestPath(tile, SelectionController.selectedTile);
+                drawPath();
+            }
     }
 
     public void drawPath()
@@ -80,6 +87,55 @@ public class MovementTile : MonoBehaviour {
         }
     }
 
+
+    public bool shortestPath(Tile a, Tile b) {
+        int bound = cost(a, b);
+        while (true)
+        {
+            int t = search(a,b, 0, bound);
+            if (t == -1)
+            {
+                path.Add(a);
+                return true;
+            }
+            if (t == int.MaxValue)
+                return false;
+            bound = t;
+            path = new List<Tile>();
+        }
+    }
+
+    private int search(Tile node, Tile dest, int g, int bound)
+    {
+        int f = g + cost(node, dest);
+        if (f > bound)
+            return f;
+        if (node == dest)
+            return -1;
+        int min = int.MaxValue;
+        foreach (Tile neighbor in node.GetNeighbors())
+        {
+            if (neighbor!=null && neighbor.pathable)
+            {
+                int t = search(neighbor, dest, g + 1, bound);
+                if (t == -1)
+                {
+                    path.Add(neighbor);
+                    return -1;
+                }
+                if (t < min)
+                    min = t;
+            }
+
+        }
+        return min;
+
+    }
+        
+    private int cost(Tile a, Tile b)
+    {
+        return System.Math.Max(System.Math.Abs(a.position.row- b.position.row), System.Math.Abs(a.position.col - b.position.col))/2;
+    }
     // Update is called once per frame
     void Update () {
 	
