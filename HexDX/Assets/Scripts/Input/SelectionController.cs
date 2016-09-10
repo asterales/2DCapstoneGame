@@ -5,7 +5,7 @@ public class SelectionController : MonoBehaviour {
     public static Tile selectedTile;
     public Sprite selectedSprite;
     public static Unit selectedUnit;
-    private GameObject selectedSpace; // object for selected space
+    private static GameObject selectedSpace; // object for selected space
     private static readonly Vector3 visibilityOffset = new Vector3(0, 0, -0.01f);
 
 	// Use this for initialization
@@ -36,7 +36,7 @@ public class SelectionController : MonoBehaviour {
         }
 	}
 
-    public void ClearSelection() {
+    public static void ClearSelection() {
         selectedTile = null;
         selectedSpace.transform.position = new Vector3(-1000, -1000, 0);
     }

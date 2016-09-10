@@ -58,6 +58,18 @@ public class Tile : MonoBehaviour {
         SelectionController.selectedTile = this;
         if (currentUnit && currentUnit.phase != UnitTurn.Done) {
             HexMap.ShowMovementTiles(this, currentUnit.unitStats.mvtRange + 1);
+            MovementTile.path = new List<Tile>() { this };
+        }
+    }
+
+    public void OnMouseUp()
+    {
+        if (MovementTile.path != null && MovementTile.path.Count > 1)
+        {
+            SelectionController.selectedUnit.path = new Queue<Tile>(MovementTile.path);
+            MovementTile.path = null;
+            HexMap.ClearMovementTiles();
+            SelectionController.ClearSelection();
         }
     }
 
