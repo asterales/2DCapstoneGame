@@ -6,24 +6,30 @@ using System.Collections.Generic;
 public class Unit : MonoBehaviour {
     public Tile currentTile;
     public UnitStats unitStats;
-    public Queue<Tile> path;
+    public UnitSprites sprites;
+    private Queue<Tile> path;
     public UnitTurn phase;
+    public bool isPlayerUnit;
+    public int facing;
     private UnitFacing facingBonus;
     private UnitMovementCache movementCache;
     private int type; // we may want to represent types by something else
     private readonly float maxMovement = 0.2f;
 
     private SpriteRenderer spriteRenderer;
-
+    private Animator animator;
 
     // Use this for initialization
     void Start () {
         unitStats = this.gameObject.GetComponent<UnitStats>();
         facingBonus = this.gameObject.GetComponent<UnitFacing>();
         movementCache = this.gameObject.GetComponent<UnitMovementCache>();
+        sprites = this.gameObject.GetComponent<UnitSprites>();
         path = new Queue<Tile>();
+        facing = 0;
 
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
+        animator = this.gameObject.GetComponent<Animator>();
 
         ////// DEBUG CODE //////
         if (unitStats == null)
@@ -48,7 +54,16 @@ public class Unit : MonoBehaviour {
     }
 
     void Update() {
-        Move();
+        switch(phase){
+            case UnitTurn.Open:
+                Move();
+                break;
+            case UnitTurn.Facing:
+                Face();
+                break;
+
+        }
+
     }
 
     private void Move() {
@@ -58,24 +73,43 @@ public class Unit : MonoBehaviour {
             Vector3 destination = path.Peek().transform.position;
             if (transform.position != destination) {
                 transform.position = Vector3.MoveTowards(transform.position, destination, maxMovement);
-            }
-            else {
-                if (path.Count == 1)
-                {
+            } else {
+                if (path.Count == 1) {
                     SetTile(path.Dequeue());
-                    MakeDone();
-                    // re-enable the players ability to select
-                    if (!SelectionController.TakingInput() && !SelectionController.TakingAIInput())
-                    {
-                        SelectionController.selectionMode = SelectionMode.Open;
-                    }
-                }
-                else
-                {
+                    MakeFacing();
+                } else {
                     path.Dequeue();
                 }
             }
         }
+    }
+
+    private void Face()
+    {
+        int angle = Angle(new Vector2(1, 0),Input.mousePosition-CameraController.camera.WorldToScreenPoint(transform.position));
+        if (angle < 18 || angle > 342)
+            facing = 0;
+        else if (angle < 91)
+            facing = 1;
+        else if (angle < 164)
+            facing = 2;
+        else if (angle < 198)
+            facing = 3;
+        else if (angle < 271)
+            facing = 4;
+        else
+            facing = 5;
+        spriteRenderer.sprite = sprites.idle[facing];
+        animator.runtimeAnimatorController = sprites.idleAnim[facing];
+    }
+
+    private int Angle(Vector2 from, Vector2 to)
+    {
+        Vector2 diff = to - from;
+        int output = (int)(Mathf.Atan2(diff.y, diff.x)* 57.2957795131f);
+        if (output < 0)
+            output += 360;
+        return output;
     }
 
     public void SetTile(Tile newTile) {
@@ -84,6 +118,10 @@ public class Unit : MonoBehaviour {
         newTile.currentUnit = this;
         currentTile = newTile;
         unitObj.transform.parent = newTile.transform;
+    }
+
+    public void SetPath(List<Tile> nextPath) {
+        path = new Queue<Tile>(nextPath);
     }
 
     // Phase Change Methods //
@@ -105,6 +143,7 @@ public class Unit : MonoBehaviour {
 
     public void MakeFacing()
     {
+        phase = UnitTurn.Facing;
 
     }
 
@@ -112,6 +151,11 @@ public class Unit : MonoBehaviour {
     {
         phase = UnitTurn.Done;
         spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
+        // re-enable the players ability to select
+        if (!SelectionController.TakingInput() && !SelectionController.TakingAIInput())
+        {
+            SelectionController.selectionMode = SelectionMode.Open;
+        }
     }
     ///////////////////////////
 }

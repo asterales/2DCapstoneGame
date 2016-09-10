@@ -27,7 +27,7 @@ public class BattleController : MonoBehaviour {
 
     void Start() {
         //Starting player selection
-        playerTurn = (int)Mathf.Floor(Random.Range(0, 2)) == 1;
+        playerTurn = true;
         SetControllerForTurn();
     }
 

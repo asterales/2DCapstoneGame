@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 public class PlayerBattleController : MonoBehaviour {
-    private List<Unit> units;
+    public List<Unit> units;
 	private SelectionController selectionController;
 	private Tile unitTile;
 	private Tile destinationTile;
@@ -18,6 +18,10 @@ public class PlayerBattleController : MonoBehaviour {
 	}
 
 	void Update(){
+        if (SelectionController.selectedUnit!=null && SelectionController.selectedUnit.phase == UnitTurn.Facing && Input.GetMouseButtonDown(0))
+        {
+            SelectionController.selectedUnit.MakeDone();
+        }
     }
 
     public void StartTurn()

@@ -7,45 +7,35 @@ public class MovementTile : MonoBehaviour {
     public static List<Tile> path;
    
     public void OnMouseDown() {
-        if (SelectionController.TakingInput())
-        {
-            if (path != null && tile.currentUnit == null)
-            {
-                SelectionController.selectedUnit.path = new Queue<Tile>(MovementTile.path);
-                //SelectionController.selectedUnit.currentTile.currentUnit = null;
-                MovementTile.path = null;
-                HexMap.ClearMovementTiles();
-                SelectionController.ClearSelection();
-            }
+        if (SelectionController.TakingInput()) {
+            CommitPath();
         }
     }
     
- 
-
     public void OnMouseEnter() {
-        if (SelectionController.TakingInput())
-        {
-            if (path != null)
-            {
-                if (path.Count > 1 && tile == path[path.Count - 2])
-                {
-                    path.Remove(path[path.Count - 1]);
-                }
-                else
-                {
+        if (SelectionController.TakingInput()) {
+            if (path != null) {
+                if (path.Count > 1 && tile == path[path.Count - 2]) {
+                    path.RemoveAt(path.Count - 1);
+                } else {
                     if (path.Count <= SelectionController.selectedUnit.unitStats.mvtRange
-                            && HexMap.AreNeighbors(tile, path[path.Count - 1]))
-                    {
+                            && HexMap.AreNeighbors(tile, path[path.Count - 1])) {
                         path.Add(tile);
-                    }
-                    else
-                    {
-                        path = new List<Tile>();
-                        shortestPath(tile, SelectionController.selectedTile);
+                    } else {
+                        path = HexMap.GetShortestPath(tile, SelectionController.selectedTile);
                     }
                 }
                 drawPath();
             }
+        }
+    }
+
+    public static void CommitPath() {
+        if (path != null && path.Count > 1 && path[path.Count - 1].currentUnit == null) {
+            SelectionController.selectedUnit.SetPath(path);
+            path = null;
+            HexMap.ClearMovementTiles();
+            SelectionController.ClearSelection();
         }
     }
 
@@ -87,55 +77,4 @@ public class MovementTile : MonoBehaviour {
             arrow.transform.position = prev.transform.position;
         }
     }
-
-
-    public bool shortestPath(Tile a, Tile b) {
-        int bound = cost(a, b);
-        while (true) {
-            int t = search(a,b, 0, bound);
-            if (t == -1) {
-                path.Add(a);
-                return true;
-            }
-            if (t == int.MaxValue) {
-                return false;
-            }
-            bound = t;
-            path = new List<Tile>();
-        }
-    }
-
-    private int search(Tile node, Tile dest, int g, int bound) {
-        int f = g + cost(node, dest);
-        if (f > bound) {
-            return f;
-        }
-        if (node == dest) {
-            return -1;
-        }
-        int min = int.MaxValue;
-        foreach (Tile neighbor in HexMap.GetNeighbors(node)) {
-            if (neighbor!=null && neighbor.pathable) {
-                int t = search(neighbor, dest, g + 1, bound);
-                if (t == -1) {
-                    path.Add(neighbor);
-                    return -1;
-                }
-                if (t < min) {
-                    min = t;
-                }
-            }
-
-        }
-        return min;
-
-    }
-        
-    private int cost(Tile a, Tile b) {
-        return System.Math.Max(System.Math.Abs(a.position.row- b.position.row), System.Math.Abs(a.position.col - b.position.col))/2;
-    }
-    // Update is called once per frame
-    void Update () {
-	
-	}
 }
