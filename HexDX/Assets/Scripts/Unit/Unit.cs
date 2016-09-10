@@ -8,20 +8,18 @@ public class Unit : MonoBehaviour {
     public UnitStats unitStats;
     public Queue<Tile> path;
     public int phase = 0;
-	private UnitFacing facingBonus;
-	private UnitMovementCache movementCache;
-	private int type; // we may want to represent types by something else
-    public int unitTranslationSpeed = 10;
+    private UnitFacing facingBonus;
+    private UnitMovementCache movementCache;
+    private int type; // we may want to represent types by something else
+    private readonly float maxMovement = 0.2f;
 
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         unitStats = this.gameObject.GetComponent<UnitStats>();
-		facingBonus = this.gameObject.GetComponent<UnitFacing>();
-		movementCache = this.gameObject.GetComponent<UnitMovementCache>();
-
+        facingBonus = this.gameObject.GetComponent<UnitFacing>();
+        movementCache = this.gameObject.GetComponent<UnitMovementCache>();
         path = new Queue<Tile>();
-
 
         ////// DEBUG CODE //////
         if (unitStats == null)
@@ -36,29 +34,26 @@ public class Unit : MonoBehaviour {
         {
             Debug.Log("Unit Needs MovementCache to be defined -> UnitController.cs");
         }
-	    ////////////////////////
+        ////////////////////////
     }
 
-    void Update()
-    {
+    void Update() {
         Move();
     }
 
     private void Move() {
-        if (path.Count > 0)
-        {
-            Vector3 destination = path.Peek().transform.position + new Vector3(0, 0,.001f);
-            if (transform.position != destination)
-                transform.position = Vector3.MoveTowards(transform.position, destination, 0.2f);
-            else
-            {
+        if (path.Count > 0) {
+            Vector3 destination = path.Peek().transform.position;
+            if (transform.position != destination) {
+                transform.position = Vector3.MoveTowards(transform.position, destination, maxMovement);
+            }
+            else {
                 SetTile(path.Dequeue());
             }
         }
-
     }
 
-    public void SetTile(Tile newTile){
+    public void SetTile(Tile newTile) {
         GameObject unitObj = this.gameObject;
         currentTile.currentUnit = null;
         newTile.currentUnit = this;

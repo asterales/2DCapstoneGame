@@ -4,51 +4,31 @@ using System.Collections.Generic;
 public class MovementTile : MonoBehaviour {
 
     public Tile tile;
-    private SelectionController sc;
     public static List<Tile> path;
    
-    // Use this for initialization
-    void Start () {
-        sc = GameObject.Find("TestHexMap").GetComponent<HexMap>().GetComponent<SelectionController>();
-    }
-
-    public void OnMouseDown()
-    {
-        if (SelectionController.selectedTile.Equals(tile))
-        {
-            path = new List<Tile>();
-            path.Add(tile);
+    public void OnMouseDown() {
+        if (SelectionController.selectedTile == tile) {
+            path = new List<Tile>() { tile };
+        } else {
+            tile.OnMouseDown();
         }
-        //if (sc.selectedTile.currentUnit)
-        //{
-        //    Unit unit = sc.selectedTile.currentUnit;
-        //    sc.selectedTile.currentUnit = null;
-        //    unit.Move(tile);
-        //    tile.currentUnit = unit;
-        //    HexMap.ClearMovementTiles();
-        //    sc.ClearSelection();
-        //}
     }
 
-    public void OnMouseEnter()
-    {
-        if (Input.GetMouseButton(0) && path != null)
-            if ( path.Count<=SelectionController.selectedUnit.unitStats.speed && path[path.Count-1].GetNeighbors().IndexOf(tile)!=-1)
-            {
+    public void OnMouseEnter() {
+        if (Input.GetMouseButton(0) && path != null ) {
+             if (path.Count <= SelectionController.selectedUnit.unitStats.mvtRange 
+                    && HexMap.AreNeighbors(tile, path[path.Count-1])) {
                 path.Add(tile);
-                drawPath();
-
-            }
-            else
-            {
+            } else {
                 path = new List<Tile>();
                 shortestPath(tile, SelectionController.selectedTile);
-                drawPath();
             }
+            drawPath();
+        }
     }
 
-    public void drawPath()
-    {
+    //refactor later
+    public void drawPath() {
         if (path!=null && path.Count > 1) {
             PlayerBattleController pbc = GameObject.Find("TestHexMap").GetComponent<PlayerBattleController>();
             Object.Destroy(GameObject.Find("path"));
@@ -56,8 +36,7 @@ public class MovementTile : MonoBehaviour {
             Tile prev = path[0];
             int direction= 0;
             GameObject temp;
-            for (int i = 1; i < path.Count; i++)
-            {
+            for (int i = 1; i < path.Count; i++) {
                 temp = new GameObject();
                 temp.transform.parent = pathDraw.transform;
                 SpriteRenderer circle = temp.AddComponent<SpriteRenderer>();
@@ -65,7 +44,7 @@ public class MovementTile : MonoBehaviour {
                 circle.color = new Color(1.0f, 1.0f, 1.0f, 0.6f);
                 circle.sprite = pbc.circleSprite;
                 circle.transform.position = prev.transform.position;
-                direction = prev.GetNeighbors().IndexOf(path[i]);
+                direction = HexMap.GetNeighbors(prev).IndexOf(path[i]);
                 temp = new GameObject();
                 temp.transform.parent = pathDraw.transform;
                 SpriteRenderer line = temp.AddComponent<SpriteRenderer>();
@@ -76,7 +55,7 @@ public class MovementTile : MonoBehaviour {
                 line.transform.position = prev.transform.position;
                 prev = path[i];
             }
-            direction = path[path.Count - 2].GetNeighbors().IndexOf(prev);
+            direction = HexMap.GetNeighbors(path[path.Count - 2]).IndexOf(prev);
             temp = new GameObject();
             temp.transform.parent = pathDraw.transform;
             SpriteRenderer arrow = temp.AddComponent<SpriteRenderer>();
@@ -90,41 +69,39 @@ public class MovementTile : MonoBehaviour {
 
     public bool shortestPath(Tile a, Tile b) {
         int bound = cost(a, b);
-        while (true)
-        {
+        while (true) {
             int t = search(a,b, 0, bound);
-            if (t == -1)
-            {
+            if (t == -1) {
                 path.Add(a);
                 return true;
             }
-            if (t == int.MaxValue)
+            if (t == int.MaxValue) {
                 return false;
+            }
             bound = t;
             path = new List<Tile>();
         }
     }
 
-    private int search(Tile node, Tile dest, int g, int bound)
-    {
+    private int search(Tile node, Tile dest, int g, int bound) {
         int f = g + cost(node, dest);
-        if (f > bound)
+        if (f > bound) {
             return f;
-        if (node == dest)
+        }
+        if (node == dest) {
             return -1;
+        }
         int min = int.MaxValue;
-        foreach (Tile neighbor in node.GetNeighbors())
-        {
-            if (neighbor!=null && neighbor.pathable)
-            {
+        foreach (Tile neighbor in HexMap.GetNeighbors(node)) {
+            if (neighbor!=null && neighbor.pathable) {
                 int t = search(neighbor, dest, g + 1, bound);
-                if (t == -1)
-                {
+                if (t == -1) {
                     path.Add(neighbor);
                     return -1;
                 }
-                if (t < min)
+                if (t < min) {
                     min = t;
+                }
             }
 
         }
@@ -132,8 +109,7 @@ public class MovementTile : MonoBehaviour {
 
     }
         
-    private int cost(Tile a, Tile b)
-    {
+    private int cost(Tile a, Tile b) {
         return System.Math.Max(System.Math.Abs(a.position.row- b.position.row), System.Math.Abs(a.position.col - b.position.col))/2;
     }
     // Update is called once per frame

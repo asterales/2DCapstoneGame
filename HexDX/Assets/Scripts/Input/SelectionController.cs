@@ -3,15 +3,14 @@ using System.Collections;
 
 public class SelectionController : MonoBehaviour {
     public static Tile selectedTile;
-    public static Tile clickedTile; // tile currently clicked
     public Sprite selectedSprite;
     public static Unit selectedUnit;
     private GameObject selectedSpace; // object for selected space
+    private static readonly Vector3 visibilityOffset = new Vector3(0, 0, -0.01f);
 
 	// Use this for initialization
 	void Start () {
         selectedTile = null;
-        clickedTile = null;
 
         // create selected space
         selectedSpace = new GameObject(string.Format("Selected Space"));
@@ -24,29 +23,21 @@ public class SelectionController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetMouseButtonDown(1))
-        {
+        if (Input.GetMouseButtonDown(1)) {
             ClearSelection();
             HexMap.ClearMovementTiles();
         }
-	    if (clickedTile != null)
-        {
-            selectedTile = clickedTile;
-            // do stuff to the clicked tile
-        }
-        if (selectedTile != null)
-        {
+        if (selectedTile != null) {
             // update position of selected space
-            Vector3 pos = selectedTile.transform.position;
-            selectedSpace.transform.position = new Vector3(pos.x, pos.y, pos.z-0.1f);
-            if (selectedTile.currentUnit)
+            selectedSpace.transform.position = selectedTile.transform.position + visibilityOffset;
+            if (selectedTile.currentUnit) {
                 selectedUnit = selectedTile.currentUnit;
+            }
         }
 	}
 
     public void ClearSelection() {
         selectedTile = null;
-        clickedTile = null;
         selectedSpace.transform.position = new Vector3(-1000, -1000, 0);
     }
 }

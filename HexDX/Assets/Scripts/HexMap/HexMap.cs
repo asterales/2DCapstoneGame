@@ -6,6 +6,12 @@ public class HexMap : MonoBehaviour {
     public static List<List<Tile>> mapArray;
     public SelectionController selectionController; // ref to hack
 
+    // Make a separate directions class/enum?
+    public static readonly List<Vector2> directions = new List<Vector2> {
+            new Vector2(0, 1), new Vector2(-1, 0), new Vector2(-1, -1), 
+            new Vector2(0, -1), new Vector2(1, 0), new Vector2(1, 1)
+        };
+
     void Awake() {
         hexDimension = this.gameObject.GetComponent<HexDimension>();
         mapArray = new List<List<Tile>>();
@@ -21,14 +27,11 @@ public class HexMap : MonoBehaviour {
     // TODO :: think of a way to cache game objects later
     // Is this method even needed ??
 
-    public void ClearMap()
-    {
+    public void ClearMap() {
         Debug.Log("TO BE TESTED -> HexMap.cs");
         // remove and delete all current tiles
-        for (int i = 0; i < mapArray.Count; i++)
-        {
-            while (mapArray[i].Count > 0)
-            {
+        for (int i = 0; i < mapArray.Count; i++) {
+            while (mapArray[i].Count > 0) {
                 int lastIndex = mapArray[i].Count - 1;
                 Tile tile = mapArray[i][lastIndex];
                 mapArray[i].RemoveAt(lastIndex);
@@ -37,23 +40,56 @@ public class HexMap : MonoBehaviour {
             }
         }
 
-        // delete all lists in mapArray
-        while (mapArray.Count > 0)
-        {
-            int lastIndex = mapArray.Count - 1;
-            mapArray.RemoveAt(lastIndex);
-        }
+        mapArray = new List<List<Tile>>();
     }
 
-    public static void ClearMovementTiles()
-    {
-        foreach (List<Tile> row in mapArray){
-            foreach (Tile t in row){
-                if (t.movementTile.transform.position.z < 0){
-                    t.movementTile.transform.position = new Vector3(t.movementTile.transform.position.x, t.movementTile.transform.position.y, -t.movementTile.transform.position.z);
+    public static void ShowMovementTiles(Tile tile, int distance) {
+        ClearMovementTiles();
+        Queue<Tile> toCheck = new Queue<Tile>();
+        Queue<int> dist = new Queue<int>();
+        toCheck.Enqueue(tile);
+        dist.Enqueue(distance);
+        List<Tile> neighbors;
+        while (toCheck.Count > 0) {
+            Tile t = toCheck.Dequeue();
+            distance = dist.Dequeue();
+            if (distance > 0 && t.pathable) {
+                t.ShowMovementTile();                    
+                neighbors = GetNeighbors(t);
+                foreach (Tile neighbor in neighbors) {
+                    if (neighbor && !neighbor.MovementTileIsVisible()){
+                        toCheck.Enqueue(neighbor);
+                        dist.Enqueue(distance - 1);
+                    }
                 }
             }
         }
+    }
+
+    public static void ClearMovementTiles() {
+        foreach (List<Tile> row in mapArray) {
+            foreach (Tile tile in row) {
+                tile.HideMovementTile();
+            }
+        }
         Object.Destroy(GameObject.Find("path"));
+    }
+
+    public static List<Tile> GetNeighbors(Tile tile) {
+        List<Tile> neighbors = new List<Tile>();
+        TileLocation position = tile.position;
+        foreach (Vector2 dir in directions) {
+            try {
+                Tile neighbor = HexMap.mapArray[position.row + (int)(dir.x)][position.col + (int)(dir.y)];
+                neighbors.Add(neighbor);
+            } catch { 
+                neighbors.Add(null);
+            }
+        }
+        return neighbors;
+    }
+
+    public static bool AreNeighbors(Tile tile1, Tile tile2) {
+        return GetNeighbors(tile1).Contains(tile2);
     }
 }

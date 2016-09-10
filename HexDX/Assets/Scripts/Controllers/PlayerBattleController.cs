@@ -18,35 +18,11 @@ public class PlayerBattleController : MonoBehaviour {
 	}
 
 	void Update(){
-        //if (MovementTile.path.Count > 1)
-        //{
-        if (MovementTile.path!=null)
-        {
-            if (!Input.GetMouseButton(0))
-            {
-                SelectionController.selectedUnit.path = new Queue<Tile>(MovementTile.path);
-                MovementTile.path = null;
-                HexMap.ClearMovementTiles();
-                selectionController.ClearSelection();
-            }
+        if (!Input.GetMouseButton(0) && MovementTile.path != null) {
+            SelectionController.selectedUnit.path = new Queue<Tile>(MovementTile.path);
+            MovementTile.path = null;
+            HexMap.ClearMovementTiles();
+            selectionController.ClearSelection();
         }
-        //}
     }
-
-	private void MoveUnit() {
-		bool reachedDestination = true;
-		if (reachedDestination){
-			unitTile = null;
-        	destinationTile = null;
-        	selectionController.ClearSelection();
-        	FinishedTurn = true;
-		}
-	}
-
-	private void CheckTileSelection() {
-		if (SelectionController.selectedTile && SelectionController.selectedUnit)
-        {
-			unitTile = SelectionController.selectedTile;
-		} 
-	}
 }
