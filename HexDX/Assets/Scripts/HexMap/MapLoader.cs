@@ -118,6 +118,13 @@ public class MapLoader : MonoBehaviour {
         knight.transform.parent = tile.gameObject.transform;
         tile.currentUnit = knight.GetComponent<Unit>();
         tile.currentUnit.currentTile = tile;
-        knight.transform.position = tile.gameObject.transform.position; 
+        knight.transform.position = tile.gameObject.transform.position;
+
+        tile = HexMap.mapArray[1][4];
+        knight = Instantiate(Resources.Load("Units/Swordsman")) as GameObject;
+        knight.transform.parent = tile.gameObject.transform;
+        tile.currentUnit = knight.GetComponent<Unit>();
+        tile.currentUnit.currentTile = tile;
+        knight.transform.position = tile.gameObject.transform.position;
     }
 }

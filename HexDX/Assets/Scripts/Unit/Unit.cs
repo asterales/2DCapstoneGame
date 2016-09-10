@@ -51,7 +51,9 @@ public class Unit : MonoBehaviour {
                 if (path.Count == 1)
                     SetTile(path.Dequeue());
                 else
-                    currentTile = path.Dequeue();
+                {
+                    path.Dequeue();
+                }
             }
         }
     }
