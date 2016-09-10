@@ -10,8 +10,9 @@ public class LEHexMap : MonoBehaviour {
     void Awake()
     {
         hexDimension = this.gameObject.GetComponent<HexDimension>();
+        spriteCache = this.gameObject.GetComponent<LESpriteCache>();
+        selectionController = this.gameObject.GetComponent<LESelectionController>();
         tileArray = new List<List<LETile>>();
-        //spriteCache = this.gameObject.GetComponent<LESpriteCache>();
 
         ////// DEBUG CODE //////
         if (hexDimension == null)
@@ -39,7 +40,6 @@ public class LEHexMap : MonoBehaviour {
                 // TODO :: Replace with a prefab later
                 Vector3 pos = new Vector3(x, y, z); // to be changed
                 GameObject newTile = CreateTileObject(pos, i, j);
-                //newTile.transform.parent = this.gameObject.transform;
                 tileArray[i].Add(newTile.GetComponent<LETile>());
                 x += 2 * hexDimension.width;
             }
@@ -57,7 +57,6 @@ public class LEHexMap : MonoBehaviour {
         newTile.AddComponent<TileLocation>();
         newTile.AddComponent<BoxCollider2D>();
         newTile.AddComponent<LETile>();
-        //Debug.Log(pos.x);
         newTile.transform.localPosition = pos;
         // tile location in the map
         TileLocation location = newTile.GetComponent<TileLocation>();

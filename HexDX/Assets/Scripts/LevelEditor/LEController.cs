@@ -14,16 +14,16 @@ public class LEController : MonoBehaviour {
     public LESpriteCache spriteCache;
     public string fileName;
 
-    void Start()
+    void Awake()
     {
         // save button is not a component of this object
         // load button is not a component of this object
         // TEMPORARYILY SETTING EVERYTHING IN THE UI FOR SPEED REASONS
-        //hexMap = this.gameObject.GetComponent<LEHexMap>();
-        //mapLoader = this.gameObject.GetComponent<LEMapLoader>();
-        //mapWriter = this.gameObject.GetComponent<LEMapWriter>();
-        //spriteCache = this.gameObject.GetComponent<LESpriteCache>();
-        //selectionController = this.gameObject.GetComponent<LESelectionController>();
+        hexMap = this.gameObject.GetComponent<LEHexMap>();
+        mapLoader = this.gameObject.GetComponent<LEMapLoader>();
+        mapWriter = this.gameObject.GetComponent<LEMapWriter>();
+        spriteCache = this.gameObject.GetComponent<LESpriteCache>();
+        selectionController = this.gameObject.GetComponent<LESelectionController>();
 
         ////// DEBUG CODE //////
         if (saveButton == null)
@@ -58,12 +58,12 @@ public class LEController : MonoBehaviour {
 
         // setting of connections between instance variables
         // TEMPORARILY SETTING EVERYTHING IN THE UI FOR SPEED REASONS
-        //saveButton.mapWriter = mapWriter;
-        //loadButton.mapLoader = mapLoader;
-        //mapWriter.hexMap = hexMap;
-        //mapWriter.fileName = fileName;
-        //mapLoader.hexMap = hexMap;
-        //mapLoader.fileName = fileName;
-        //hexMap.spriteCache = spriteCache;
+        saveButton.mapWriter = mapWriter;
+        loadButton.mapLoader = mapLoader;
+        mapWriter.hexMap = hexMap;
+        mapWriter.fileName = fileName;
+        mapLoader.hexMap = hexMap;
+        mapLoader.fileName = fileName;
+        hexMap.spriteCache = spriteCache;
     }
 }
