@@ -179,4 +179,54 @@ public class Unit : MonoBehaviour {
         }
     }
     ///////////////////////////
+    public bool CanPathThrough(Tile tile) {
+        return tile != null && tile.pathable &&
+                (!tile.currentUnit || isPlayerUnit == tile.currentUnit.isPlayerUnit);
+    }
+
+    public List<Tile> GetShortestPath(Tile dest) {
+        int bound = Cost(dest, currentTile);
+        List<Tile> shortestPath = new List<Tile>();
+        while (true) {
+            int t = Search(dest,currentTile, 0, bound, ref shortestPath);
+            if (t == -1) {
+                shortestPath.Add(dest);
+                break;
+            }
+            if (t == int.MaxValue) {
+                break;
+            }
+            bound = t;
+            shortestPath = new List<Tile>();
+        }
+        return shortestPath;
+    }
+
+    private int Search(Tile node, Tile dest, int g, int bound, ref List<Tile> currentPath) {
+        int f = g + Cost(node, dest);
+        if (f > bound) {
+            return f;
+        }
+        if (node == dest) {
+            return -1;
+        }
+        int min = int.MaxValue;
+        foreach (Tile neighbor in HexMap.GetNeighbors(node)) {
+            if (CanPathThrough(neighbor)) {
+                int t = Search(neighbor, dest, g + 1, bound, ref currentPath);
+                if (t == -1) {
+                    currentPath.Add(neighbor);
+                    return -1;
+                }
+                if (t < min) {
+                    min = t;
+                }
+            }
+        }
+        return min;
+    }
+        
+    private int Cost(Tile a, Tile b) {
+        return System.Math.Max(System.Math.Abs(a.position.row- b.position.row), System.Math.Abs(a.position.col - b.position.col))/2;
+    }
 }
