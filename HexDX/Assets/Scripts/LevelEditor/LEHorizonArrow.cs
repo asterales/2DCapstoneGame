@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LETileArrow : MonoBehaviour {
-    public LETileBar tileBar;
+public class LEHorizonArrow : MonoBehaviour {
+    public LEHorizonBar tileBar;
     public SpriteRenderer spriteRenderer;
-    public bool isUpArrow;
+    public bool isRightArrow;
 
     void Awake()
     {
@@ -23,11 +23,9 @@ public class LETileArrow : MonoBehaviour {
 
     void OnMouseDown()
     {
-        // global call to disable expansion
-        //LEExpansionController.DisableExpansion();
         spriteRenderer.color = new Color(0.3f, 0.3f, 0.3f);
-        if (isUpArrow) tileBar.MoveUp();
-        else tileBar.MoveDown();
+        if (isRightArrow) tileBar.MoveRight();
+        else tileBar.MoveLeft();
     }
 
     void OnMouseHover()

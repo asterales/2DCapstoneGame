@@ -44,7 +44,7 @@ public class LEHexMap : MonoBehaviour {
                 x += 2 * hexDimension.width;
             }
             y -= 2 * hexDimension.apex - hexDimension.minorApex;
-            x -= 2 * hexDimension.width * 16 + hexDimension.width;
+            x -= 2 * hexDimension.width * 16 - hexDimension.width;
             z -= .001f;
         }
     }

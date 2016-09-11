@@ -32,6 +32,8 @@ public class LETile : MonoBehaviour {
 
     void OnMouseDown()
     {
+        // global call to disable expansion
+        //LEExpansionController.DisableExpansion();
         type = reference.selectionController.selectedTileButton.tileType;
         spriteRenderer.sprite = spriteCache.GetSprite(type);
         Debug.Log("WHAT");

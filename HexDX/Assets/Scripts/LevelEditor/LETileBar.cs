@@ -13,6 +13,12 @@ public class LETileBar : MonoBehaviour {
         chosenIndex = 0;
 	}
 
+    public void OnMouseDown()
+    {
+        // global call to disable expansion
+        //LEExpansionController.DisableExpansion();
+    }
+
     public void MoveUp()
     {
         if (currentIndex + numberOfButtons != objs.Count)
