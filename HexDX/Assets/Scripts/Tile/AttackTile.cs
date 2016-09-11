@@ -3,4 +3,5 @@ using System.Collections;
 
 public class AttackTile : MonoBehaviour {
     // to be implemented
+    public Tile tile;
 }

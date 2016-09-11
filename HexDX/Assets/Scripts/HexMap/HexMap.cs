@@ -5,16 +5,20 @@ public class HexMap : MonoBehaviour {
     private HexDimension hexDimension;
     public static List<List<Tile>> mapArray;
     public SelectionController selectionController; // ref to hack
+    public static Stack<Tile> showingMovementTiles;
+    public static Stack<Tile> showingAttackTiles;
 
     // Make a separate directions class/enum?
     public static readonly List<Vector2> directions = new List<Vector2> {
-            new Vector2(0, 1), new Vector2(-1, 0), new Vector2(-1, -1), 
-            new Vector2(0, -1), new Vector2(1, 0), new Vector2(1, 1)
+            new Vector2(0, 1), new Vector2(-1, 1), new Vector2(-1, 0), 
+            new Vector2(0, -1), new Vector2(1, -1), new Vector2(1, 0)
         };
 
     void Awake() {
         hexDimension = this.gameObject.GetComponent<HexDimension>();
         mapArray = new List<List<Tile>>();
+        showingAttackTiles = new Stack<Tile>();
+        showingMovementTiles = new Stack<Tile>();
         ////// DEBUG CODE //////
         if (hexDimension == null)
         {
@@ -66,11 +70,61 @@ public class HexMap : MonoBehaviour {
         }
     }
 
-    public static void ClearMovementTiles() {
-        foreach (List<Tile> row in mapArray) {
-            foreach (Tile tile in row) {
-                tile.HideMovementTile();
+    public static void ShowAttackTiles(Tile tile)
+    {
+        Unit unit = tile.currentUnit;
+        ClearAttackTiles();
+        Vector2 rowDot = new Vector2(1, 1);
+        Vector2 colDot = new Vector2(1, 1);
+        switch (unit.facing) {
+            case 0:
+                rowDot = new Vector2(1, 0);
+                colDot = new Vector2(0, 1);
+                break;
+            case 1:
+                rowDot = new Vector2(0, -1);
+                colDot = new Vector2(1, 1);
+                break;
+            case 2:
+                rowDot = new Vector2(-1, -1);
+                colDot = new Vector2(1, 0);
+                break;
+            case 3:
+                rowDot = new Vector2(-1, 0);
+                colDot = new Vector2(0, -1);
+                break;
+            case 4:
+                rowDot = new Vector2(0, 1);
+                colDot = new Vector2(-1, -1);
+                break;
+            case 5:
+                rowDot = new Vector2(1, 1);
+                colDot = new Vector2(-1, 0);
+                break;
+        }
+        foreach (Vector2 pos in unit.attackablePositions)
+        {
+            try
+            {
+                mapArray[tile.position.row + (int)Vector2.Dot(pos,rowDot)][tile.position.col + (int)Vector2.Dot(pos, colDot)].ShowAttackTile();
             }
+            catch { }
+        }
+
+    }
+
+    public static void ClearAttackTiles()
+    {
+        while (showingAttackTiles.Count > 0)
+        {
+            showingAttackTiles.Pop().HideAttackTile();
+        }
+    }
+
+    public static void ClearMovementTiles() {
+        while (showingMovementTiles.Count > 0)
+        {
+            showingMovementTiles.Pop().HideMovementTile();
         }
         Object.Destroy(GameObject.Find("path"));
     }

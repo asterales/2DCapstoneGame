@@ -42,13 +42,13 @@ public class Tile : MonoBehaviour {
     private void InitAttackTile()
     {
         // to be finished
-        //if (pathable)
-        //{
-        //    attackTile = Instantiate(Resources.Load("Tiles/AttackTile")) as GameObject;
-        //    attackTile.transform.parent = transform;
-        //    attackTile.GetComponent<AttackTile>().tile = this;
-        //    HideAttackTile();
-        //}
+        if (pathable)
+        {
+            attackTile = Instantiate(Resources.Load("Tiles/AttackTile")) as GameObject;
+            attackTile.transform.parent = transform;
+            attackTile.GetComponent<AttackTile>().tile = this;
+            HideAttackTile();
+        }
     }
 
     public void Update() { }
@@ -76,6 +76,7 @@ public class Tile : MonoBehaviour {
     public void ShowMovementTile() {
         if (movementTile) {
             movementTile.transform.localPosition = visibilityOffset;
+            HexMap.showingMovementTiles.Push(this);
         }
     }
 
@@ -84,7 +85,14 @@ public class Tile : MonoBehaviour {
             movementTile.transform.localPosition = -visibilityOffset;
         }
     }
-
+    public void ShowAttackTile()
+    {
+        if (attackTile)
+        {
+            attackTile.transform.localPosition = visibilityOffset;
+            HexMap.showingAttackTiles.Push(this);
+        }
+    }
     public void HideAttackTile()
     {
         if (attackTile)

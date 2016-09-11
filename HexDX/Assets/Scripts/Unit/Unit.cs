@@ -7,6 +7,8 @@ public class Unit : MonoBehaviour {
     public Tile currentTile;
     public UnitStats unitStats;
     public UnitSprites sprites;
+    public List<Vector2> attackablePositions;
+
     private Queue<Tile> path;
     public UnitTurn phase;
     public bool isPlayerUnit;
@@ -111,6 +113,7 @@ public class Unit : MonoBehaviour {
             facing = 5;
         spriteRenderer.sprite = sprites.idle[facing];
         animator.runtimeAnimatorController = sprites.idleAnim[facing];
+        HexMap.ShowAttackTiles(currentTile);
     }
 
     private int Angle(Vector2 from, Vector2 to)
@@ -171,6 +174,7 @@ public class Unit : MonoBehaviour {
     public void MakeDone()
     {
         phase = UnitTurn.Done;
+        HexMap.ClearAttackTiles();
         spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
         // re-enable the players ability to select
         if (!SelectionController.TakingInput() && !SelectionController.TakingAIInput())

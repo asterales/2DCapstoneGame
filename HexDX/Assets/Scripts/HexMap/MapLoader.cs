@@ -69,10 +69,9 @@ public class MapLoader : MonoBehaviour {
                 x += 2 * hexDimension.width;
                 columnIndex++;
             }
-
             HexMap.mapArray.Add(row);
             y -= 2 * hexDimension.apex - hexDimension.minorApex;
-            x -= 2 * hexDimension.width * line.Length + hexDimension.width;
+            x -= 2 * hexDimension.width * line.Length - hexDimension.width;
             z -= .001f;
             rowIndex++;
         }
