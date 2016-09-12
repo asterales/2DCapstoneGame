@@ -39,11 +39,9 @@ public class Tile : MonoBehaviour {
         }
     }
 
-    private void InitAttackTile()
-    {
+    private void InitAttackTile() {
         // to be finished
-        if (pathable)
-        {
+        if (pathable) {
             attackTile = Instantiate(Resources.Load("Tiles/AttackTile")) as GameObject;
             attackTile.transform.parent = transform;
             attackTile.GetComponent<AttackTile>().tile = this;
@@ -54,21 +52,23 @@ public class Tile : MonoBehaviour {
     public void Update() { }
 
     public void OnMouseDown() {
-        if (SelectionController.TakingInput())
-        {
+        if (SelectionController.TakingInput()) {
             HexMap.ClearMovementTiles();
             SelectionController.selectedTile = this;
-            if (currentUnit && currentUnit.phase != UnitTurn.Done)
-            {
-                HexMap.ShowMovementTiles(this, currentUnit.unitStats.mvtRange + 1);
-                MovementTile.path = new List<Tile>() { this };
+            if (currentUnit){ 
+                if (currentUnit.isPlayerUnit && currentUnit.phase != UnitTurn.Done) {
+                    HexMap.ShowMovementTiles(this, currentUnit.unitStats.mvtRange + 1);
+                    MovementTile.path = new List<Tile>() { this };
+                } else {
+                    // show enemy mvt range and stats
+                    HexMap.ShowMovementTiles(this, currentUnit.unitStats.mvtRange + 1);
+                }
             }
         }
     }
 
-    public void OnMouseUp()
-    {
-        if (SelectionController.TakingInput()) {
+    public void OnMouseUp() {
+        if (SelectionController.TakingInput() && MovementTileIsVisible()) {
             MovementTile.CommitPath();
         }
     }
@@ -85,18 +85,14 @@ public class Tile : MonoBehaviour {
             movementTile.transform.localPosition = -visibilityOffset;
         }
     }
-    public void ShowAttackTile()
-    {
-        if (attackTile)
-        {
+    public void ShowAttackTile() {
+        if (attackTile) {
             attackTile.transform.localPosition = visibilityOffset;
             HexMap.showingAttackTiles.Push(this);
         }
     }
-    public void HideAttackTile()
-    {
-        if (attackTile)
-        {
+    public void HideAttackTile() {
+        if (attackTile) {
             attackTile.transform.localPosition = -visibilityOffset;
         }
     }

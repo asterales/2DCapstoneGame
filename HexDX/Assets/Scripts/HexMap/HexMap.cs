@@ -70,8 +70,7 @@ public class HexMap : MonoBehaviour {
         }
     }
 
-    public static void ShowAttackTiles(Tile tile)
-    {
+    public static void ShowAttackTiles(Tile tile) {
         Unit unit = tile.currentUnit;
         ClearAttackTiles();
         Vector2 rowDot = new Vector2(1, 1);
@@ -102,28 +101,22 @@ public class HexMap : MonoBehaviour {
                 colDot = new Vector2(-1, 0);
                 break;
         }
-        foreach (Vector2 pos in unit.attackablePositions)
-        {
-            try
-            {
+        foreach (Vector2 pos in unit.attackablePositions) {
+            try {
                 mapArray[tile.position.row + (int)Vector2.Dot(pos,rowDot)][tile.position.col + (int)Vector2.Dot(pos, colDot)].ShowAttackTile();
             }
             catch { }
         }
-
     }
 
-    public static void ClearAttackTiles()
-    {
-        while (showingAttackTiles.Count > 0)
-        {
+    public static void ClearAttackTiles() {
+        while (showingAttackTiles.Count > 0) {
             showingAttackTiles.Pop().HideAttackTile();
         }
     }
 
     public static void ClearMovementTiles() {
-        while (showingMovementTiles.Count > 0)
-        {
+        while (showingMovementTiles.Count > 0) {
             showingMovementTiles.Pop().HideMovementTile();
         }
         Object.Destroy(GameObject.Find("path"));

@@ -54,9 +54,4 @@ public class SelectionController : MonoBehaviour {
     {
         return selectionMode == SelectionMode.AITurn;
     }
-
-    //returns last known selection mode
-    public static void DisableSelection() {
-        selectionMode = SelectionMode.Moving;
-    }
 }
