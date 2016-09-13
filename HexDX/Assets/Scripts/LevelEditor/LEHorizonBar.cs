@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class LEHorizonBar : MonoBehaviour {
     public List<LEHorizonBarButton> buttons;
+    public LEHorizonArrow rightButton;
+    public LEHorizonArrow leftButton;
     public LESpriteVariantCache spriteCache;
     public int currentIndex;
     
@@ -12,11 +14,26 @@ public class LEHorizonBar : MonoBehaviour {
         {
             Debug.Log("ERROR :: HorizonBar Buttons need to be defined -> LEHorizonBar.cs");
         }
+        if (rightButton == null)
+        {
+            Debug.Log("ERROR :: RightButton needs to be defined -> LEHorizonBar.cs");
+        }
+        if (leftButton == null)
+        {
+            Debug.Log("ERROR :: LeftButton needs to be defined -> LEHorizonBar.cs");
+        }
         ////////////////////////
+        DeExtend();
 	}
 
     public void MoveRight()
     {
+        ////// DEBUG CODE //////
+        if (spriteCache == null)
+        {
+            Debug.Log("Sprite Cache is Not defined -> LEHorizonBar.cs");
+        }
+        ////////////////////////
         if (currentIndex + buttons.Count != spriteCache.sprites.Count)
         {
             currentIndex++;
@@ -26,6 +43,12 @@ public class LEHorizonBar : MonoBehaviour {
 
     public void MoveLeft()
     {
+        ////// DEBUG CODE //////
+        if (spriteCache == null)
+        {
+            Debug.Log("Sprite Cache is Not defined -> LEHorizonBar.cs");
+        }
+        ////////////////////////
         if (currentIndex > 0)
         {
             currentIndex--;
@@ -46,6 +69,21 @@ public class LEHorizonBar : MonoBehaviour {
 
     public void DeExtend()
     {
-        // to be implemented
+        for (int i=0;i<buttons.Count;i++)
+        {
+            buttons[i].TurnOff();
+        }
+        rightButton.TurnOff();
+        leftButton.TurnOff();
+    }
+
+    public void Extend()
+    {
+        for (int i = 0; i < buttons.Count; i++)
+        {
+            buttons[i].TurnOn();
+        }
+        rightButton.TurnOn();
+        leftButton.TurnOn();
     }
 }
