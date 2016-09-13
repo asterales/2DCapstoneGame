@@ -52,7 +52,7 @@ public class Tile : MonoBehaviour {
     public void Update() { }
 
     public void OnMouseOver() {
-        if (SelectionController.TakingInput() && Input.GetMouseButtonDown(0)) {
+        if (SelectionController.TakingInput() && (Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(1))) {
             //left click - selection
             HexMap.ClearAllTiles();
             SelectionController.selectedTile = this;
