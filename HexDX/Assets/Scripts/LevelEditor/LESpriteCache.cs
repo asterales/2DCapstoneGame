@@ -56,13 +56,13 @@ public class LESpriteCache : MonoBehaviour {
 
     private void LoadInVariantsForTiles()
     {
-        Debug.Log("Loading in variants");
+        //Debug.Log("Loading in variants");
         string path = "Assets\\Resources\\EditorSprites\\Tiles";
         string[] directories = Directory.GetDirectories(path);
-        Debug.Log("Number Of Directories: " + directories.Length);
+        //Debug.Log("Number Of Directories: " + directories.Length);
         for (int i=0;i<directories.Length;i++)
         {
-            Debug.Log("Directory: " + directories[i]);
+            //Debug.Log("Directory: " + directories[i]);
             // get all of the directories
             string[] files = Directory.GetFiles(directories[i]);
             // store all the sprites (ignore the meta files)
@@ -80,6 +80,7 @@ public class LESpriteCache : MonoBehaviour {
             variantCaches.Add(this.gameObject.AddComponent<LESpriteVariantCache>());
             // initialize the variant cache
             variantCaches[i].CreateCacheFromFiles(spriteFiles);
+            variantCaches[i].id = i;
         }
     }
 

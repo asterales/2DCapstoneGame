@@ -23,7 +23,7 @@ public class LEHorizonBar : MonoBehaviour {
             Debug.Log("ERROR :: LeftButton needs to be defined -> LEHorizonBar.cs");
         }
         ////////////////////////
-        DeExtend();
+        TurnOff();
 	}
 
     public void MoveRight()
@@ -67,7 +67,7 @@ public class LEHorizonBar : MonoBehaviour {
         }
     }
 
-    public void DeExtend()
+    public void TurnOff()
     {
         for (int i=0;i<buttons.Count;i++)
         {
@@ -77,8 +77,9 @@ public class LEHorizonBar : MonoBehaviour {
         leftButton.TurnOff();
     }
 
-    public void Extend()
+    public void TurnOn()
     {
+        UpdateButtonSprites();
         for (int i = 0; i < buttons.Count; i++)
         {
             buttons[i].TurnOn();

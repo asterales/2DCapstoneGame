@@ -5,9 +5,8 @@ public class LETileBarButton : MonoBehaviour {
     public SpriteRenderer spriteRenderer;
     public SpriteRenderer backgroundRenderer;
     public LESelectionController selectionController;
+    private LESpriteVariantCache spriteCache;
     public LEHorizonBar horizonBar;
-    public int currentTileId;
-    public int currentVariantId; // maybe
     public int buttonId;
 
     void Awake()
@@ -38,11 +37,13 @@ public class LETileBarButton : MonoBehaviour {
         if (Input.GetMouseButtonDown(0))
         {
             // select the current
-            //selectionController.
+            selectionController.selectedTileID = spriteCache.id;
+            selectionController.selectedTileVariantID = spriteCache.currentIndex;
             Debug.Log("Left Mouse Down");
         }
         if (Input.GetMouseButtonDown(1))
         {
+            horizonBar.TurnOn();
             Debug.Log("Right Mouse Down");
         }
     }
@@ -66,5 +67,6 @@ public class LETileBarButton : MonoBehaviour {
     {
         spriteRenderer.sprite = cache.GetCurrent();
         horizonBar.spriteCache = cache;
+        spriteCache = cache;
     }
 }

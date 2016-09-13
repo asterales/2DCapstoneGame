@@ -9,7 +9,7 @@ public class LEExpansionController : MonoBehaviour {
     {
         if (extendedBar != null)
         {
-            extendedBar.DeExtend();
+            extendedBar.TurnOff();
         }
         extendedBar = null;
     }

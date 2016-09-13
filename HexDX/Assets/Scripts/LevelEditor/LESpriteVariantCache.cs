@@ -3,11 +3,13 @@ using System.Collections.Generic;
 
 public class LESpriteVariantCache : MonoBehaviour {
     public List<Sprite> sprites;
+    public int currentSelectedIndex;
     public int currentIndex;
     public int id;
 
 	void Awake () {
         sprites = new List<Sprite>();
+        currentSelectedIndex = 0;
         currentIndex = 0;
         id = 0;
 	}

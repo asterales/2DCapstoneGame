@@ -16,7 +16,7 @@ public class LESelectionController : MonoBehaviour {
 
     void Start()
     {
-        selectedTileVariantID = 0;
+        selectedTileVariantID = 4;
         selectedTileID = 0;
 
         selectedUnitVariantID = 0;
