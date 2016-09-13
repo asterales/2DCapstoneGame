@@ -6,9 +6,13 @@ using System.Collections.Generic;
 public class BattleController : MonoBehaviour {
     public AIBattleController ai;
     public PlayerBattleController player;
+    public Texture2D actionMenuItem;
+    public Texture2D actionMenuItemHover;
     public static bool playerTurn;
 
     void Awake () {
+        Unit.menuItem = actionMenuItem;
+        Unit.menuItemHovered = actionMenuItemHover;
         ai = this.gameObject.GetComponent<AIBattleController>();
         player = this.gameObject.GetComponent<PlayerBattleController>();
         ////// DEBUG CODE //////

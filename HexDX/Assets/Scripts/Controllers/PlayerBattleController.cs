@@ -24,7 +24,7 @@ public class PlayerBattleController : MonoBehaviour {
         if (SelectionController.selectedUnit != null 
                 && SelectionController.selectedUnit.phase == UnitTurn.Facing 
                 && Input.GetMouseButtonDown(1)) {
-            SelectionController.selectedUnit.MakeDone();
+            SelectionController.selectedUnit.MakeChoosingAction();
         }
     }
 

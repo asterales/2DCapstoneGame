@@ -8,6 +8,8 @@ public class Unit : MonoBehaviour {
     public UnitStats unitStats;
     public UnitSprites sprites;
     public List<Vector2> attackablePositions;
+    public static Texture2D menuItem;
+    public static Texture2D menuItemHovered;
 
     private Queue<Tile> path;
     public UnitTurn phase;
@@ -102,15 +104,6 @@ public class Unit : MonoBehaviour {
     }
 
     private void Face() {
-        if (BattleController.playerTurn) {
-            SetPlayerFacing();
-        }
-        spriteRenderer.sprite = sprites.idle[facing];
-        animator.runtimeAnimatorController = sprites.idleAnim[facing];
-        HexMap.ShowAttackTiles(currentTile);
-    }
-
-    private void SetPlayerFacing() {
         int angle = Angle(new Vector2(1, 0),Input.mousePosition-CameraController.camera.WorldToScreenPoint(transform.position));
         if (angle < 18 || angle > 342) {
             facing = 0;
@@ -125,6 +118,49 @@ public class Unit : MonoBehaviour {
         } else {
             facing = 5;
         }
+        spriteRenderer.sprite = sprites.idle[facing];
+        animator.runtimeAnimatorController = sprites.idleAnim[facing];
+        HexMap.ShowAttackTiles(currentTile);
+    }
+
+    void OnGUI()
+    {
+        if (phase == UnitTurn.ChoosingAction)
+        {
+            int itemHeight = 20;
+            int itemWidth = 60;
+            Vector3 pos = CameraController.camera.WorldToScreenPoint(transform.position);
+            if (GUI.Button(new Rect(pos.x, pos.y, itemWidth, itemHeight), " Attack", getGUIStyle(true)))
+            {
+                MakeAttacking();
+            }
+
+            if (GUI.Button(new Rect(pos.x, pos.y + itemHeight, itemWidth, itemHeight), " Wait", getGUIStyle(true)))
+            {
+                MakeDone();
+            }
+        }
+
+    }
+
+    public GUIStyle getGUIStyle(bool active)
+    {
+        GUIStyle style = new GUIStyle();
+        style.normal.background = menuItem;
+        style.alignment = TextAnchor.MiddleLeft;
+        if (active)
+        {
+            style.hover.background = menuItemHovered;
+            style.normal.textColor = Color.white;
+            style.hover.textColor = Color.white;
+        }
+        else
+        {
+            style.hover.background = menuItem;
+            style.normal.textColor = Color.gray;
+            style.hover.textColor = Color.gray;
+        }
+        return style;
     }
 
     public void Attack()
@@ -170,6 +206,7 @@ public class Unit : MonoBehaviour {
     }
 
     public void MakeChoosingAction() {
+        phase = UnitTurn.ChoosingAction;
 
     }
 
