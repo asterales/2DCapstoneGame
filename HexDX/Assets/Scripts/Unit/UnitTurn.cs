@@ -2,8 +2,8 @@
 {
     Open,
     Moving,
+    Facing,
     ChoosingAction,
     Attacking,
-    Facing,
     Done
 };

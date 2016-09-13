@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class BattleController : MonoBehaviour {
     public AIBattleController ai;
     public PlayerBattleController player;
-    private bool playerTurn;
+    public static bool playerTurn;
 
     void Awake () {
         ai = this.gameObject.GetComponent<AIBattleController>();
@@ -24,19 +24,7 @@ public class BattleController : MonoBehaviour {
     }
 
     void Start() {
-        InitUnitLists();
         playerTurn = true;
-    }
-
-    private void InitUnitLists() {
-        Unit[] allUnits = FindObjectsOfType(typeof(Unit)) as Unit[];
-        foreach (Unit unit in allUnits) {
-            if (unit.isPlayerUnit) {
-                player.units.Add(unit);
-            } else {
-                ai.units.Add(unit);
-            }
-        }
     }
 
     public void EndCurrentTurn() {

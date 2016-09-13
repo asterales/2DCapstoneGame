@@ -4,34 +4,42 @@ using System.Linq;
 
 public class AIBattleController : MonoBehaviour {
     private BattleController battleController;
-    public List<Unit> units;
+    private List<Unit> units;
     private List<Unit> playerUnits;
 
     //keeping track of last unit being modified last update
     private int currentUnitIndex;
 
     void Start() {
+        InitUnitList();
         battleController = gameObject.GetComponent<BattleController>();
         playerUnits = gameObject.GetComponent<PlayerBattleController>().units;
+    }
+
+    private void InitUnitList() {
+        Unit[] allUnits = FindObjectsOfType(typeof(Unit)) as Unit[];
+        units = allUnits.Where(unit => !unit.isPlayerUnit).ToList();
     }
 
     void Update() {
         if (SelectionController.TakingAIInput()) {
             if (currentUnitIndex < units.Count) {
                 Unit currentUnit = units[currentUnitIndex];
-                switch(currentUnit.phase) {
-                    case UnitTurn.Open:
-                        SetPathToClosestEnemy(currentUnit);
-                        break;
-                    case UnitTurn.Facing:
-                        currentUnit.MakeDone();
-                        break;
-                    case UnitTurn.Done:
-                        currentUnitIndex++;
-                        break;
-                    default:
-                        break;
-                }
+                if (currentUnit) {
+                    switch(currentUnit.phase) {
+                        case UnitTurn.Open:
+                            SetPathToClosestEnemy(currentUnit);
+                            break;
+                        case UnitTurn.Facing:
+                            currentUnit.MakeDone();
+                            break;
+                        case UnitTurn.Done:
+                            currentUnitIndex++;
+                            break;
+                        default:
+                            break;
+                    }
+                } 
             } else {
                 battleController.EndCurrentTurn();
             }
@@ -66,7 +74,9 @@ public class AIBattleController : MonoBehaviour {
 
     public void EndTurn() {
         for (int i = 0; i < units.Count; i++) {
-            units[i].MakeOpen();
+            if(units[i]) {
+                units[i].MakeOpen();
+            }
         }
     }
 }

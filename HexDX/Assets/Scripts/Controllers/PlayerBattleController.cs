@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class PlayerBattleController : MonoBehaviour {
     public List<Unit> units;
@@ -9,10 +10,20 @@ public class PlayerBattleController : MonoBehaviour {
     public Sprite[] lineSprites;
     public Sprite[] arrowSprites;
 
+    void Start() {
+        InitUnitList();
+    }
+
+    private void InitUnitList() {
+        Unit[] allUnits = FindObjectsOfType(typeof(Unit)) as Unit[];
+        units = allUnits.Where(unit => unit.isPlayerUnit).ToList();
+    }
+
+
     void Update(){
         if (SelectionController.selectedUnit != null 
                 && SelectionController.selectedUnit.phase == UnitTurn.Facing 
-                && Input.GetMouseButtonDown(0)) {
+                && Input.GetMouseButtonDown(1)) {
             SelectionController.selectedUnit.MakeDone();
         }
     }
@@ -23,7 +34,9 @@ public class PlayerBattleController : MonoBehaviour {
 
     public void EndTurn() {
         for (int i = 0; i < units.Count; i++) {
-            units[i].MakeOpen();
+            if (units[i]){
+                units[i].MakeOpen();
+            } 
         }
     }
 

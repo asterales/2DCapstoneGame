@@ -5,10 +5,19 @@ using UnityEngine.UI;
 public class AttackTile : MonoBehaviour {
     // to be implemented
     public Tile tile;
-    public void OnMouseDown()
-    {
-        if (SelectionController.selectedUnit.isPlayerUnit && tile.currentUnit!=null && !tile.currentUnit.isPlayerUnit)
-        {
+
+    public void OnMouseOver() {
+        if (Input.GetMouseButtonDown(0)) {
+            if (tile.currentUnit){
+                //display unit stats
+            } else {
+                // do regular tile selection
+                tile.OnMouseOver();
+            }
+        } else if (Input.GetMouseButtonDown(1) 
+                && SelectionController.selectedUnit.isPlayerUnit 
+                && tile.currentUnit!=null 
+                && !tile.currentUnit.isPlayerUnit) {
             SelectionController.selectedUnit.MakeAttacking();
             tile.currentUnit.unitStats.health -= SelectionController.selectedUnit.unitStats.attack;
             if (HexMap.GetAttackTiles(tile).Contains(SelectionController.selectedUnit.currentTile))

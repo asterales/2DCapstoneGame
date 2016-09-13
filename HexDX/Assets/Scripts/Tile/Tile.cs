@@ -51,14 +51,19 @@ public class Tile : MonoBehaviour {
 
     public void Update() { }
 
-    public void OnMouseDown() {
-        if (SelectionController.TakingInput()) {
-            HexMap.ClearMovementTiles();
+    public void OnMouseOver() {
+        if (SelectionController.TakingInput() && Input.GetMouseButtonDown(0)) {
+            //left click - selection
+            HexMap.ClearAllTiles();
             SelectionController.selectedTile = this;
+            MovementTile.path = null;
             if (currentUnit){ 
-                if (currentUnit.isPlayerUnit && currentUnit.phase != UnitTurn.Done) {
-                    HexMap.ShowMovementTiles(this, currentUnit.unitStats.mvtRange + 1);
-                    MovementTile.path = new List<Tile>() { this };
+                //TO ADD: display stats
+                if (currentUnit.isPlayerUnit) {
+                    if (currentUnit.phase == UnitTurn.Open){
+                        HexMap.ShowMovementTiles(this, currentUnit.unitStats.mvtRange + 1);
+                        MovementTile.path = new List<Tile>() { this };
+                    }
                 } else {
                     // show enemy mvt range and stats
                     HexMap.ShowMovementTiles(this, currentUnit.unitStats.mvtRange + 1);

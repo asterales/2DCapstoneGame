@@ -2,6 +2,7 @@
 {
     Open,
     Moving,
+    Facing,
     Attacking,
     AITurn
 };

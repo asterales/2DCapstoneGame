@@ -113,8 +113,14 @@ public class HexMap : MonoBehaviour {
     public static void ShowAttackTiles(Tile tile)
     {
         ClearAttackTiles();
-        foreach (Tile t in GetAttackTiles(tile))
+        foreach (Tile t in GetAttackTiles(tile)) {
             t.ShowAttackTile();
+        }
+    }
+
+    public static void ClearAllTiles() {
+        ClearMovementTiles();
+        ClearAttackTiles();
     }
 
     public static void ClearAttackTiles() {

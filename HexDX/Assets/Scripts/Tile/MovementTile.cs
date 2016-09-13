@@ -6,10 +6,14 @@ public class MovementTile : MonoBehaviour {
     public Tile tile;
     public static List<Tile> path;
    
-    public void OnMouseDown() {
+    public void OnMouseOver() {
         if (SelectionController.TakingInput()) {
-            CommitPath();
-        }
+            if (Input.GetMouseButtonDown(0)) {
+                tile.OnMouseOver();
+            } else if (Input.GetMouseButtonDown(1)) {
+                CommitPath();
+            }
+        } 
     }
     
     public void OnMouseEnter() {

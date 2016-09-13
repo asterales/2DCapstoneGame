@@ -102,6 +102,15 @@ public class Unit : MonoBehaviour {
     }
 
     private void Face() {
+        if (BattleController.playerTurn) {
+            SetPlayerFacing();
+        }
+        spriteRenderer.sprite = sprites.idle[facing];
+        animator.runtimeAnimatorController = sprites.idleAnim[facing];
+        HexMap.ShowAttackTiles(currentTile);
+    }
+
+    private void SetPlayerFacing() {
         int angle = Angle(new Vector2(1, 0),Input.mousePosition-CameraController.camera.WorldToScreenPoint(transform.position));
         if (angle < 18 || angle > 342) {
             facing = 0;
@@ -116,9 +125,6 @@ public class Unit : MonoBehaviour {
         } else {
             facing = 5;
         }
-        spriteRenderer.sprite = sprites.idle[facing];
-        animator.runtimeAnimatorController = sprites.idleAnim[facing];
-        HexMap.ShowAttackTiles(currentTile);
     }
 
     public void Attack()
