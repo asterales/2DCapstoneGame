@@ -238,7 +238,7 @@ public class Unit : MonoBehaviour {
     }
         
     private int Cost(Tile a, Tile b) {
-        return System.Math.Max(System.Math.Abs(a.position.row- b.position.row), System.Math.Abs(a.position.col - b.position.col))/2;
+        return (System.Math.Abs(-b.position.row+a.position.row-b.position.col+a.position.col)+System.Math.Abs(a.position.row- b.position.row)+System.Math.Abs(a.position.col - b.position.col))/2;
     }
 
     // TODO: change to actually using an attack range stat, currently moves right next to unit
