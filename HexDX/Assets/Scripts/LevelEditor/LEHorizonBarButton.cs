@@ -4,9 +4,11 @@ public class LEHorizonBarButton : MonoBehaviour {
     public GameObject background;
     public SpriteRenderer spriteRenderer;
 
-    void Start()
+    void Awake()
     {
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
+        // temporary
+        spriteRenderer.sprite = Resources.Load<Sprite>("EditorSprites\\Tiles\\Grass\\GrassSpace0");
         ///// DEBUG CODE //////
         if (spriteRenderer == null)
         {
@@ -33,6 +35,7 @@ public class LEHorizonBarButton : MonoBehaviour {
 
     public void TurnOn()
     {
+        Debug.Log("adfasdf");
         SpriteRenderer backgroundRenderer = background.GetComponent<SpriteRenderer>();
         Color color = backgroundRenderer.color;
         backgroundRenderer.color = new Color(color.r, color.g, color.b, 1.0f);
