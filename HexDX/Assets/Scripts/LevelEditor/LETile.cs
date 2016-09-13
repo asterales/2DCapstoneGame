@@ -36,7 +36,6 @@ public class LETile : MonoBehaviour {
         //LEExpansionController.DisableExpansion();
         type = reference.selectionController.selectedTileButton.tileType;
         spriteRenderer.sprite = spriteCache.GetSprite(type);
-        Debug.Log("WHAT");
     }
 
     public void ChangeSprite(Sprite newSprite, int newType)
