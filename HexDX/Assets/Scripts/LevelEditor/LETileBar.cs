@@ -2,15 +2,24 @@
 using System.Collections.Generic;
 
 public class LETileBar : MonoBehaviour {
-    public List<LESpriteVariantCache> objs;
+    public LESpriteCache tileCache;
     public List<LETileBarButton> barButtons;
+    public List<LESpriteVariantCache> spriteVariants;
     private int currentIndex;
     private int numberOfButtons;
     private int chosenIndex;
     
 	void Start () {
-        // maybe need
-        chosenIndex = 0;
+        ////// DEBUG CODE //////
+        if (tileCache == null)
+        {
+            Debug.Log("TileBar needs a reference to the tile cache -> LETileBar.cs");
+        }
+        spriteVariants = tileCache.variantCaches;
+        //Debug.Log("Number Of Variants: " + spriteVariants.Count);
+        ////////////////////////
+        numberOfButtons = barButtons.Count;
+        UpdateButtonsForIndex(0);
 	}
 
     public void OnMouseDown()
@@ -19,9 +28,15 @@ public class LETileBar : MonoBehaviour {
         //LEExpansionController.DisableExpansion();
     }
 
+    public void UpdateButtonsForIndex(int index)
+    {
+        chosenIndex = index;
+        UpdateButtonSprites();
+    }
+
     public void MoveUp()
     {
-        if (currentIndex + numberOfButtons != objs.Count)
+        if (currentIndex + numberOfButtons != spriteVariants.Count)
         {
             currentIndex++;
             UpdateButtonSprites();
@@ -41,9 +56,9 @@ public class LETileBar : MonoBehaviour {
     {
         for (int i = 0; i < barButtons.Count; i++)
         {
-            if (objs.Count > i)
+            if (i + chosenIndex < spriteVariants.Count)
             {
-                barButtons[i].SetAvatar(objs[i + currentIndex]);
+                barButtons[i].SetAvatar(spriteVariants[i + chosenIndex]);
             }
         }
     }

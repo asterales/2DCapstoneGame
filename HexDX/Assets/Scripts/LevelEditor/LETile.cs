@@ -34,8 +34,8 @@ public class LETile : MonoBehaviour {
     {
         // global call to disable expansion
         //LEExpansionController.DisableExpansion();
-        type = reference.selectionController.selectedTileButton.tileType;
-        spriteRenderer.sprite = spriteCache.GetSprite(type);
+        type = reference.selectionController.GetTileType();
+        spriteRenderer.sprite = spriteCache.GetTileSprite(type);
     }
 
     public void ChangeSprite(Sprite newSprite, int newType)
@@ -46,10 +46,12 @@ public class LETile : MonoBehaviour {
 
     public void ChangeType(int newType)
     {
+        ////// DEBUG CODE //////
         if (spriteCache == null)
         {
             Debug.Log("ERRRRRORORORORO");
         }
-        ChangeSprite(spriteCache.GetSprite(newType), newType);
+        ////////////////////////
+        ChangeSprite(spriteCache.GetTileSprite(newType), newType);
     }
 }

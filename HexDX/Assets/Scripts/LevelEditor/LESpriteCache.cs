@@ -8,12 +8,12 @@ public class LESpriteCache : MonoBehaviour {
     public GameObject tileBar;
     public CacheType cacheType;
 
-    void Start()
+    void Awake()
     {
         if (sprites == null) sprites = new List<Sprite>();
         variantCaches = new List<LESpriteVariantCache>();
-        ////// DEBUG CODE //////
         cacheType = CacheType.Tile;
+        ////// DEBUG CODE //////
         if (tileBar == null)
         {
             Debug.Log("Error :: The Tile Bar Object For The Sprite Cache Needs to Be Defined -> LESpriteCache.cs");
@@ -22,9 +22,29 @@ public class LESpriteCache : MonoBehaviour {
         LoadInVariantsFromResources();
     }
 
-    public Sprite GetSprite(int index)
+    // deprecated
+    //public Sprite GetSprite(int index)
+    //{
+    //    return sprites[index];
+    //}
+
+    public Sprite GetTileSprite(int index)
     {
-        return sprites[index];
+        int variantID = index % 100;
+        int tileID = index / 100;
+        return variantCaches[tileID].sprites[variantID];
+    }
+
+    public Sprite GetUnitSprite(int index)
+    {
+        // to be implemented next sprint
+        return null;
+    }
+
+    public Sprite GetMapSprite(int index)
+    {
+        // to be implemented next sprint
+        return null;
     }
 
     private void LoadInVariantsFromResources()
@@ -36,10 +56,13 @@ public class LESpriteCache : MonoBehaviour {
 
     private void LoadInVariantsForTiles()
     {
+        Debug.Log("Loading in variants");
         string path = "Assets\\Resources\\EditorSprites\\Tiles";
         string[] directories = Directory.GetDirectories(path);
+        Debug.Log("Number Of Directories: " + directories.Length);
         for (int i=0;i<directories.Length;i++)
         {
+            Debug.Log("Directory: " + directories[i]);
             // get all of the directories
             string[] files = Directory.GetFiles(directories[i]);
             // store all the sprites (ignore the meta files)
@@ -50,6 +73,8 @@ public class LESpriteCache : MonoBehaviour {
                 spriteFiles[j / 2] = files[j].Substring(files[j].Length - (files[j].Length - 17));
                 spriteFiles[j / 2] = spriteFiles[j / 2].Remove(spriteFiles[j / 2].IndexOf('.'));
             }
+
+            Debug.Log("Number Of Sprites: " + spriteFiles.Length);
 
             // create a new variant cache
             variantCaches.Add(this.gameObject.AddComponent<LESpriteVariantCache>());

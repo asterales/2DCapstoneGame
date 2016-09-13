@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// This class is currently deprecated but it is being kept for reference
+
 public class LETileButton : MonoBehaviour {
     // these will be automatically generated later
     // but for now we are hard coding everything
@@ -8,7 +10,7 @@ public class LETileButton : MonoBehaviour {
     //private GameObject tileSelectedObj;
     //private GameObject tileTypeObj;
 
-    public GameObject tileSelectObj;
+    /*public GameObject tileSelectObj;
     // HACKY AF
     public LESelectionController reference;
     public LETileButton other;
@@ -44,5 +46,5 @@ public class LETileButton : MonoBehaviour {
         tileSelectObj.transform.localPosition = new Vector3(currentPos.x, currentPos.y, -0.05f);
 
         reference.selectedTileButton = this;
-    }
+    }*/
 }
