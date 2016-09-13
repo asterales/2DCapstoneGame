@@ -21,6 +21,7 @@ public class CameraController : MonoBehaviour {
             newX -= .1f;
         if (Input.GetKey(KeyCode.D))
             newX += .1f;
-        transform.position += new Vector3(newX, newY, 0);
+
+        transform.position += new Vector3(newX, newY, 0)*2.0f;
     }
 }

@@ -10,8 +10,7 @@ public class PlayerBattleController : MonoBehaviour {
     public Sprite[] arrowSprites;
 
     void Update(){
-        if (SelectionController.TakingInput()
-                && SelectionController.selectedUnit != null 
+        if (SelectionController.selectedUnit != null 
                 && SelectionController.selectedUnit.phase == UnitTurn.Facing 
                 && Input.GetMouseButtonDown(0)) {
             SelectionController.selectedUnit.MakeDone();

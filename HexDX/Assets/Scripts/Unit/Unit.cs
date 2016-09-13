@@ -64,6 +64,9 @@ public class Unit : MonoBehaviour {
             case UnitTurn.Facing:
                 Face();
                 break;
+            case UnitTurn.Attacking:
+                Attack();
+                break;
 
         }
 
@@ -85,7 +88,7 @@ public class Unit : MonoBehaviour {
                     SetTile(path.Dequeue());
                     // re-enable the players ability to select
                     if (!SelectionController.TakingInput() && !SelectionController.TakingAIInput()) {
-                        SelectionController.selectionMode = SelectionMode.Open;
+                        SelectionController.selectionMode = SelectionMode.Attacking;
                     }
                     MakeFacing();
                 } else {
@@ -116,6 +119,11 @@ public class Unit : MonoBehaviour {
         spriteRenderer.sprite = sprites.idle[facing];
         animator.runtimeAnimatorController = sprites.idleAnim[facing];
         HexMap.ShowAttackTiles(currentTile);
+    }
+
+    public void Attack()
+    {
+        SelectionController.selectedUnit.MakeDone();
     }
 
     private int Angle(Vector2 from, Vector2 to) {
@@ -164,6 +172,7 @@ public class Unit : MonoBehaviour {
         spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f);
         spriteRenderer.sprite = sprites.attack[facing];
         animator.runtimeAnimatorController = sprites.attackAnim[facing];
+ 
     }
 
     public void MakeFacing() {
@@ -175,6 +184,9 @@ public class Unit : MonoBehaviour {
         phase = UnitTurn.Done;
         HexMap.ClearAttackTiles();
         spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
+        spriteRenderer.sprite = sprites.idle[facing];
+        animator.runtimeAnimatorController = sprites.idleAnim[facing];
+        SelectionController.selectionMode = SelectionMode.Open;
     }
     ///////////////////////////
     // Pathing Methods //
