@@ -13,21 +13,21 @@ public class MovementTile : MonoBehaviour {
     }
     
     public void OnMouseEnter() {
-        if (SelectionController.TakingInput()) {
-            if (path != null) {
-                if (path.Count > 1 && tile == path[path.Count - 2]) {
-                    path.RemoveAt(path.Count - 1);
+        if (SelectionController.TakingInput() && path != null) {
+            if (path.Count > 1 && tile == path[path.Count - 2]) {
+                // Backtracking - remove last tile
+                path.RemoveAt(path.Count - 1);
+            } else if (HexMap.AreNeighbors(tile, path[path.Count - 1])
+                        && SelectionController.selectedUnit.CanPathThrough(tile)) {
+                if (path.Count <= SelectionController.selectedUnit.unitStats.mvtRange) {
+                    // Add tile if can still move more spaces
+                    path.Add(tile);
                 } else {
-                    if (path.Count <= SelectionController.selectedUnit.unitStats.mvtRange
-                            && HexMap.AreNeighbors(tile, path[path.Count - 1])
-                            && SelectionController.selectedUnit.CanPathThrough(tile)) {
-                        path.Add(tile);
-                    } else if (SelectionController.selectedUnit.CanPathThrough(tile)) {
-                        path = SelectionController.selectedUnit.GetShortestPath(tile);
-                    }
+                    // Recalculate path if gone over
+                    path = SelectionController.selectedUnit.GetShortestPath(tile);
                 }
-                drawPath();
-            }
+            } 
+            DrawPath();
         }
     }
 
@@ -41,8 +41,8 @@ public class MovementTile : MonoBehaviour {
         }
     }
 
-    //refactor later
-    public void drawPath() {
+    //refactor later - maybe make prefabs?
+    private void DrawPath() {
         PlayerBattleController pbc = GameObject.Find("TestHexMap").GetComponent<PlayerBattleController>();
         Object.Destroy(GameObject.Find("path"));
         if (path!=null && path.Count > 1) {
@@ -64,7 +64,6 @@ public class MovementTile : MonoBehaviour {
                 SpriteRenderer line = temp.AddComponent<SpriteRenderer>();
                 line.color = new Color(1.0f, 1.0f, 1.0f, 0.6f);
                 line.sortingOrder = 1;
-                Debug.Log(direction);
                 line.sprite = pbc.lineSprites[direction];
                 line.transform.position = prev.transform.position;
                 prev = path[i];

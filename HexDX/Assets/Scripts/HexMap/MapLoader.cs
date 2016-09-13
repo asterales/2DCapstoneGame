@@ -69,10 +69,9 @@ public class MapLoader : MonoBehaviour {
                 x += 2 * hexDimension.width;
                 columnIndex++;
             }
-
             HexMap.mapArray.Add(row);
             y -= 2 * hexDimension.apex - hexDimension.minorApex;
-            x -= 2 * hexDimension.width * line.Length + hexDimension.width;
+            x -= 2 * hexDimension.width * line.Length - hexDimension.width;
             z -= .001f;
             rowIndex++;
         }
@@ -116,16 +115,28 @@ public class MapLoader : MonoBehaviour {
         Tile tile = HexMap.mapArray[0][0];
         knight = Instantiate(Resources.Load("Units/Swordsman")) as GameObject;
         knight.transform.parent = tile.gameObject.transform;
-        tile.currentUnit = knight.GetComponent<Unit>();
-        tile.currentUnit.currentTile = tile;
         knight.transform.position = tile.gameObject.transform.position;
-        tile = HexMap.mapArray[1][4];
-        battleController.player.AddUnit(knight.GetComponent<Unit>());
+        Unit unit = knight.GetComponent<Unit>();
+        tile.currentUnit = unit;
+        unit.currentTile = tile;
+        unit.isPlayerUnit = true;
+        
+        tile = HexMap.mapArray[2][5];
         knight = Instantiate(Resources.Load("Units/Swordsman")) as GameObject;
         knight.transform.parent = tile.gameObject.transform;
-        tile.currentUnit = knight.GetComponent<Unit>();
-        tile.currentUnit.currentTile = tile;
         knight.transform.position = tile.gameObject.transform.position;
-        battleController.player.AddUnit(knight.GetComponent<Unit>());
+        unit = knight.GetComponent<Unit>();
+        tile.currentUnit = unit;
+        unit.currentTile = tile;
+        unit.isPlayerUnit = false;
+
+        tile = HexMap.mapArray[4][5];
+        knight = Instantiate(Resources.Load("Units/Swordsman")) as GameObject;
+        knight.transform.parent = tile.gameObject.transform;
+        knight.transform.position = tile.gameObject.transform.position;
+        unit = knight.GetComponent<Unit>();
+        tile.currentUnit = unit;
+        unit.currentTile = tile;
+        unit.isPlayerUnit = false;
     }
 }

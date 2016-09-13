@@ -7,6 +7,8 @@ public class Unit : MonoBehaviour {
     public Tile currentTile;
     public UnitStats unitStats;
     public UnitSprites sprites;
+    public List<Vector2> attackablePositions;
+
     private Queue<Tile> path;
     public UnitTurn phase;
     public bool isPlayerUnit;
@@ -62,6 +64,9 @@ public class Unit : MonoBehaviour {
             case UnitTurn.Facing:
                 Face();
                 break;
+            case UnitTurn.Attacking:
+                Attack();
+                break;
 
         }
 
@@ -70,21 +75,23 @@ public class Unit : MonoBehaviour {
     private void Move() {
         if (path.Count > 0) {
             // disable the players ability to select
-            SelectionController.selectionMode = SelectionMode.Moving;
-            Vector3 destination = path.Peek().transform.position;
+            if (SelectionController.TakingInput()) {
+                 SelectionController.selectionMode = SelectionMode.Moving;
+            }
             lastTile = path.Peek();
+            Vector3 destination = lastTile.transform.position;
             
             if (transform.position != destination) {
                 transform.position = Vector3.MoveTowards(transform.position, destination, maxMovement);
             } else {
-
-                if (path.Count == 1)
-                {
+                if (path.Count == 1) {
                     SetTile(path.Dequeue());
+                    // re-enable the players ability to select
+                    if (!SelectionController.TakingInput() && !SelectionController.TakingAIInput()) {
+                        SelectionController.selectionMode = SelectionMode.Attacking;
+                    }
                     MakeFacing();
-                }
-                else
-                {
+                } else {
                     path.Dequeue();
                     facing = HexMap.GetNeighbors(lastTile).IndexOf(path.Peek());
                     spriteRenderer.sprite = sprites.walking[facing];
@@ -94,27 +101,32 @@ public class Unit : MonoBehaviour {
         }
     }
 
-    private void Face()
-    {
+    private void Face() {
         int angle = Angle(new Vector2(1, 0),Input.mousePosition-CameraController.camera.WorldToScreenPoint(transform.position));
-        if (angle < 18 || angle > 342)
+        if (angle < 18 || angle > 342) {
             facing = 0;
-        else if (angle < 91)
+        } else if (angle < 91) {
             facing = 1;
-        else if (angle < 164)
+        } else if (angle < 164) {
             facing = 2;
-        else if (angle < 198)
+        } else if (angle < 198) {
             facing = 3;
-        else if (angle < 271)
+        } else if (angle < 271) {
             facing = 4;
-        else
+        } else {
             facing = 5;
+        }
         spriteRenderer.sprite = sprites.idle[facing];
         animator.runtimeAnimatorController = sprites.idleAnim[facing];
+        HexMap.ShowAttackTiles(currentTile);
     }
 
-    private int Angle(Vector2 from, Vector2 to)
+    public void Attack()
     {
+        SelectionController.selectedUnit.MakeDone();
+    }
+
+    private int Angle(Vector2 from, Vector2 to) {
         Vector2 diff = to - from;
         int output = (int)(Mathf.Atan2(diff.y, diff.x)* 57.2957795131f);
         if (output < 0)
@@ -131,57 +143,56 @@ public class Unit : MonoBehaviour {
     }
 
     public void SetPath(List<Tile> nextPath) {
+        int pathLimit = unitStats.mvtRange + 1;
+        int numExtra = nextPath.Count - pathLimit;
+        if (numExtra > 0) {
+            nextPath.RemoveRange(pathLimit, numExtra);
+        }
         path = new Queue<Tile>(nextPath);
     }
 
     // Phase Change Methods //
-    public void MakeOpen()
-    {
+    public void MakeOpen() {
         phase = UnitTurn.Open;
         spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f);
         spriteRenderer.sprite = sprites.idle[facing];
         animator.runtimeAnimatorController = sprites.idleAnim[facing];
     }
 
-    // Phase Change Methods //
-    public void MakeMoving()
-    {
+    public void MakeMoving() {
         phase = UnitTurn.Moving;
     }
 
-    public void MakeChoosingAction()
-    {
+    public void MakeChoosingAction() {
 
     }
 
-    public void MakeAttacking()
-    {
+    public void MakeAttacking() {
         phase = UnitTurn.Attacking;
         spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f);
         spriteRenderer.sprite = sprites.attack[facing];
         animator.runtimeAnimatorController = sprites.attackAnim[facing];
+ 
     }
 
-    public void MakeFacing()
-    {
+    public void MakeFacing() {
         phase = UnitTurn.Facing;
 
     }
 
-    public void MakeDone()
-    {
+    public void MakeDone() {
         phase = UnitTurn.Done;
+        HexMap.ClearAttackTiles();
         spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
-        // re-enable the players ability to select
-        if (!SelectionController.TakingInput() && !SelectionController.TakingAIInput())
-        {
-            SelectionController.selectionMode = SelectionMode.Open;
-        }
+        spriteRenderer.sprite = sprites.idle[facing];
+        animator.runtimeAnimatorController = sprites.idleAnim[facing];
+        SelectionController.selectionMode = SelectionMode.Open;
     }
     ///////////////////////////
+    // Pathing Methods //
     public bool CanPathThrough(Tile tile) {
         return tile != null && tile.pathable &&
-                (!tile.currentUnit || isPlayerUnit == tile.currentUnit.isPlayerUnit);
+            (!tile.currentUnit || isPlayerUnit == tile.currentUnit.isPlayerUnit);
     }
 
     public List<Tile> GetShortestPath(Tile dest) {
@@ -228,5 +239,16 @@ public class Unit : MonoBehaviour {
         
     private int Cost(Tile a, Tile b) {
         return System.Math.Max(System.Math.Abs(a.position.row- b.position.row), System.Math.Abs(a.position.col - b.position.col))/2;
+    }
+
+    // TODO: change to actually using an attack range stat, currently moves right next to unit
+    public bool HasEnemyInRange() {
+        List<Tile> neighbors = HexMap.GetNeighbors(currentTile);
+        foreach (Tile neighbor in neighbors) {
+            if (neighbor && neighbor.currentUnit && neighbor.currentUnit.isPlayerUnit) {
+                return true;
+            }
+        }
+        return false;
     }
 }

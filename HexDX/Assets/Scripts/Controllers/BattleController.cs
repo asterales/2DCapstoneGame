@@ -7,12 +7,10 @@ public class BattleController : MonoBehaviour {
     public AIBattleController ai;
     public PlayerBattleController player;
     private bool playerTurn;
-    public Unit currentUnit;
 
     void Awake () {
         ai = this.gameObject.GetComponent<AIBattleController>();
         player = this.gameObject.GetComponent<PlayerBattleController>();
-        currentUnit = null;
         ////// DEBUG CODE //////
         if (ai == null)
         {
@@ -26,47 +24,32 @@ public class BattleController : MonoBehaviour {
     }
 
     void Start() {
-        //Starting player selection
+        InitUnitLists();
         playerTurn = true;
-        SetControllerForTurn();
     }
 
-    private void SetControllerForTurn(){
-        if(playerTurn){
-            Debug.Log("Player Turn enabled");
-            ai.enabled = false;
-            player.enabled = true;
-            //player.FinishedTurn = false; //clear finished flag
-        }else {
-            Debug.Log("AI Turn enabled");
-            player.enabled = false;
-            ai.enabled = true;
-            //ai.FinishedTurn = false; //clear finished flag
+    private void InitUnitLists() {
+        Unit[] allUnits = FindObjectsOfType(typeof(Unit)) as Unit[];
+        foreach (Unit unit in allUnits) {
+            if (unit.isPlayerUnit) {
+                player.units.Add(unit);
+            } else {
+                ai.units.Add(unit);
+            }
         }
     }
 
-    private bool TurnCompleted() {
-        //return playerTurn ? player.FinishedTurn : ai.FinishedTurn;
-        return false;
-    }
-
-    public void EndCurrentTurn()
-    {
-        if (playerTurn)
-        {
+    public void EndCurrentTurn() {
+        if (playerTurn) {
             player.EndTurn();
-            // Uncomment when AI is implemented
-            //ai.StartTurn();
-            //playerTurn = false;
-            ////// DEBUG CODE //////
+            playerTurn = false;
+            ai.StartTurn();
+            Debug.Log("BattleController - Starting AI Turn");
+        } else {
+            ai.EndTurn();
             player.StartTurn();
-            ////////////////////////
-        }
-        else
-        {
-            //ai.EndTurn();
-            //player.StartTurn();
-            //playerTurn = true;
+            playerTurn = true;
+            Debug.Log("BattleController - Starting Player Turn");
         }
     }
 }
