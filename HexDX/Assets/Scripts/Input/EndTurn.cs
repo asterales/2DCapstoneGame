@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class EndTurn : MonoBehaviour {
-    public BattleController battleController;
     private SpriteRenderer spriteRenderer;
 
     void Start()
@@ -12,10 +11,9 @@ public class EndTurn : MonoBehaviour {
 
     void OnMouseDown()
     {
-        if (SelectionController.TakingInput())
-        {
+        if (!SelectionController.IsMode(SelectionMode.Disabled)) {
             spriteRenderer.color = new Color(0.3f, 0.3f, 0.3f);
-            battleController.EndCurrentTurn();
+            BattleController.EndCurrentTurn();
         }
     }
 

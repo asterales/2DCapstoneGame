@@ -10,10 +10,6 @@ public class Unit : MonoBehaviour {
     public UnitStats unitStats;
     public UnitSprites sprites;
     public List<Vector2> attackablePositions;
-    public static Texture2D menuItem;
-    public static Texture2D menuItemHovered;
-
-    private Tile previousTile;
 
     private Queue<Tile> path;
     public UnitTurn phase;
@@ -70,29 +66,19 @@ public class Unit : MonoBehaviour {
             case UnitTurn.Facing:
                 Face();
                 break;
-
         }
 
     }
 
     private void Move() {
         if (path.Count > 0) {
-            // disable the players ability to select
-            if (SelectionController.TakingInput()) {
-                 SelectionController.selectionMode = SelectionMode.Moving;
-            }
             lastTile = path.Peek();
             Vector3 destination = lastTile.transform.position;
-            
             if (transform.position != destination) {
                 transform.position = Vector3.MoveTowards(transform.position, destination, maxMovement);
             } else {
                 if (path.Count == 1) {
                     SetTile(path.Dequeue());
-                    // re-enable the players ability to select
-                    if (!SelectionController.TakingInput() && !SelectionController.TakingAIInput()) {
-                        SelectionController.selectionMode = SelectionMode.Facing;
-                    }
                     MakeFacing();
                 } else {
                     path.Dequeue();
@@ -105,92 +91,9 @@ public class Unit : MonoBehaviour {
     }
 
     private void Face() {
-        int angle = Angle(new Vector2(1, 0),Input.mousePosition-CameraController.camera.WorldToScreenPoint(transform.position));
-        if (angle < 18 || angle > 342) {
-            facing = 0;
-        } else if (angle < 91) {
-            facing = 1;
-        } else if (angle < 164) {
-            facing = 2;
-        } else if (angle < 198) {
-            facing = 3;
-        } else if (angle < 271) {
-            facing = 4;
-        } else {
-            facing = 5;
-        }
         spriteRenderer.sprite = sprites.idle[facing];
         animator.runtimeAnimatorController = sprites.idleAnim[facing];
         HexMap.ShowAttackTiles(currentTile);
-    }
-
-    void OnGUI()
-    {
-        if (phase == UnitTurn.ChoosingAction)
-        {
-            int itemHeight = 20;
-            int itemWidth = 60;
-            int offset = 60;
-            Vector3 pos = CameraController.camera.WorldToScreenPoint(transform.position);
-            pos = new Vector3(pos.x, Screen.height - pos.y-offset);
-            bool canAttack = false;
-            foreach (Tile t in HexMap.GetAttackTiles(currentTile))
-            {
-                if (t.currentUnit != null)
-                {
-                    canAttack = true;
-                    break;
-                }
-            }
-            if (GUI.Button(new Rect(pos.x, pos.y, itemWidth, itemHeight), " Attack", getGUIStyle(canAttack)))
-            {
-                
-                MakeAttacking();
-            }
-
-            if (GUI.Button(new Rect(pos.x, pos.y+ itemHeight, itemWidth, itemHeight), " Wait", getGUIStyle(true)))
-            {
-                MakeDone();
-            }
-
-            if (GUI.Button(new Rect(pos.x, pos.y + 2*itemHeight, itemWidth, itemHeight), " Undo", getGUIStyle(true)))
-            {
-                SetTile(previousTile);
-                HexMap.ClearAllTiles();
-                MakeOpen();
-                HexMap.ShowMovementTiles(currentTile, unitStats.mvtRange + 1);
-                MovementTile.path = new List<Tile>() { this.currentTile};
-            }
-        }
-
-    }
-
-    public GUIStyle getGUIStyle(bool active)
-    {
-        GUIStyle style = new GUIStyle();
-        style.normal.background = menuItem;
-        style.alignment = TextAnchor.MiddleLeft;
-        if (active)
-        {
-            style.hover.background = menuItemHovered;
-            style.normal.textColor = Color.white;
-            style.hover.textColor = Color.white;
-        }
-        else
-        {
-            style.hover.background = menuItem;
-            style.normal.textColor = Color.gray;
-            style.hover.textColor = Color.gray;
-        }
-        return style;
-    }
-
-    private int Angle(Vector2 from, Vector2 to) {
-        Vector2 diff = to - from;
-        int output = (int)(Mathf.Atan2(diff.y, diff.x)* 57.2957795131f);
-        if (output < 0)
-            output += 360;
-        return output;
     }
 
     public void SetTile(Tile newTile) {
@@ -209,17 +112,40 @@ public class Unit : MonoBehaviour {
         path = new Queue<Tile>(nextPath);
     }
 
+    public void SetFacing(Vector2 directionVec) {
+        int angle = Angle(new Vector2(1, 0), directionVec);
+        if (angle < 18 || angle > 342) {
+            facing = 0;
+        } else if (angle < 91) {
+            facing = 1;
+        } else if (angle < 164) {
+            facing = 2;
+        } else if (angle < 198) {
+            facing = 3;
+        } else if (angle < 271) {
+            facing = 4;
+        } else {
+            facing = 5;
+        }
+    }
+
+    private int Angle(Vector2 from, Vector2 to) {
+        Vector2 diff = to - from;
+        int output = (int)(Mathf.Atan2(diff.y, diff.x)* 57.2957795131f);
+        if (output < 0)
+            output += 360;
+        return output;
+    }
+
     // Phase Change Methods //
     public void MakeOpen() {
         phase = UnitTurn.Open;
-        SelectionController.selectionMode = SelectionMode.Open;
         spriteRenderer.color = Color.white;
         spriteRenderer.sprite = sprites.idle[facing];
         animator.runtimeAnimatorController = sprites.idleAnim[facing];
     }
 
     public void MakeMoving() {
-        previousTile = currentTile;
         phase = UnitTurn.Moving;
     }
 
@@ -227,28 +153,6 @@ public class Unit : MonoBehaviour {
         phase = UnitTurn.ChoosingAction;
 
     }
-
-    public IEnumerator PerformAttack()
-    {
-        spriteRenderer.sprite = sprites.attack[facing];
-        animator.runtimeAnimatorController = sprites.attackAnim[facing];
-        yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length/animator.speed);
-        SelectionController.target.unitStats.health -= SelectionController.selectedUnit.unitStats.attack;
-        if (HexMap.GetAttackTiles(SelectionController.target.currentTile).Contains(currentTile))
-        {
-            SelectionController.selectedUnit.unitStats.health -= max((unitStats.attack * 2) / 3, 1);
-        }
-        Image health = SelectionController.target.transform.Find("HealthBar").GetComponent<Image>();
-        health.fillAmount = (float)SelectionController.target.unitStats.health/ (float)SelectionController.target.unitStats.maxHealth;
-        health = transform.Find("HealthBar").GetComponent<Image>();
-        health.fillAmount = Mathf.Max(0,(float)unitStats.health / (float)unitStats.maxHealth);
-        if (unitStats.health <= 0)
-            Destroy(gameObject);
-        if (SelectionController.target.unitStats.health <= 0)
-            Destroy(SelectionController.target.gameObject);
-        MakeDone();
-    }
-    private int max(int a, int b) { return a > b ? a : b; }
 
     public void MakeAttacking() {
         phase = UnitTurn.Attacking;
@@ -266,8 +170,31 @@ public class Unit : MonoBehaviour {
         spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
         spriteRenderer.sprite = sprites.idle[facing];
         animator.runtimeAnimatorController = sprites.idleAnim[facing];
-        SelectionController.selectionMode = SelectionMode.Open;
     }
+
+    public IEnumerator PerformAttack(Unit target) {
+        spriteRenderer.sprite = sprites.attack[facing];
+        animator.runtimeAnimatorController = sprites.attackAnim[facing];
+        yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length/animator.speed);
+
+        target.unitStats.health -= unitStats.attack;
+        if (target.HasInAttackRange(this)) {
+            unitStats.health -= max((target.unitStats.attack * 2) / 3, 1);
+        }
+        Image health = target.transform.Find("HealthBar").GetComponent<Image>();
+        health.fillAmount = (float)target.unitStats.health / (float)target.unitStats.maxHealth;
+        health = transform.Find("HealthBar").GetComponent<Image>();
+        health.fillAmount = Mathf.Max(0,(float)unitStats.health / (float)unitStats.maxHealth);
+        MakeDone();
+        if (unitStats.health <= 0) {
+            Destroy(gameObject);
+        }
+        if (target.unitStats.health <= 0) {
+            Destroy(target.gameObject);
+        }
+    }
+
+    private int max(int a, int b) { return a > b ? a : b; }
     ///////////////////////////
     // Pathing Methods //
     public bool CanPathThrough(Tile tile) {
@@ -303,7 +230,7 @@ public class Unit : MonoBehaviour {
         }
         int min = int.MaxValue;
         foreach (Tile neighbor in HexMap.GetNeighbors(node)) {
-            if (CanPathThrough(neighbor)) {
+            if (neighbor == dest || CanPathThrough(neighbor)) { // hack to allow bfs to terminate even if dest tile is not pathable
                 int t = Search(neighbor, dest, g + 1, bound, ref currentPath);
                 if (t == -1) {
                     currentPath.Add(neighbor);
@@ -321,14 +248,7 @@ public class Unit : MonoBehaviour {
         return (System.Math.Abs(-b.position.row+a.position.row-b.position.col+a.position.col)+System.Math.Abs(a.position.row- b.position.row)+System.Math.Abs(a.position.col - b.position.col))/2;
     }
 
-    // TODO: change to actually using an attack range stat, currently moves right next to unit
-    public bool HasEnemyInRange() {
-        List<Tile> neighbors = HexMap.GetNeighbors(currentTile);
-        foreach (Tile neighbor in neighbors) {
-            if (neighbor && neighbor.currentUnit && neighbor.currentUnit.isPlayerUnit) {
-                return true;
-            }
-        }
-        return false;
+    public bool HasInAttackRange(Unit other){
+        return HexMap.GetAttackTiles(currentTile).Contains(other.currentTile);
     }
 }

@@ -4,11 +4,16 @@ using System.Linq;
 
 public class PlayerBattleController : MonoBehaviour {
     public List<Unit> units;
+    public static Texture2D menuItem;
+    public static Texture2D menuItemHovered;
+    private static Tile previousTile;
+    public static Unit activeUnit { get; private set; }
     
     // path sprites
     public Sprite circleSprite;
     public Sprite[] lineSprites;
     public Sprite[] arrowSprites;
+
 
     void Start() {
         InitUnitList();
@@ -21,18 +26,94 @@ public class PlayerBattleController : MonoBehaviour {
 
 
     void Update(){
-        if (SelectionController.selectedUnit != null 
-                && SelectionController.selectedUnit.phase == UnitTurn.Facing 
-                && Input.GetMouseButtonDown(1)) {
-            SelectionController.selectedUnit.MakeChoosingAction();
+        if (BattleController.isPlayerTurn && activeUnit) {
+            switch (activeUnit.phase) {
+                case UnitTurn.Facing:
+                    SelectionController.SetSelectedTile(activeUnit.currentTile);
+                    SelectFacing();
+                    break;
+                case UnitTurn.Done:
+                    ClearActiveUnit();
+                    SelectionController.OpenTileSelection();
+                    break;
+            }
         }
     }
 
+    public static void SetActiveUnit(Unit unit) {
+        if (unit.isPlayerUnit) {
+            activeUnit = unit;
+            previousTile = unit.currentTile;
+        } else {
+            Debug.Log("PlayerBattleController.cs - attempted to set enemy unit as active unit");
+        }
+    }
+
+    public static void ClearActiveUnit() {
+        activeUnit = null;
+    }
+
+    private void SelectFacing() {
+        Vector2 directionVec = Input.mousePosition - CameraController.camera.WorldToScreenPoint(activeUnit.transform.position);
+        activeUnit.SetFacing(directionVec);
+        if (Input.GetMouseButtonDown(1)) {
+            activeUnit.MakeChoosingAction();
+        }
+    }
+
+    void OnGUI() {
+        if (InUnitPhase(UnitTurn.ChoosingAction)) {
+            int itemHeight = 20;
+            int itemWidth = 60;
+            int offset = 60;
+            Vector3 pos = CameraController.camera.WorldToScreenPoint(activeUnit.transform.position);
+            pos = new Vector3(pos.x, Screen.height - pos.y-offset);
+            bool canAttack = HexMap.GetAttackTiles(activeUnit.currentTile).FirstOrDefault(t => t.currentUnit && !t.currentUnit.isPlayerUnit);
+            if (GUI.Button(new Rect(pos.x, pos.y, itemWidth, itemHeight), " Attack", GetGUIStyle(canAttack))) {
+                activeUnit.MakeAttacking();
+                SelectionController.RestrictToAttackTiles();
+            }
+            if (GUI.Button(new Rect(pos.x, pos.y+ itemHeight, itemWidth, itemHeight), " Wait", GetGUIStyle(true))) {
+                activeUnit.MakeDone();
+            }
+            if (GUI.Button(new Rect(pos.x, pos.y + 2*itemHeight, itemWidth, itemHeight), " Undo", GetGUIStyle(true))) {
+                activeUnit.SetTile(previousTile);
+                activeUnit.MakeOpen();
+                HexMap.ClearAllTiles();
+                HexMap.ShowMovementTiles(activeUnit.currentTile, activeUnit.unitStats.mvtRange + 1);
+                MovementTile.path = new List<Tile>() { activeUnit.currentTile };
+                SelectionController.SetSelectedTile(previousTile);
+                SelectionController.OpenTileSelection();
+            }
+        }
+    }
+
+    public GUIStyle GetGUIStyle(bool active) {
+        GUIStyle style = new GUIStyle();
+        style.normal.background = menuItem;
+        style.alignment = TextAnchor.MiddleLeft;
+        if (active) {
+            style.hover.background = menuItemHovered;
+            style.normal.textColor = Color.white;
+            style.hover.textColor = Color.white;
+        } else {
+            style.hover.background = menuItem;
+            style.normal.textColor = Color.gray;
+            style.hover.textColor = Color.gray;
+        }
+        return style;
+    }
+
     public void StartTurn() {
-        SelectionController.selectionMode = SelectionMode.Open;
+        SelectionController.OpenTileSelection();
     }
 
     public void EndTurn() {
+        if (activeUnit) {
+            activeUnit.MakeDone();
+            ClearActiveUnit();
+        }
+        ClearSelections();
         for (int i = 0; i < units.Count; i++) {
             if (units[i]){
                 units[i].MakeOpen();
@@ -40,7 +121,13 @@ public class PlayerBattleController : MonoBehaviour {
         }
     }
 
-    public void AddUnit(Unit unit) {
-        units.Add(unit);
+    public void ClearSelections() {
+        HexMap.ClearAllTiles();
+        SelectionController.ClearSelection();
+        MovementTile.path = null;
+    }
+
+    public static bool InUnitPhase(UnitTurn phase) {
+        return BattleController.isPlayerTurn && activeUnit && activeUnit.phase == phase;
     }
 }

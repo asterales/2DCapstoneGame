@@ -7,7 +7,7 @@ public class MovementTile : MonoBehaviour {
     public static List<Tile> path;
    
     public void OnMouseOver() {
-        if (SelectionController.TakingInput()) {
+        if (SelectionController.IsMode(SelectionMode.Open)) {
             if (Input.GetMouseButtonDown(0)) {
                 tile.OnMouseOver();
             } else if (Input.GetMouseButtonDown(1)) {
@@ -17,7 +17,7 @@ public class MovementTile : MonoBehaviour {
     }
     
     public void OnMouseEnter() {
-        if (SelectionController.TakingInput() && path != null) {
+        if (SelectionController.IsMode(SelectionMode.Open) && path != null) {
             if (path.Count > 1 && tile == path[path.Count - 2]) {
                 // Backtracking - remove last tile
                 path.RemoveAt(path.Count - 1);
@@ -31,8 +31,7 @@ public class MovementTile : MonoBehaviour {
                     path = SelectionController.selectedUnit.GetShortestPath(tile);
                 }
             }
-            else
-            {
+            else {
                 path = SelectionController.selectedUnit.GetShortestPath(tile);
             }
             DrawPath();
@@ -43,6 +42,8 @@ public class MovementTile : MonoBehaviour {
         if (path != null && path.Count > 1 && path[path.Count - 1].currentUnit == null) {
             SelectionController.selectedUnit.MakeMoving();
             SelectionController.selectedUnit.SetPath(path);
+            SelectionController.DisableTileSelection();
+            PlayerBattleController.SetActiveUnit(SelectionController.selectedUnit);
             path = null;
             HexMap.ClearMovementTiles();
             SelectionController.ClearSelection();

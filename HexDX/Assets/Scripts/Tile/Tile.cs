@@ -49,14 +49,13 @@ public class Tile : MonoBehaviour {
         }
     }
 
-    public void Update() { }
-
     public void OnMouseOver() {
-        if (SelectionController.TakingInput() && (Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(1))) {
+        if (SelectionController.IsMode(SelectionMode.Open)
+                && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))) {
             //left click - selection
             HexMap.ClearAllTiles();
-            SelectionController.selectedTile = this;
             MovementTile.path = null;
+            SelectionController.SetSelectedTile(this);
             if (currentUnit){ 
                 //TO ADD: display stats
                 if (currentUnit.isPlayerUnit) {
@@ -67,16 +66,19 @@ public class Tile : MonoBehaviour {
                 } else {
                     // show enemy mvt range and stats
                     HexMap.ShowMovementTiles(this, currentUnit.unitStats.mvtRange + 1);
+                    HexMap.ShowAttackTiles(this);
                 }
             }
         }
     }
 
-    public void OnMouseUp() {
-        if (SelectionController.TakingInput() && MovementTileIsVisible()) {
+
+    // was preventing player to select for the unit to not move from its spot
+    /*public void OnMouseUp() {
+        if (SelectionController.IsMode(SelectionMode.Open) && MovementTileIsVisible()) {
             MovementTile.CommitPath();
         }
-    }
+    } */
 
     public void ShowMovementTile() {
         if (movementTile) {
