@@ -10,11 +10,13 @@ public class MapLoader : MonoBehaviour {
     private HexMap battleMap;
     private HexDimension hexDimension;
     private BattleController battleController;
+    private BattleSpriteCache spriteCache;
 
     void Awake() {
         battleMap = this.gameObject.GetComponent<HexMap>();
         hexDimension = this.gameObject.GetComponent<HexDimension>();
         battleController = this.gameObject.GetComponent<BattleController>();
+        spriteCache = this.gameObject.GetComponent<BattleSpriteCache>();
 
         ////// DEBUG CODE //////
         if (battleMap == null)
@@ -77,8 +79,10 @@ public class MapLoader : MonoBehaviour {
         }
     }
 
-    private GameObject CreateTile(int type, Vector3 pos, GameObject rowObj, int row, int col) {
-        GameObject tileObj = InstantiateTileFromPrefab(type);
+    private GameObject CreateTile(int val, Vector3 pos, GameObject rowObj, int row, int col) {
+        int type = val / 100;
+        int variant = val % 100;
+        GameObject tileObj = InstantiateTileFromPrefab(type, variant);
         if (tileObj != null) {
             tileObj.name = string.Format("Tile ({0}, {1})", row, col);
             tileObj.transform.parent = rowObj.transform;
@@ -91,12 +95,29 @@ public class MapLoader : MonoBehaviour {
         return tileObj;
     }
 
-    private GameObject InstantiateTileFromPrefab(int type) {
+    private GameObject InstantiateTileFromPrefab(int type, int variant) {
         switch(type) {
             case 0:
-                return Instantiate(Resources.Load("Tiles/GrassTile")) as GameObject;
+                {
+                    // forest
+                    GameObject obj = Instantiate(Resources.Load("Tiles/GrassTile")) as GameObject;
+                    obj.GetComponent<SpriteRenderer>().sprite = spriteCache.GetTileSprite(type, variant);
+                    return obj;
+                }
             case 1:
-                return Instantiate(Resources.Load("Tiles/MountainTile")) as GameObject;
+                {
+                    // grass
+                    GameObject obj = Instantiate(Resources.Load("Tiles/GrassTile")) as GameObject;
+                    obj.GetComponent<SpriteRenderer>().sprite = spriteCache.GetTileSprite(type, variant);
+                    return obj;
+                }
+            case 2:
+                {
+                    // mountain
+                    GameObject obj = Instantiate(Resources.Load("Tiles/MountainTile")) as GameObject;
+                    obj.GetComponent<SpriteRenderer>().sprite = spriteCache.GetTileSprite(type, variant);
+                    return obj;
+                }
             default:
                 return null;
         }
