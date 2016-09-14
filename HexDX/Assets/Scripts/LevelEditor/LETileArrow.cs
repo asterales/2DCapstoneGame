@@ -47,6 +47,6 @@ public class LETileArrow : MonoBehaviour {
 
     void OnMouseExit()
     {
-        spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f);
+        spriteRenderer.color = Color.white;
     }
 }
