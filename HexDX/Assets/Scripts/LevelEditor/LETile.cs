@@ -38,6 +38,17 @@ public class LETile : MonoBehaviour {
         spriteRenderer.sprite = spriteCache.GetTileSprite(type);
     }
 
+    void OnMouseEnter()
+    {
+        // global call to disable expansion
+        //LEExpansionController.DisableExpansion();
+        if (Input.GetMouseButton(0))
+        {
+            type = reference.selectionController.GetTileType();
+            spriteRenderer.sprite = spriteCache.GetTileSprite(type);
+        }
+    }
+
     public void ChangeSprite(Sprite newSprite, int newType)
     {
         spriteRenderer.sprite = newSprite;
