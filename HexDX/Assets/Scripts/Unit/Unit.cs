@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 // this class represents a Unit and stores its data
 
@@ -66,9 +68,6 @@ public class Unit : MonoBehaviour {
             case UnitTurn.Facing:
                 Face();
                 break;
-            case UnitTurn.Attacking:
-                Attack();
-                break;
 
         }
 
@@ -90,7 +89,7 @@ public class Unit : MonoBehaviour {
                     SetTile(path.Dequeue());
                     // re-enable the players ability to select
                     if (!SelectionController.TakingInput() && !SelectionController.TakingAIInput()) {
-                        SelectionController.selectionMode = SelectionMode.Attacking;
+                        SelectionController.selectionMode = SelectionMode.Facing;
                     }
                     MakeFacing();
                 } else {
@@ -129,13 +128,25 @@ public class Unit : MonoBehaviour {
         {
             int itemHeight = 20;
             int itemWidth = 60;
+            int offset = 60;
             Vector3 pos = CameraController.camera.WorldToScreenPoint(transform.position);
-            if (GUI.Button(new Rect(pos.x, pos.y, itemWidth, itemHeight), " Attack", getGUIStyle(true)))
+            pos = new Vector3(pos.x, Screen.height - pos.y-offset);
+            bool canAttack = false;
+            foreach (Tile t in HexMap.GetAttackTiles(currentTile))
             {
+                if (t.currentUnit != null)
+                {
+                    canAttack = true;
+                    break;
+                }
+            }
+            if (GUI.Button(new Rect(pos.x, pos.y, itemWidth, itemHeight), " Attack", getGUIStyle(canAttack)))
+            {
+                
                 MakeAttacking();
             }
 
-            if (GUI.Button(new Rect(pos.x, pos.y + itemHeight, itemWidth, itemHeight), " Wait", getGUIStyle(true)))
+            if (GUI.Button(new Rect(pos.x, pos.y+ itemHeight, itemWidth, itemHeight), " Wait", getGUIStyle(true)))
             {
                 MakeDone();
             }
@@ -161,11 +172,6 @@ public class Unit : MonoBehaviour {
             style.hover.textColor = Color.gray;
         }
         return style;
-    }
-
-    public void Attack()
-    {
-        SelectionController.selectedUnit.MakeDone();
     }
 
     private int Angle(Vector2 from, Vector2 to) {
@@ -196,7 +202,7 @@ public class Unit : MonoBehaviour {
     // Phase Change Methods //
     public void MakeOpen() {
         phase = UnitTurn.Open;
-        spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f);
+        spriteRenderer.color = Color.white;
         spriteRenderer.sprite = sprites.idle[facing];
         animator.runtimeAnimatorController = sprites.idleAnim[facing];
     }
@@ -210,12 +216,31 @@ public class Unit : MonoBehaviour {
 
     }
 
-    public void MakeAttacking() {
-        phase = UnitTurn.Attacking;
-        spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f);
+    public IEnumerator PerformAttack()
+    {
         spriteRenderer.sprite = sprites.attack[facing];
         animator.runtimeAnimatorController = sprites.attackAnim[facing];
- 
+        yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length/animator.speed);
+        SelectionController.target.unitStats.health -= SelectionController.selectedUnit.unitStats.attack;
+        if (HexMap.GetAttackTiles(SelectionController.target.currentTile).Contains(currentTile))
+        {
+            SelectionController.selectedUnit.unitStats.health -= max((unitStats.attack * 2) / 3, 1);
+        }
+        Image health = SelectionController.target.transform.Find("HealthBar").GetComponent<Image>();
+        health.fillAmount = (float)SelectionController.target.unitStats.health/ (float)SelectionController.target.unitStats.maxHealth;
+        health = transform.Find("HealthBar").GetComponent<Image>();
+        health.fillAmount = Mathf.Max(0,(float)unitStats.health / (float)unitStats.maxHealth);
+        if (unitStats.health <= 0)
+            Destroy(gameObject);
+        if (SelectionController.target.unitStats.health <= 0)
+            Destroy(SelectionController.target.gameObject);
+        MakeDone();
+    }
+    private int max(int a, int b) { return a > b ? a : b; }
+
+    public void MakeAttacking() {
+        phase = UnitTurn.Attacking;
+
     }
 
     public void MakeFacing() {
