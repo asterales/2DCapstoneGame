@@ -100,7 +100,7 @@ public class MapLoader : MonoBehaviour {
             case 0:
                 {
                     // forest
-                    GameObject obj = Instantiate(Resources.Load("Tiles/GrassTile")) as GameObject;
+                    GameObject obj = Instantiate(Resources.Load("Tiles/ForestTile")) as GameObject;
                     obj.GetComponent<SpriteRenderer>().sprite = spriteCache.GetTileSprite(type, variant);
                     return obj;
                 }
