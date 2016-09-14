@@ -7,7 +7,7 @@ public class LETile : MonoBehaviour {
     public TileLocation position;
     public SpriteRenderer spriteRenderer;
     public int type;
-    
+    public static bool canDrag=true;
     void Awake()
     {
         position = this.gameObject.GetComponent<TileLocation>();
@@ -29,20 +29,28 @@ public class LETile : MonoBehaviour {
         //}
         ////////////////////////
     }
-
+    void Update()
+    {
+        if (Input.GetMouseButtonUp(0))
+        {
+            canDrag = false;
+        }
+    }
     void OnMouseDown()
     {
         // global call to disable expansion
         //LEExpansionController.DisableExpansion();
         type = reference.selectionController.GetTileType();
         spriteRenderer.sprite = spriteCache.GetTileSprite(type);
+        canDrag = true;
     }
+
 
     void OnMouseEnter()
     {
         // global call to disable expansion
         //LEExpansionController.DisableExpansion();
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0)&&canDrag)
         {
             type = reference.selectionController.GetTileType();
             spriteRenderer.sprite = spriteCache.GetTileSprite(type);
