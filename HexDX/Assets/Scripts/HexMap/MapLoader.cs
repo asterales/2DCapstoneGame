@@ -134,9 +134,9 @@ public class MapLoader : MonoBehaviour {
     private void LoadUnits() {
         Vector2 faceRight = new Vector2(1, 0);
         Vector2 faceLeft = new Vector2(-1, 0);
-        for(int i = 0; i < 8; i++) {
+        for(int i = 0; i < 4; i++) {
             AddUnitToTile(i, 0, true, faceRight);
-            AddUnitToTile(i, 8, false, faceLeft);
+            AddUnitToTile(i, 5, false, faceLeft);
         }
     }
 

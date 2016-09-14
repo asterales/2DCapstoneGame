@@ -27,6 +27,7 @@ public class AIBattleController : MonoBehaviour {
         if (!BattleController.isPlayerTurn) {
             if (currentUnitIndex < units.Count) {
                 if (units[currentUnitIndex]) {
+                    Debug.Log(currentUnitIndex);
                     switch(units[currentUnitIndex].phase) {
                         case UnitTurn.Open:
                             SetPathToClosestEnemy();
@@ -59,34 +60,44 @@ public class AIBattleController : MonoBehaviour {
         if (nextEnemy == null) { 
             List<Tile> shortestRoute = null;
             foreach(Unit enemy in playerUnits) {
-                List<Tile> route = unit.GetShortestPath(enemy.currentTile);
-                if(route[route.Count - 1] = enemy.currentTile) {
-                    route.RemoveRange(route.Count - 2, 2); //CHANGE LATER: hard coded hack to put player unit in attack range
-                }
-                if (shortestRoute == null || route.Count < shortestRoute.Count) {
-                    shortestRoute = route;
-                    nextEnemy = enemy;
+                if (enemy) {
+                    List<Tile> route = unit.GetShortestPath(enemy.currentTile);
+                    if(route[route.Count - 1] = enemy.currentTile) {
+                        route.RemoveRange(route.Count - 2, 2); //CHANGE LATER: hard coded hack to put player unit in attack range
+                        Debug.Log("Shortened path to " + route.Count + currentUnitIndex);
+                    }
+                    if (shortestRoute == null || route.Count < shortestRoute.Count) {
+                        shortestRoute = route;
+                        nextEnemy = enemy;
+                        Debug.Log("Set a route " + currentUnitIndex);
+                    }
                 }
             }
-            if (shortestRoute != null && shortestRoute.Count != 0) {
-                unit.SetPath(shortestRoute);
+            if (shortestRoute != null) {
+                Debug.Log("Made moving + " + currentUnitIndex);
+                unit.SetPath(shortestRoute);   
                 unit.MakeMoving(); 
             } else {
+                Debug.Log("Route null so facing + " + currentUnitIndex);
                 unit.MakeFacing();
             }            
         } else {
+            Debug.Log("Has an enemy so facing + " + currentUnitIndex);
             unit.MakeFacing();
         }
         currentEnemy[currentUnitIndex] = nextEnemy;
+        Debug.Log("next enemy set + " + currentUnitIndex);
     }
 
     private void SetFacing() {
-        Debug.Log ("AI Facing");
+        //Debug.Log ("AI Facing"+ currentUnitIndex);
         Unit unit = units[currentUnitIndex];
         Unit enemy = currentEnemy[currentUnitIndex];
         if (enemy != null) {
             Vector3 directionVec = enemy.transform.position - unit.transform.position;
             unit.SetFacing(new Vector2(directionVec.x, directionVec.y));
+        } else {
+            Debug.Log("Enemy not found " + currentUnitIndex);
         }
         unit.MakeAttacking();
         attackStarted[currentUnitIndex] = false;
@@ -94,7 +105,7 @@ public class AIBattleController : MonoBehaviour {
 
     private void AttackEnemyInRange() {
         if (!attackStarted[currentUnitIndex]) {
-            Debug.Log ("AI Attacking");
+            //Debug.Log ("AI Attacking"+ currentUnitIndex);
             Unit unit = units[currentUnitIndex];
             List<Tile> attackTiles = HexMap.GetAttackTiles(unit.currentTile);
             Unit enemy = playerUnits.FirstOrDefault(playerUnit => attackTiles.Contains(playerUnit.currentTile));
@@ -109,6 +120,7 @@ public class AIBattleController : MonoBehaviour {
     }
 
     private void ResetUnit() {
+        Debug.Log ("Resetting "+ currentUnitIndex);
         attackStarted[currentUnitIndex] = false;
         currentEnemy[currentUnitIndex] = null;
         SelectionController.SetSelectedTarget(null);
@@ -129,9 +141,9 @@ public class AIBattleController : MonoBehaviour {
 
     public Unit GetEnemyInRange(Unit unit) {
         List<Tile> attackTiles = HexMap.GetAttackTiles(unit.currentTile);
-        foreach (Tile tile in attackTiles) {
-            if (tile && tile.currentUnit && tile.currentUnit.isPlayerUnit) {
-                return tile.currentUnit;
+        foreach (Unit enemy in playerUnits) {
+            if (enemy != null && attackTiles.Contains(enemy.currentTile)) {
+                return enemy;
             }
         }
         return null;
