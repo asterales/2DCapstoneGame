@@ -3,16 +3,22 @@ using System.Collections.Generic;
 
 public class LEHorizonBar : MonoBehaviour {
     public List<LEHorizonBarButton> buttons;
+    public LETileBarButton relativeParent;
     public LEHorizonArrow rightButton;
     public LEHorizonArrow leftButton;
     public LESpriteVariantCache spriteCache;
     public int currentIndex;
+    private int onCounter;
     
 	void Start () {
 	    ////// DEBUG CODE //////
         if (buttons == null || buttons.Count == 0)
         {
             Debug.Log("ERROR :: HorizonBar Buttons need to be defined -> LEHorizonBar.cs");
+        }
+        if (relativeParent == null)
+        {
+            Debug.Log("ERROR :: Reference to tileBarButton needs to be defined -> LEHorizonBar.cs");
         }
         if (rightButton == null)
         {
@@ -22,9 +28,30 @@ public class LEHorizonBar : MonoBehaviour {
         {
             Debug.Log("ERROR :: LeftButton needs to be defined -> LEHorizonBar.cs");
         }
+        if (relativeParent == null)
+        {
+            Debug.Log("ERROR :: Tile Bar Button Reference needs to be defined -> LEHorizonBar.cs");
+        }
         ////////////////////////
+        onCounter = 10;
         TurnOff();
 	}
+
+    void Update()
+    {
+        if (onCounter < 10) onCounter++;
+        else if (Input.GetMouseButtonDown(1))
+        {
+            Debug.Log("Right Mouse Down");
+            TurnOff();
+        }
+    }
+
+    public void OnMakeChoice()
+    {
+        TurnOff();
+        relativeParent.UpdateButton();
+    }
 
     public void MoveRight()
     {
@@ -62,13 +89,14 @@ public class LEHorizonBar : MonoBehaviour {
         {
             if (spriteCache.sprites.Count > i)
             {
-                buttons[i].SetAvatar(spriteCache.sprites[i + currentIndex]);
+                buttons[i].SetAvatar(spriteCache, i + currentIndex);
             }
         }
     }
 
     public void TurnOff()
     {
+        onCounter = 10;
         for (int i=0;i<buttons.Count;i++)
         {
             buttons[i].TurnOff();
@@ -79,6 +107,7 @@ public class LEHorizonBar : MonoBehaviour {
 
     public void TurnOn()
     {
+        onCounter = 0;
         UpdateButtonSprites();
         for (int i = 0; i < buttons.Count; i++)
         {

@@ -62,4 +62,12 @@ public class LETileBar : MonoBehaviour {
             }
         }
     }
+
+    public void TurnOffAllHorizontalBars()
+    {
+        for (int i = 0; i < barButtons.Count; i++)
+        {
+            barButtons[i].horizonBar.TurnOff();
+        }
+    }
 }

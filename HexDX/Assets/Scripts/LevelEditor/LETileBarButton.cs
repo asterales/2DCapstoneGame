@@ -4,6 +4,7 @@ using System.Collections;
 public class LETileBarButton : MonoBehaviour {
     public SpriteRenderer spriteRenderer;
     public SpriteRenderer backgroundRenderer;
+    public LETileBar parent;
     public LESelectionController selectionController;
     private LESpriteVariantCache spriteCache;
     public LEHorizonBar horizonBar;
@@ -21,6 +22,10 @@ public class LETileBarButton : MonoBehaviour {
         {
             Debug.Log("ERROR :: SpriteRenderer for background needs to be defined -> LETileBarButton.cs");
         }
+        if (parent == null)
+        {
+            Debug.Log("ERROR :: Need a reference to the parent -> LETileBarButton.cs");
+        }
         if (selectionController == null)
         {
             Debug.Log("ERROR :: Selection Controller needs to be defined -> LETileBarButton.cs");
@@ -34,6 +39,8 @@ public class LETileBarButton : MonoBehaviour {
 
     void OnMouseOver()
     {
+        if (spriteCache == null) return;
+
         if (Input.GetMouseButtonDown(0))
         {
             // select the current
@@ -43,9 +50,17 @@ public class LETileBarButton : MonoBehaviour {
         }
         if (Input.GetMouseButtonDown(1))
         {
+            parent.TurnOffAllHorizontalBars();
             horizonBar.TurnOn();
             Debug.Log("Right Mouse Down");
         }
+    }
+
+    public void UpdateButton()
+    {
+        spriteRenderer.sprite = spriteCache.GetCurrent();
+        selectionController.selectedTileID = spriteCache.id;
+        selectionController.selectedTileVariantID = spriteCache.currentIndex;
     }
 
     void OnMouseUp()
