@@ -13,6 +13,8 @@ public class Unit : MonoBehaviour {
     public static Texture2D menuItem;
     public static Texture2D menuItemHovered;
 
+    private Tile previousTile;
+
     private Queue<Tile> path;
     public UnitTurn phase;
     public bool isPlayerUnit;
@@ -150,6 +152,15 @@ public class Unit : MonoBehaviour {
             {
                 MakeDone();
             }
+
+            if (GUI.Button(new Rect(pos.x, pos.y + 2*itemHeight, itemWidth, itemHeight), " Undo", getGUIStyle(true)))
+            {
+                SetTile(previousTile);
+                HexMap.ClearAllTiles();
+                MakeOpen();
+                HexMap.ShowMovementTiles(currentTile, unitStats.mvtRange + 1);
+                MovementTile.path = new List<Tile>() { this.currentTile};
+            }
         }
 
     }
@@ -183,11 +194,10 @@ public class Unit : MonoBehaviour {
     }
 
     public void SetTile(Tile newTile) {
-        GameObject unitObj = this.gameObject;
+        transform.position = newTile.transform.position;
         currentTile.currentUnit = null;
         newTile.currentUnit = this;
         currentTile = newTile;
-        unitObj.transform.parent = newTile.transform;
     }
 
     public void SetPath(List<Tile> nextPath) {
@@ -202,12 +212,14 @@ public class Unit : MonoBehaviour {
     // Phase Change Methods //
     public void MakeOpen() {
         phase = UnitTurn.Open;
+        SelectionController.selectionMode = SelectionMode.Open;
         spriteRenderer.color = Color.white;
         spriteRenderer.sprite = sprites.idle[facing];
         animator.runtimeAnimatorController = sprites.idleAnim[facing];
     }
 
     public void MakeMoving() {
+        previousTile = currentTile;
         phase = UnitTurn.Moving;
     }
 

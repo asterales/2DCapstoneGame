@@ -30,15 +30,19 @@ public class MovementTile : MonoBehaviour {
                     // Recalculate path if gone over
                     path = SelectionController.selectedUnit.GetShortestPath(tile);
                 }
-            } 
+            }
+            else
+            {
+                path = SelectionController.selectedUnit.GetShortestPath(tile);
+            }
             DrawPath();
         }
     }
 
     public static void CommitPath() {
         if (path != null && path.Count > 1 && path[path.Count - 1].currentUnit == null) {
+            SelectionController.selectedUnit.MakeMoving();
             SelectionController.selectedUnit.SetPath(path);
-            SelectionController.selectedUnit.phase = UnitTurn.Moving;
             path = null;
             HexMap.ClearMovementTiles();
             SelectionController.ClearSelection();
