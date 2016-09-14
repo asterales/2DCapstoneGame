@@ -4,15 +4,15 @@ using System.Collections.Generic;
 // This class will be responsible for handling Game Loop States
 
 public class BattleController : MonoBehaviour {
-    public AIBattleController ai;
-    public PlayerBattleController player;
+    public static AIBattleController ai;
+    public static PlayerBattleController player;
     public Texture2D actionMenuItem;
     public Texture2D actionMenuItemHover;
-    public static bool playerTurn;
+    public static bool isPlayerTurn { get; private set; }
 
     void Awake () {
-        Unit.menuItem = actionMenuItem;
-        Unit.menuItemHovered = actionMenuItemHover;
+        PlayerBattleController.menuItem = actionMenuItem;
+        PlayerBattleController.menuItemHovered = actionMenuItemHover;
         ai = this.gameObject.GetComponent<AIBattleController>();
         player = this.gameObject.GetComponent<PlayerBattleController>();
         ////// DEBUG CODE //////
@@ -28,20 +28,21 @@ public class BattleController : MonoBehaviour {
     }
 
     void Start() {
-        playerTurn = true;
+        isPlayerTurn = true;
     }
 
-    public void EndCurrentTurn() {
-        if (playerTurn) {
+    public static void EndCurrentTurn() {
+        if (isPlayerTurn) {
             player.EndTurn();
-            playerTurn = false;
+            isPlayerTurn = false;
             ai.StartTurn();
             Debug.Log("BattleController - Starting AI Turn");
         } else {
             ai.EndTurn();
             player.StartTurn();
-            playerTurn = true;
+            isPlayerTurn = true;
             Debug.Log("BattleController - Starting Player Turn");
         }
     }
+
 }

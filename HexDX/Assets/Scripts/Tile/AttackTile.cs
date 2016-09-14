@@ -7,55 +7,34 @@ public class AttackTile : MonoBehaviour {
     public Tile tile;
 
     public void OnMouseOver() {
-        if (SelectionController.selectedUnit.phase == UnitTurn.Attacking)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (tile.currentUnit)
-                {
-                    //display unit stats
+        if (SelectionController.IsMode(SelectionMode.Attacking)) {
+            if (Input.GetMouseButtonDown(0)) {
+                if (tile.currentUnit) {
+                    SelectionController.SetSelectedTile(tile);
+                    //show attack tiles
                 }
-                else
-                {
-                    // do regular tile selection
-                    tile.OnMouseOver();
+            } else if (Input.GetMouseButtonDown(1)
+                          && SelectionController.selectedUnit == PlayerBattleController.activeUnit
+                          && HasEnemyUnit()) {
+                if (tile.currentUnit != SelectionController.target) {
+                    SelectionController.SetSelectedTarget(tile.currentUnit);
+                    if (tile.currentUnit.HasInAttackRange(PlayerBattleController.activeUnit)) {
+                        PlayerBattleController.activeUnit.GetComponent<SpriteRenderer>().color = Color.red;
+                    } else {
+                        PlayerBattleController.activeUnit.GetComponent<SpriteRenderer>().color = Color.white;
+                    }
+                } else {
+                    SelectionController.DisableTileSelection();
+                    StartCoroutine(PlayerBattleController.activeUnit.PerformAttack(tile.currentUnit));
                 }
             }
-            else if (Input.GetMouseButtonDown(1)
-                  && SelectionController.selectedUnit.isPlayerUnit
-                  && tile.currentUnit != null
-                  && !tile.currentUnit.isPlayerUnit)
-            {
-                if (tile.currentUnit != SelectionController.target)
-                {
-                    SelectionController.target = tile.currentUnit;
-                    SelectionController.selectionMode = SelectionMode.Attacking;
-                    if (HexMap.GetAttackTiles(tile).Contains(SelectionController.selectedUnit.currentTile))
-                        SelectionController.selectedUnit.GetComponent<SpriteRenderer>().color = Color.red;
-                    else
-                        SelectionController.selectedUnit.GetComponent<SpriteRenderer>().color = Color.white;
-                }
-                else
-                {
-                    StartCoroutine(SelectionController.selectedUnit.PerformAttack());
-                }
-                //SelectionController.selectedUnit.MakeAttacking();
-                //tile.currentUnit.unitStats.health -= SelectionController.selectedUnit.unitStats.attack;
-                //if (HexMap.GetAttackTiles(tile).Contains(SelectionController.selectedUnit.currentTile))
-                //{
-                //    SelectionController.selectedUnit.unitStats.health -= max((tile.currentUnit.unitStats.attack*2)/3, 1);
-                //}
-                //Image health = tile.currentUnit.transform.Find("HealthBar").GetComponent<Image>();
-                //health.fillAmount = (float)tile.currentUnit.unitStats.health/ (float)tile.currentUnit.unitStats.maxHealth;
-                //health = SelectionController.selectedUnit.transform.Find("HealthBar").GetComponent<Image>();
-                //health.fillAmount = Mathf.Max(0,(float)SelectionController.selectedUnit.unitStats.health / (float)SelectionController.selectedUnit.unitStats.maxHealth);
-                //if (SelectionController.selectedUnit.unitStats.health <= 0)
-                //    Destroy(SelectionController.selectedUnit.gameObject);
-                //if (tile.currentUnit.unitStats.health <= 0)
-                //    Destroy(tile.currentUnit.gameObject);
-            }
+        } else if (SelectionController.IsMode(SelectionMode.Open)){
+            tile.OnMouseOver();
         }
     }
 
+    private bool HasEnemyUnit() {
+        return tile.currentUnit && !tile.currentUnit.isPlayerUnit;
+    }
     
 }

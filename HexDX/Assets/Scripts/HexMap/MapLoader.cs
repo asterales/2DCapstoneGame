@@ -121,7 +121,7 @@ public class MapLoader : MonoBehaviour {
         unit.currentTile = tile;
         unit.isPlayerUnit = true;
         
-        tile = HexMap.mapArray[2][5];
+        tile = HexMap.mapArray[11][15];
         knight = Instantiate(Resources.Load("Units/Swordsman")) as GameObject;
         knight.transform.parent = tile.gameObject.transform;
         knight.transform.position = tile.gameObject.transform.position;
@@ -130,7 +130,7 @@ public class MapLoader : MonoBehaviour {
         unit.currentTile = tile;
         unit.isPlayerUnit = false;
 
-        tile = HexMap.mapArray[4][5];
+        tile = HexMap.mapArray[10][5];
         knight = Instantiate(Resources.Load("Units/Swordsman")) as GameObject;
         knight.transform.parent = tile.gameObject.transform;
         knight.transform.position = tile.gameObject.transform.position;
