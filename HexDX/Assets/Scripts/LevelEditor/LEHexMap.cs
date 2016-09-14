@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class LEHexMap : MonoBehaviour {
     public LESelectionController selectionController;
-    private HexDimension hexDimension;
+    public HexDimension hexDimension;
     public LESpriteCache spriteCache;
     public List<List<LETile>> tileArray;
 
@@ -70,7 +70,7 @@ public class LEHexMap : MonoBehaviour {
         return newTile;
     }
 
-    public void ClearMap()
+    public void CleanMap()
     {
         // sets all tiles to the default type
         for (int i = 0; i < tileArray.Count; i++)
@@ -80,5 +80,34 @@ public class LEHexMap : MonoBehaviour {
                 tileArray[i][j].ChangeType(0);
             }
         }
+    }
+
+    public void ClearMap()
+    {
+        // remove and delete all current tiles
+        for (int i = 0; i < tileArray.Count; i++)
+        {
+            while (tileArray[i].Count > 0)
+            {
+                int lastIndex = tileArray[i].Count - 1;
+                LETile tile = tileArray[i][lastIndex];
+                tileArray[i].RemoveAt(lastIndex);
+                // maybe do more cleanup or caching here
+                Destroy(tile);
+                Destroy(tile.gameObject);
+            }
+        }
+
+        tileArray = new List<List<LETile>>();
+    }
+
+    public void AppendRow()
+    {
+        tileArray.Add(new List<LETile>());
+    }
+
+    public void AppendTile(GameObject obj)
+    {
+        tileArray[tileArray.Count - 1].Add(obj.GetComponent<LETile>());
     }
 }

@@ -46,13 +46,11 @@ public class LETileBarButton : MonoBehaviour {
             // select the current
             selectionController.selectedTileID = spriteCache.id;
             selectionController.selectedTileVariantID = spriteCache.currentIndex;
-            Debug.Log("Left Mouse Down");
         }
         if (Input.GetMouseButtonDown(1))
         {
             parent.TurnOffAllHorizontalBars();
             horizonBar.TurnOn();
-            Debug.Log("Right Mouse Down");
         }
     }
 
