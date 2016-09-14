@@ -13,7 +13,7 @@ public class BattleSpriteCache : MonoBehaviour {
 
     private void LoadSprites()
     {
-        string path = "Assets\\Resources\\EditorSprites\\Tiles";
+        string path = "Assets/Resources/EditorSprites/Tiles";
         string[] directories = Directory.GetDirectories(path);
         for (int i = 0; i < directories.Length; i++)
         {
