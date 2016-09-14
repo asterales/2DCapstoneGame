@@ -132,32 +132,20 @@ public class MapLoader : MonoBehaviour {
     }
 
     private void LoadUnits() {
-        GameObject knight = null;
-        Tile tile = HexMap.mapArray[0][0];
-        knight = Instantiate(Resources.Load("Units/Swordsman")) as GameObject;
-        knight.transform.parent = tile.gameObject.transform;
-        knight.transform.position = tile.gameObject.transform.position;
-        Unit unit = knight.GetComponent<Unit>();
-        tile.currentUnit = unit;
-        unit.currentTile = tile;
-        unit.isPlayerUnit = true;
-        
-        tile = HexMap.mapArray[11][15];
-        knight = Instantiate(Resources.Load("Units/Swordsman")) as GameObject;
-        knight.transform.parent = tile.gameObject.transform;
-        knight.transform.position = tile.gameObject.transform.position;
-        unit = knight.GetComponent<Unit>();
-        tile.currentUnit = unit;
-        unit.currentTile = tile;
-        unit.isPlayerUnit = false;
+        Vector2 faceRight = new Vector2(1, 0);
+        Vector2 faceLeft = new Vector2(-1, 0);
+        for(int i = 0; i < 8; i++) {
+            AddUnitToTile(i, 0, true, faceRight);
+            AddUnitToTile(i, 8, false, faceLeft);
+        }
+    }
 
-        tile = HexMap.mapArray[10][5];
+    private void AddUnitToTile(int row, int col, bool isPlayerUnit, Vector3 facing) {
+        GameObject knight = null;
         knight = Instantiate(Resources.Load("Units/Swordsman")) as GameObject;
-        knight.transform.parent = tile.gameObject.transform;
-        knight.transform.position = tile.gameObject.transform.position;
-        unit = knight.GetComponent<Unit>();
-        tile.currentUnit = unit;
-        unit.currentTile = tile;
-        unit.isPlayerUnit = false;
+        Unit unit = knight.GetComponent<Unit>();
+        unit.SetTile(HexMap.mapArray[row][col]);
+        unit.isPlayerUnit = isPlayerUnit;
+        unit.SetFacing(facing);
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Linq;
 
 // this class represents a Unit and stores its data
 
@@ -98,7 +99,10 @@ public class Unit : MonoBehaviour {
 
     public void SetTile(Tile newTile) {
         transform.position = newTile.transform.position;
-        currentTile.currentUnit = null;
+        transform.parent = newTile.transform;
+        if (currentTile) {
+            currentTile.currentUnit = null;
+        }
         newTile.currentUnit = this;
         currentTile = newTile;
     }
@@ -108,6 +112,14 @@ public class Unit : MonoBehaviour {
         int numExtra = nextPath.Count - pathLimit;
         if (numExtra > 0) {
             nextPath.RemoveRange(pathLimit, numExtra);
+            // hack to handle case where new destination has a unit
+            if (!IsValidDestination(nextPath[nextPath.Count - 1])) {
+                Tile secondToLast = nextPath[nextPath.Count - 2];
+                nextPath[nextPath.Count - 1] = HexMap.GetNeighbors(secondToLast).FirstOrDefault(t => IsValidDestination(t) && !nextPath.Contains(t));
+            }
+        }
+        if(!IsValidDestination(nextPath[nextPath.Count - 1])) {
+            Debug.Log("Unit.cs - SetPath - Path with non valid destination!");
         }
         path = new Queue<Tile>(nextPath);
     }
@@ -202,11 +214,15 @@ public class Unit : MonoBehaviour {
             (!tile.currentUnit || isPlayerUnit == tile.currentUnit.isPlayerUnit);
     }
 
+    public bool IsValidDestination(Tile tile) {
+        return tile != null && tile.pathable && !tile.currentUnit;
+    }
+
     public List<Tile> GetShortestPath(Tile dest) {
         int bound = Cost(dest, currentTile);
         List<Tile> shortestPath = new List<Tile>();
         while (true) {
-            int t = Search(dest,currentTile, 0, bound, ref shortestPath);
+            int t = Search(dest,currentTile, 0, bound, 0, ref shortestPath);
             if (t == -1) {
                 shortestPath.Add(dest);
                 break;
@@ -220,7 +236,7 @@ public class Unit : MonoBehaviour {
         return shortestPath;
     }
 
-    private int Search(Tile node, Tile dest, int g, int bound, ref List<Tile> currentPath) {
+    private int Search(Tile node, Tile dest, int g, int bound, int searchLayer, ref List<Tile> currentPath) {
         int f = g + Cost(node, dest);
         if (f > bound) {
             return f;
@@ -230,8 +246,11 @@ public class Unit : MonoBehaviour {
         }
         int min = int.MaxValue;
         foreach (Tile neighbor in HexMap.GetNeighbors(node)) {
-            if (neighbor == dest || CanPathThrough(neighbor)) { // hack to allow bfs to terminate even if dest tile is not pathable
-                int t = Search(neighbor, dest, g + 1, bound, ref currentPath);
+            bool isDestination = neighbor == dest; // hack to allow bfs to terminate even if dest tile is not pathable
+            bool canBeDestinationTile = searchLayer == unitStats.mvtRange - 1 && IsValidDestination(neighbor); // at limit of mvt Range, must be an empty tile
+            bool isRegularPathTile = searchLayer != unitStats.mvtRange - 1 && CanPathThrough(neighbor); // not at limit -> path tile
+            if (isDestination || canBeDestinationTile || isRegularPathTile) { 
+                int t = Search(neighbor, dest, g + 1, bound, searchLayer + 1, ref currentPath);
                 if (t == -1) {
                     currentPath.Add(neighbor);
                     return -1;
