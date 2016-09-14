@@ -3,12 +3,12 @@ using System.Collections;
 
 public class LECameraController : MonoBehaviour
 {
-    public static Camera camera;
+    public static Camera myCamera;
 
     // Use this for initialization
     void Start()
     {
-        camera = gameObject.GetComponent<Camera>();
+        myCamera = gameObject.GetComponent<Camera>();
         LEHexMap hexmap = GameObject.Find("LEController").GetComponent<LEHexMap>();
         transform.position = hexmap.tileArray[hexmap.tileArray.Count / 2][hexmap.tileArray[0].Count / 2].transform.position - new Vector3(0, 0, 100) ;
     }
