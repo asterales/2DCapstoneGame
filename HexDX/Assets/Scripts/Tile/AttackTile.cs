@@ -7,13 +7,9 @@ public class AttackTile : MonoBehaviour {
     public Tile tile;
 
     public void OnMouseOver() {
+
         if (SelectionController.IsMode(SelectionMode.Attacking)) {
-            if (Input.GetMouseButtonDown(0)) {
-                if (tile.currentUnit) {
-                    SelectionController.SetSelectedTile(tile);
-                    //show attack tiles
-                }
-            } else if (Input.GetMouseButtonDown(1)
+            if (Input.GetMouseButtonDown(1)
                           && SelectionController.selectedUnit == PlayerBattleController.activeUnit
                           && HasEnemyUnit()) {
                 if (tile.currentUnit != SelectionController.target) {
@@ -30,7 +26,18 @@ public class AttackTile : MonoBehaviour {
             }
         } else if (SelectionController.IsMode(SelectionMode.Open)){
             tile.OnMouseOver();
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (tile.currentUnit)
+                {
+                    SelectionController.SetSelectedTile(tile);
+                    //show attack tiles
+                }
+            }
+
         }
+
+       
     }
 
     private bool HasEnemyUnit() {
