@@ -50,12 +50,14 @@ public class Tile : MonoBehaviour {
     }
 
     public void OnMouseOver() {
-        if (SelectionController.IsMode(SelectionMode.Open)
-                && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))) {
+        /* if (SelectionController.IsMode(SelectionMode.Open)
+                && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))) {*/
+        if (SelectionController.TakingInput() && (Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(1))) {
             //left click - selection
             HexMap.ClearAllTiles();
             MovementTile.path = null;
-            SelectionController.SetSelectedTile(this);
+            SelectionController.selectedTile = this;
+            //SelectionController.SetSelectedTile(this);
             if (currentUnit){ 
                 //TO ADD: display stats
                 if (currentUnit.isPlayerUnit) {
@@ -72,10 +74,9 @@ public class Tile : MonoBehaviour {
         }
     }
 
-
-    // was preventing player to select for the unit to not move from its spot
+    // was preventing player from selecting the option for the unit to not move from its spot during movement phase
     /*public void OnMouseUp() {
-        if (SelectionController.IsMode(SelectionMode.Open) && MovementTileIsVisible()) {
+        if (SelectionController.TakingInput() && MovementTileIsVisible()) {
             MovementTile.CommitPath();
         }
     } */

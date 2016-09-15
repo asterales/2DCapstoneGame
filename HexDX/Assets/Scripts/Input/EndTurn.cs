@@ -2,18 +2,22 @@
 using System.Collections;
 
 public class EndTurn : MonoBehaviour {
+    public BattleController battleController;
     private SpriteRenderer spriteRenderer;
 
     void Start()
     {
+        battleController = FindObjectOfType(typeof(BattleController)) as BattleController; //hack until figure out if static or manually attach
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
     }
 
     void OnMouseDown()
     {
-        if (!SelectionController.IsMode(SelectionMode.Disabled)) {
+        //if (!SelectionController.IsMode(SelectionMode.Disabled)) {
+        if (SelectionController.TakingInput()) {
             spriteRenderer.color = new Color(0.3f, 0.3f, 0.3f);
-            BattleController.EndCurrentTurn();
+            battleController.EndCurrentTurn();
+            //BattleController.EndCurrentTurn();
         }
     }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class AIBattleController : MonoBehaviour {
+    private BattleController battleController;
     private List<Unit> units;
     private List<Unit> playerUnits;
 
@@ -13,6 +14,7 @@ public class AIBattleController : MonoBehaviour {
 
     void Start() {
         InitUnitList();
+        battleController = gameObject.GetComponent<BattleController>();
         playerUnits = gameObject.GetComponent<PlayerBattleController>().units;
         attackStarted = new bool[units.Count];
         currentEnemy = new Unit[units.Count];
@@ -24,7 +26,8 @@ public class AIBattleController : MonoBehaviour {
     }
 
     void Update() {
-        if (!BattleController.isPlayerTurn) {
+        //if (!BattleController.isPlayerTurn) {
+        if (SelectionController.TakingAIInput()){
             if (currentUnitIndex < units.Count) {
                 if (units[currentUnitIndex]) {
                     Debug.Log(currentUnitIndex);
@@ -49,7 +52,8 @@ public class AIBattleController : MonoBehaviour {
                     currentUnitIndex++;
                 } 
             } else {
-                BattleController.EndCurrentTurn();
+                battleController.EndCurrentTurn();
+                //BattleController.EndCurrentTurn();
             }
         }
     }
@@ -64,29 +68,29 @@ public class AIBattleController : MonoBehaviour {
                     List<Tile> route = unit.GetShortestPath(enemy.currentTile);
                     if(route[route.Count - 1] = enemy.currentTile) {
                         route.RemoveRange(route.Count - 2, 2); //CHANGE LATER: hard coded hack to put player unit in attack range
-                        Debug.Log("Shortened path to " + route.Count + currentUnitIndex);
+                        //Debug.Log("Shortened path to " + route.Count + currentUnitIndex);
                     }
                     if (shortestRoute == null || route.Count < shortestRoute.Count) {
                         shortestRoute = route;
                         nextEnemy = enemy;
-                        Debug.Log("Set a route " + currentUnitIndex);
+                        //Debug.Log("Set a route " + currentUnitIndex);
                     }
                 }
             }
             if (shortestRoute != null) {
-                Debug.Log("Made moving + " + currentUnitIndex);
+                //Debug.Log("Made moving + " + currentUnitIndex);
                 unit.SetPath(shortestRoute);   
                 unit.MakeMoving(); 
             } else {
-                Debug.Log("Route null so facing + " + currentUnitIndex);
+                //Debug.Log("Route null so facing + " + currentUnitIndex);
                 unit.MakeFacing();
             }            
         } else {
-            Debug.Log("Has an enemy so facing + " + currentUnitIndex);
+            //Debug.Log("Has an enemy so facing + " + currentUnitIndex);
             unit.MakeFacing();
         }
         currentEnemy[currentUnitIndex] = nextEnemy;
-        Debug.Log("next enemy set + " + currentUnitIndex);
+        //Debug.Log("next enemy set + " + currentUnitIndex);
     }
 
     private void SetFacing() {
@@ -112,7 +116,8 @@ public class AIBattleController : MonoBehaviour {
             if (enemy) {
                 attackStarted[currentUnitIndex] = true;
                 StartCoroutine(unit.PerformAttack(enemy));
-                SelectionController.SetSelectedTarget(enemy);
+                //SelectionController.SetSelectedTarget(enemy);
+                SelectionController.target = enemy; 
             } else {
                 unit.MakeDone();
             }
@@ -123,12 +128,14 @@ public class AIBattleController : MonoBehaviour {
         Debug.Log ("Resetting "+ currentUnitIndex);
         attackStarted[currentUnitIndex] = false;
         currentEnemy[currentUnitIndex] = null;
-        SelectionController.SetSelectedTarget(null);
+        //SelectionController.SetSelectedTarget(null);
+        SelectionController.target = null;
     }
 
     public void StartTurn() {
         currentUnitIndex = 0;
-        SelectionController.DisableTileSelection();
+        //SelectionController.DisableTileSelection();
+        SelectionController.selectionMode = SelectionMode.AITurn;
     }
 
     public void EndTurn() {

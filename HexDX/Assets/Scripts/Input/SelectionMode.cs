@@ -1,6 +1,9 @@
 ﻿public enum SelectionMode
 {
     Open,
-    Attacking,
-    Disabled 
+	Moving,
+ 	Facing,
+	Attacking,
+	AITurn
+	//Disabled
 };

@@ -7,8 +7,33 @@ public class AttackTile : MonoBehaviour {
     public Tile tile;
 
     public void OnMouseOver() {
+        if (SelectionController.selectedUnit.phase == UnitTurn.Attacking) {
+            if (Input.GetMouseButtonDown(0)) {
+                if (tile.currentUnit) {
+                    //display tile stats
+                } else {
+                    // do regular tile selection
+                    tile.OnMouseOver();
+                }
+            } else if (Input.GetMouseButtonDown(1)
+                            && SelectionController.selectedUnit.isPlayerUnit
+                            && HasEnemyUnit()) {
+                if (tile.currentUnit != SelectionController.target) {
+                    SelectionController.target = tile.currentUnit;
+                    SelectionController.selectionMode = SelectionMode.Attacking;
+                    if (HexMap.GetAttackTiles(tile).Contains(SelectionController.selectedUnit.currentTile)) {
+                        SelectionController.selectedUnit.GetComponent<SpriteRenderer>().color = Color.red;
+                    } else {
+                        SelectionController.selectedUnit.GetComponent<SpriteRenderer>().color = Color.white;
+                    }
+                } else {
+                    StartCoroutine(SelectionController.selectedUnit.PerformAttack(tile.currentUnit));
+                }
+            }
+        }
 
-        if (SelectionController.IsMode(SelectionMode.Attacking)) {
+
+        /*if (SelectionController.IsMode(SelectionMode.Attacking)) {
             if (Input.GetMouseButtonDown(1)
                           && SelectionController.selectedUnit == PlayerBattleController.activeUnit
                           && HasEnemyUnit()) {
@@ -34,8 +59,7 @@ public class AttackTile : MonoBehaviour {
                     //show attack tiles
                 }
             }
-
-        }
+        } */
 
        
     }

@@ -26,15 +26,19 @@ public class PlayerBattleController : MonoBehaviour {
 
 
     void Update(){
-        if (BattleController.isPlayerTurn && activeUnit) {
+        // **See SelectFacing() for similar functionality of confirming facing selection
+        //if (BattleController.isPlayerTurn && activeUnit) {
+        if (!SelectionController.TakingAIInput() && activeUnit) {
             switch (activeUnit.phase) {
                 case UnitTurn.Facing:
-                    SelectionController.SetSelectedTile(activeUnit.currentTile);
+                    //SelectionController.SetSelectedTile(activeUnit.currentTile);
+                    SelectionController.selectedTile = activeUnit.currentTile;
                     SelectFacing();
                     break;
                 case UnitTurn.Done:
                     ClearActiveUnit();
-                    SelectionController.OpenTileSelection();
+                    //SelectionController.OpenTileSelection();
+                    SelectionController.selectionMode = SelectionMode.Open;
                     break;
             }
         }
@@ -56,7 +60,7 @@ public class PlayerBattleController : MonoBehaviour {
     private void SelectFacing() {
         Vector2 directionVec = Input.mousePosition - CameraController.camera.WorldToScreenPoint(activeUnit.transform.position);
         activeUnit.SetFacing(directionVec);
-        if (Input.GetMouseButtonDown(1)) {
+        if (Input.GetMouseButtonDown(1) && SelectionController.selectedUnit == activeUnit) {
             activeUnit.MakeChoosingAction();
         }
     }
@@ -71,7 +75,7 @@ public class PlayerBattleController : MonoBehaviour {
             bool canAttack = HexMap.GetAttackTiles(activeUnit.currentTile).FirstOrDefault(t => t.currentUnit && !t.currentUnit.isPlayerUnit);
             if (GUI.Button(new Rect(pos.x, pos.y, itemWidth, itemHeight), " Attack", GetGUIStyle(canAttack))) {
                 activeUnit.MakeAttacking();
-                SelectionController.RestrictToAttackTiles();
+                //SelectionController.RestrictToAttackTiles();
             }
             if (GUI.Button(new Rect(pos.x, pos.y+ itemHeight, itemWidth, itemHeight), " Wait", GetGUIStyle(true))) {
                 activeUnit.MakeDone();
@@ -82,8 +86,10 @@ public class PlayerBattleController : MonoBehaviour {
                 HexMap.ClearAllTiles();
                 HexMap.ShowMovementTiles(activeUnit.currentTile, activeUnit.unitStats.mvtRange + 1);
                 MovementTile.path = new List<Tile>() { activeUnit.currentTile };
-                SelectionController.SetSelectedTile(previousTile);
-                SelectionController.OpenTileSelection();
+                //SelectionController.SetSelectedTile(previousTile);
+                SelectionController.selectedTile = previousTile;
+                //SelectionController.OpenTileSelection();
+                SelectionController.selectionMode = SelectionMode.Open;
             }
         }
     }
@@ -105,29 +111,31 @@ public class PlayerBattleController : MonoBehaviour {
     }
 
     public void StartTurn() {
-        SelectionController.OpenTileSelection();
+        SelectionController.selectionMode = SelectionMode.Open;
+        //SelectionController.OpenTileSelection();
     }
 
     public void EndTurn() {
-        if (activeUnit) {
-            activeUnit.MakeDone();
-            ClearActiveUnit();
-        }
         ClearSelections();
         for (int i = 0; i < units.Count; i++) {
             if (units[i]){
-                units[i].MakeOpen();
+                units[i].MakeOpen();    
             } 
         }
     }
 
-    public void ClearSelections() {
+    private void ClearSelections() {
+        if (activeUnit) {
+            activeUnit.MakeDone();
+            ClearActiveUnit();
+        }
         HexMap.ClearAllTiles();
         SelectionController.ClearSelection();
         MovementTile.path = null;
     }
 
     public static bool InUnitPhase(UnitTurn phase) {
-        return BattleController.isPlayerTurn && activeUnit && activeUnit.phase == phase;
+        //return BattleController.isPlayerTurn && activeUnit && activeUnit.phase == phase;
+        return !SelectionController.TakingAIInput() && activeUnit && activeUnit.phase == phase;
     }
 }

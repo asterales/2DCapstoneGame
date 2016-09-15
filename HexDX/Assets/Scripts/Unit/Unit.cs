@@ -72,6 +72,10 @@ public class Unit : MonoBehaviour {
 
     private void Move() {
         if (path.Count > 0) {
+            // disable the players ability to select
+            if (SelectionController.TakingInput()) {
+                SelectionController.selectionMode = SelectionMode.Moving;
+            }
             lastTile = path.Peek();
             Vector3 destination = lastTile.transform.position;
             if (transform.position != destination) {
@@ -79,6 +83,10 @@ public class Unit : MonoBehaviour {
             } else {
                 if (path.Count == 1) {
                     SetTile(path.Dequeue());
+                    // re-enable the players ability to select
+                    if(!SelectionController.TakingInput() && !SelectionController.TakingAIInput()) {
+                        SelectionController.selectionMode = SelectionMode.Facing;
+                    }
                     MakeFacing();
                 } else {
                     path.Dequeue();
