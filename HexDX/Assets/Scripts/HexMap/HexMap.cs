@@ -57,13 +57,15 @@ public class HexMap : MonoBehaviour {
         while (toCheck.Count > 0) {
             Tile t = toCheck.Dequeue();
             distance = dist.Dequeue();
-            if (distance > 0 && t.pathable) {
-                t.ShowMovementTile();                    
-                neighbors = GetNeighbors(t);
-                foreach (Tile neighbor in neighbors) {
-                    if (neighbor && !neighbor.MovementTileIsVisible()){
-                        toCheck.Enqueue(neighbor);
-                        dist.Enqueue(distance - 1);
+            if (distance > 0 && t.pathable ) {
+                if (t.currentUnit == null || t.currentUnit.isPlayerUnit==SelectionController.selectedUnit.isPlayerUnit) {
+                    t.ShowMovementTile();
+                    neighbors = GetNeighbors(t);
+                    foreach (Tile neighbor in neighbors) {
+                        if (neighbor && !neighbor.MovementTileIsVisible()) {
+                            toCheck.Enqueue(neighbor);
+                            dist.Enqueue(distance - 1);
+                        }
                     }
                 }
             }

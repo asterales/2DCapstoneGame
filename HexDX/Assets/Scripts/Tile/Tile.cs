@@ -85,6 +85,7 @@ public class Tile : MonoBehaviour {
         if (movementTile) {
             movementTile.transform.localPosition = visibilityOffset;
             HexMap.showingMovementTiles.Push(this);
+            HideAttackTile();
         }
     }
 
@@ -97,6 +98,7 @@ public class Tile : MonoBehaviour {
         if (attackTile) {
             attackTile.transform.localPosition = visibilityOffset;
             HexMap.showingAttackTiles.Push(this);
+            HideMovementTile();
         }
     }
     public void HideAttackTile() {
