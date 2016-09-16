@@ -4,15 +4,11 @@ using System.Collections.Generic;
 // This class will be responsible for handling Game Loop States
 
 public class BattleController : MonoBehaviour {
-    // make static variables here?
-    //public static AIBattleController ai;
-    //public static PlayerBattleController player;
     public AIBattleController ai;
     public PlayerBattleController player;
     public Texture2D actionMenuItem;
     public Texture2D actionMenuItemHover;
     private bool isPlayerTurn;
-    //public static bool isPlayerTurn { get; private set; }
 
     void Awake () {
         PlayerBattleController.menuItem = actionMenuItem;
@@ -35,7 +31,6 @@ public class BattleController : MonoBehaviour {
         isPlayerTurn = true;
     }
 
-    //public static EndCurrentTurn() {
     public void EndCurrentTurn() {
         if (isPlayerTurn) {
             player.EndTurn();

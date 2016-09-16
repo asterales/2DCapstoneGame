@@ -5,5 +5,4 @@
  	Facing,
 	Attacking,
 	AITurn
-	//Disabled
 };

@@ -50,14 +50,12 @@ public class Tile : MonoBehaviour {
     }
 
     public void OnMouseOver() {
-        /* if (SelectionController.IsMode(SelectionMode.Open)
-                && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))) {*/
         if (SelectionController.TakingInput() && (Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(1))) {
             //left click - selection
             HexMap.ClearAllTiles();
             MovementTile.path = null;
             SelectionController.selectedTile = this;
-            //SelectionController.SetSelectedTile(this);
+            SelectionController.selectedUnit = currentUnit ? currentUnit : SelectionController.selectedUnit;
             if (currentUnit){ 
                 //TO ADD: display stats
                 if (currentUnit.isPlayerUnit) {

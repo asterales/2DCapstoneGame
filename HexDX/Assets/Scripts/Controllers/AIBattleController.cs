@@ -26,7 +26,6 @@ public class AIBattleController : MonoBehaviour {
     }
 
     void Update() {
-        //if (!BattleController.isPlayerTurn) {
         if (SelectionController.TakingAIInput()){
             if (currentUnitIndex < units.Count) {
                 if (units[currentUnitIndex]) {
@@ -53,7 +52,6 @@ public class AIBattleController : MonoBehaviour {
                 } 
             } else {
                 battleController.EndCurrentTurn();
-                //BattleController.EndCurrentTurn();
             }
         }
     }
@@ -116,8 +114,7 @@ public class AIBattleController : MonoBehaviour {
             if (enemy) {
                 attackStarted[currentUnitIndex] = true;
                 StartCoroutine(unit.PerformAttack(enemy));
-                //SelectionController.SetSelectedTarget(enemy);
-                SelectionController.target = enemy; 
+                SelectionController.ShowTarget(enemy); 
             } else {
                 unit.MakeDone();
             }
@@ -128,14 +125,12 @@ public class AIBattleController : MonoBehaviour {
         Debug.Log ("Resetting "+ currentUnitIndex);
         attackStarted[currentUnitIndex] = false;
         currentEnemy[currentUnitIndex] = null;
-        //SelectionController.SetSelectedTarget(null);
-        SelectionController.target = null;
+        SelectionController.HideTarget();
     }
 
     public void StartTurn() {
         currentUnitIndex = 0;
-        //SelectionController.DisableTileSelection();
-        SelectionController.selectionMode = SelectionMode.AITurn;
+        SelectionController.mode = SelectionMode.AITurn;
     }
 
     public void EndTurn() {
