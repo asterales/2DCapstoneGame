@@ -13,7 +13,6 @@ public class Unit : MonoBehaviour {
 
     private Queue<Tile> path;
     public UnitTurn phase;
-    public bool isPlayerUnit;
     public int facing;
     private UnitFacing facingBonus;
     private UnitMovementCache movementCache;
@@ -210,7 +209,7 @@ public class Unit : MonoBehaviour {
     // Pathing Methods //
     public bool CanPathThrough(Tile tile) {
         return tile != null && tile.pathable && !tile.currentUnit; // Temporary
-            //(!tile.currentUnit || isPlayerUnit == tile.currentUnit.isPlayerUnit);
+            //(!tile.currentUnit || IsPlayerUnit() == tile.currentUnit.IsPlayerUnit()());
     }
 
     public List<Tile> GetShortestPath(Tile dest) {
@@ -261,5 +260,9 @@ public class Unit : MonoBehaviour {
 
     public bool HasInAttackRange(Unit other){
         return HexMap.GetAttackTiles(currentTile).Contains(other.currentTile);
+    }
+
+    public bool IsPlayerUnit() {
+        return gameObject.GetComponent<UnitAI>() == null;
     }
 }

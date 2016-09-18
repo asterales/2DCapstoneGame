@@ -145,7 +145,9 @@ public class MapLoader : MonoBehaviour {
         knight = Instantiate(Resources.Load("Units/Swordsman")) as GameObject;
         Unit unit = knight.GetComponent<Unit>();
         unit.SetTile(HexMap.mapArray[row][col]);
-        unit.isPlayerUnit = isPlayerUnit;
         unit.SetFacing(facing);
+        if(!isPlayerUnit) {
+            knight.AddComponent<BasicUnitAI>();
+        }
     }
 }

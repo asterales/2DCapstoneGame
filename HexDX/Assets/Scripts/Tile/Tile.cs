@@ -58,7 +58,7 @@ public class Tile : MonoBehaviour {
             SelectionController.selectedUnit = currentUnit ? currentUnit : SelectionController.selectedUnit;
             if (currentUnit){ 
                 //TO ADD: display stats
-                if (currentUnit.isPlayerUnit) {
+                if (currentUnit.IsPlayerUnit()) {
                     if (currentUnit.phase == UnitTurn.Open){
                         HexMap.ShowMovementTiles(this, currentUnit.unitStats.mvtRange + 1);
                         MovementTile.path = new List<Tile>() { this };

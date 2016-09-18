@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class PlayerBattleController : MonoBehaviour {
-    public List<Unit> units;
+    private List<Unit> units;
     public static Texture2D menuItem;
     public static Texture2D menuItemHovered;
     
@@ -25,7 +25,7 @@ public class PlayerBattleController : MonoBehaviour {
 
     private void InitUnitList() {
         Unit[] allUnits = FindObjectsOfType(typeof(Unit)) as Unit[];
-        units = allUnits.Where(unit => unit.isPlayerUnit).ToList();
+        units = allUnits.Where(unit => unit.IsPlayerUnit()).ToList();
     }
 
 
@@ -59,7 +59,7 @@ public class PlayerBattleController : MonoBehaviour {
             int offset = 60;
             Vector3 pos = CameraController.camera.WorldToScreenPoint(selectedUnit.transform.position);
             pos = new Vector3(pos.x, Screen.height - pos.y-offset);
-            bool canAttack = HexMap.GetAttackTiles(selectedUnit.currentTile).FirstOrDefault(t => t.currentUnit && !t.currentUnit.isPlayerUnit);
+            bool canAttack = HexMap.GetAttackTiles(selectedUnit.currentTile).FirstOrDefault(t => t.currentUnit && !t.currentUnit.IsPlayerUnit());
             if (GUI.Button(new Rect(pos.x, pos.y, itemWidth, itemHeight), " Attack", GetGUIStyle(canAttack))) {
                 selectedUnit.MakeAttacking();
             }

@@ -58,7 +58,7 @@ public class HexMap : MonoBehaviour {
             Tile t = toCheck.Dequeue();
             distance = dist.Dequeue();
             if (distance > 0 && t.pathable ) {
-                if (t.currentUnit == null || t.currentUnit.isPlayerUnit == SelectionController.selectedUnit.isPlayerUnit) {
+                if (t.currentUnit == null || t.currentUnit.IsPlayerUnit() == SelectionController.selectedUnit.IsPlayerUnit()) {
                     t.ShowMovementTile();
                     neighbors = GetNeighbors(t);
                     foreach (Tile neighbor in neighbors) {

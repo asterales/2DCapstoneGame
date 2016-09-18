@@ -16,7 +16,7 @@ public class AttackTile : MonoBehaviour {
                     tile.OnMouseOver();
                 }
             } else if (Input.GetMouseButtonDown(1)
-                            && SelectionController.selectedUnit.isPlayerUnit
+                            && SelectionController.selectedUnit.IsPlayerUnit()
                             && HasEnemyUnit()) {
                 if (tile.currentUnit != SelectionController.target) {
                     SelectionController.target = tile.currentUnit;
@@ -34,7 +34,7 @@ public class AttackTile : MonoBehaviour {
     }
 
     private bool HasEnemyUnit() {
-        return tile.currentUnit && !tile.currentUnit.isPlayerUnit;
+        return tile.currentUnit && !tile.currentUnit.IsPlayerUnit();
     }
     
 }
