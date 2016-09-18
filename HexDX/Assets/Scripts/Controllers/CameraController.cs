@@ -22,6 +22,20 @@ public class CameraController : MonoBehaviour {
         if (Input.GetKey(KeyCode.D))
             newX += .1f;
 
-        transform.position += new Vector3(newX, newY, 0)*2.0f;
+        transform.position += new Vector3(newX, newY, 0) * 2.0f;
+        if (Input.GetAxis("Mouse ScrollWheel") < 0) // forward
+        {
+            camera.orthographicSize++;
+            transform.localScale = new Vector3(1.0f, 1.0f, 1.0f) * (camera.orthographicSize / (30));
+
+        }
+        if (Input.GetAxis("Mouse ScrollWheel") > 0) // back
+        {
+            if (camera.orthographicSize > 1)
+            {
+                camera.orthographicSize--;
+                transform.localScale = new Vector3(1.0f, 1.0f, 1.0f) * (camera.orthographicSize / (30));
+            }
+        }
     }
 }
