@@ -208,8 +208,7 @@ public class Unit : MonoBehaviour {
     ///////////////////////////
     // Pathing Methods //
     public bool CanPathThrough(Tile tile) {
-        return tile != null && tile.pathable && !tile.currentUnit; // Temporary
-            //(!tile.currentUnit || IsPlayerUnit() == tile.currentUnit.IsPlayerUnit()());
+        return tile != null && tile.pathable && (!tile.currentUnit || IsPlayerUnit() == tile.currentUnit.IsPlayerUnit());
     }
 
     public List<Tile> GetShortestPath(Tile dest) {

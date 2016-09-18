@@ -45,17 +45,22 @@ public class SelectionController : MonoBehaviour {
 
     void Update () {
         if(!SelectionController.TakingAIInput()) {
-            if (selectedTile != null) {
-                if (selectedTile.currentUnit) {
-                    selectedUnit = selectedTile.currentUnit;
-                } 
-                ShowSelection(selectedTile);
+            if (mode == SelectionMode.Open)
+            {
+                if (selectedTile != null)
+                {
+                    if (selectedTile.currentUnit)
+                    {
+                        selectedUnit = selectedTile.currentUnit;
+                    }
+                    ShowSelection(selectedTile);
+                }
+                else if (selectedUnit != null)
+                {
+                    ShowSelection(selectedUnit);
+                }
             }
-            if (selectedUnit != null) {
-                ShowSelection(selectedUnit);
-            }
-
-            if (mode == SelectionMode.Attacking) {
+            else if (mode == SelectionMode.Attacking) {
                 ShowTarget(target);
             } else {
                 HideTarget();
