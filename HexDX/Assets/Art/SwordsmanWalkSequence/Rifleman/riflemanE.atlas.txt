@@ -1,6 +1,6 @@
 
 riflemanE.png
-size: 628,523
+size: 629,523
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
@@ -13,14 +13,14 @@ backpack
   index: -1
 closearm
   rotate: false
-  xy: 496, 243
+  xy: 497, 421
   size: 130, 100
   orig: 130, 100
   offset: 0, 0
   index: -1
 closeleg
   rotate: false
-  xy: 497, 345
+  xy: 497, 243
   size: 106, 176
   orig: 106, 176
   offset: 0, 0

@@ -1,110 +1,110 @@
 
 RiflemanSE.png
-size: 2068,835
+size: 1971,904
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 BackPack
-  rotate: false
-  xy: 1602, 23
+  rotate: true
+  xy: 1796, 136
   size: 131, 173
   orig: 131, 173
   offset: 0, 0
   index: -1
 Face
-  rotate: true
-  xy: 1735, 44
+  rotate: false
+  xy: 1805, 28
   size: 152, 106
   orig: 152, 106
   offset: 0, 0
   index: -1
 Helmet
   rotate: false
-  xy: 1796, 246
+  xy: 1602, 25
   size: 201, 96
   orig: 201, 96
   offset: 0, 0
   index: -1
 LeftLeg
   rotate: true
-  xy: 1843, 94
+  xy: 155, 2
   size: 75, 145
   orig: 75, 145
   offset: 0, 0
   index: -1
 LeftUpperArm
   rotate: true
-  xy: 1907, 17
+  xy: 420, 2
   size: 75, 93
   orig: 75, 93
   offset: 0, 0
   index: -1
 Rifle
   rotate: false
-  xy: 1602, 344
+  xy: 1555, 775
   size: 398, 127
   orig: 398, 127
   offset: 0, 0
   index: -1
 RightLeg
   rotate: false
-  xy: 1602, 198
+  xy: 1602, 123
   size: 192, 144
   orig: 192, 144
   offset: 0, 0
   index: -1
 RightUpperArm
-  rotate: false
-  xy: 1843, 2
+  rotate: true
+  xy: 515, 15
   size: 62, 90
   orig: 62, 90
   offset: 0, 0
   index: -1
 Shadow
   rotate: false
-  xy: 1843, 171
+  xy: 2, 4
   size: 151, 73
   orig: 151, 73
   offset: 0, 0
   index: -1
 Torso
   rotate: false
-  xy: 1096, 378
+  xy: 1096, 447
   size: 457, 455
   orig: 457, 455
   offset: 0, 0
   index: -1
 gunfire
   rotate: false
-  xy: 1555, 473
+  xy: 1096, 85
   size: 504, 360
   orig: 504, 360
   offset: 0, 0
   index: -1
 hexte
   rotate: false
-  xy: 2, 10
+  xy: 2, 79
   size: 1092, 823
   orig: 1092, 823
   offset: 0, 0
   index: -1
 lefthand
-  rotate: true
-  xy: 2002, 355
+  rotate: false
+  xy: 302, 13
   size: 116, 64
   orig: 116, 64
   offset: 0, 0
   index: -1
 rifleshell
-  rotate: false
-  xy: 1096, 16
+  rotate: true
+  xy: 1602, 269
   size: 504, 360
   orig: 504, 360
   offset: 0, 0
   index: -1
 right hand
-  rotate: true
-  xy: 2002, 293
+  rotate: false
+  xy: 607, 16
   size: 60, 61
   orig: 60, 61
   offset: 0, 0
