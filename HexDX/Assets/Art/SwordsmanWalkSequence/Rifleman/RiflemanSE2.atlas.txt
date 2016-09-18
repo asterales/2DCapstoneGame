@@ -1,0 +1,104 @@
+
+RiflemanSE2.png
+size: 1097,729
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+BackPack
+  rotate: true
+  xy: 196, 139
+  size: 131, 173
+  orig: 131, 173
+  offset: 0, 0
+  index: -1
+Face
+  rotate: false
+  xy: 2, 18
+  size: 152, 106
+  orig: 152, 106
+  offset: 0, 0
+  index: -1
+Helmet
+  rotate: true
+  xy: 967, 126
+  size: 201, 96
+  orig: 201, 96
+  offset: 0, 0
+  index: -1
+LeftLeg
+  rotate: false
+  xy: 371, 125
+  size: 75, 145
+  orig: 75, 145
+  offset: 0, 0
+  index: -1
+LeftUpperArm
+  rotate: true
+  xy: 349, 48
+  size: 75, 93
+  orig: 75, 93
+  offset: 0, 0
+  index: -1
+Rifle
+  rotate: true
+  xy: 967, 329
+  size: 398, 127
+  orig: 398, 127
+  offset: 0, 0
+  index: -1
+RightLeg
+  rotate: false
+  xy: 2, 126
+  size: 192, 144
+  orig: 192, 144
+  offset: 0, 0
+  index: -1
+RightUpperArm
+  rotate: false
+  xy: 1033, 34
+  size: 62, 90
+  orig: 62, 90
+  offset: 0, 0
+  index: -1
+Shadow
+  rotate: false
+  xy: 196, 64
+  size: 151, 73
+  orig: 151, 73
+  offset: 0, 0
+  index: -1
+Torso
+  rotate: false
+  xy: 2, 272
+  size: 457, 455
+  orig: 457, 455
+  offset: 0, 0
+  index: -1
+gunfire
+  rotate: false
+  xy: 461, 367
+  size: 504, 360
+  orig: 504, 360
+  offset: 0, 0
+  index: -1
+lefthand
+  rotate: true
+  xy: 967, 8
+  size: 116, 64
+  orig: 116, 64
+  offset: 0, 0
+  index: -1
+rifleshell
+  rotate: false
+  xy: 461, 5
+  size: 504, 360
+  orig: 504, 360
+  offset: 0, 0
+  index: -1
+right hand
+  rotate: true
+  xy: 156, 2
+  size: 60, 61
+  orig: 60, 61
+  offset: 0, 0
+  index: -1
