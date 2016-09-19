@@ -7,41 +7,18 @@ public class BasicUnitAI : UnitAI {
 	private bool attackStarted;
 
     public override void SetMovement() { 
-        Unit nextEnemy = GetEnemyInRange(unit);
+        Unit nextEnemy = GetEnemyInRange();
         if (nextEnemy == null) { 
-            List<Tile> shortestRoute = null;
-            foreach(Unit enemy in playerUnits) {
-                if (enemy) {
-                    List<Tile> route = unit.GetShortestPath(enemy.currentTile);
-                    if(route[route.Count - 1] = enemy.currentTile) {
-                        route.RemoveRange(route.Count - 2, 2); //CHANGE LATER: hard coded hack to put player unit in attack range
-                        Debug.Log("Shortened path to " + route.Count + unitNum);
-                    }
-                    if (shortestRoute == null || route.Count < shortestRoute.Count) {
-                        shortestRoute = route;
-                        nextEnemy = enemy;
-                        Debug.Log("Set a route " + unitNum);
-                    }
-                }
-            }
-            if (shortestRoute != null) {
-                Debug.Log("Made moving + " + unitNum);
-                unit.SetPath(shortestRoute);   
-                unit.MakeMoving(); 
-            } else {
-                Debug.Log("Route null so facing + " + unitNum);
-                unit.MakeFacing();
-            }            
+            Tile nextDest = GetNextDestination(out nextEnemy);
+            unit.SetPath(unit.GetShortestPath(nextDest));   
+            unit.MakeMoving();           
         } else {
-            Debug.Log("Has an enemy so facing + " + unitNum);
             unit.MakeFacing();
         }
         currentEnemy = nextEnemy;
-        Debug.Log("next enemy set + " + unitNum);
     }
 
     public override void SetFacing() {
-        Debug.Log ("AI Facing"+ unitNum);
         if (currentEnemy != null) {
             Vector3 directionVec = currentEnemy.transform.position - unit.transform.position;
             unit.SetFacing(new Vector2(directionVec.x, directionVec.y));
@@ -58,9 +35,7 @@ public class BasicUnitAI : UnitAI {
 
     public override void SetAttack() { 
     	if (!attackStarted) {
-            Debug.Log ("AI Attacking"+ unitNum);
-            List<Tile> attackTiles = HexMap.GetAttackTiles(unit.currentTile);
-            Unit enemy = playerUnits.FirstOrDefault(playerUnit => attackTiles.Contains(playerUnit.currentTile));
+            Unit enemy = GetEnemyInRange();
             if (enemy) {
                 attackStarted = true;
                 StartCoroutine(unit.PerformAttack(enemy));
@@ -73,18 +48,34 @@ public class BasicUnitAI : UnitAI {
     
     public override void Reset() { 
     	base.Reset();
-    	Debug.Log ("Resetting "+ unitNum);
     	currentEnemy = null;
     	attackStarted = false;
     }
 
-    public Unit GetEnemyInRange(Unit unit) {
+    private Unit GetEnemyInRange() {
         List<Tile> attackTiles = HexMap.GetAttackTiles(unit.currentTile);
-        foreach (Unit enemy in playerUnits) {
-            if (enemy != null && attackTiles.Contains(enemy.currentTile)) {
-                return enemy;
+        return playerUnits.FirstOrDefault(playerUnit => playerUnit != null && attackTiles.Contains(playerUnit.currentTile));
+    }
+
+    private Tile GetNextDestination(out Unit nextEnemy) {
+        List<Unit> enemiesByDistance = playerUnits.Where(p => p != null).OrderBy(p => unit.GetShortestPath(p.currentTile).Count).ToList();
+        List<Tile> validDestinations = HexMap.GetMovementTiles(unit).Where(t => IsValidDestination(t)).ToList();
+        if (validDestinations.Count == 0){
+            nextEnemy = null;
+            return unit.currentTile;
+        } else {
+            int cost = HexMap.Cost(unit.currentTile, enemiesByDistance[0].currentTile);
+            int attackRange = 2; //hard coded attack range
+            if (cost < unit.unitStats.mvtRange + attackRange) {
+                validDestinations = validDestinations.Where(t => HexMap.Cost(t, enemiesByDistance[0].currentTile) >= 2).ToList();
             }
+            nextEnemy = enemiesByDistance[0];
+            return validDestinations.OrderBy(t => HexMap.Cost(t, enemiesByDistance[0].currentTile)).ToList()[0];
         }
-        return null;
+    }
+
+
+    private bool IsValidDestination(Tile tile) {
+        return tile != null && tile.pathable && !tile.currentUnit;
     }
 }

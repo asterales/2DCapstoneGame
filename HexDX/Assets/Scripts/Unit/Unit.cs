@@ -212,7 +212,7 @@ public class Unit : MonoBehaviour {
     }
 
     public List<Tile> GetShortestPath(Tile dest) {
-        int bound = Cost(dest, currentTile);
+        int bound = HexMap.Cost(dest, currentTile);
         List<Tile> shortestPath = new List<Tile>();
         while (true) {
             int t = Search(dest,currentTile, 0, bound, ref shortestPath);
@@ -230,7 +230,7 @@ public class Unit : MonoBehaviour {
     }
 
     private int Search(Tile node, Tile dest, int g, int bound, ref List<Tile> currentPath) {
-        int f = g + Cost(node, dest);
+        int f = g + HexMap.Cost(node, dest);
         if (f > bound) {
             return f;
         }
@@ -251,10 +251,6 @@ public class Unit : MonoBehaviour {
             }
         }
         return min;
-    }
-        
-    private int Cost(Tile a, Tile b) {
-        return (System.Math.Abs(-b.position.row+a.position.row-b.position.col+a.position.col)+System.Math.Abs(a.position.row- b.position.row)+System.Math.Abs(a.position.col - b.position.col))/2;
     }
 
     public bool HasInAttackRange(Unit other){

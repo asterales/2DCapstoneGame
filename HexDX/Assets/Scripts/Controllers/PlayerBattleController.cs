@@ -72,7 +72,7 @@ public class PlayerBattleController : MonoBehaviour {
                 SelectionController.mode = SelectionMode.Open;
                 selectedUnit.MakeOpen();
                 HexMap.ClearAllTiles();
-                HexMap.ShowMovementTiles(selectedUnit.currentTile, selectedUnit.unitStats.mvtRange + 1);
+                HexMap.ShowMovementTiles(selectedUnit);
                 MovementTile.path = new List<Tile>() { selectedUnit.currentTile };
             }
         }

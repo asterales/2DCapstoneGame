@@ -63,24 +63,17 @@ public class Tile : MonoBehaviour {
                 //TO ADD: display stats
                 if (currentUnit.IsPlayerUnit()) {
                     if (currentUnit.phase == UnitTurn.Open){
-                        HexMap.ShowMovementTiles(this, currentUnit.unitStats.mvtRange + 1);
+                        HexMap.ShowMovementTiles(currentUnit);
                         MovementTile.path = new List<Tile>() { this };
                     }
                 } else {
                     // show enemy mvt range and stats
-                    HexMap.ShowMovementTiles(this, currentUnit.unitStats.mvtRange + 1);
+                    HexMap.ShowMovementTiles(currentUnit);
                     HexMap.ShowAttackTiles(this);
                 }
             }
         }
     }
-
-    // was preventing player from selecting the option for the unit to not move from its spot during movement phase
-    /*public void OnMouseUp() {
-        if (SelectionController.TakingInput() && MovementTileIsVisible()) {
-            MovementTile.CommitPath();
-        }
-    } */
 
     public void ShowMovementTile() {
         if (movementTile) {
@@ -106,9 +99,5 @@ public class Tile : MonoBehaviour {
         if (attackTile) {
             attackTile.transform.localPosition = -visibilityOffset;
         }
-    }
-
-    public bool MovementTileIsVisible() {
-        return movementTile && (movementTile.transform.localPosition == visibilityOffset);
     }
 }

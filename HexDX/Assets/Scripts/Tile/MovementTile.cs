@@ -5,6 +5,7 @@ public class MovementTile : MonoBehaviour {
 
     public Tile tile;
     public static List<Tile> path;
+    private static Color pathColor = new Color(1.0f, 1.0f, 1.0f, 0.6f);
    
     public void OnMouseOver() {
         if (SelectionController.TakingInput()) {
@@ -24,11 +25,9 @@ public class MovementTile : MonoBehaviour {
             } else if (HexMap.AreNeighbors(tile, path[path.Count - 1])
                         && SelectionController.selectedUnit.CanPathThrough(tile)) {
                 if (path.Count <= SelectionController.selectedUnit.unitStats.mvtRange) {
-                    // Add tile if can still move more spaces
                     path.Add(tile);
                 } else {
-                    // Recalculate path if gone over
-                    path = SelectionController.selectedUnit.GetShortestPath(tile);
+                   path = SelectionController.selectedUnit.GetShortestPath(tile);
                 }
             }
             else {
@@ -50,41 +49,52 @@ public class MovementTile : MonoBehaviour {
         }
     }
 
-    //refactor later - maybe make prefabs?
     private void DrawPath() {
         PlayerBattleController pbc = GameObject.Find("TestHexMap").GetComponent<PlayerBattleController>();
         Object.Destroy(GameObject.Find("path"));
         if (path!=null && path.Count > 1) {
             GameObject pathDraw = new GameObject("path");
             Tile prev = path[0];
-            int direction= 0;
-            GameObject temp;
             for (int i = 1; i < path.Count; i++) {
-                temp = new GameObject();
-                temp.transform.parent = pathDraw.transform;
-                SpriteRenderer circle = temp.AddComponent<SpriteRenderer>();
-                circle.sortingOrder = 1;
-                circle.color = new Color(1.0f, 1.0f, 1.0f, 0.6f);
-                circle.sprite = pbc.circleSprite;
-                circle.transform.position = prev.transform.position;
-                direction = HexMap.GetNeighbors(prev).IndexOf(path[i]);
-                temp = new GameObject();
-                temp.transform.parent = pathDraw.transform;
-                SpriteRenderer line = temp.AddComponent<SpriteRenderer>();
-                line.color = new Color(1.0f, 1.0f, 1.0f, 0.6f);
-                line.sortingOrder = 1;
-                line.sprite = pbc.lineSprites[direction];
-                line.transform.position = prev.transform.position;
+                DrawCircle(pathDraw, prev, pbc.circleSprite);
+                DrawLine(pathDraw, prev, path[i], pbc.lineSprites);
                 prev = path[i];
             }
-            direction = HexMap.GetNeighbors(path[path.Count - 2]).IndexOf(prev);
-            temp = new GameObject();
-            temp.transform.parent = pathDraw.transform;
-            SpriteRenderer arrow = temp.AddComponent<SpriteRenderer>();
-            arrow.sprite = pbc.arrowSprites[direction];
-            arrow.color = new Color(1.0f, 1.0f, 1.0f, 0.6f);
-            arrow.sortingOrder = 1;
-            arrow.transform.position = prev.transform.position;
+            DrawArrow(pathDraw, path[path.Count - 2], prev, pbc.arrowSprites);
         }
+    }
+
+    private void DrawCircle(GameObject pathObj, Tile tile, Sprite circleSprite) {
+        GameObject circleObj = new GameObject();
+        circleObj.transform.parent = pathObj.transform;
+        SpriteRenderer circle = circleObj.AddComponent<SpriteRenderer>();
+        circle.color = pathColor;
+        circle.sortingOrder = 1;
+        circle.sprite = circleSprite;
+        circle.transform.position = tile.transform.position;
+    }
+
+    private void DrawLine(GameObject pathObj, Tile startTile, Tile endTile, Sprite[] lineSprites) {
+        GameObject lineObj = new GameObject();
+        lineObj.transform.parent = pathObj.transform;
+        SpriteRenderer line = lineObj.AddComponent<SpriteRenderer>();
+        line.color = pathColor;
+        line.sortingOrder = 1;
+        line.sprite = lineSprites[GetDirection(startTile, endTile)];
+        line.transform.position = startTile.transform.position;
+    }
+
+    private void DrawArrow(GameObject pathObj, Tile startTile, Tile endTile, Sprite[] arrowSprites){
+        GameObject arrowObj = new GameObject();
+        arrowObj.transform.parent = pathObj.transform;
+        SpriteRenderer arrow = arrowObj.AddComponent<SpriteRenderer>();
+        arrow.color = pathColor;
+        arrow.sortingOrder = 1;
+        arrow.sprite = arrowSprites[GetDirection(startTile, endTile)];
+        arrow.transform.position = endTile.transform.position;
+    }
+
+    private int GetDirection(Tile startTile, Tile endTile) {
+        return HexMap.GetNeighbors(startTile).IndexOf(endTile);
     }
 }

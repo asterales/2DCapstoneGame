@@ -47,28 +47,38 @@ public class HexMap : MonoBehaviour {
         mapArray = new List<List<Tile>>();
     }
 
-    public static void ShowMovementTiles(Tile tile, int distance) {
-        ClearMovementTiles();
+    public static List<Tile> GetMovementTiles(Unit unit) {
         Queue<Tile> toCheck = new Queue<Tile>();
         Queue<int> dist = new Queue<int>();
-        toCheck.Enqueue(tile);
+        toCheck.Enqueue(unit.currentTile);
+        int distance = unit.unitStats.mvtRange + 1;
         dist.Enqueue(distance);
         List<Tile> neighbors;
+        List<Tile> mvtTiles = new List<Tile>();
         while (toCheck.Count > 0) {
             Tile t = toCheck.Dequeue();
             distance = dist.Dequeue();
             if (distance > 0 && t.pathable ) {
-                if (t.currentUnit == null || t.currentUnit.IsPlayerUnit() == SelectionController.selectedUnit.IsPlayerUnit()) {
-                    t.ShowMovementTile();
+                if (t.currentUnit == null || t.currentUnit.IsPlayerUnit() == unit.IsPlayerUnit()) {
+                    mvtTiles.Add(t);
                     neighbors = GetNeighbors(t);
                     foreach (Tile neighbor in neighbors) {
-                        if (neighbor && !neighbor.MovementTileIsVisible()) {
+                        if (neighbor && !mvtTiles.Contains(neighbor)) {
                             toCheck.Enqueue(neighbor);
                             dist.Enqueue(distance - 1);
                         }
                     }
                 }
             }
+        }
+        return mvtTiles;
+    }
+
+    public static void ShowMovementTiles(Unit unit) {
+        ClearMovementTiles();
+        List<Tile> mvtTiles = GetMovementTiles(unit);
+        foreach(Tile mvtTile in mvtTiles){
+            mvtTile.ShowMovementTile();
         }
     }
 
@@ -154,5 +164,9 @@ public class HexMap : MonoBehaviour {
 
     public static bool AreNeighbors(Tile tile1, Tile tile2) {
         return GetNeighbors(tile1).Contains(tile2);
+    }
+
+    public static int Cost(Tile a, Tile b) {
+        return (System.Math.Abs(-b.position.row+a.position.row-b.position.col+a.position.col)+System.Math.Abs(a.position.row- b.position.row)+System.Math.Abs(a.position.col - b.position.col))/2;
     }
 }
