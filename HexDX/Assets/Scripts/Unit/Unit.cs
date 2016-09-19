@@ -90,16 +90,64 @@ public class Unit : MonoBehaviour {
                 } else {
                     path.Dequeue();
                     facing = HexMap.GetNeighbors(lastTile).IndexOf(path.Peek());
-                    spriteRenderer.sprite = sprites.walking[facing];
-                    animator.runtimeAnimatorController = sprites.walkingAnim[facing];
+                    SetFacingSprites();
                 }
             }
         }
     }
 
+
+    private void SetFacingSprites()
+    {
+        int face = (facing + 1)%6;
+        switch (phase) {
+            case UnitTurn.Moving:
+                if (face < 3)
+                {
+                    spriteRenderer.flipX = false;
+                    spriteRenderer.sprite = sprites.walking[(facing+3)%3];
+                    animator.runtimeAnimatorController = sprites.walkingAnim[(facing+3)%3];
+                }
+                else
+                {
+                    spriteRenderer.flipX = true;
+                    spriteRenderer.sprite = sprites.walking[(6 - facing) % 3];
+                    animator.runtimeAnimatorController = sprites.walkingAnim[(6 - facing) % 3];
+                }
+                break;
+            case UnitTurn.Attacking:
+                if (face < 3)
+                {
+                    spriteRenderer.flipX = false;
+                    spriteRenderer.sprite = sprites.attack[(facing + 3) % 3];
+                    animator.runtimeAnimatorController = sprites.attackAnim[(facing + 3) % 3];
+                }
+                else
+                {
+                    spriteRenderer.flipX = true;
+                    spriteRenderer.sprite = sprites.attack[(6 - facing) % 3];
+                    animator.runtimeAnimatorController = sprites.attackAnim[(6 - facing) % 3];
+                }
+                break;
+            default:
+                if (face < 3)
+                {
+                    spriteRenderer.flipX = false;
+                    spriteRenderer.sprite = sprites.idle[(facing + 3) % 3];
+                    animator.runtimeAnimatorController = sprites.idleAnim[(facing + 3) % 3];
+                }
+                else
+                {
+                    spriteRenderer.flipX = true;
+                    spriteRenderer.sprite = sprites.walking[(6-facing)%3];
+                    animator.runtimeAnimatorController = sprites.idleAnim[(6 - facing) % 3];
+                }
+                break;
+        }
+
+    }
     private void Face() {
-        spriteRenderer.sprite = sprites.idle[facing];
-        animator.runtimeAnimatorController = sprites.idleAnim[facing];
+        SetFacingSprites();
         HexMap.ShowAttackTiles(currentTile);
     }
 
@@ -178,14 +226,12 @@ public class Unit : MonoBehaviour {
         phase = UnitTurn.Done;
         HexMap.ClearAttackTiles();
         spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
-        spriteRenderer.sprite = sprites.idle[facing];
-        animator.runtimeAnimatorController = sprites.idleAnim[facing];
+        SetFacingSprites();
     }
 
     public IEnumerator PerformAttack(Unit target) {
-        spriteRenderer.sprite = sprites.attack[facing];
-        animator.runtimeAnimatorController = sprites.attackAnim[facing];
-        yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length/animator.speed);
+        SetFacingSprites();
+        yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length/5.0f);
 
         target.unitStats.health -= unitStats.attack;
         if (target.HasInAttackRange(this)) {
@@ -195,12 +241,14 @@ public class Unit : MonoBehaviour {
         health.fillAmount = (float)target.unitStats.health / (float)target.unitStats.maxHealth;
         health = transform.Find("HealthBar").GetComponent<Image>();
         health.fillAmount = Mathf.Max(0,(float)unitStats.health / (float)unitStats.maxHealth);
+        if (target.unitStats.health <= 0)
+        {
+            Destroy(target.gameObject);
+        }
+        yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
         MakeDone();
         if (unitStats.health <= 0) {
             Destroy(gameObject);
-        }
-        if (target.unitStats.health <= 0) {
-            Destroy(target.gameObject);
         }
     }
 
