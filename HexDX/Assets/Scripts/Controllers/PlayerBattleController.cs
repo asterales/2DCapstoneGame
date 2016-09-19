@@ -83,10 +83,14 @@ public class PlayerBattleController : MonoBehaviour {
         style.normal.background = menuItem;
         style.alignment = TextAnchor.MiddleLeft;
         if (active) {
+            GUI.enabled = true;
+            GUI.color = Color.white;
             style.hover.background = menuItemHovered;
             style.normal.textColor = Color.white;
             style.hover.textColor = Color.white;
         } else {
+            GUI.enabled = false;
+            GUI.color = new Color(1, 1, 1, 2) ;
             style.hover.background = menuItem;
             style.normal.textColor = Color.gray;
             style.hover.textColor = Color.gray;
