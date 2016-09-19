@@ -2,5 +2,14 @@
 using System.Collections;
 
 public class TileStats : MonoBehaviour {
-    // this class will eventually contain the stats of a tile
+	public int mvtModifier;
+	public int attackModifier;
+	public int defenseModifier;
+	public MovementDifficulty mvtDifficulty;
 }
+
+public enum MovementDifficulty {
+	Easy,
+	Medium,
+	Hard
+};

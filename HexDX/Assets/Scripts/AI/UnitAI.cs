@@ -6,6 +6,7 @@ public abstract class UnitAI : MonoBehaviour {
     protected static List<Unit> playerUnits;
 	public Unit unit;
 	public int unitNum; // index of unit in AIBattleController units list - for debugging purposes
+    // to add - reference to deployment area
 
     public void Start() {
     	unit = gameObject.GetComponent<Unit>();
