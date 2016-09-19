@@ -141,13 +141,16 @@ public class MapLoader : MonoBehaviour {
     }
 
     private void AddUnitToTile(int row, int col, bool isPlayerUnit, Vector3 facing) {
-        GameObject knight = null;
-        knight = Instantiate(Resources.Load("Units/Swordsman")) as GameObject;
-        Unit unit = knight.GetComponent<Unit>();
+        GameObject unitObject = null;
+        if (isPlayerUnit)
+            unitObject = Instantiate(Resources.Load("Units/Rifleman")) as GameObject;
+        else
+            unitObject = Instantiate(Resources.Load("Units/Swordsman")) as GameObject;
+        Unit unit = unitObject.GetComponent<Unit>();
         unit.SetTile(HexMap.mapArray[row][col]);
         unit.SetFacing(facing);
         if(!isPlayerUnit) {
-            knight.AddComponent<BasicUnitAI>();
+            unitObject.AddComponent<BasicUnitAI>();
         }
     }
 }
