@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LETileArrow : MonoBehaviour {
-    public LETileBar tileBar;
+public class LEUnitArrow : MonoBehaviour {
+    public LEUnitBar unitBar;
     public SpriteRenderer spriteRenderer;
     public bool isUpArrow;
 
@@ -10,22 +10,21 @@ public class LETileArrow : MonoBehaviour {
     {
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
         ////// DEBUG CODE //////
-        if (tileBar == null)
+        if (unitBar == null)
         {
-            Debug.Log("ERROR :: Tile Bar needs to be Defined -> LETileArrow.cs");
+            Debug.Log("ERROR :: Need reference to UnitBar object -> LEUnitArrow.cs");
         }
         if (spriteRenderer == null)
         {
-            Debug.Log("ERROR :: Sprite Renderer needs to be defined -> LETileArrow.cs");
+            Debug.Log("ERROR :: Reference to SpriteRenderer is not defined -> LEUnitArrow.cs");
         }
         ////////////////////////
     }
-
     void OnMouseDown()
     {
         spriteRenderer.color = new Color(0.3f, 0.3f, 0.3f);
-        if (isUpArrow) tileBar.MoveUp();
-        else tileBar.MoveDown();
+        if (isUpArrow) unitBar.MoveUp();
+        else unitBar.MoveDown();
     }
 
     void OnMouseHover()
