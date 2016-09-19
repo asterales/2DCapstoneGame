@@ -18,9 +18,9 @@ public class AttackTile : MonoBehaviour {
             } else if (Input.GetMouseButtonDown(1)
                             && SelectionController.selectedUnit.IsPlayerUnit()
                             && HasEnemyUnit()) {
+                SelectionController.mode = SelectionMode.Attacking;
                 if (tile.currentUnit != SelectionController.target) {
                     SelectionController.target = tile.currentUnit;
-                    SelectionController.mode = SelectionMode.Attacking;
                     if (HexMap.GetAttackTiles(tile).Contains(SelectionController.selectedUnit.currentTile)) {
                         SelectionController.selectedUnit.GetComponent<SpriteRenderer>().color = Color.red;
                     } else {

@@ -45,18 +45,14 @@ public class SelectionController : MonoBehaviour {
 
     void Update () {
         if(!SelectionController.TakingAIInput()) {
-            if (mode == SelectionMode.Open)
-            {
-                if (selectedTile != null)
-                {
-                    if (selectedTile.currentUnit)
-                    {
+            if (mode == SelectionMode.Open) {
+                if (selectedTile != null) {
+                    if (selectedTile.currentUnit) {
                         selectedUnit = selectedTile.currentUnit;
                     }
-                    ShowSelection(selectedTile);
+                    ShowSelection(selectedTile);    
                 }
-                else if (selectedUnit != null)
-                {
+                else if (selectedUnit != null) {
                     ShowSelection(selectedUnit);
                 }
             }
