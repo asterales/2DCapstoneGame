@@ -24,7 +24,7 @@ public class MovementTile : MonoBehaviour {
                 path.RemoveAt(path.Count - 1);
             } else if (HexMap.AreNeighbors(tile, path[path.Count - 1])
                         && SelectionController.selectedUnit.CanPathThrough(tile)) {
-                if (path.Count <= SelectionController.selectedUnit.unitStats.mvtRange) {
+                if (path.Count <= SelectionController.selectedUnit.MvtRange) {
                     path.Add(tile);
                 } else {
                    path = SelectionController.selectedUnit.GetShortestPath(tile);
