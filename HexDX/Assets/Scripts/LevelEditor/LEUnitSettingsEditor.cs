@@ -1,10 +1,62 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class LEUnitSettingsEditor : MonoBehaviour {
-    public void TurnOn(LEUnitSettings unit)
+    public LEUnitSettings currentSettings;
+    public LEUnitInstance currentInstance;
+    public List<LEStatEditor> statEditors;
+
+    void Awake()
     {
-        // to be implemented
+        ////// DEBUG CODE //////
+        if (statEditors.Count != 10)
+        {
+            Debug.Log("Need references to all StatEditors -> LEUnitSettingsEditor.cs");
+        }
+        ////////////////////////
     }
-    // to be implemented
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            TurnOff();
+        }
+    }
+
+    public void TurnOn(LEUnitSettings settings)
+    {
+        currentSettings = settings;
+        currentInstance = null;
+        if (currentSettings != null)
+        {
+            UpdateTextValues();
+        }
+    }
+
+    public void TurnOn(LEUnitSettings settings, LEUnitInstance instance)
+    {
+        currentSettings = settings;
+        currentInstance = instance;
+        if (currentSettings != null)
+        {
+            UpdateTextValues();
+        }
+    }
+
+    public void TurnOff()
+    {
+        for (int i = 0; i < statEditors.Count; i++)
+        {
+            statEditors[i].TurnOff();
+        }
+    }
+
+    public void UpdateTextValues()
+    {
+        for (int i = 0; i < statEditors.Count; i++)
+        {
+            statEditors[i].TurnOn(currentSettings, currentInstance);
+        }
+    }
 }

@@ -25,6 +25,7 @@ public class LEUnitBar : MonoBehaviour {
         numberOfButtons = barButtons.Count;
         chosenIndex = -1;
         unitTypes = unitCache.unitSettings;
+        unitCache.unitBar = this;
         UpdateButtonsForIndex(0);
     }
 
