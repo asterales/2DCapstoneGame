@@ -12,8 +12,6 @@ public class LEHorizonBarButton : MonoBehaviour {
         currentIndex = -1;
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
         parentBar = this.gameObject.GetComponentInParent<LEHorizonBar>();
-        // temporary
-        //spriteRenderer.sprite = Resources.Load<Sprite>("EditorSprites\\Tiles\\Grass\\GrassSpace0");
         ///// DEBUG CODE //////
         if (spriteRenderer == null)
         {

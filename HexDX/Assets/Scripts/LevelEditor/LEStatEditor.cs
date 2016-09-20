@@ -10,6 +10,7 @@ public class LEStatEditor : MonoBehaviour {
     public LEIncrementButton singleDecrement;
     public LEIncrementButton doubleDecrement;
     public LEIncrementButton tripleDecrement;
+    public LEStatID statType;
     public string statName;
     public int singleValue;
     public int doubleValue;

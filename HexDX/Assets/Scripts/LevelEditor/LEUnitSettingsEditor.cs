@@ -9,7 +9,7 @@ public class LEUnitSettingsEditor : MonoBehaviour {
     void Awake()
     {
         ////// DEBUG CODE //////
-        if (statEditors.Count != 10)
+        if (statEditors.Count != 9)
         {
             Debug.Log("Need references to all StatEditors -> LEUnitSettingsEditor.cs");
         }
