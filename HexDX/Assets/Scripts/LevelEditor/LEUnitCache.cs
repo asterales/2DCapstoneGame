@@ -69,8 +69,10 @@ public class LEUnitCache : MonoBehaviour {
         }
     }
 
-    private void ReadSpritesForUnit(LEUnitSettings unit, string path)
+    private void ReadSpritesForUnit(LEUnitSettings unit, string[] files)
     {
         // to be implemented
+        // this will cause errors till implemented
+        //unit.FindDefaultSprite();
     }
 }

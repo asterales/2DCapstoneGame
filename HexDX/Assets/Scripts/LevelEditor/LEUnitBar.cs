@@ -1,14 +1,65 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class LEUnitBar : MonoBehaviour {
+    public LEUnitCache unitCache;
+    public List<LEUnitBarButton> barButtons;
+    public List<LEUnitSettings> unitTypes;
+    private int currentIndex;
+    private int numberOfButtons;
+    private int chosenIndex;
+
+    void Awake()
+    {
+        ////// DEBUG CODE //////
+        if (barButtons.Count != 4)
+        {
+            Debug.Log("ERROR :: References to UnitBarButtons are not set -> LEUnitBar.cs");
+        }
+        if (unitCache == null)
+        {
+            Debug.Log("ERROR :: Reference to UnitCache is not set -> LEUnitBar.cs");
+        }
+        ////////////////////////
+        currentIndex = 0;
+        numberOfButtons = barButtons.Count;
+        chosenIndex = -1;
+        unitTypes = unitCache.unitSettings;
+        UpdateButtonsForIndex(0);
+    }
+
+    public void UpdateButtonsForIndex(int index)
+    {
+        chosenIndex = index;
+        UpdateButtonSprites();
+    }
+
+    public void UpdateButtonSprites()
+    {
+        for (int i = 0; i < barButtons.Count; i++)
+        {
+            if (i + chosenIndex < unitTypes.Count)
+            {
+                barButtons[i].SetAvatar(unitTypes[i + chosenIndex]);
+            }
+        }
+    }
+
     public void MoveUp()
     {
-        // to be implemented
+        if (currentIndex + numberOfButtons != unitTypes.Count)
+        {
+            currentIndex++;
+            UpdateButtonSprites();
+        }
     }
 
     public void MoveDown()
     {
-        // to be implemented
+        if (currentIndex > 0)
+        {
+            currentIndex--;
+            UpdateButtonSprites();
+        }
     }
 }

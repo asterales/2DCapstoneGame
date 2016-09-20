@@ -22,12 +22,6 @@ public class LETileBar : MonoBehaviour {
         UpdateButtonsForIndex(0);
 	}
 
-    public void OnMouseDown()
-    {
-        // global call to disable expansion
-        //LEExpansionController.DisableExpansion();
-    }
-
     public void UpdateButtonsForIndex(int index)
     {
         chosenIndex = index;

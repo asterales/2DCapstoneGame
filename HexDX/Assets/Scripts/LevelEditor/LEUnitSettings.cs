@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class LEUnitSettings : MonoBehaviour {
     public List<Sprite> facingSprites;
+    public Sprite defaultSprite;
     public int baseHealth;
     public int baseAttack;
     public int basePower;
@@ -18,6 +19,7 @@ public class LEUnitSettings : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
         facingSprites = new List<Sprite>();
+        defaultSprite = null;
         baseHealth = -1;
         baseAttack = -1;
         basePower = -1;
@@ -42,6 +44,11 @@ public class LEUnitSettings : MonoBehaviour {
         baseHighRange = 1;
         baseManuverability = 5;
         id = -1; // do we needs ids ???
+    }
+
+    public void FindDefaultSprite()
+    {
+        defaultSprite = facingSprites[0];
     }
 
     // File Format For Settings:
