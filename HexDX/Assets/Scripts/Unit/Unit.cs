@@ -32,8 +32,8 @@ public class Unit : MonoBehaviour {
     }
     public int Attack { get { return unitStats.attack + currentTile.tileStats.attackModifier; } }
     public int Defense { get { return unitStats.defense + currentTile.tileStats.defenseModifier; } }
-    public int Power { get { return unitStats.power; } }
-    public int Resistance { get { return unitStats.resistance; } }
+    public int Power { get { return unitStats.power + currentTile.tileStats.powerModifier; } }
+    public int Resistance { get { return unitStats.resistance + currentTile.tileStats.resistanceModifier; } }
 
     // Use this for initialization
     void Start () {
