@@ -7,7 +7,7 @@ public class Tile : MonoBehaviour {
     public TileLocation position;
     public SelectionController selectionController; // hack for movement
     public Unit currentUnit;
-    private TileStats tileStats;
+    public TileStats tileStats;
     private GameObject movementTile;
     private GameObject attackTile;
     private static readonly Vector3 visibilityOffset = new Vector3(0, 0, -0.01f);

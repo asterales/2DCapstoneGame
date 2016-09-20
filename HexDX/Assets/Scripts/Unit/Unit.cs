@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class Unit : MonoBehaviour {
     public Tile currentTile;
-    public UnitStats unitStats;
+    private UnitStats unitStats;
     public UnitSprites sprites;
     public List<Vector2> attackablePositions;
 
@@ -22,6 +22,18 @@ public class Unit : MonoBehaviour {
     private SpriteRenderer spriteRenderer;
     private Animator animator;
     private Tile lastTile;
+
+    // Properties for shorthand access to stats, includes tile modifiers
+    public int MvtRange { get { return unitStats.mvtRange + currentTile.tileStats.mvtModifier; } }
+    public int MaxHealth { get { return unitStats.maxHealth; } }
+    public int Health {
+        get { return unitStats.health; }
+        set { unitStats.health = value; }
+    }
+    public int Attack { get { return unitStats.attack + currentTile.tileStats.attackModifier; } }
+    public int Defense { get { return unitStats.defense + currentTile.tileStats.defenseModifier; } }
+    public int Power { get { return unitStats.power; } }
+    public int Resistance { get { return unitStats.resistance; } }
 
     // Use this for initialization
     void Start () {
@@ -38,19 +50,19 @@ public class Unit : MonoBehaviour {
         ////// DEBUG CODE //////
         if (unitStats == null)
         {
-            Debug.Log("Unit Needs Unit Stats to be defined -> UnitController.cs");
+            Debug.Log("Unit Needs Unit Stats to be defined -> Unit.cs");
         }
         if (facingBonus == null)
         {
-            Debug.Log("Unit Needs Unit Facing to be defined -> UnitController.cs");
+            Debug.Log("Unit Needs Unit Facing to be defined -> Unit.cs");
         }
         if (movementCache == null)
         {
-            Debug.Log("Unit Needs MovementCache to be defined -> UnitController.cs");
+            Debug.Log("Unit Needs MovementCache to be defined -> Unit.cs");
         }
         if (spriteRenderer == null)
         {
-            Debug.Log("Unit Needs SpriteRenderer to be defined -> UnitController.cs");
+            Debug.Log("Unit Needs SpriteRenderer to be defined -> Unit.cs");
         }
         ////////////////////////
 
@@ -97,55 +109,45 @@ public class Unit : MonoBehaviour {
     }
 
 
-    private void SetFacingSprites()
-    {
+    private void SetFacingSprites() {
         int face = (facing + 1)%6;
         switch (phase) {
             case UnitTurn.Moving:
-                if (face < 3)
-                {
+                if (face < 3) {
                     spriteRenderer.flipX = false;
                     spriteRenderer.sprite = sprites.walking[(facing+3)%3];
                     animator.runtimeAnimatorController = sprites.walkingAnim[(facing+3)%3];
-                }
-                else
-                {
+                } else {
                     spriteRenderer.flipX = true;
                     spriteRenderer.sprite = sprites.walking[(6 - facing) % 3];
                     animator.runtimeAnimatorController = sprites.walkingAnim[(6 - facing) % 3];
                 }
                 break;
             case UnitTurn.Attacking:
-                if (face < 3)
-                {
+                if (face < 3) {
                     spriteRenderer.flipX = false;
                     spriteRenderer.sprite = sprites.attack[(facing + 3) % 3];
                     animator.runtimeAnimatorController = sprites.attackAnim[(facing + 3) % 3];
-                }
-                else
-                {
+                } else {
                     spriteRenderer.flipX = true;
                     spriteRenderer.sprite = sprites.attack[(6 - facing) % 3];
                     animator.runtimeAnimatorController = sprites.attackAnim[(6 - facing) % 3];
                 }
                 break;
             default:
-                if (face < 3)
-                {
+                if (face < 3) {
                     spriteRenderer.flipX = false;
                     spriteRenderer.sprite = sprites.idle[(facing + 3) % 3];
                     animator.runtimeAnimatorController = sprites.idleAnim[(facing + 3) % 3];
-                }
-                else
-                {
+                } else {
                     spriteRenderer.flipX = true;
                     spriteRenderer.sprite = sprites.walking[(6-facing)%3];
                     animator.runtimeAnimatorController = sprites.idleAnim[(6 - facing) % 3];
                 }
                 break;
         }
-
     }
+
     private void Face() {
         SetFacingSprites();
         HexMap.ShowAttackTiles(currentTile);
@@ -162,7 +164,7 @@ public class Unit : MonoBehaviour {
     }
 
     public void SetPath(List<Tile> nextPath) {
-        int pathLimit = unitStats.mvtRange + 1;
+        int pathLimit = MvtRange + 1;
         int numExtra = nextPath.Count - pathLimit;
         if (numExtra > 0) {
             nextPath.RemoveRange(pathLimit, numExtra);
@@ -233,21 +235,21 @@ public class Unit : MonoBehaviour {
         SetFacingSprites();
         yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length/5.0f);
 
-        target.unitStats.health -= unitStats.attack;
+        target.Health -= Attack;
         if (target.HasInAttackRange(this)) {
-            unitStats.health -= max((target.unitStats.attack * 2) / 3, 1);
+            Health -= max((target.Attack * 2) / 3, 1);
         }
-        Image health = target.transform.Find("HealthBar").GetComponent<Image>();
-        health.fillAmount = (float)target.unitStats.health / (float)target.unitStats.maxHealth;
-        health = transform.Find("HealthBar").GetComponent<Image>();
-        health.fillAmount = Mathf.Max(0,(float)unitStats.health / (float)unitStats.maxHealth);
-        if (target.unitStats.health <= 0)
+        Image healthBar = target.transform.Find("HealthBar").GetComponent<Image>();
+        healthBar.fillAmount = (float)target.Health / (float)target.MaxHealth;
+        healthBar = transform.Find("HealthBar").GetComponent<Image>();
+        healthBar.fillAmount = Mathf.Max(0,(float)Health / (float)MaxHealth);
+        if (target.Health <= 0)
         {
             Destroy(target.gameObject);
         }
         yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
         MakeDone();
-        if (unitStats.health <= 0) {
+        if (Health <= 0) {
             Destroy(gameObject);
         }
     }
@@ -256,7 +258,9 @@ public class Unit : MonoBehaviour {
     ///////////////////////////
     // Pathing Methods //
     public bool CanPathThrough(Tile tile) {
-        return tile != null && tile.pathable && (!tile.currentUnit || IsPlayerUnit() == tile.currentUnit.IsPlayerUnit());
+        return tile != null && tile.pathable 
+                && (!tile.currentUnit || IsPlayerUnit() == tile.currentUnit.IsPlayerUnit())
+                && unitStats.mvtLevel >= tile.tileStats.mvtDifficulty;
     }
 
     public List<Tile> GetShortestPath(Tile dest) {

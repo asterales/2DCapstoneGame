@@ -51,7 +51,7 @@ public class HexMap : MonoBehaviour {
         Queue<Tile> toCheck = new Queue<Tile>();
         Queue<int> dist = new Queue<int>();
         toCheck.Enqueue(unit.currentTile);
-        int distance = unit.unitStats.mvtRange + 1;
+        int distance = unit.MvtRange + 1;
         dist.Enqueue(distance);
         List<Tile> neighbors;
         List<Tile> mvtTiles = new List<Tile>();
