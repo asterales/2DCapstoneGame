@@ -201,8 +201,7 @@ public class Unit : MonoBehaviour {
     public void MakeOpen() {
         phase = UnitTurn.Open;
         spriteRenderer.color = Color.white;
-        spriteRenderer.sprite = sprites.idle[facing];
-        animator.runtimeAnimatorController = sprites.idleAnim[facing];
+        SetFacingSprites();
     }
 
     public void MakeMoving() {
