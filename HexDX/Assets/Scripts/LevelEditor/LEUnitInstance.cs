@@ -4,6 +4,7 @@ using System.Collections;
 public class LEUnitInstance : MonoBehaviour {
     public SpriteRenderer spriteRenderer;
     public LEUnitSettings baseSettings;
+    public LESelectionController selectionController;
     public int instanceHealth;
     public int instanceAttack;
     public int instancePower;
@@ -55,5 +56,36 @@ public class LEUnitInstance : MonoBehaviour {
     public int GetResistence()
     {
         return baseSettings.baseResistance + instanceResistance;
+    }
+
+    void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            // select the current
+            // update selection for use with units
+            Debug.Log("Clicking");
+            selectionController.SetUnitType(this);
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            //Debug.Log("Should Work");
+            selectionController.unitEditor.TurnOn(baseSettings, this);
+        }
+    }
+
+    void OnMouseUp()
+    {
+        // to be implemented
+    }
+
+    void OnMouseEnter()
+    {
+        // to be implemented
+    }
+
+    void OnMouseExit()
+    {
+        // to be implemented
     }
 }

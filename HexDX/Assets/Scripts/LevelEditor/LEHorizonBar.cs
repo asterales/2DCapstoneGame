@@ -42,7 +42,7 @@ public class LEHorizonBar : MonoBehaviour {
         if (onCounter < 10) onCounter++;
         else if (Input.GetMouseButtonDown(1))
         {
-            Debug.Log("Right Mouse Down");
+            //Debug.Log("Right Mouse Down");
             TurnOff();
         }
     }

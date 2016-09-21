@@ -7,20 +7,28 @@ public class LESelectionController : MonoBehaviour {
     public int selectedTileVariantID;
     public int selectedTileID;
     // cache for units
-    public LESpriteCache unitSpriteCache;
-    public int selectedUnitVariantID;
-    public int selectedUnitID;
+    public LEUnitCache unitCache;
+    public int selectedUnitCacheID;
+    // currently selected unitSettings
+    public LEUnitSettings selectedSettings;
+    // currently selected unit
+    public LEUnitInstance selectedUnit;
+    //public int selectedUnitID;
+    public LEUnitSettingsEditor unitEditor;
     // cache for maps
     public LESpriteCache mapSpriteCache;
     public int selectedMapID;
 
+    public bool isTileMode;
+    public bool isSettingsMode;
+    public bool isInstanceMode;
+
     void Start()
     {
-        selectedTileVariantID = 4;
+        selectedTileVariantID = 0;
         selectedTileID = 0;
 
-        selectedUnitVariantID = 0;
-        selectedUnitID = 0;
+        selectedUnitCacheID = 0;
 
         selectedMapID = 0;
 
@@ -31,10 +39,10 @@ public class LESelectionController : MonoBehaviour {
         {
             Debug.Log("ERROR :: Tile Sprite Cache Needs to be defined -> LESelectionController.cs");
         }
-        if (unitSpriteCache == null)
+        if (unitCache == null)
         {
             // For future sprint
-            //Debug.Log("ERROR :: Unit Sprite Cache Needs to be defined -> LESelectionController.cs");
+            Debug.Log("ERROR :: Unit Sprite Cache Needs to be defined -> LESelectionController.cs");
         }
         if (mapSpriteCache == null)
         {
@@ -42,6 +50,41 @@ public class LESelectionController : MonoBehaviour {
             //Debug.Log("ERROR :: Map Sprite Cache Needs to be defined -> LESelectionController.cs");
         }
         ////////////////////////
+        isTileMode = false;
+        isInstanceMode = false;
+        isSettingsMode = false;
+    }
+
+    public void SetSelectTile(int sprite, int variant)
+    {
+        isTileMode = true;
+        isInstanceMode = false;
+        isSettingsMode = false;
+        selectedTileID = sprite;
+        selectedTileVariantID = variant;
+    }
+
+    public void NullifyMode()
+    {
+        isInstanceMode = false;
+        isSettingsMode = false;
+        isTileMode = true;
+    }
+
+    public void SetSettingsType(LEUnitSettings settings)
+    {
+        isTileMode = false;
+        isInstanceMode = false;
+        isSettingsMode = true;
+        selectedSettings = settings;
+    }
+
+    public void SetUnitType(LEUnitInstance unit)
+    {
+        isTileMode = false;
+        isInstanceMode = true;
+        isSettingsMode = false;
+        selectedUnit = unit;
     }
 
     public int GetTileType()
@@ -54,8 +97,7 @@ public class LESelectionController : MonoBehaviour {
 
     public int GetUnitType()
     {
-        // to be implemented next sprint
-        return 0;
+        return selectedUnitCacheID;
     }
 
     public int GetMapType()
@@ -63,31 +105,4 @@ public class LESelectionController : MonoBehaviour {
         // to be implemented next sprint
         return 0;
     }
-
-    // OLD STUFF, KEEPING FOR REFERENCE
-
-    /*public GameObject buttonSelectObj;
-    public LETileButton selectedTileButton;
-    
-	void Start () {
-        selectedTileButton = null;
-        ////// DEBUG CODE //////
-        if (buttonSelectObj == null)
-        {
-            Debug.Log("Button Select Obj needs to be defined -> LESelectionController.cs");
-        }
-        ////////////////////////
-	}
-	
-	void Update () {
-	    if (selectedTileButton == null)
-        {
-            //buttonSelectObj.transform.position = new Vector3(-1000, -1000, 0.9f);
-        }
-        else
-        {
-            Vector3 temp = selectedTileButton.transform.position;
-            //buttonSelectObj.transform.position = new Vector3(temp.x, temp.y, 0.9f);
-        }
-	}*/
 }

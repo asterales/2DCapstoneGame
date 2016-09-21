@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class LEUnitCache : MonoBehaviour {
     public List<LEUnitSettings> unitSettings;
     public List<LEUnitInstance> unitInstances;
+    public LESelectionController selectionController;
     public LEUnitBar unitBar;
     public int numOfTypes;
     
@@ -15,7 +16,11 @@ public class LEUnitCache : MonoBehaviour {
         ////// DEBUG CODE //////
         if (unitBar == null)
         {
-            Debug.Log("Reference to UnitBar needs to be defined -> LEUnitCache.cs");
+            Debug.Log("ERROR :: Reference to UnitBar needs to be defined -> LEUnitCache.cs");
+        }
+        if (selectionController == null)
+        {
+            Debug.Log("ERROR :: reference to SelectionController needs to be defined -> LEUnitCache.cs");
         }
         ////////////////////////
 
@@ -48,6 +53,21 @@ public class LEUnitCache : MonoBehaviour {
             ReadSpritesForUnit(newUnit, unitFiles);
             unitSettings.Add(newUnit);
         }
+    }
+
+    public LEUnitInstance CreateNewUnitInstance(Vector3 position, LEUnitSettings settings)
+    {
+        GameObject newTile = new GameObject();
+        newTile.transform.parent = this.gameObject.transform;
+        SpriteRenderer newRenderer = newTile.AddComponent<SpriteRenderer>();
+        LEUnitInstance newInstance = newTile.AddComponent<LEUnitInstance>();
+        newInstance.selectionController = selectionController;
+        newInstance.baseSettings = settings;
+        newRenderer.sprite = settings.defaultSprite;
+        newTile.transform.position = position;
+        newTile.AddComponent<BoxCollider2D>();
+        newTile.GetComponent<BoxCollider2D>().size = new Vector2(6f, 5f);
+        return newInstance;
     }
 
     private void ReadInUnitSettings(LEUnitSettings unit, string[] files)

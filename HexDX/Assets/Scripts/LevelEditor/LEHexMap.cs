@@ -5,6 +5,7 @@ public class LEHexMap : MonoBehaviour {
     public LESelectionController selectionController;
     public HexDimension hexDimension;
     public LESpriteCache spriteCache;
+    public LEUnitCache unitCache;
     public List<List<LETile>> tileArray;
 
     void Awake()
@@ -22,6 +23,10 @@ public class LEHexMap : MonoBehaviour {
         if (spriteCache == null)
         {
             Debug.Log("Sprite Cache needs to be set -> LEHexMap.cs");
+        }
+        if (unitCache == null)
+        {
+            Debug.Log("Unit Cache needs to be set -> LEHexMap.cs");
         }
         this.gameObject.transform.position = new Vector3(hexDimension.globalTopLeftX, hexDimension.globalTopLeftY, 0); // temp
         ////////////////////////
@@ -65,6 +70,7 @@ public class LEHexMap : MonoBehaviour {
         // box collider initial settings (temp values)
         newTile.GetComponent<BoxCollider2D>().size = new Vector2(8f, 5f);
         newTile.GetComponent<LETile>().spriteCache = spriteCache;
+        newTile.GetComponent<LETile>().unitCache = unitCache;
         newTile.GetComponent<LETile>().ChangeType(0);
         newTile.GetComponent<LETile>().reference = this;
         return newTile;

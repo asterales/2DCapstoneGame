@@ -39,17 +39,18 @@ public class LEUnitBarButton : MonoBehaviour {
 
     void OnMouseOver()
     {
+        //Debug.Log("WHAT");
         if (currentUnit == null) return;
 
         if (Input.GetMouseButtonDown(0))
         {
             // select the current
             // update selection for use with units
-            //selectionController.selectedTileID = spriteCache.id;
-            //selectionController.selectedTileVariantID = spriteCache.currentIndex;
+            selectionController.SetSettingsType(currentUnit);
         }
         if (Input.GetMouseButtonDown(1))
         {
+            Debug.Log("Should Work");
             settingsEditor.TurnOn(currentUnit);
         }
     }

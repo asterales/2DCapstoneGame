@@ -43,9 +43,7 @@ public class LETileBarButton : MonoBehaviour {
 
         if (Input.GetMouseButtonDown(0))
         {
-            // select the current
-            selectionController.selectedTileID = spriteCache.id;
-            selectionController.selectedTileVariantID = spriteCache.currentIndex;
+            selectionController.SetSelectTile(spriteCache.id, spriteCache.currentIndex);
         }
         if (Input.GetMouseButtonDown(1))
         {
@@ -57,8 +55,7 @@ public class LETileBarButton : MonoBehaviour {
     public void UpdateButton()
     {
         spriteRenderer.sprite = spriteCache.GetCurrent();
-        selectionController.selectedTileID = spriteCache.id;
-        selectionController.selectedTileVariantID = spriteCache.currentIndex;
+        selectionController.SetSelectTile(spriteCache.id, spriteCache.currentIndex);
     }
 
     void OnMouseUp()
