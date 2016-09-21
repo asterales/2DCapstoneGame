@@ -224,10 +224,13 @@ public class Unit : MonoBehaviour {
     }
 
     public void MakeDone() {
-        phase = UnitTurn.Done;
-        HexMap.ClearAttackTiles();
-        spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
-        SetFacingSprites();
+        if (gameObject)
+        {
+            phase = UnitTurn.Done;
+            HexMap.ClearAttackTiles();
+            spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
+            SetFacingSprites();
+        }
     }
 
     public IEnumerator PerformAttack(Unit target) {

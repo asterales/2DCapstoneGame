@@ -57,9 +57,10 @@ public class SelectionController : MonoBehaviour {
                 }
             }
             else if (mode == SelectionMode.Attacking) {
-                ShowTarget(target);
-            } else {
-                HideTarget();
+                if (target)
+                    ShowTarget(target);
+                else 
+                    HideTarget();
             } 
         }
     }
@@ -83,7 +84,8 @@ public class SelectionController : MonoBehaviour {
     }
 
     public static void ShowTarget(Unit unit) {
-        targetSpaceObj.transform.position = unit.currentTile.transform.position + visibilityOffset;
+        if (unit)
+            targetSpaceObj.transform.position = unit.currentTile.transform.position + visibilityOffset;
     }
 
     public static void HideSelection() {
