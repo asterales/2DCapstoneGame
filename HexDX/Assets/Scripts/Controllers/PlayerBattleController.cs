@@ -60,7 +60,7 @@ public class PlayerBattleController : MonoBehaviour {
             Vector3 pos = CameraController.camera.WorldToScreenPoint(selectedUnit.transform.position);
             pos = new Vector3(pos.x, Screen.height - pos.y-offset);
             Tile tile = HexMap.GetAttackTiles(selectedUnit.currentTile).FirstOrDefault(t => t.currentUnit && !t.currentUnit.IsPlayerUnit());
-            bool canAttack = tile.currentUnit!=null;
+            bool canAttack = tile;
 
             if (GUI.Button(new Rect(pos.x, pos.y, itemWidth, itemHeight), " Attack", GetGUIStyle(canAttack))) {
                 SelectionController.target = tile.currentUnit;

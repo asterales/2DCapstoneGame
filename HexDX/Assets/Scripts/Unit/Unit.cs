@@ -254,6 +254,8 @@ public class Unit : MonoBehaviour {
         if (Health <= 0) {
             Destroy(gameObject);
         }
+        if (SelectionController.mode!=SelectionMode.AITurn)
+            SelectionController.mode = SelectionMode.Open;
     }
 
     private int max(int a, int b) { return a > b ? a : b; }

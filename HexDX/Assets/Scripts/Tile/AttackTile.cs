@@ -29,7 +29,6 @@ public class AttackTile : MonoBehaviour {
                     SelectionController.target = null;
                     StartCoroutine(SelectionController.selectedUnit.PerformAttack(tile.currentUnit));
                     SelectionController.HideTarget();
-                    SelectionController.mode = SelectionMode.Open;
                 }
             }
         }
