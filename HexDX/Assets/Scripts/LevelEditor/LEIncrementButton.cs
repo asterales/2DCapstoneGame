@@ -14,12 +14,13 @@ public class LEIncrementButton : MonoBehaviour {
         {
             Debug.Log("ERROR :: Reference to StatEditor needs to be defined -> LEIncrementButton.cs");
         }
-        if (spriteRenderer)
+        if (spriteRenderer == null)
         {
             Debug.Log("ERROR :: SpriteRenderere needs to be defined -> LEIncrementButton.cs");
         }
         ////////////////////////
         isOn = false;
+        TurnOff();
 	}
 
     public void TurnOn()

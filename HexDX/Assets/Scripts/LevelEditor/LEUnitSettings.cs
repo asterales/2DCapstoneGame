@@ -66,7 +66,7 @@ public class LEUnitSettings : MonoBehaviour {
     public void InitializeFromText(string data)
     {
         string[] lines = data.Split('\n');
-        if (lines.Length != 10) Debug.Log("TOO MANY LINES -> LEUnitSettings.cs");
+        if (lines.Length < 10) Debug.Log("NOT ENOUGH LINES -> LEUnitSettings.cs");
 
         baseHealth = Convert.ToInt32(lines[0]);
         baseAttack = Convert.ToInt32(lines[1]);

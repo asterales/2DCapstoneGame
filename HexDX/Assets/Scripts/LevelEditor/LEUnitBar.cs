@@ -9,7 +9,7 @@ public class LEUnitBar : MonoBehaviour {
     private int numberOfButtons;
     private int chosenIndex;
 
-    void Awake()
+    void Start()
     {
         ////// DEBUG CODE //////
         if (barButtons.Count != 4)
@@ -39,28 +39,31 @@ public class LEUnitBar : MonoBehaviour {
     {
         for (int i = 0; i < barButtons.Count; i++)
         {
-            if (i + chosenIndex < unitTypes.Count)
+            if (i + currentIndex < unitTypes.Count)
             {
-                barButtons[i].SetAvatar(unitTypes[i + chosenIndex]);
+                barButtons[i].SetAvatar(unitTypes[i + currentIndex]);
             }
         }
     }
 
     public void MoveUp()
     {
-        if (currentIndex + numberOfButtons != unitTypes.Count)
+        //Debug.Log(unitTypes.Count);
+        if (currentIndex > 0)
         {
-            currentIndex++;
+            currentIndex--;
             UpdateButtonSprites();
+            //Debug.Log("Moving Up");
         }
     }
 
     public void MoveDown()
     {
-        if (currentIndex > 0)
+        if (currentIndex + numberOfButtons != unitTypes.Count)
         {
-            currentIndex--;
+            currentIndex++;
             UpdateButtonSprites();
+            //Debug.Log("Moving Down");
         }
     }
 }

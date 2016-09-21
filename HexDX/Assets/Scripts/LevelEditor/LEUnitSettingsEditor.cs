@@ -4,14 +4,19 @@ using System.Collections.Generic;
 public class LEUnitSettingsEditor : MonoBehaviour {
     public LEUnitSettings currentSettings;
     public LEUnitInstance currentInstance;
-    public List<LEStatEditor> statEditors;
+    public List<LEStatEditor> settingsStatEditors;
+    public List<LEStatEditor> instanceStatEditors;
 
     void Awake()
     {
         ////// DEBUG CODE //////
-        if (statEditors.Count != 9)
+        if (settingsStatEditors.Count == 0)
         {
             Debug.Log("Need references to all StatEditors -> LEUnitSettingsEditor.cs");
+        }
+        if (instanceStatEditors.Count == 0)
+        {
+            Debug.Log("Need references to instance StatEditors -> LEUnitSettingsEditor.cs");
         }
         ////////////////////////
     }
@@ -28,9 +33,9 @@ public class LEUnitSettingsEditor : MonoBehaviour {
     {
         currentSettings = settings;
         currentInstance = null;
-        if (currentSettings != null)
+        for (int i = 0; i < settingsStatEditors.Count; i++)
         {
-            UpdateTextValues();
+            settingsStatEditors[i].TurnOn(currentSettings, currentInstance);
         }
     }
 
@@ -38,25 +43,17 @@ public class LEUnitSettingsEditor : MonoBehaviour {
     {
         currentSettings = settings;
         currentInstance = instance;
-        if (currentSettings != null)
+        for (int i = 0; i < instanceStatEditors.Count; i++)
         {
-            UpdateTextValues();
+            instanceStatEditors[i].TurnOn(currentSettings, currentInstance);
         }
     }
 
     public void TurnOff()
     {
-        for (int i = 0; i < statEditors.Count; i++)
+        for (int i = 0; i < settingsStatEditors.Count; i++)
         {
-            statEditors[i].TurnOff();
-        }
-    }
-
-    public void UpdateTextValues()
-    {
-        for (int i = 0; i < statEditors.Count; i++)
-        {
-            statEditors[i].TurnOn(currentSettings, currentInstance);
+            settingsStatEditors[i].TurnOff();
         }
     }
 }

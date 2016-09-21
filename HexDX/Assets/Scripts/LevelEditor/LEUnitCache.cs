@@ -30,6 +30,7 @@ public class LEUnitCache : MonoBehaviour {
 
         // each unit will have its own directory
         for (int i = 0; i < directories.Length; i++)
+        //for (int i = 0; i < 1; i++)
         {
             // get all of the files
             string[] files = Directory.GetFiles(directories[i]);
@@ -39,11 +40,13 @@ public class LEUnitCache : MonoBehaviour {
             {
                 // have to cut off "Assets//Resources//" from the path as well as the extension
                 unitFiles[j / 2] = files[j].Substring(files[j].Length - (files[j].Length - 17));
-                unitFiles[j / 2] = unitFiles[j / 2].Remove(unitFiles[j / 2].IndexOf('.'));
+                //unitFiles[j / 2] = unitFiles[j / 2].Remove(unitFiles[j / 2].IndexOf('.'));
             }
 
             LEUnitSettings newUnit = this.gameObject.AddComponent<LEUnitSettings>();
             ReadInUnitSettings(newUnit, unitFiles);
+            ReadSpritesForUnit(newUnit, unitFiles);
+            unitSettings.Add(newUnit);
         }
     }
 
@@ -60,6 +63,7 @@ public class LEUnitCache : MonoBehaviour {
 
         if (settingsFile.Substring(settingsFile.Length - 4, 4) == ".txt")
         {
+            settingsFile = settingsFile.Remove(settingsFile.IndexOf('.'));
             TextAsset settings = Resources.Load(settingsFile) as TextAsset;
             unit.InitializeFromText(settings.text);
         }
@@ -71,8 +75,25 @@ public class LEUnitCache : MonoBehaviour {
 
     private void ReadSpritesForUnit(LEUnitSettings unit, string[] files)
     {
-        // to be implemented
-        // this will cause errors till implemented
-        //unit.FindDefaultSprite();
+        List<string> imageFiles = new List<string>();
+        for (int i = 0; i < files.Length; i++)
+        {
+            if (files[i].Substring(files[i].Length - 4, 4) == ".png")
+            {
+                imageFiles.Add(files[i]);
+            }
+        }
+
+        for (int i = 0; i < imageFiles.Count; i++)
+        {
+            if (files[i].Substring(files[i].Length - 4, 4) == ".png")
+            {
+                string file = files[i].Remove(files[i].IndexOf('.'));
+                Sprite sprite = Resources.Load<Sprite>(file);
+                unit.facingSprites.Add(sprite);
+            }
+        }
+
+        unit.FindDefaultSprite();
     }
 }
