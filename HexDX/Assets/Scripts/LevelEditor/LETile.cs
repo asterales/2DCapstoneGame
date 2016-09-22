@@ -47,6 +47,7 @@ public class LETile : MonoBehaviour {
     {
         // global call to disable expansion
         //LEExpansionController.DisableExpansion();
+        Debug.Log("On Mouse Down");
         if (reference.selectionController.isTileMode)
         {
             type = reference.selectionController.GetTileType();
