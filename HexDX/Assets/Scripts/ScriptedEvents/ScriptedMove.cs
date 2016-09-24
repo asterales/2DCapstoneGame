@@ -32,4 +32,9 @@ public class ScriptedMove : ScriptEvent {
     {
         // to be implemented
     }
+
+    public override void FinishEvent()
+    {
+        // to be implemented
+    }
 }

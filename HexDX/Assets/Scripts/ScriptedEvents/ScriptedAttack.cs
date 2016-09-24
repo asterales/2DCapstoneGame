@@ -32,4 +32,9 @@ public class ScriptedAttack : ScriptEvent {
     {
         // to be implemented
     }
+
+    public override void FinishEvent()
+    {
+        // to be implemented
+    }
 }

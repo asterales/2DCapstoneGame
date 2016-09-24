@@ -7,6 +7,7 @@ public class HexMap : MonoBehaviour {
     public SelectionController selectionController; // ref to hack
     public static Stack<Tile> showingMovementTiles;
     public static Stack<Tile> showingAttackTiles;
+    public RowContainer rowContainer;
 
     // Make a separate directions class/enum?
     public static readonly List<Vector2> directions = new List<Vector2> {
@@ -16,6 +17,7 @@ public class HexMap : MonoBehaviour {
 
     void Awake() {
         hexDimension = this.gameObject.GetComponent<HexDimension>();
+        rowContainer = this.gameObject.GetComponent<RowContainer>();
         mapArray = new List<List<Tile>>();
         showingAttackTiles = new Stack<Tile>();
         showingMovementTiles = new Stack<Tile>();
@@ -168,5 +170,13 @@ public class HexMap : MonoBehaviour {
 
     public static int Cost(Tile a, Tile b) {
         return (System.Math.Abs(-b.position.row+a.position.row-b.position.col+a.position.col)+System.Math.Abs(a.position.row- b.position.row)+System.Math.Abs(a.position.col - b.position.col))/2;
+    }
+
+    public static void LoadMapFromRowContainer(RowContainer container)
+    {
+        for(int i=0;i<container.tileRows.Count;i++)
+        {
+            mapArray.Add(container.tileRows[i].tiles);
+        }
     }
 }

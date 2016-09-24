@@ -118,6 +118,13 @@ public class MapLoader : MonoBehaviour {
                     obj.GetComponent<SpriteRenderer>().sprite = spriteCache.GetTileSprite(type, variant);
                     return obj;
                 }
+            case 3:
+                {
+                    // water
+                    GameObject obj = Instantiate(Resources.Load("Tiles/WaterTile")) as GameObject;
+                    obj.GetComponent<SpriteRenderer>().sprite = spriteCache.GetTileSprite(type, variant);
+                    return obj;
+                }
             default:
                 return null;
         }

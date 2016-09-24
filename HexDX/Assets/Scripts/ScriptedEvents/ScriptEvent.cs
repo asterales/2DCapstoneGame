@@ -23,5 +23,6 @@ public abstract class ScriptEvent : MonoBehaviour {
     }
 
     public abstract void StartEvent();
+    public abstract void FinishEvent();
     public abstract void DoEvent();
 }
