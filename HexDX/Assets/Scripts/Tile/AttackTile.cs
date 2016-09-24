@@ -15,19 +15,23 @@ public class AttackTile : MonoBehaviour {
                     // do regular tile selection
                     tile.OnMouseOver();
                 }
-            } else if (Input.GetMouseButtonDown(1)
-                            && SelectionController.selectedUnit.IsPlayerUnit()
-                            && HasEnemyUnit()) {
+            } else if (SelectionController.selectedUnit.IsPlayerUnit() && HasEnemyUnit() && SelectionController.target != null) {
                 SelectionController.mode = SelectionMode.Attacking;
                 if (tile.currentUnit != SelectionController.target) {
                     SelectionController.target = tile.currentUnit;
-                    if (HexMap.GetAttackTiles(tile).Contains(SelectionController.selectedUnit.currentTile)) {
-                        SelectionController.selectedUnit.GetComponent<SpriteRenderer>().color = Color.red;
-                    } else {
-                        SelectionController.selectedUnit.GetComponent<SpriteRenderer>().color = Color.white;
-                    }
-                } else {
+                }
+                if (HexMap.GetAttackTiles(tile).Contains(SelectionController.selectedUnit.currentTile))
+                {
+                    SelectionController.selectedUnit.GetComponent<SpriteRenderer>().color = Color.red;
+                }
+                else
+                {
+                    SelectionController.selectedUnit.GetComponent<SpriteRenderer>().color = Color.white;
+                }
+                if (Input.GetMouseButtonDown(1)){
+                    SelectionController.target = null;
                     StartCoroutine(SelectionController.selectedUnit.PerformAttack(tile.currentUnit));
+                    SelectionController.HideTarget();
                 }
             }
         }

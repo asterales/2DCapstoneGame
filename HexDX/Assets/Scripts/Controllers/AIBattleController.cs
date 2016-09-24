@@ -39,7 +39,7 @@ public class AIBattleController : MonoBehaviour {
             if (currentUnitIndex < unitAIs.Count) {
                 UnitAI ai = unitAIs[currentUnitIndex];
                 if (ai) {
-                    Debug.Log(currentUnitIndex + " " + ai.unit.phase);
+                    //Debug.Log(currentUnitIndex + " " + ai.unit.phase);
                     switch(ai.unit.phase) {
                         case UnitTurn.Open:
                             ai.SetMovement();

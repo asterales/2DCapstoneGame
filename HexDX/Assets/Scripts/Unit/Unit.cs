@@ -201,8 +201,7 @@ public class Unit : MonoBehaviour {
     public void MakeOpen() {
         phase = UnitTurn.Open;
         spriteRenderer.color = Color.white;
-        spriteRenderer.sprite = sprites.idle[facing];
-        animator.runtimeAnimatorController = sprites.idleAnim[facing];
+        SetFacingSprites();
     }
 
     public void MakeMoving() {
@@ -225,10 +224,13 @@ public class Unit : MonoBehaviour {
     }
 
     public void MakeDone() {
-        phase = UnitTurn.Done;
-        HexMap.ClearAttackTiles();
-        spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
-        SetFacingSprites();
+        if (gameObject)
+        {
+            phase = UnitTurn.Done;
+            HexMap.ClearAttackTiles();
+            spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
+            SetFacingSprites();
+        }
     }
 
     public IEnumerator PerformAttack(Unit target) {
@@ -252,6 +254,8 @@ public class Unit : MonoBehaviour {
         if (Health <= 0) {
             Destroy(gameObject);
         }
+        if (SelectionController.mode!=SelectionMode.AITurn)
+            SelectionController.mode = SelectionMode.Open;
     }
 
     private int max(int a, int b) { return a > b ? a : b; }

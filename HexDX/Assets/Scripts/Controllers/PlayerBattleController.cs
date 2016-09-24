@@ -59,8 +59,11 @@ public class PlayerBattleController : MonoBehaviour {
             int offset = 60;
             Vector3 pos = CameraController.camera.WorldToScreenPoint(selectedUnit.transform.position);
             pos = new Vector3(pos.x, Screen.height - pos.y-offset);
-            bool canAttack = HexMap.GetAttackTiles(selectedUnit.currentTile).FirstOrDefault(t => t.currentUnit && !t.currentUnit.IsPlayerUnit());
+            Tile tile = HexMap.GetAttackTiles(selectedUnit.currentTile).FirstOrDefault(t => t.currentUnit && !t.currentUnit.IsPlayerUnit());
+            bool canAttack = tile;
+
             if (GUI.Button(new Rect(pos.x, pos.y, itemWidth, itemHeight), " Attack", GetGUIStyle(canAttack))) {
+                SelectionController.target = tile.currentUnit;
                 selectedUnit.MakeAttacking();
             }
             if (GUI.Button(new Rect(pos.x, pos.y+ itemHeight, itemWidth, itemHeight), " Wait", GetGUIStyle(true))) {
