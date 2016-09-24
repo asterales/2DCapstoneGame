@@ -245,29 +245,36 @@ public class Unit : MonoBehaviour {
         }
     }
 
-    public IEnumerator PerformAttack(Unit target) {
-        SetFacingSprites();
-        yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length/5.0f);
+    public IEnumerator PerformAttack(Unit target)
+    {
 
-        target.Health -= Attack;
-        if (target.HasInAttackRange(this)) {
-            Health -= max((target.Attack * 2) / 3, 1);
+        StartCoroutine(DoAttack(target, 1.0f));
+        //if (target && target.gameObject && target.HasInAttackRange(this))
+        yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
+        if (target && target.Health > 0 && target.HasInAttackRange(this))
+        {
+            spriteRenderer.color = Color.red;
+            target.MakeAttacking();
+            StartCoroutine(target.DoAttack(this, .66f));
         }
+
+    }
+
+    public IEnumerator DoAttack(Unit target, float modifier)
+    {
+        SetFacingSprites();
+        yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
+
+        target.Health -= (int)(Attack * modifier);
         Image healthBar = target.transform.Find("HealthBar").GetComponent<Image>();
         healthBar.fillAmount = (float)target.Health / (float)target.MaxHealth;
-        healthBar = transform.Find("HealthBar").GetComponent<Image>();
-        healthBar.fillAmount = Mathf.Max(0,(float)Health / (float)MaxHealth);
+        target.MakeDone();
         if (target.Health <= 0)
         {
             Destroy(target.gameObject);
         }
         yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
         MakeDone();
-        if (Health <= 0) {
-            Destroy(gameObject);
-        }
-        if (SelectionController.mode!=SelectionMode.AITurn)
-            SelectionController.mode = SelectionMode.Open;
     }
 
     private int max(int a, int b) { return a > b ? a : b; }
