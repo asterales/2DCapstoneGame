@@ -7,7 +7,7 @@ public abstract class ScriptEvent : MonoBehaviour {
     public string instructions;
     public bool playerEvent;
 
-	void Start () {
+	void Awake () {
         list = this.gameObject.GetComponent<ScriptList>();
         ////// DEBUG CODE //////
         if (list == null)
@@ -19,6 +19,11 @@ public abstract class ScriptEvent : MonoBehaviour {
 
     protected void Complete()
     {
+        //Debug.Log("Completed Event");
+        //if (list == null)
+        //{
+        //    Debug.Log("WHAT");
+        //}
         list.NextEvent();
     }
 

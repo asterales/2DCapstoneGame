@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class BattleController : MonoBehaviour {
     public AIBattleController ai;
     public PlayerBattleController player;
+    public ScriptedAIBattleController scriptedAI;
     public Texture2D actionMenuItem;
     public Texture2D actionMenuItemHover;
     private bool isPlayerTurn;
@@ -15,8 +16,9 @@ public class BattleController : MonoBehaviour {
         PlayerBattleController.menuItemHovered = actionMenuItemHover;
         ai = this.gameObject.GetComponent<AIBattleController>();
         player = this.gameObject.GetComponent<PlayerBattleController>();
+        scriptedAI = this.gameObject.GetComponent<ScriptedAIBattleController>();
         ////// DEBUG CODE //////
-        if (ai == null)
+        if (ai == null && scriptedAI == null)
         {
             Debug.Log("Error :: AI Battle Controller not defined -> BattleController.cs");
         }
@@ -38,10 +40,21 @@ public class BattleController : MonoBehaviour {
             ai.StartTurn();
             Debug.Log("BattleController - Starting AI Turn");
         } else {
-            ai.EndTurn();
-            player.StartTurn();
-            isPlayerTurn = true;
-            Debug.Log("BattleController - Starting Player Turn");
+            if (ai == null)
+            {
+                // scriptedAI stuff
+                scriptedAI.EndTurn();
+                player.StartTurn();
+                isPlayerTurn = true;
+                Debug.Log("BattleController - Starting Player Turn");
+            }
+            else
+            {
+                ai.EndTurn();
+                player.StartTurn();
+                isPlayerTurn = true;
+                Debug.Log("BattleController - Starting Player Turn");
+            }
         }
     }
 

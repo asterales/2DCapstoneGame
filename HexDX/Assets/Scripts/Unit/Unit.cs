@@ -23,6 +23,9 @@ public class Unit : MonoBehaviour {
     private Animator animator;
     private Tile lastTile;
 
+    // temporary storage for scripted stuff
+    ScriptedMove scriptedMove;
+
     // Properties for shorthand access to stats, includes tile modifiers
     public int MvtRange { get { return unitStats.mvtRange + currentTile.tileStats.mvtModifier; } }
     public int MaxHealth { get { return unitStats.maxHealth; } }
@@ -46,6 +49,8 @@ public class Unit : MonoBehaviour {
 
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
         animator = this.gameObject.GetComponent<Animator>();
+
+        scriptedMove = null;
 
         ////// DEBUG CODE //////
         if (unitStats == null)
@@ -94,6 +99,12 @@ public class Unit : MonoBehaviour {
             } else {
                 if (path.Count == 1) {
                     SetTile(path.Dequeue());
+                    if (scriptedMove != null)
+                    {
+                        scriptedMove.FinishEvent();
+                        scriptedMove = null;
+                        // to be implemented
+                    }
                     // re-enable the players ability to select
                     if(!SelectionController.TakingInput() && !SelectionController.TakingAIInput()) {
                         SelectionController.mode = SelectionMode.Facing;
@@ -204,8 +215,9 @@ public class Unit : MonoBehaviour {
         SetFacingSprites();
     }
 
-    public void MakeMoving() {
+    public void MakeMoving(ScriptedMove move) {
         phase = UnitTurn.Moving;
+        scriptedMove = move;
     }
 
     public void MakeChoosingAction() {

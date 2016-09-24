@@ -39,7 +39,7 @@ public class MovementTile : MonoBehaviour {
 
     public static void CommitPath() {   
         if (path != null && (path[path.Count - 1].currentUnit == null || path[path.Count - 1].currentUnit == SelectionController.selectedUnit)) {
-            SelectionController.selectedUnit.MakeMoving();
+            SelectionController.selectedUnit.MakeMoving(null);
             SelectionController.selectedUnit.SetPath(path);
             SelectionController.mode = SelectionMode.Moving;
             SelectionController.SaveLastTile(SelectionController.selectedUnit);

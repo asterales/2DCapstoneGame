@@ -23,7 +23,8 @@ public class ScriptList : MonoBehaviour {
 
 	public void NextEvent()
     {
-        scriptedEvents[currentEvent].FinishEvent();
+        //Debug.Log("NEXT");
+        //scriptedEvents[currentEvent].FinishEvent();
         currentEvent++;
         if (scriptedEvents.Count > currentEvent)
         {
@@ -37,6 +38,7 @@ public class ScriptList : MonoBehaviour {
 
     private void CompletedScripts()
     {
+        Debug.Log("All Scripts Complete");
         // to be implemented
     }
 }

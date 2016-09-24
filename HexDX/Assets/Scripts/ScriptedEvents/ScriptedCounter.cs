@@ -25,17 +25,22 @@ public class ScriptedCounter : ScriptEvent {
         if (!playerEvent)
         {
             DoEvent();
+            return;
         }
+        SelectionController.mode = SelectionMode.ScriptedPlayerAttack;
         // to be implemented
     }
 
     public override void DoEvent()
     {
+        SelectionController.mode = SelectionMode.ScriptedAI;
+        Debug.Log("AI is Countering");
         // to be implemented
     }
 
     public override void FinishEvent()
     {
         // to be implemented
+        Complete();
     }
 }

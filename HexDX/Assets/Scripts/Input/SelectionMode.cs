@@ -4,5 +4,13 @@
 	Moving,
  	Facing,
 	Attacking,
-	AITurn
+	AITurn,
+
+    ScriptedPlayerMove,
+    ScriptedPlayerAttack,
+    ScriptedPlayerFace,
+    ScriptedPlayerInstruction,
+    ScriptedPlayerWait,
+    ScriptedPlayerEndTurn,
+    ScriptedAI
 };

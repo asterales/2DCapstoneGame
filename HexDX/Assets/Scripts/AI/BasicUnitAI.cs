@@ -11,7 +11,7 @@ public class BasicUnitAI : UnitAI {
         if (nextEnemy == null) { 
             Tile nextDest = GetNextDestination(out nextEnemy);
             unit.SetPath(unit.GetShortestPath(nextDest));   
-            unit.MakeMoving();           
+            unit.MakeMoving(null);           
         } else {
             unit.MakeFacing();
         }

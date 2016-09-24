@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
 
-public class ScriptedInstruction : ScriptEvent {
-    public string instruction;
-
+public class ScriptedEndTurn : ScriptEvent
+{
     public override void StartEvent()
     {
         if (!playerEvent)
@@ -12,13 +10,14 @@ public class ScriptedInstruction : ScriptEvent {
             DoEvent();
             return;
         }
-        SelectionController.mode = SelectionMode.ScriptedPlayerInstruction;
+        SelectionController.mode = SelectionMode.ScriptedPlayerEndTurn;
         // to be implemented
     }
 
     public override void DoEvent()
     {
         SelectionController.mode = SelectionMode.ScriptedAI;
+        Debug.Log("AI is FinishingTurn");
         // to be implemented
     }
 

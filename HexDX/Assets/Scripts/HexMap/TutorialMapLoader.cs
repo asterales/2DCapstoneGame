@@ -39,6 +39,16 @@ public class TutorialMapLoader : MonoBehaviour
         {
             Debug.Log("Major Error :: Cols and Rows need to be more than one -> TutorialMapLoader.cs");
         }
+        ////////////////////////
+
+        if (battleMap != null && hexDimension != null)
+        {
+            // load the test battle map
+            LoadHexMap(csvMapFile);
+            AddUnitToTile(0, 0, battleController.scriptedAI.aiUnits[0], false, new Vector3(0, 1, 0));
+        }
+
+        ////// DEBUG CODE //////
         if (HexMap.mapArray.Count != numRows)
         {
             Debug.Log("Major Error :: Hex Map Rows and Loader Rows are not the same -> TutorialMapLoader.cs");
@@ -48,12 +58,6 @@ public class TutorialMapLoader : MonoBehaviour
             Debug.Log("Major Error :: Hex Map Cols and Loader Cols are not the same -> TutorialMapLoader.cs");
         }
         ////////////////////////
-
-        if (battleMap != null && hexDimension != null)
-        {
-            // load the test battle map
-            LoadHexMap(csvMapFile);
-        }
     }
 
     private void LoadHexMap(string hexMapFile)
@@ -108,20 +112,14 @@ public class TutorialMapLoader : MonoBehaviour
         }
     }
 
-    // keeping for reference
-    /*private void AddUnitToTile(int row, int col, bool isPlayerUnit, Vector3 facing)
+    // keeping for debugging
+    private void AddUnitToTile(int row, int col, Unit unit, bool isPlayerUnit, Vector3 facing)
     {
-        GameObject unitObject = null;
-        if (isPlayerUnit)
-            unitObject = Instantiate(Resources.Load("Units/Rifleman")) as GameObject;
-        else
-            unitObject = Instantiate(Resources.Load("Units/Swordsman")) as GameObject;
-        Unit unit = unitObject.GetComponent<Unit>();
         unit.SetTile(HexMap.mapArray[row][col]);
         unit.SetFacing(facing);
         if (!isPlayerUnit)
         {
-            unitObject.AddComponent<BasicUnitAI>();
+            unit.gameObject.AddComponent<BasicUnitAI>();
         }
-    }*/
+    }
 }

@@ -20,17 +20,22 @@ public class ScriptedFace : ScriptEvent {
         if (!playerEvent)
         {
             DoEvent();
+            return;
         }
+        SelectionController.mode = SelectionMode.ScriptedPlayerFace;
         // to be implemented
     }
 
     public override void DoEvent()
     {
+        SelectionController.mode = SelectionMode.ScriptedAI;
+        Debug.Log("AI is Facing");
         // to be implemented
     }
 
     public override void FinishEvent()
     {
         // to be implemented
+        Complete();
     }
 }

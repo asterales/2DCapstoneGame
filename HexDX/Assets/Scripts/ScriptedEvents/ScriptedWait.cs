@@ -19,17 +19,22 @@ public class ScriptedWait : ScriptEvent {
         if (!playerEvent)
         {
             DoEvent();
+            return;
         }
+        SelectionController.mode = SelectionMode.ScriptedPlayerWait;
         // to be implemented
     }
 
     public override void DoEvent()
     {
+        SelectionController.mode = SelectionMode.ScriptedAI;
+        Debug.Log("AI is Waiting");
         // to be implemented
     }
 
     public override void FinishEvent()
     {
         // to be implemented
+        Complete();
     }
 }
