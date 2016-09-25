@@ -266,6 +266,9 @@ public class Unit : MonoBehaviour {
         yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
 
         target.Health -= (int)(Attack * modifier);
+        GameObject damage = new GameObject();
+        damage.AddComponent<DamageIndicator>().SetDamage((int)(-Attack * modifier));
+        damage.transform.position = target.transform.position+new Vector3(-1f, 6f, 0f);
         Image healthBar = target.transform.Find("HealthBar").GetComponent<Image>();
         healthBar.fillAmount = (float)target.Health / (float)target.MaxHealth;
         target.MakeDone();
