@@ -9,7 +9,7 @@ using System.Linq;
 */
 
 public class Dialogue {
-	public string Name { get; private set; }
+	public string CharacterName { get; private set; }
 	public Sprite Portrait { get; private set; }
 	public ScreenLocation Side { get; private set; }
 	public string Line { get; private set; }
@@ -20,7 +20,7 @@ public class Dialogue {
 			throw new ArgumentException("input line must contain 4 elements");
 		}
 		Character character = CutsceneLoader.characters[int.Parse(tokens[0])];
-		Name = character.Name;
+		CharacterName = character.Name;
 		int portraitIndex = int.Parse(tokens[1]);
 		Portrait = character.Portraits[portraitIndex];
 		Side = (ScreenLocation) int.Parse(tokens[2]);
