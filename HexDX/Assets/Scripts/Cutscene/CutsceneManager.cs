@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
@@ -47,12 +48,16 @@ public class CutsceneManager : MonoBehaviour {
 	}
 
 	private Text textBox;
+	private Text continuePrompt;
 	private Speaker leftSpeaker;
 	private Speaker rightSpeaker;
 	private Speaker activeSpeaker;
+	private Dialogue currentLine;
+	private IEnumerator currentWriteRoutine;
 
 	void Awake() {
 		textBox = GameObject.Find("Text Box").GetComponent<Text>();
+		continuePrompt = GameObject.Find("Continuation Prompt").GetComponent<Text>();
 		leftSpeaker = new Speaker("Left Speaker", "Left Name Card");
 		rightSpeaker = new Speaker("Right Speaker", "Right Name Card");
 		leftSpeaker.Hide();
@@ -65,9 +70,13 @@ public class CutsceneManager : MonoBehaviour {
 
 	private void SetNextLine() {
 		if(dialogues.Count > 0) {
-			Dialogue nextLine = dialogues.Dequeue();
-			SetSpeaker(nextLine);
-			SetText(nextLine);
+			currentLine = dialogues.Dequeue();
+			SetSpeaker(currentLine);
+			if(currentLine.Line != null) {
+				currentWriteRoutine = WriteDialogue();
+				StartCoroutine(currentWriteRoutine);
+				continuePrompt.enabled = false;
+			}
 		}
 	}
 
@@ -100,10 +109,30 @@ public class CutsceneManager : MonoBehaviour {
 		}
 	}
 
+	private IEnumerator WriteDialogue() {
+		textBox.text = "";
+		foreach(char c in currentLine.Line) {
+			textBox.text += c;
+			yield return new WaitForSeconds(0.02f);
+		}
+	}
+
+	private bool FinishedWriting() {
+		return textBox.text.Equals(currentLine.Line);
+	}
+
 	void Update() {
 		if (Input.GetMouseButtonDown(0)){
-			SetNextLine();
+			if(FinishedWriting()){
+				SetNextLine();
+			} else {
+				StopCoroutine(currentWriteRoutine);
+				SetText(currentLine);
+			}
 		}
+		if(FinishedWriting()){
+			continuePrompt.enabled = true;
+		} 
 	}
 }
 
