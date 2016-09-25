@@ -4,7 +4,7 @@ using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 
-/* 	Container class for character data: id, name, portraits
+/* 	Container class for character data for cutscenes: id, name, portraits
  	
  	Naming conventions (subject to change)
  	Character Bank File CSV format:  
@@ -38,12 +38,13 @@ public class Character {
 	}
 
 	private void LoadPortraits() {
-		string portraitDir = "Assets/Resources/Portraits/" + new string(Name.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
-		string[] files = Directory.GetFiles(portraitDir, extPattern).OrderBy(f => f).ToArray();
+		string portraitDir = "Portraits/" + new string(Name.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
+		FileInfo[] files = new DirectoryInfo("Assets/Resources/" + portraitDir).GetFiles(extPattern).OrderBy(f => f).ToArray();
 		Portraits = new List<Sprite>();
-		foreach(string file in files) {
-			//Debug.Log(file);
-			Portraits.Add(Resources.Load<Sprite>(file));
+		foreach(FileInfo file in files) {
+			string filename = file.Name;
+			filename = filename.Remove(filename.IndexOf('.'));
+			Portraits.Add(Resources.Load<Sprite>(portraitDir + "/" + filename));
 		}	    
 	}
 }
