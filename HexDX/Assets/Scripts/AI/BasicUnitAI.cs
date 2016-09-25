@@ -53,7 +53,7 @@ public class BasicUnitAI : UnitAI {
     }
 
     private Unit GetEnemyInRange() {
-        List<Tile> attackTiles = HexMap.GetAttackTiles(unit.currentTile);
+        List<Tile> attackTiles = HexMap.GetAttackTiles(unit);
         return playerUnits.FirstOrDefault(playerUnit => playerUnit != null && attackTiles.Contains(playerUnit.currentTile));
     }
 

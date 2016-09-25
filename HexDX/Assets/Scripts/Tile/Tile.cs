@@ -51,29 +51,47 @@ public class Tile : MonoBehaviour {
     }
 
     private void InitOutline() {
-        GameObject outline =(GameObject) GameObject.Instantiate(Resources.Load("Tiles/Outline"));
+        GameObject outline = (GameObject)GameObject.Instantiate(Resources.Load("Tiles/Outline"));
         outline.transform.parent = this.transform;
         outline.transform.localPosition = Vector3.zero;
     }
 
     public void OnMouseOver() {
-        if (SelectionController.TakingInput() && (Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(1))) {
+        if (SelectionController.TakingInput() && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))) {
             //left click - selection
             HexMap.ClearAllTiles();
             MovementTile.path = null;
             SelectionController.selectedTile = this;
             SelectionController.selectedUnit = currentUnit ? currentUnit : SelectionController.selectedUnit;
-            if (currentUnit){ 
+            if (currentUnit) {
                 //TO ADD: display stats
                 if (currentUnit.IsPlayerUnit()) {
-                    if (currentUnit.phase == UnitTurn.Open){
+                    if (currentUnit.phase == UnitTurn.Open) {
                         HexMap.ShowMovementTiles(currentUnit);
                         MovementTile.path = new List<Tile>() { this };
                     }
                 } else {
                     // show enemy mvt range and stats
+                    List<Tile> movementTiles = HexMap.GetMovementTiles(currentUnit);
+                    int facing = currentUnit.facing;
+                    foreach (Tile t in movementTiles)
+                    {
+                        currentUnit.currentTile = t;
+                        for (int i = 0; i < 6; i++)
+                        {
+                            currentUnit.facing = i;
+                            foreach (Tile tile in HexMap.GetAttackTiles(currentUnit))
+                                tile.ShowAttackTile();
+                        }
+                    }
+                    currentUnit.facing = facing;
+                    currentUnit.currentTile = this;
                     HexMap.ShowMovementTiles(currentUnit);
-                    HexMap.ShowAttackTiles(this);
+                    foreach (Tile tile in HexMap.GetAttackTiles(currentUnit))
+                    {
+                        tile.attackTile.GetComponent<SpriteRenderer>().color = new Color(.5f, .5f, .5f, 0.95f);
+                        tile.ShowAttackTile();
+                    }
                 }
             }
         }
@@ -100,6 +118,7 @@ public class Tile : MonoBehaviour {
         }
     }
     public void HideAttackTile() {
+        attackTile.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.8f);
         if (attackTile) {
             attackTile.transform.localPosition = -visibilityOffset;
         }

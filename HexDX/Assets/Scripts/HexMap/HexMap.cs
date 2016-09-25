@@ -84,9 +84,8 @@ public class HexMap : MonoBehaviour {
         }
     }
 
-    public static List<Tile> GetAttackTiles(Tile tile) {
+    public static List<Tile> GetAttackTiles(Unit unit) {
         List<Tile> output = new List<Tile>();
-        Unit unit = tile.currentUnit;
         Vector2 rowDot = new Vector2(1, 1);
         Vector2 colDot = new Vector2(1, 1);
         switch (unit.facing) {
@@ -117,17 +116,17 @@ public class HexMap : MonoBehaviour {
         }
         foreach (Vector2 pos in unit.attackablePositions) {
             try {
-                output.Add(mapArray[tile.position.row + (int)Vector2.Dot(pos,rowDot)][tile.position.col + (int)Vector2.Dot(pos, colDot)]);
+                output.Add(mapArray[unit.currentTile.position.row + (int)Vector2.Dot(pos,rowDot)][unit.currentTile.position.col + (int)Vector2.Dot(pos, colDot)]);
             }
             catch { }
         }
         return output;
     }
 
-    public static void ShowAttackTiles(Tile tile)
+    public static void ShowAttackTiles(Unit unit)
     {
         ClearAttackTiles();
-        foreach (Tile t in GetAttackTiles(tile)) {
+        foreach (Tile t in GetAttackTiles(unit)) {
             t.ShowAttackTile();
         }
     }

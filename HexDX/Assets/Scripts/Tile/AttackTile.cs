@@ -20,7 +20,7 @@ public class AttackTile : MonoBehaviour {
                 if (tile.currentUnit != SelectionController.target) {
                     SelectionController.target = tile.currentUnit;
                 }
-                if (HexMap.GetAttackTiles(tile).Contains(SelectionController.selectedUnit.currentTile))
+                if (HexMap.GetAttackTiles(tile.currentUnit).Contains(SelectionController.selectedUnit.currentTile))
                 {
                     SelectionController.selectedUnit.GetComponent<SpriteRenderer>().color = Color.red;
                 }
@@ -34,6 +34,10 @@ public class AttackTile : MonoBehaviour {
                     SelectionController.HideTarget();
                 }
             }
+        }
+        else
+        {
+            tile.OnMouseOver();
         }
     }
 

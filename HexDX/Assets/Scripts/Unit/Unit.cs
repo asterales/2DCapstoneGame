@@ -161,7 +161,7 @@ public class Unit : MonoBehaviour {
 
     private void Face() {
         SetFacingSprites();
-        HexMap.ShowAttackTiles(currentTile);
+        HexMap.ShowAttackTiles(this);
     }
 
     public void SetTile(Tile newTile) {
@@ -329,7 +329,7 @@ public class Unit : MonoBehaviour {
     }
 
     public bool HasInAttackRange(Unit other){
-        return HexMap.GetAttackTiles(currentTile).Contains(other.currentTile);
+        return HexMap.GetAttackTiles(this).Contains(other.currentTile);
     }
 
     public bool IsPlayerUnit() {
