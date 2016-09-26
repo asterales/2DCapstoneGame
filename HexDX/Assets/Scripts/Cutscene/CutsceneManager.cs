@@ -5,63 +5,17 @@ using UnityEngine.UI;
 
 public class CutsceneManager : MonoBehaviour {
 	public Queue<Dialogue> dialogues;
-
-	/* For managing speaker GUI elements */
-	private class Speaker {
-		private Image portrait;
-		private Image nameCard;
-		private Text nameText;
-
-		public Speaker(string portraitObjName, string nameCardObjName) {
-			portrait = GameObject.Find(portraitObjName).GetComponent<Image>();
-			nameCard = GameObject.Find(nameCardObjName).GetComponent<Image>();
-			nameText = nameCard.transform.Find("Text").GetComponent<Text>();
-		}
-
-		public void ShowNameCard() {
-			nameCard.enabled = true;
-			nameText.enabled = true;
-		}
-
-		public void HideNameCard() {
-			nameCard.enabled = false;
-			nameText.enabled = false;
-		}
-
-		public void SetSpeaker(Dialogue line) {
-			portrait.sprite = line.Portrait;
-			nameText.text = line.CharacterName;
-		}
-
-		public void ShowSpeaker(){
-			portrait.enabled = true;
-		}
-
-		public void HideSpeaker() {
-			portrait.enabled = false;
-		}
-
-		public void Hide() {
-			HideSpeaker();
-			HideNameCard();
-		}
-	}
-
-	private Text textBox;
-	private Text continuePrompt;
-	private Speaker leftSpeaker;
-	private Speaker rightSpeaker;
-	private Speaker activeSpeaker;
+	private SpeakerUI leftSpeaker;
+	private SpeakerUI rightSpeaker;
+	private SpeakerUI activeSpeaker;
 	private Dialogue currentLine;
-	private IEnumerator currentWriteRoutine;
+	private IEnumerator currentSpeechRoutine;
 
 	void Awake() {
-		textBox = GameObject.Find("Text Box").GetComponent<Text>();
-		continuePrompt = GameObject.Find("Continuation Prompt").GetComponent<Text>();
-		leftSpeaker = new Speaker("Left Speaker", "Left Name Card");
-		rightSpeaker = new Speaker("Right Speaker", "Right Name Card");
-		leftSpeaker.Hide();
-		rightSpeaker.Hide();
+		leftSpeaker = new SpeakerUI("Left Portrait", "Left Name Card", "Left Dialogue Box");
+		rightSpeaker = new SpeakerUI("Right Portrait", "Right Name Card", "Right Dialogue Box");
+		leftSpeaker.HideAll();
+		rightSpeaker.HideAll();
 	}
 
 	void Start() {
@@ -70,68 +24,67 @@ public class CutsceneManager : MonoBehaviour {
 
 	private void SetNextLine() {
 		if(dialogues.Count > 0) {
-			currentLine = dialogues.Dequeue();
-			SetSpeaker(currentLine);
-			if(currentLine.Line != null) {
-				currentWriteRoutine = WriteDialogue();
-				StartCoroutine(currentWriteRoutine);
-				continuePrompt.enabled = false;
+			Dialogue dialogue = dialogues.Dequeue();
+			switch(dialogue.Side) {
+				case ScreenLocation.Left:
+					SwitchToSpeaker(leftSpeaker, dialogue);
+					break;
+				case ScreenLocation.Right:
+					SwitchToSpeaker(rightSpeaker, dialogue);
+					break;
 			}
 		}
 	}
 
-	private void SetSpeaker(Dialogue dialogue){
-		switch(dialogue.Side) {
-			case ScreenLocation.Left:
-				leftSpeaker.SetSpeaker(dialogue);
-				leftSpeaker.ShowSpeaker();
-				SetActiveNameCard(leftSpeaker);
-				break;
-			case ScreenLocation.Right:
-				rightSpeaker.SetSpeaker(dialogue);
-				rightSpeaker.ShowSpeaker();
-				SetActiveNameCard(rightSpeaker);
-				break;
+	private void SwitchToSpeaker(SpeakerUI nextSpeaker, Dialogue dialogue){
+		if(activeSpeaker != null) {
+			activeSpeaker.HideTextBoxes();
 		}
-	}
-
-	private void SetActiveNameCard(Speaker nextSpeaker){
-		if (activeSpeaker != null) {
-			activeSpeaker.HideNameCard();
-		}
+		nextSpeaker.SetSpeaker(dialogue);
+		nextSpeaker.ShowPortrait();
+		nextSpeaker.ShowTextBoxes();
 		activeSpeaker = nextSpeaker;
-		nextSpeaker.ShowNameCard();
+		currentLine = dialogue;
+		StartSpeakerLines();
 	}
 
-	private void SetText(Dialogue dialogue) {
-		if (dialogue.Line != null) {
-			textBox.text = dialogue.Line;
+	private void StartSpeakerLines(){
+		if (currentLine.Line != null) {
+			currentSpeechRoutine = WriteDialogue();
+			StartCoroutine(currentSpeechRoutine);
 		}
 	}
 
-	private IEnumerator WriteDialogue() {
-		textBox.text = "";
+	public IEnumerator WriteDialogue() {
+		activeSpeaker.HideContinuePrompt();
+		activeSpeaker.DialogueText = "";
 		foreach(char c in currentLine.Line) {
-			textBox.text += c;
+			activeSpeaker.DialogueText += c;
 			yield return new WaitForSeconds(0.02f);
 		}
 	}
 
-	private bool FinishedWriting() {
-		return textBox.text.Equals(currentLine.Line);
+	public bool SpeakerLinesFinished() {
+		return activeSpeaker.DialogueText.Equals(currentLine.Line);
+	}
+
+	public void FinishSpeakerLines() {
+		if (currentSpeechRoutine != null) {
+			StopCoroutine(currentSpeechRoutine);
+		}
+		activeSpeaker.DialogueText = currentLine.Line;
 	}
 
 	void Update() {
 		if (Input.GetMouseButtonDown(0)){
-			if(FinishedWriting()){
+			if(SpeakerLinesFinished()){
 				SetNextLine();
 			} else {
-				StopCoroutine(currentWriteRoutine);
-				SetText(currentLine);
+				FinishSpeakerLines();
 			}
 		}
-		if(FinishedWriting()){
-			continuePrompt.enabled = true;
+		if(SpeakerLinesFinished()){
+			activeSpeaker.ShowContinuePrompt();
 		} 
 	}
 }

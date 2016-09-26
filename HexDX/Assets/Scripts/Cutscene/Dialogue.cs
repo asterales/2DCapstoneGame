@@ -1,7 +1,8 @@
 using UnityEngine;
 using System;
 using System.Linq;
-/* 	Container class for character dialogue lines
+
+/* 	Container class for character dialogue lines and information
 	
 	Dialogue File txt Format (pipe delimeted) : 
 		character_id (int) | expression enum/portrait_index (int) | screen_location enum (int) | spoken_line (string)
