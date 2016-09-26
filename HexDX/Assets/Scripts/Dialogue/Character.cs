@@ -21,11 +21,26 @@ using System.Collections.Generic;
 */
 
 public class Character {
+	private static string charactersFile = "Assets/Cutscenes/CharacterIds.csv";
+	public static Dictionary<int, Character> characters = null;
 	private static string extPattern = "*.jpg"; //can change later
 
 	public int Id { get; private set; }
 	public string Name { get; private set; }
 	public List<Sprite> Portraits { get; private set; } 
+
+	static Character() {
+		LoadCharacterBank(charactersFile);
+	}
+
+	private static void LoadCharacterBank(string file) {
+		characters = new Dictionary<int, Character>();
+		StreamReader reader = new StreamReader(File.OpenRead(file));
+		while(!reader.EndOfStream){
+			Character character = new Character(reader.ReadLine());
+			characters[character.Id] = character;
+		}
+	}
 
 	public Character(string csvLine){
 		string[] tokens = csvLine.Split(',');

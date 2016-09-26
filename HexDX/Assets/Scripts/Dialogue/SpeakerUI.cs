@@ -81,6 +81,5 @@ public class SpeakerUI {
 	public void HideAll() {
 		HidePortrait();
 		HideTextBoxes();
-		HideContinuePrompt();
 	}
 }

@@ -20,7 +20,7 @@ public class Dialogue {
 		if (tokens.Length < 4) {
 			throw new ArgumentException("input line must contain 4 elements");
 		}
-		Character character = CutsceneLoader.characters[int.Parse(tokens[0])];
+		Character character = Character.characters[int.Parse(tokens[0])];
 		CharacterName = character.Name;
 		int portraitIndex = int.Parse(tokens[1]);
 		Portrait = character.Portraits[portraitIndex];
