@@ -101,6 +101,14 @@ public class SelectionController : MonoBehaviour {
         HideSelection();
     }
 
+    public static void ClearAllSelections() {
+        selectedTile = null;
+        selectedUnit = null;
+        target = null;
+        HideTarget();
+        HideSelection();
+    }
+
     public static bool TakingInput() {
         return mode == SelectionMode.Open;
     }

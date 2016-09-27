@@ -2,10 +2,11 @@
 using System.Collections;
 
 public class ScriptedEndTurn : ScriptEvent {
-	public PlayerBattleController player;
+    public PlayerBattleController player;
+    public ScriptedAIBattleController scriptedAI;
+
     public override void DoPlayerEvent() {
         SelectionController.mode = SelectionMode.ScriptedPlayerEndTurn;
-        player.enabled = true; // hack
     }
 
     public override void DoEvent() {
@@ -15,8 +16,11 @@ public class ScriptedEndTurn : ScriptEvent {
 
     public override void FinishEvent(){
         if(isPlayerEvent){
-            player.enabled = false;
+            player.EndTurn();
+        } else {
+            scriptedAI.EndTurn();
         }
+
     	base.FinishEvent();
     }
 }

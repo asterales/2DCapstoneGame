@@ -25,7 +25,6 @@ public class Unit : MonoBehaviour {
 
     // temporary storage for scripted stuff
     ScriptedMove scriptedMove;
-    ScriptedAttack scriptedAttack;
 
     // Properties for shorthand access to stats, includes tile modifiers
     public int MvtRange { get { return unitStats.mvtRange + currentTile.tileStats.mvtModifier; } }

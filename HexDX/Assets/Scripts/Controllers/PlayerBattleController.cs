@@ -18,7 +18,6 @@ public class PlayerBattleController : MonoBehaviour {
     public Sprite[] lineSprites;
     public Sprite[] arrowSprites;
 
-
     void Start() {
         InitUnitList();
     }
@@ -52,7 +51,7 @@ public class PlayerBattleController : MonoBehaviour {
         }
     }
 
-    void OnGUI() {
+    public void OnGUI() {
         if (InUnitPhase(UnitTurn.ChoosingAction)) {
             int itemHeight = 20;
             int itemWidth = 60;

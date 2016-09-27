@@ -15,6 +15,7 @@ public class ScriptedSelection : ScriptEvent {
 		if(isActive && SelectionController.selectedTile == targetTile) {
 			ShowSelection();
 			targetTile = null;
+			SelectionController.selectedTile = null;
 			FinishEvent();
 		}
 	}

@@ -24,9 +24,9 @@ public class ScriptList : MonoBehaviour {
     }
 
 	public void NextEvent() {
-        Debug.Log("NEXT");
         currentEvent++;
         if (scriptedEvents.Count > currentEvent) {
+            Debug.Log("NEXT " + scriptedEvents[currentEvent].GetType());
             StartInstuctions(scriptedEvents[currentEvent]);
         } else {
             CompletedScripts();

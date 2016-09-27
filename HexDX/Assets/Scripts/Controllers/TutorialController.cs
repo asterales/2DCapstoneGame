@@ -6,17 +6,22 @@ public class TutorialController : MonoBehaviour {
 	public Sprite selectionSprite;
 	public RuntimeAnimatorController animation;
 	public PlayerBattleController player;
+	public ScriptedAIBattleController scriptedAI;
+
 	public static Tile targetTile;
 	public static ScriptList eventsList;
 	public static GameObject selectionPromptObj;
 	private static readonly Vector3 visibilityOffset = new Vector3(0, 0, -0.01f);
 
 	void Awake(){
-		player.enabled = false;
 		Character tutorialAdvisor = Character.characters[2]; // Colonel Schmidt
 		eventsList = GameObject.Find("ScriptedEvents").GetComponent<ScriptList>();
 		eventsList.dialogueMgr.SetSpeaker(tutorialAdvisor, Expression.Neutral);
 		InitSelectionPrompt();
+	}
+
+	void Start() {
+		player.enabled = false;
 	}
 
 	private void InitSelectionPrompt() {
@@ -49,6 +54,13 @@ public class TutorialController : MonoBehaviour {
 	public static bool IsAttackTarget(AttackTile attackTile) {
 		return SelectionController.mode == SelectionMode.ScriptedPlayerAttack && attackTile.tile == targetTile;
 	}
+
+	public static void EndCurrentTurn(){
+		if(eventsList.currentScriptEvent.GetType() != typeof(ScriptedEndTurn)){
+			Debug.Log("Error: called EndCurrentTurn when currently not EndTurnScript");
+		}
+		eventsList.currentScriptEvent.FinishEvent();
+	}
 	
 	void Update () {
 		if (targetTile != null) {
@@ -63,10 +75,11 @@ public class TutorialController : MonoBehaviour {
 
 	private void EndTutorialMode() {
 		eventsList.dialogueMgr.HideGUI();
-		SelectionController.mode = SelectionMode.Open;
 		HideSelectionPrompt();
 		targetTile = null;
-		this.enabled = false;
+		SelectionController.ClearAllSelections();
 		player.enabled = true;
+		player.StartTurn();
+		this.enabled = false;
 	}
 }

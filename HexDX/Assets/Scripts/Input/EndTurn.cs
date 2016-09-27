@@ -13,9 +13,14 @@ public class EndTurn : MonoBehaviour {
 
     void OnMouseDown()
     {
-        if (SelectionController.TakingInput() || SelectionController.mode == SelectionMode.ScriptedPlayerEndTurn) {
+        if (SelectionController.TakingInput()) {
             spriteRenderer.color = new Color(0.3f, 0.3f, 0.3f);
             battleController.EndCurrentTurn();
+        }
+
+        if (SelectionController.mode == SelectionMode.ScriptedPlayerEndTurn) {
+            spriteRenderer.color = new Color(0.3f, 0.3f, 0.3f);
+            TutorialController.EndCurrentTurn();
         }
     }
 
