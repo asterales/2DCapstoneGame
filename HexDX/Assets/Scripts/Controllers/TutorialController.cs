@@ -3,14 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class TutorialController : MonoBehaviour {
-	public static ScriptList eventsList;
-	public static GameObject selectionPromptObj;
 	public Sprite selectionSprite;
 	public RuntimeAnimatorController animation;
+	public PlayerBattleController player;
 	public static Tile targetTile;
+	public static ScriptList eventsList;
+	public static GameObject selectionPromptObj;
 	private static readonly Vector3 visibilityOffset = new Vector3(0, 0, -0.01f);
 
 	void Awake(){
+		player.enabled = false;
 		Character tutorialAdvisor = Character.characters[2]; // Colonel Schmidt
 		eventsList = GameObject.Find("ScriptedEvents").GetComponent<ScriptList>();
 		eventsList.dialogueMgr.SetSpeaker(tutorialAdvisor, Expression.Neutral);
@@ -61,5 +63,6 @@ public class TutorialController : MonoBehaviour {
 		HideSelectionPrompt();
 		targetTile = null;
 		this.enabled = false;
+		player.enabled = true;
 	}
 }

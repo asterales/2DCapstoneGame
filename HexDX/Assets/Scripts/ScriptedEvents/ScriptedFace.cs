@@ -15,6 +15,16 @@ public class ScriptedFace : ScriptEvent {
         ////////////////////////
 	}
 
+    void Update() {
+        if (isActive && isPlayerEvent) {
+            Vector2 directionVec = Input.mousePosition - CameraController.camera.WorldToScreenPoint(SelectionController.selectedUnit.transform.position);
+            SelectionController.selectedUnit.SetFacing(directionVec);
+            if (Input.GetMouseButtonDown(1) && SelectionController.selectedUnit.facing == direction) {
+                FinishEvent();
+            }
+        }
+    }
+
     public override void DoPlayerEvent() {
         SelectionController.mode = SelectionMode.ScriptedPlayerFace;
     }
