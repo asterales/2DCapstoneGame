@@ -16,8 +16,10 @@ public class ScriptedEndTurn : ScriptEvent {
     public override void FinishEvent(){
         if(isPlayerEvent){
             player.EndTurn();
+            scriptedAI.StartTurn();
         } else {
             scriptedAI.EndTurn();
+            player.StartTurn();
         }
 
     	base.FinishEvent();

@@ -67,12 +67,14 @@ public class Tile : MonoBehaviour {
             if (currentUnit) {
                 //TO ADD: display stats
                 if (currentUnit.IsPlayerUnit()) {
+                    StatDisplay.DisplayPlayerUnit(currentUnit);
                     if (currentUnit.phase == UnitTurn.Open) {
                         HexMap.ShowMovementTiles(currentUnit);
                         MovementTile.path = new List<Tile>() { this };
                     }
                 } else {
                     // show enemy mvt range and stats
+                    StatDisplay.DisplayEnemyUnit(currentUnit);
                     List<Tile> movementTiles = HexMap.GetMovementTiles(currentUnit);
                     int facing = currentUnit.facing;
                     foreach (Tile t in movementTiles)

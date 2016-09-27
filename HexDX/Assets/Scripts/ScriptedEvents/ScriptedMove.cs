@@ -25,6 +25,7 @@ public class ScriptedMove : ScriptEvent {
         TutorialController.targetTile = tile;
         SelectionController.selectedTile = unit.currentTile;
         SelectionController.selectedUnit = unit;
+        Debug.Log("Phase: " + unit.phase);
         // let movement tile selection take care of itself
     }
 

@@ -20,4 +20,9 @@ public class ScriptedAIBattleController : MonoBehaviour {
             aiUnits[i].MakeOpen();
         }
     }
+
+    public void StartTurn()
+    {
+        // may be needed
+    }
 }
