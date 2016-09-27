@@ -20,18 +20,21 @@ public class ScriptedMove : ScriptEvent {
         ////////////////////////
 	}
 
-    public override void DoPlayerEvent()
-    {
+    public override void DoPlayerEvent() {
         SelectionController.mode = SelectionMode.ScriptedPlayerMove;
-        // to be implemented
+        TutorialController.targetTile = tile;
     }
 
-    public override void DoEvent()
-    {
+    public override void DoEvent() {
         SelectionController.mode = SelectionMode.ScriptedAI;
         Debug.Log("AI is Moving");
         unit.SetPath(unit.GetShortestPath(tile));
         unit.MakeMoving(this);
         // to be implemented
+    }
+
+    public override void FinishEvent(){
+        TutorialController.targetTile = null;
+        base.FinishEvent();
     }
 }

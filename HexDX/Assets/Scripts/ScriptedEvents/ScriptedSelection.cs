@@ -13,8 +13,8 @@ public class ScriptedSelection : ScriptEvent {
 
 	void Update() {
 		if(isActive && SelectionController.selectedTile == targetTile) {
-			SetSelection();
-			TutorialController.HideSelectionPrompt();
+			ShowSelection();
+			targetTile = null;
 			FinishEvent();
 		}
 	}
@@ -26,13 +26,11 @@ public class ScriptedSelection : ScriptEvent {
     public override void DoPlayerEvent() {
     	SelectionController.mode = SelectionMode.ScriptedPlayerSelection;
     	targetTile = HexMap.mapArray[row][col];
-    	TutorialController.ShowSelectionPrompt(targetTile);
     }
 
-    private void SetSelection() {
+    private void ShowSelection() {
     	SelectionController.ShowSelection(targetTile);
 		if (targetTile.currentUnit){
-			SelectionController.selectedUnit = targetTile.currentUnit;
 			SelectionController.ShowSelection(targetTile.currentUnit);
 		}
     }

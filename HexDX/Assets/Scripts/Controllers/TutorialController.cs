@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class TutorialController : MonoBehaviour {
-	private ScriptList eventsList;
+	public static ScriptList eventsList;
 	public static GameObject selectionPromptObj;
 	public Sprite selectionSprite;
 	public RuntimeAnimatorController animation;
@@ -39,8 +39,17 @@ public class TutorialController : MonoBehaviour {
 	public static bool IsTargetTile(Tile tile){
 		return SelectionController.mode == SelectionMode.ScriptedPlayerSelection && tile == targetTile;
 	}
+
+	public static bool IsTargetDestination(MovementTile mvtTile){
+		return SelectionController.mode == SelectionMode.ScriptedPlayerMove && mvtTile.tile == targetTile;
+	}
 	
 	void Update () {
+		if (targetTile != null) {
+			ShowSelectionPrompt(targetTile);
+		} else {
+			HideSelectionPrompt();
+		}
 		if (eventsList.EventsCompleted){
 			EndTutorialMode();
 		}

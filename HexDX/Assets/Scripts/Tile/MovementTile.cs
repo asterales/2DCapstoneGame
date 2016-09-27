@@ -14,11 +14,16 @@ public class MovementTile : MonoBehaviour {
             } else if (Input.GetMouseButtonDown(1)) {
                 CommitPath();
             }
+        }
+        if (Input.GetMouseButtonDown(1) && TutorialController.IsTargetDestination(this)){
+            CommitPath(TutorialController.eventsList.currentScriptEvent as ScriptedMove);
         } 
     }
     
     public void OnMouseEnter() {
-        if (SelectionController.TakingInput() && path != null) {
+        if ((SelectionController.TakingInput() 
+                || SelectionController.mode == SelectionMode.ScriptedPlayerMove) 
+                && path != null) {
             if (path.Count > 1 && tile == path[path.Count - 2]) {
                 // Backtracking - remove last tile
                 path.RemoveAt(path.Count - 1);
@@ -37,9 +42,9 @@ public class MovementTile : MonoBehaviour {
         }
     }
 
-    public static void CommitPath() {   
+    public static void CommitPath(ScriptedMove move = null) {   
         if (path != null && (path[path.Count - 1].currentUnit == null || path[path.Count - 1].currentUnit == SelectionController.selectedUnit)) {
-            SelectionController.selectedUnit.MakeMoving(null);
+            SelectionController.selectedUnit.MakeMoving(move);
             SelectionController.selectedUnit.SetPath(path);
             SelectionController.mode = SelectionMode.Moving;
             SelectionController.SaveLastTile(SelectionController.selectedUnit);

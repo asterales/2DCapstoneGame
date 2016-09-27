@@ -45,7 +45,7 @@ public class TutorialMapLoader : MonoBehaviour
         {
             // load the test battle map
             LoadHexMap(csvMapFile);
-            AddUnitToTile(0, 0, battleController.scriptedAI.aiUnits[0], false, new Vector3(0, 1, 0));
+            AddUnitToTile(0, 0, battleController.scriptedAI.aiUnits[0], true, new Vector3(0, 1, 0));
         }
 
         ////// DEBUG CODE //////
