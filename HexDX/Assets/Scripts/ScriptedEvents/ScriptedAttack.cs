@@ -25,7 +25,9 @@ public class ScriptedAttack : ScriptEvent {
                 float modifier = (float)damageDelt / (float)attacker.Attack;
                 StartCoroutine(attacker.DoAttack(victim, modifier));
                 SelectionController.target = null;
+                TutorialController.targetTile = null;
             } else if (attacker.phase == UnitTurn.Done) {
+                SelectionController.mode = SelectionMode.ScriptedPlayerAttack;
                 FinishEvent();
             }
         } 

@@ -14,7 +14,9 @@ public class ScriptedEndTurn : ScriptEvent {
     }
 
     public override void FinishEvent(){
-    	player.enabled = false;
+        if(isPlayerEvent){
+            player.enabled = false;
+        }
     	base.FinishEvent();
     }
 }

@@ -20,6 +20,7 @@ public class ScriptedFace : ScriptEvent {
             Vector2 directionVec = Input.mousePosition - CameraController.camera.WorldToScreenPoint(SelectionController.selectedUnit.transform.position);
             SelectionController.selectedUnit.SetFacing(directionVec);
             if (Input.GetMouseButtonDown(1) && SelectionController.selectedUnit.facing == direction) {
+                SelectionController.selectedUnit = null;
                 FinishEvent();
             }
         }

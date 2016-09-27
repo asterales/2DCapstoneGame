@@ -7,7 +7,7 @@ public class AttackTile : MonoBehaviour {
     public Tile tile;
 
     public void OnMouseOver() {
-        if (SelectionController.selectedUnit.phase == UnitTurn.Attacking) {
+        if (SelectionController.selectedUnit && SelectionController.selectedUnit.phase == UnitTurn.Attacking) {
             if (Input.GetMouseButtonDown(0)) {
                 if (tile.currentUnit) {
                     //display tile stats
