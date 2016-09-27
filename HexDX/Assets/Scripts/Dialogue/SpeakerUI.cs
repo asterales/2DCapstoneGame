@@ -46,9 +46,9 @@ public class SpeakerUI {
 		continuePrompt = dialogueBox.panelBG.transform.Find("Continuation Prompt").GetComponent<Text>();
 	}
 
-	public void SetSpeaker(Dialogue line) {
-		portrait.sprite = line.Portrait;
-		nameCard.textbox.text = line.CharacterName;
+	public void SetSpeaker(Sprite picture, string name) {
+		portrait.sprite = picture;
+		nameCard.textbox.text = name;
 	}
 
 	public void ShowPortrait(){
@@ -78,7 +78,12 @@ public class SpeakerUI {
 		continuePrompt.enabled = false;
 	}
 
-	public void HideAll() {
+	public void ShowGUI() {
+		ShowPortrait();
+		ShowTextBoxes();
+	}
+
+	public void HideGUI() {
 		HidePortrait();
 		HideTextBoxes();
 	}

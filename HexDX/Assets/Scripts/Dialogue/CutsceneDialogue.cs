@@ -2,23 +2,23 @@ using UnityEngine;
 using System;
 using System.Linq;
 
-/* 	Container class for character dialogue lines and information
+/* 	Container class for character cutscene dialogue lines and information
 	
-	Dialogue File txt Format (pipe delimeted) : 
+	CutsceneDialogue File txt Format (pipe delimeted) : 
 		character_id (int) | expression enum/portrait_index (int) | screen_location enum (int) | spoken_line (string)
-		ex 1 | 0 | 1 | Hello
+		cutscene ex: 1 | 0 | 1 | Hello
 */
 
-public class Dialogue {
+public class CutsceneDialogue {
 	public string CharacterName { get; private set; }
 	public Sprite Portrait { get; private set; }
 	public ScreenLocation Side { get; private set; }
 	public string Line { get; private set; }
 
-	public Dialogue(string inputLine) {
+	public CutsceneDialogue(string inputLine) {
 		string[] tokens = inputLine.Split('|').Select(s => s.Trim()).ToArray();
-		if (tokens.Length < 4) {
-			throw new ArgumentException("input line must contain 4 elements");
+		if (tokens.Length < 2) {
+			throw new ArgumentException("input line must contain 3 or 4 elements");
 		}
 		Character character = Character.characters[int.Parse(tokens[0])];
 		CharacterName = character.Name;

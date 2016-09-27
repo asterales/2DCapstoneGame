@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine.UI;
 
-public class CutsceneManager : MonoBehaviour {
+/* Manages cutscene dialogue */
+
+public class CutsceneManager : DialogueManager {
 	public string csvCutsceneFile = "Assets/Cutscenes/TestDialogue.txt";
-	public Queue<Dialogue> dialogues;
+	private Queue<CutsceneDialogue> dialogues;
 	private SpeakerUI leftSpeaker;
 	private SpeakerUI rightSpeaker;
-	private SpeakerUI activeSpeaker;
-	private Dialogue currentLine;
-	private IEnumerator currentSpeechRoutine;
 
 	void Awake() {
 		if (csvCutsceneFile != null) {
@@ -19,16 +18,15 @@ public class CutsceneManager : MonoBehaviour {
 		}
 		leftSpeaker = new SpeakerUI("Left Portrait", "Left Name Card", "Left Dialogue Box");
 		rightSpeaker = new SpeakerUI("Right Portrait", "Right Name Card", "Right Dialogue Box");
-		leftSpeaker.HideAll();
-		rightSpeaker.HideAll();
+		leftSpeaker.HideGUI();
+		rightSpeaker.HideGUI();
 	}
 
 	private void LoadCutscene(string file) {
-		Debug.Log(file);
-		dialogues = new Queue<Dialogue>();
+		dialogues = new Queue<CutsceneDialogue>();
 		StreamReader reader = new StreamReader(File.OpenRead(file));
 		while(!reader.EndOfStream){
-			dialogues.Enqueue(new Dialogue(reader.ReadLine()));
+			dialogues.Enqueue(new CutsceneDialogue(reader.ReadLine()));
 		}
 	}
 
@@ -38,7 +36,7 @@ public class CutsceneManager : MonoBehaviour {
 
 	private void SetNextLine() {
 		if(dialogues.Count > 0) {
-			Dialogue dialogue = dialogues.Dequeue();
+			CutsceneDialogue dialogue = dialogues.Dequeue();
 			switch(dialogue.Side) {
 				case ScreenLocation.Left:
 					SwitchToSpeaker(leftSpeaker, dialogue);
@@ -50,49 +48,19 @@ public class CutsceneManager : MonoBehaviour {
 		}
 	}
 
-	private void SwitchToSpeaker(SpeakerUI nextSpeaker, Dialogue dialogue){
+	private void SwitchToSpeaker(SpeakerUI nextSpeaker, CutsceneDialogue dialogue){
 		if(activeSpeaker != null) {
 			activeSpeaker.HideTextBoxes();
 		}
-		nextSpeaker.SetSpeaker(dialogue);
-		nextSpeaker.ShowPortrait();
-		nextSpeaker.ShowTextBoxes();
+		nextSpeaker.SetSpeaker(dialogue.Portrait, dialogue.CharacterName);
+		nextSpeaker.ShowGUI();
 		activeSpeaker = nextSpeaker;
-		currentLine = dialogue;
+		currentLine = dialogue.Line;
 		StartSpeakerLines();
 	}
 
-	private void StartSpeakerLines(){
-		if (currentLine.Line != null) {
-			currentSpeechRoutine = WriteDialogue();
-			StartCoroutine(currentSpeechRoutine);
-		}
-	}
-
-	private IEnumerator WriteDialogue() {
-		activeSpeaker.HideContinuePrompt();
-		activeSpeaker.DialogueText = "";
-		foreach(char c in currentLine.Line) {
-			activeSpeaker.DialogueText += c;
-			yield return new WaitForSeconds(0.02f);
-		}
-	}
-
-	private bool SpeakerLinesFinished() {
-		return activeSpeaker.DialogueText.Equals(currentLine.Line);
-	}
-
-	private void FinishSpeakerLines() {
-		if (currentSpeechRoutine != null) {
-			StopCoroutine(currentSpeechRoutine);
-		}
-		activeSpeaker.DialogueText = currentLine.Line;
-	}
-
-	void Update() {
-		if(SpeakerLinesFinished()){
-			activeSpeaker.ShowContinuePrompt();
-		} 
+	protected override void Update() {
+		base.Update();
 		if (Input.GetMouseButtonDown(0)){
 			if(SpeakerLinesFinished()){
 				SetNextLine();
