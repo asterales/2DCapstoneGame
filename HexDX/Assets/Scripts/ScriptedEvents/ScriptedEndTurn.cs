@@ -10,8 +10,7 @@ public class ScriptedEndTurn : ScriptEvent {
     }
 
     public override void DoEvent() {
-        SelectionController.mode = SelectionMode.ScriptedAI;
-        Debug.Log("AI is FinishingTurn");
+        FinishEvent();
     }
 
     public override void FinishEvent(){

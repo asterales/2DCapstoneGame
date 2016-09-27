@@ -134,7 +134,6 @@ public class Unit : MonoBehaviour {
                 break;
             case UnitTurn.Attacking:
                 if (face < 3) {
-                    Debug.Log("WHAT");
                     spriteRenderer.flipX = false;
                     spriteRenderer.sprite = sprites.attack[(facing + 3) % 3];
                     animator.runtimeAnimatorController = sprites.attackAnim[(facing + 3) % 3];
@@ -266,7 +265,7 @@ public class Unit : MonoBehaviour {
         GameObject damage = new GameObject();
         damage.AddComponent<DamageIndicator>().SetDamage((int)(-Attack * modifier));
         damage.transform.position = target.transform.position+new Vector3(-1f, 6f, 0f);
-        Image healthBar = target.transform.Find("HealthBar").GetComponent<Image>();
+        Image healthBar = target.transform.Find("HealthBar").GetComponent<Image>(); // Find() is expensive
         healthBar.fillAmount = (float)target.Health / (float)target.MaxHealth;
         target.MakeDone();
         if (target.Health <= 0)
