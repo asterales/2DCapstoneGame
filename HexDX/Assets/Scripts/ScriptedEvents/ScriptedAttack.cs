@@ -23,6 +23,7 @@ public class ScriptedAttack : ScriptEvent {
         if(isActive && isPlayerEvent){
             if (SelectionController.target == victim) {
                 float modifier = (float)damageDelt / (float)attacker.Attack;
+                attacker.MakeAttacking();   
                 StartCoroutine(attacker.DoAttack(victim, modifier));
                 SelectionController.target = null;
                 TutorialController.targetTile = null;
