@@ -2,14 +2,19 @@
 using System.Collections;
 
 public class ScriptedEndTurn : ScriptEvent {
+	public PlayerBattleController player;
     public override void DoPlayerEvent() {
         SelectionController.mode = SelectionMode.ScriptedPlayerEndTurn;
-        // to be implemented
+        player.enabled = true; // hack
     }
 
     public override void DoEvent() {
         SelectionController.mode = SelectionMode.ScriptedAI;
         Debug.Log("AI is FinishingTurn");
-        // to be implemented
+    }
+
+    public override void FinishEvent(){
+    	player.enabled = false;
+    	base.FinishEvent();
     }
 }

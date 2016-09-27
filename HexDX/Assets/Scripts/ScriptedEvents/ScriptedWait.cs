@@ -7,8 +7,7 @@ public class ScriptedWait : ScriptEvent {
 
 	void Start () {
 	    ////// DEBUG CODE //////
-        if (unit == null)
-        {
+        if (unit == null) {
             Debug.Log("ERROR :: Unit needs to be defined");
         }
         ////////////////////////
