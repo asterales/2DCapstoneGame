@@ -26,7 +26,6 @@ public class Unit : MonoBehaviour {
     // temporary storage for scripted stuff
     ScriptedMove scriptedMove;
     ScriptedAttack scriptedAttack;
-    ScriptedFace scriptedFace;
 
     // Properties for shorthand access to stats, includes tile modifiers
     public int MvtRange { get { return unitStats.mvtRange + currentTile.tileStats.mvtModifier; } }
@@ -101,14 +100,12 @@ public class Unit : MonoBehaviour {
             } else {
                 if (path.Count == 1) {
                     SetTile(path.Dequeue());
-                    if (scriptedMove != null)
-                    {
+                    if (scriptedMove != null) {
                         scriptedMove.FinishEvent();
                         scriptedMove = null;
-                        // to be implemented
                     }
                     // re-enable the players ability to select
-                    if(!SelectionController.TakingInput() && !SelectionController.TakingAIInput()) {
+                    if(SelectionController.mode == SelectionMode.Moving) {
                         SelectionController.mode = SelectionMode.Facing;
                     }
                     MakeFacing();
@@ -231,9 +228,8 @@ public class Unit : MonoBehaviour {
         phase = UnitTurn.Attacking;
     }
 
-    public void MakeFacing(ScriptedFace face = null) {
+    public void MakeFacing() {
         phase = UnitTurn.Facing;
-        scriptedFace = face;
     }
 
     public void MakeDone() {

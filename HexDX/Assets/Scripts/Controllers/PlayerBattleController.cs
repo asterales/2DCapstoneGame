@@ -45,10 +45,12 @@ public class PlayerBattleController : MonoBehaviour {
     }
 
     private void SelectFacing() {
-        Vector2 directionVec = Input.mousePosition - CameraController.camera.WorldToScreenPoint(selectedUnit.transform.position);
-        selectedUnit.SetFacing(directionVec);
-        if (Input.GetMouseButtonDown(1)) {
-            selectedUnit.MakeChoosingAction();
+        if (SelectionController.mode == SelectionMode.Facing || SelectionController.mode == SelectionMode.ScriptedPlayerFace) {
+            Vector2 directionVec = Input.mousePosition - CameraController.camera.WorldToScreenPoint(selectedUnit.transform.position);
+            selectedUnit.SetFacing(directionVec);
+            if (Input.GetMouseButtonDown(1)) {
+                selectedUnit.MakeChoosingAction();
+            }
         }
     }
 

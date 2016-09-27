@@ -15,16 +15,12 @@ public class ScriptedFace : ScriptEvent {
         ////////////////////////
 	}
 
-    public override void DoPlayerEvent()
-    {
+    public override void DoPlayerEvent() {
         SelectionController.mode = SelectionMode.ScriptedPlayerFace;
-        // to be implemented
     }
 
-    public override void DoEvent()
-    {
+    public override void DoEvent() {
         SelectionController.mode = SelectionMode.ScriptedAI;
         Debug.Log("AI is Facing");
-        // to be implemented
     }
 }

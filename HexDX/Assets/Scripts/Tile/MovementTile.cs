@@ -46,7 +46,9 @@ public class MovementTile : MonoBehaviour {
         if (path != null && (path[path.Count - 1].currentUnit == null || path[path.Count - 1].currentUnit == SelectionController.selectedUnit)) {
             SelectionController.selectedUnit.MakeMoving(move);
             SelectionController.selectedUnit.SetPath(path);
-            SelectionController.mode = SelectionMode.Moving;
+            if (move == null) {
+                SelectionController.mode = SelectionMode.Moving;
+            }
             SelectionController.SaveLastTile(SelectionController.selectedUnit);
             path = null;
             HexMap.ClearMovementTiles();
