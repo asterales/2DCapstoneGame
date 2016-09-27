@@ -4,41 +4,46 @@ using System.Collections.Generic;
 public class ScriptList : MonoBehaviour {
     public PlayerBattleController player;
     public AIBattleController ai;
+    public GameDialogueManager dialogueMgr;
     public List<ScriptEvent> scriptedEvents; // to be done in order and set in UI
     private int currentEvent;
+    
+    public bool EventsCompleted { get; private set; } // flag for completion
 
-    public void Start()
-    {
+    public void Start() {
+        EventsCompleted = false;
         currentEvent = 0;
         StartEvents();
     }
-	
-    public void StartEvents()
-    {
-        if (scriptedEvents.Count > 0)
-        {
-            scriptedEvents[0].StartEvent();
+
+    public void StartEvents() {
+        if (scriptedEvents.Count > 0) {
+            StartInstuctions(scriptedEvents[0]);
         }
     }
 
-	public void NextEvent()
-    {
-        //Debug.Log("NEXT");
-        //scriptedEvents[currentEvent].FinishEvent();
+	public void NextEvent() {
+        Debug.Log("NEXT");
         currentEvent++;
-        if (scriptedEvents.Count > currentEvent)
-        {
-            scriptedEvents[currentEvent].StartEvent();
-        }
-        else
-        {
+        if (scriptedEvents.Count > currentEvent) {
+            StartInstuctions(scriptedEvents[currentEvent]);
+        } else {
             CompletedScripts();
         }
     }
 
-    private void CompletedScripts()
-    {
+    private void CompletedScripts() {
         Debug.Log("All Scripts Complete");
-        // to be implemented
+        EventsCompleted = true;
+    }
+
+    private void StartInstuctions(ScriptEvent scriptEvent){
+        if(scriptEvent.HasInstructions()){
+            SelectionController.mode = SelectionMode.ScriptedPlayerInstruction;
+            dialogueMgr.ShowGUI();
+            dialogueMgr.SetNewLines(scriptEvent.instructions, scriptedEvents[currentEvent].StartEvent);
+        } else {
+            scriptedEvents[currentEvent].StartEvent();
+        } 
     }
 }

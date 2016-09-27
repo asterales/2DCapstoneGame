@@ -14,8 +14,17 @@ public abstract class DialogueManager : MonoBehaviour {
 	protected virtual void Update() {
 		if(SpeakerLinesFinished()){
 			activeSpeaker.ShowContinuePrompt();
+		}
+		if (Input.GetMouseButtonDown(0)){
+			if(SpeakerLinesFinished()){
+				SetNextLine();
+			} else {
+				FinishSpeakerLines();
+			}
 		} 
 	}
+
+	protected abstract void SetNextLine();
 
 	protected void StartSpeakerLines(){
 		if (currentLine != null) {

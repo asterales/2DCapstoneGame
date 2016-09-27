@@ -20,13 +20,8 @@ public class ScriptedMove : ScriptEvent {
         ////////////////////////
 	}
 
-    public override void StartEvent()
+    public override void DoPlayerEvent()
     {
-        if (!playerEvent)
-        {
-            DoEvent();
-            return;
-        }
         SelectionController.mode = SelectionMode.ScriptedPlayerMove;
         // to be implemented
     }
@@ -38,11 +33,5 @@ public class ScriptedMove : ScriptEvent {
         unit.SetPath(unit.GetShortestPath(tile));
         unit.MakeMoving(this);
         // to be implemented
-    }
-
-    public override void FinishEvent()
-    {
-        // to be implemented
-        Complete();
     }
 }

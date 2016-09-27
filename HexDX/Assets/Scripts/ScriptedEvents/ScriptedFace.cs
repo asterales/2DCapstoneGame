@@ -15,13 +15,8 @@ public class ScriptedFace : ScriptEvent {
         ////////////////////////
 	}
 
-    public override void StartEvent()
+    public override void DoPlayerEvent()
     {
-        if (!playerEvent)
-        {
-            DoEvent();
-            return;
-        }
         SelectionController.mode = SelectionMode.ScriptedPlayerFace;
         // to be implemented
     }
@@ -31,11 +26,5 @@ public class ScriptedFace : ScriptEvent {
         SelectionController.mode = SelectionMode.ScriptedAI;
         Debug.Log("AI is Facing");
         // to be implemented
-    }
-
-    public override void FinishEvent()
-    {
-        // to be implemented
-        Complete();
     }
 }

@@ -57,7 +57,8 @@ public class Tile : MonoBehaviour {
     }
 
     public void OnMouseOver() {
-        if (SelectionController.TakingInput() && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))) {
+        if ((SelectionController.TakingInput() || TutorialController.IsTargetTile(this))
+                && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))) {
             //left click - selection
             HexMap.ClearAllTiles();
             MovementTile.path = null;

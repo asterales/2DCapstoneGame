@@ -8,7 +8,10 @@ using UnityEngine.UI;
 */
 
 public class GameDialogueManager : DialogueManager {
+	public delegate void FinishedLinesCallback();
 	private bool isVisible;
+	private Queue<string> lines;
+	private FinishedLinesCallback finishedCallback;
 	
 	void Awake(){
 		activeSpeaker = new SpeakerUI("Dialogue Portrait", "Dialogue Name Card", "Dialogue Box");
@@ -18,18 +21,31 @@ public class GameDialogueManager : DialogueManager {
 	protected override void Update() {
 		if(isVisible) {
 			base.Update();
-			if (Input.GetMouseButtonDown(0) && !SpeakerLinesFinished()){
-				FinishSpeakerLines();
+			if(HasFinishedAllLines() && finishedCallback != null){
+				finishedCallback();
+				finishedCallback = null;
 			}
 		}
 	}
 
-	public void SetLine(string line) {
+	protected override void SetNextLine() {
+		if(lines.Count > 0) {
+			currentLine = lines.Dequeue();
+			StartSpeakerLines();
+		}
+	}
+
+	public void SetNewLines(List<string> nextLines, FinishedLinesCallback callback = null) {
 		if(!SpeakerLinesFinished()){
 			FinishSpeakerLines();
 		}
-		currentLine = line;
-		StartSpeakerLines();
+		lines = new Queue<string>(nextLines);
+		finishedCallback = callback;
+		SetNextLine();
+	}
+
+	public bool HasFinishedAllLines() {
+		return lines.Count == 0 && SpeakerLinesFinished();
 	}
 
 	public void SetSpeaker(Character character, Expression expression) {

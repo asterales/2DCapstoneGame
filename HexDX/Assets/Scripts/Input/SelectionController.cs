@@ -11,7 +11,7 @@ public class SelectionController : MonoBehaviour {
     public static SelectionMode mode;
     private static GameObject selectedSpaceObj; // object for selected space
     private static GameObject targetSpaceObj; // object for target space
-    private static readonly Vector3 visibilityOffset = new Vector3(0, 0, -0.01f);
+    protected static readonly Vector3 visibilityOffset = new Vector3(0, 0, -0.01f);
 
 	void Start () {
         mode = SelectionMode.Open;
@@ -43,7 +43,7 @@ public class SelectionController : MonoBehaviour {
     }
 
 
-    void Update () {
+    protected virtual void Update () {
         if(!SelectionController.TakingAIInput()) {
             if (mode == SelectionMode.Open) {
                 if (selectedTile != null) {

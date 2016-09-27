@@ -25,6 +25,8 @@ public class Unit : MonoBehaviour {
 
     // temporary storage for scripted stuff
     ScriptedMove scriptedMove;
+    ScriptedAttack scriptedAttack;
+    ScriptedFace scriptedFace;
 
     // Properties for shorthand access to stats, includes tile modifiers
     public int MvtRange { get { return unitStats.mvtRange + currentTile.tileStats.mvtModifier; } }
@@ -215,24 +217,23 @@ public class Unit : MonoBehaviour {
         SetFacingSprites();
     }
 
-    public void MakeMoving(ScriptedMove move) {
+    public void MakeMoving(ScriptedMove move = null) {
         phase = UnitTurn.Moving;
         scriptedMove = move;
     }
 
-    public void MakeChoosingAction() {
+    public void MakeChoosingAction(ScriptEvent scriptEvent = null) {
         phase = UnitTurn.ChoosingAction;
 
     }
 
     public void MakeAttacking() {
         phase = UnitTurn.Attacking;
-
     }
 
-    public void MakeFacing() {
+    public void MakeFacing(ScriptedFace face = null) {
         phase = UnitTurn.Facing;
-
+        scriptedFace = face;
     }
 
     public void MakeDone() {

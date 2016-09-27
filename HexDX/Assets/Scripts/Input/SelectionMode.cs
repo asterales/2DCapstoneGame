@@ -6,6 +6,7 @@
 	Attacking,
 	AITurn,
 
+    ScriptedPlayerSelection,
     ScriptedPlayerMove,
     ScriptedPlayerAttack,
     ScriptedPlayerFace,

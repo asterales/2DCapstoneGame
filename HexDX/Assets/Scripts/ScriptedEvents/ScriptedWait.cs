@@ -14,27 +14,14 @@ public class ScriptedWait : ScriptEvent {
         ////////////////////////
 	}
 
-    public override void StartEvent()
-    {
-        if (!playerEvent)
-        {
-            DoEvent();
-            return;
-        }
+    public override void DoPlayerEvent() {
         SelectionController.mode = SelectionMode.ScriptedPlayerWait;
         // to be implemented
     }
 
-    public override void DoEvent()
-    {
+    public override void DoEvent() {
         SelectionController.mode = SelectionMode.ScriptedAI;
         Debug.Log("AI is Waiting");
         // to be implemented
-    }
-
-    public override void FinishEvent()
-    {
-        // to be implemented
-        Complete();
     }
 }

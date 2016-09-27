@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public abstract class ScriptEvent : MonoBehaviour {
     protected bool isActive;
+    public bool isPlayerEvent;
     protected ScriptList list;
-    public string instructions;
-    public bool playerEvent;
+    public List<string> instructions;
 
 	void Awake () {
         list = this.gameObject.GetComponent<ScriptList>();
@@ -17,17 +17,32 @@ public abstract class ScriptEvent : MonoBehaviour {
         ////////////////////////
 	}
 
-    protected void Complete()
-    {
-        //Debug.Log("Completed Event");
-        //if (list == null)
-        //{
-        //    Debug.Log("WHAT");
-        //}
+    void Start() {
+        isActive = false;
+    }
+
+    protected void Complete() {
         list.NextEvent();
     }
 
-    public abstract void StartEvent();
-    public abstract void FinishEvent();
+    public virtual void StartEvent() {
+        isActive = true;
+        if (isPlayerEvent) {
+            DoPlayerEvent();
+        } else {
+            DoEvent();
+        }
+    }
+
+    public virtual void FinishEvent() {
+        isActive = false;
+        Complete();
+    }
+    
     public abstract void DoEvent();
+    public abstract void DoPlayerEvent();
+
+    public bool HasInstructions() {
+        return instructions != null && instructions.Count > 0;
+    }
 }

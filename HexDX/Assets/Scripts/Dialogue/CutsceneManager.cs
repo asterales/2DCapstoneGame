@@ -34,7 +34,7 @@ public class CutsceneManager : DialogueManager {
 		SetNextLine();
 	}
 
-	private void SetNextLine() {
+	protected override void SetNextLine() {
 		if(dialogues.Count > 0) {
 			CutsceneDialogue dialogue = dialogues.Dequeue();
 			switch(dialogue.Side) {
@@ -57,17 +57,6 @@ public class CutsceneManager : DialogueManager {
 		activeSpeaker = nextSpeaker;
 		currentLine = dialogue.Line;
 		StartSpeakerLines();
-	}
-
-	protected override void Update() {
-		base.Update();
-		if (Input.GetMouseButtonDown(0)){
-			if(SpeakerLinesFinished()){
-				SetNextLine();
-			} else {
-				FinishSpeakerLines();
-			}
-		}
 	}
 }
 
