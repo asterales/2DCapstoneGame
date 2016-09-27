@@ -33,7 +33,6 @@ public class ScriptedMove : ScriptEvent {
         Debug.Log("AI is Moving");
         unit.SetPath(unit.GetShortestPath(tile));
         unit.MakeMoving(this);
-        // to be implemented
     }
 
     public override void FinishEvent(){

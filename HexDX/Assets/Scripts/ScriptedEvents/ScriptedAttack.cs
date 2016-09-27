@@ -30,7 +30,12 @@ public class ScriptedAttack : ScriptEvent {
                 SelectionController.mode = SelectionMode.ScriptedPlayerAttack;
                 FinishEvent();
             }
-        } 
+        }
+        //if (isActive && attacker.phase == UnitTurn.Done)
+        //{
+        //    Debug.Log("Hey Listen");
+        //    FinishEvent();
+        //}
     }
 
     public override void DoPlayerEvent() {
@@ -40,7 +45,14 @@ public class ScriptedAttack : ScriptEvent {
 
     public override void DoEvent() {
         SelectionController.mode = SelectionMode.ScriptedAI;
-        Debug.Log("AI is Attacking");
+        attacker.MakeAttacking();
+        float modifier = (float)damageDelt / (float)attacker.Attack;
+        Debug.Log("Phase: " + attacker.phase);
+        //UnitTurn temp = attacker.phase;
+        //attacker.phase = UnitTurn.Attacking;
+        StartCoroutine(attacker.PerformAttack(victim));
+        //FinishEvent();
+        //Debug.Log("AI is Attacking");
         // to be implemented
     }
 }

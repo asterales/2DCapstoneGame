@@ -134,6 +134,7 @@ public class Unit : MonoBehaviour {
                 break;
             case UnitTurn.Attacking:
                 if (face < 3) {
+                    Debug.Log("WHAT");
                     spriteRenderer.flipX = false;
                     spriteRenderer.sprite = sprites.attack[(facing + 3) % 3];
                     animator.runtimeAnimatorController = sprites.attackAnim[(facing + 3) % 3];

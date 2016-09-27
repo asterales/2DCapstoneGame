@@ -21,7 +21,7 @@ public class ScriptedWait : ScriptEvent {
 
     public override void DoEvent() {
         SelectionController.mode = SelectionMode.ScriptedAI;
-        Debug.Log("AI is Waiting");
-        // to be implemented
+        unit.MakeDone();
+        FinishEvent();
     }
 }
