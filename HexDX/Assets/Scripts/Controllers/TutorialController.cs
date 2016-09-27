@@ -45,6 +45,10 @@ public class TutorialController : MonoBehaviour {
 	public static bool IsTargetDestination(MovementTile mvtTile){
 		return SelectionController.mode == SelectionMode.ScriptedPlayerMove && mvtTile.tile == targetTile;
 	}
+
+	public static bool IsAttackTarget(AttackTile attackTile) {
+		return SelectionController.mode == SelectionMode.ScriptedPlayerAttack && attackTile.tile == targetTile;
+	}
 	
 	void Update () {
 		if (targetTile != null) {

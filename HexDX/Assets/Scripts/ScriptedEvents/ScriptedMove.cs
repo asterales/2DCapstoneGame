@@ -23,6 +23,9 @@ public class ScriptedMove : ScriptEvent {
     public override void DoPlayerEvent() {
         SelectionController.mode = SelectionMode.ScriptedPlayerMove;
         TutorialController.targetTile = tile;
+        SelectionController.selectedTile = unit.currentTile;
+        SelectionController.selectedUnit = unit;
+        // let movement tile selection take care of itself
     }
 
     public override void DoEvent() {
@@ -35,6 +38,8 @@ public class ScriptedMove : ScriptEvent {
 
     public override void FinishEvent(){
         TutorialController.targetTile = null;
+        SelectionController.selectedTile = null;
+        SelectionController.selectedUnit = null;
         base.FinishEvent();
     }
 }

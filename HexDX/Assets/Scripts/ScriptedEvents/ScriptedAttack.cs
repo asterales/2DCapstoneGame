@@ -19,9 +19,21 @@ public class ScriptedAttack : ScriptEvent {
         ////////////////////////
 	}
 
+    void Update() {
+        if(isActive && isPlayerEvent){
+            if (SelectionController.target == victim) {
+                float modifier = (float)damageDelt / (float)attacker.Attack;
+                StartCoroutine(attacker.DoAttack(victim, modifier));
+                SelectionController.target = null;
+            } else if (attacker.phase == UnitTurn.Done) {
+                FinishEvent();
+            }
+        } 
+    }
+
     public override void DoPlayerEvent() {
         SelectionController.mode = SelectionMode.ScriptedPlayerAttack;
-        // to be implemented
+        TutorialController.targetTile = victim.currentTile;
     }
 
     public override void DoEvent() {

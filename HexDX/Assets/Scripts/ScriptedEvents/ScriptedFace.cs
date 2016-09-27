@@ -27,6 +27,7 @@ public class ScriptedFace : ScriptEvent {
 
     public override void DoPlayerEvent() {
         SelectionController.mode = SelectionMode.ScriptedPlayerFace;
+        SelectionController.selectedUnit = unit;
     }
 
     public override void DoEvent() {

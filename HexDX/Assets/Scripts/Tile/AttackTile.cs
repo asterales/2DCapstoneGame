@@ -34,9 +34,9 @@ public class AttackTile : MonoBehaviour {
                     SelectionController.HideTarget();
                 }
             }
-        }
-        else
-        {
+        } else if (TutorialController.IsAttackTarget(this) && Input.GetMouseButtonDown(1)){
+            SelectionController.target = tile.currentUnit;
+        } else {
             tile.OnMouseOver();
         }
     }
