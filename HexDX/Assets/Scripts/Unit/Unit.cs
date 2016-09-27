@@ -99,15 +99,16 @@ public class Unit : MonoBehaviour {
             } else {
                 if (path.Count == 1) {
                     SetTile(path.Dequeue());
-                    if (scriptedMove != null) {
-                        scriptedMove.FinishEvent();
-                        scriptedMove = null;
-                    }
                     // re-enable the players ability to select
                     if(SelectionController.mode == SelectionMode.Moving) {
                         SelectionController.mode = SelectionMode.Facing;
                     }
                     MakeFacing();
+                    if (scriptedMove != null)
+                    {
+                        scriptedMove.FinishEvent();
+                        scriptedMove = null;
+                    }
                 } else {
                     path.Dequeue();
                     facing = HexMap.GetNeighbors(lastTile).IndexOf(path.Peek());
