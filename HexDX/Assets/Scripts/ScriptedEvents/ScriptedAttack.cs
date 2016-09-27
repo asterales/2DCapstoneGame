@@ -43,5 +43,6 @@ public class ScriptedAttack : ScriptEvent {
         SelectionController.mode = SelectionMode.ScriptedAI;
         attacker.MakeAttacking();
         StartCoroutine(attacker.PerformAttack(victim));
+        FinishEvent();
     }
 }
