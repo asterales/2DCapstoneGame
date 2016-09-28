@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class Tile : MonoBehaviour {
     public bool pathable;
@@ -100,9 +101,21 @@ public class Tile : MonoBehaviour {
         }
     }
 
+    public void ShowAttackableMovementTile()
+    {
+        if (movementTile)
+        {
+            movementTile.transform.localPosition = visibilityOffset;
+            movementTile.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.white;
+            HexMap.showingMovementTiles.Push(this);
+            HideAttackTile();
+        }
+    }
+
     public void ShowMovementTile() {
         if (movementTile) {
             movementTile.transform.localPosition = visibilityOffset;
+            movementTile.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.clear;
             HexMap.showingMovementTiles.Push(this);
             HideAttackTile();
         }
