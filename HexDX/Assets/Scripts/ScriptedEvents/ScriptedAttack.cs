@@ -21,7 +21,7 @@ public class ScriptedAttack : ScriptEvent {
 
     void Update() {
         if(isActive && isPlayerEvent){
-            if (SelectionController.target == victim) {
+            if (SelectionController.target == victim && SelectionController.target) {
                 attacker.MakeAttacking();   
                 StartCoroutine(attacker.PerformAttack(victim));
                 SelectionController.target = null;

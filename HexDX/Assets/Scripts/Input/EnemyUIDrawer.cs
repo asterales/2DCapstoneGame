@@ -4,13 +4,13 @@ using UnityEngine.UI;
 
 public class EnemyUIDrawer : MonoBehaviour {
 
-    public Unit unit;
-    public Image healthbar;
-    public Image portrait;
-    public Image attackbar;
-    public Image defensebar;
-    public Image powerbar;
-    public Image resistbar;
+    public static Unit unit;
+    public static Image healthbar;
+    public static Image portrait;
+    public static Image attackbar;
+    public static Image defensebar;
+    public static Image powerbar;
+    public static Image resistbar;
     // Use this for initialization
     void Start()
     {

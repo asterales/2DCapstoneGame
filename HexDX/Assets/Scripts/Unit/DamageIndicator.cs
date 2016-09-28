@@ -11,6 +11,8 @@ public class DamageIndicator : MonoBehaviour {
         textmesh = this.gameObject.AddComponent<TextMesh>();
         textmesh.fontSize = 15;
         textmesh.text = "potato";
+        textmesh.alignment = TextAlignment.Center;
+        textmesh.anchor = TextAnchor.LowerCenter;
 	}
 	
     public void SetDamage(int damage)
@@ -22,6 +24,12 @@ public class DamageIndicator : MonoBehaviour {
             textmesh.color = Color.green;
 
     }
+
+    public void SetDamage(string damage)
+    {
+        textmesh.text = damage;
+        textmesh.color = Color.red;
+    }
 	// Update is called once per frame
 	void Update () {
         textmesh.color = textmesh.color - new Color(0, 0, 0, .01f);
@@ -30,6 +38,6 @@ public class DamageIndicator : MonoBehaviour {
             GameObject.Destroy(this.gameObject);
             return;
         }
-        transform.position+=new Vector3(0, .03f, 0);
+        transform.position+=new Vector3(0, .04f, 0);
 	}
 }

@@ -242,10 +242,9 @@ public class Unit : MonoBehaviour {
         }
     }
 
-    public IEnumerator PerformAttack(Unit target)
-    {
-
-        StartCoroutine(DoAttack(target, 1.0f));
+    public IEnumerator PerformAttack(Unit target) {
+        if (target)
+            StartCoroutine(DoAttack(target, 1.0f));
         //if (target && target.gameObject && target.HasInAttackRange(this))
         yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
         if (target && target.Health > 0 && target.HasInAttackRange(this))
@@ -261,11 +260,26 @@ public class Unit : MonoBehaviour {
     {
         SetFacingSprites();
         yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
-
-        target.Health -= (int)(Attack * modifier);
-        GameObject damage = new GameObject();
-        damage.AddComponent<DamageIndicator>().SetDamage((int)(-Attack * modifier));
-        damage.transform.position = target.transform.position+new Vector3(-1f, 6f, 0f);
+        GameObject indicator = new GameObject();
+        int basedamage = (int)(Attack * (10.0f /(10.0f + (float)target.Defense)));
+        int damage = basedamage;
+        if (target.facing == facing)
+        {
+            damage = (int)(Attack * (15.0f / (5.0f + (float)target.Defense)));
+            indicator.AddComponent<DamageIndicator>().SetDamage("-" + (int)(basedamage * modifier) + "\nSneak!\n-"+(int)((damage-basedamage)*modifier));
+        }
+        else if (Mathf.Abs(target.facing-facing)==1||Mathf.Abs(target.facing-facing)==5){
+            damage = (int)(Attack * (10.0f / (5.0f + (float)target.Defense)));
+            indicator.AddComponent<DamageIndicator>().SetDamage("-" + (int)(basedamage * modifier) + "\nFlank!\n-" + (int)((damage - basedamage) * modifier));
+        }
+        else
+        {
+            damage = basedamage;
+            indicator.AddComponent<DamageIndicator>().SetDamage("-" + (int)(basedamage * modifier) );
+        }
+        Debug.Log(target == null);
+        indicator.transform.position = target.transform.position+new Vector3(-1f, 6f, 0f);
+        target.Health -= (int)(damage * modifier);
         Image healthBar = target.transform.Find("HealthBar").GetComponent<Image>(); // Find() is expensive
         healthBar.fillAmount = (float)target.Health / (float)target.MaxHealth;
         target.MakeOpen();
