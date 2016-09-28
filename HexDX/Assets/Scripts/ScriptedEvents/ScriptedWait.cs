@@ -15,6 +15,7 @@ public class ScriptedWait : ScriptEvent {
 
     public override void DoPlayerEvent() {
         SelectionController.mode = SelectionMode.ScriptedPlayerWait;
+        SelectionController.selectedUnit = null;
         unit.MakeDone();
         FinishEvent();
     }
