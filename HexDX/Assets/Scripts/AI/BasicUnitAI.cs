@@ -65,7 +65,7 @@ public class BasicUnitAI : UnitAI {
             return unit.currentTile;
         } else {
             int cost = HexMap.Cost(unit.currentTile, enemiesByDistance[0].currentTile);
-            int attackRange = 2; //hard coded attack range
+            int attackRange = 1; //hard coded attack range
             if (cost < unit.MvtRange + attackRange) {
                 validDestinations = validDestinations.Where(t => HexMap.Cost(t, enemiesByDistance[0].currentTile) >= 2).ToList();
             }
