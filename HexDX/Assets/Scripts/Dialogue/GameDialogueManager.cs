@@ -20,11 +20,11 @@ public class GameDialogueManager : DialogueManager {
 
 	protected override void Update() {
 		if(isVisible) {
-			base.Update();
 			if(HasFinishedAllLines() && finishedCallback != null){
 				finishedCallback();
 				finishedCallback = null;
 			}
+			base.Update();
 		}
 	}
 

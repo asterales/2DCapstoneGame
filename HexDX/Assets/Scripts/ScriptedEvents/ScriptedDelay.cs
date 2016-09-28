@@ -4,36 +4,20 @@ using System;
 
 public class ScriptedDelay : ScriptEvent
 {
-    public int seconds;
-    private int counter;
+    public float seconds;
 
-    // I dont know how to use wait for seconds soooo, blah
-
-    void Update()
-    {
-        if (counter > 0)
-        {
-            counter--;
-            if (counter == 0)
-            {
-                FinishEvent();
-            }
-        }
+    public override void DoPlayerEvent() {
+        StartCoroutine(Delay());
     }
 
-    public override void DoPlayerEvent()
-    {
-        counter = seconds * 60;
-    }
-
-    public override void DoEvent()
-    {
+    public override void DoEvent() {
         Debug.Log("DOING EVENT");
-        counter = seconds * 60;
+        StartCoroutine(Delay());
     }
 
-    //public IEnumerable Delay()
-    //{
-    //    yield return new WaitForSeconds(3.0f);
-    //}
+    public IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(seconds);
+        FinishEvent();
+    }
 }
