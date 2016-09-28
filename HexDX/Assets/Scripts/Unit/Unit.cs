@@ -210,6 +210,8 @@ public class Unit : MonoBehaviour {
     // Phase Change Methods //
     public void MakeOpen() {
         phase = UnitTurn.Open;
+        ////// DEBUG CODE FOR THE TUTORIAL LEVEL //////
+        if (spriteRenderer == null) return;
         spriteRenderer.color = Color.white;
         SetFacingSprites();
     }

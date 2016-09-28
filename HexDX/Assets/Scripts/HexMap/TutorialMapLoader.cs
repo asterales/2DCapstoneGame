@@ -104,6 +104,7 @@ public class TutorialMapLoader : MonoBehaviour
         int variant = val % 100;
         SpriteRenderer tileRenderer = tileObj.GetComponent<SpriteRenderer>();
         tileRenderer.sprite = spriteCache.GetTileSprite(type, variant);
+        if (type > 1) tileObj.GetComponent<Tile>().pathable = false;
         if (tileObj != null)
         {
             tileObj.name = string.Format("Tile ({0}, {1})", row, col);
