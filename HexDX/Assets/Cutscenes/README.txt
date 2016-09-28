@@ -29,4 +29,8 @@ Each line of a dialogue file should have the following information:
 	5) Alternative display name [optional] :
 		typically, the default name listed in the CharacterIds.csv file will be used for the name cards. If an alternative name is desired to be displayed, place it as the last element of the line.
 
-
+How Files are Loaded (for programmers):
+Characters and their portraits are loaded on startup into a static dictionary in the Character class.
+	Character class constructor parses each line of the CharacterIds.csv file and hold character specific info.
+Dialogue files are loaded by CutsceneManager class. 
+	CutsceneDialogue class constructor parses each line of a cutscene file and holds info per line of dialogue.
