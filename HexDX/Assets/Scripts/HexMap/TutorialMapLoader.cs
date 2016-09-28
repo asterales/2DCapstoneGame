@@ -5,7 +5,6 @@ using System.IO;
 
 public class TutorialMapLoader : MonoBehaviour
 {
-    public List<Sprite> sprites;
     public string csvMapFile = "Assets/Maps/test.csv";
     public int numCols;
     public int numRows;
@@ -45,8 +44,11 @@ public class TutorialMapLoader : MonoBehaviour
         {
             // load the test battle map
             LoadHexMap(csvMapFile);
-            AddUnitToTile(0, 0, battleController.scriptedAI.aiUnits[0], false, new Vector3(0, 1, 0));
-            AddUnitToTile(0, 1, battleController.scriptedAI.aiUnits[1], true, new Vector3(0, 1, 0));
+            AddUnitToTile(5, 5, battleController.scriptedAI.aiUnits[0], false, new Vector3(0, 1, 0));
+            AddUnitToTile(10, 4, battleController.scriptedAI.aiUnits[1], false, new Vector3(0, 1, 0));
+            AddUnitToTile(6, 6, battleController.scriptedAI.aiUnits[2], false, new Vector3(0, 1, 0));
+            AddUnitToTile(4, 2, battleController.scriptedAI.aiUnits[3], true, new Vector3(0, 1, 0));
+            AddUnitToTile(3, 3, battleController.scriptedAI.aiUnits[4], true, new Vector3(0, 1, 0));
         }
 
         ////// DEBUG CODE //////
