@@ -10,7 +10,7 @@ public abstract class DialogueManager : MonoBehaviour {
 	protected SpeakerUI activeSpeaker;
 	protected string currentLine;
 	protected IEnumerator currentSpeechRoutine;
-    protected int counter = 10; // used to avoid bug where text immediatly appears due to previous event click
+    protected int counter = 5; // used to avoid bug where text immediatly appears due to previous event click
 
 	protected virtual void Update() {
         counter--;
@@ -20,9 +20,9 @@ public abstract class DialogueManager : MonoBehaviour {
 		if (Input.GetMouseButtonDown(0) && counter <= 0){
 			if(SpeakerLinesFinished()){
 				SetNextLine();
-                counter = 10;
+                counter = 5;
 			} else {
-                counter = 10;
+                counter = 5;
 				FinishSpeakerLines();
 			}
 		} 
@@ -32,7 +32,7 @@ public abstract class DialogueManager : MonoBehaviour {
 
 	protected void StartSpeakerLines(){
 		if (currentLine != null) {
-            counter = 10;
+            counter = 5;
 			currentSpeechRoutine = WriteDialogue();
 			StartCoroutine(currentSpeechRoutine);
 		}
