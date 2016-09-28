@@ -58,9 +58,4 @@ public class PlayerUIDrawer : MonoBehaviour {
         }
     }
 
-    void OnGUI()
-    {
-        Rect damage = healthbar.rectTransform.rect;
-        GUI.Box(damage, defensebar.sprite.texture);
-    }
 }

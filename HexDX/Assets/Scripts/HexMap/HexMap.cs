@@ -79,8 +79,16 @@ public class HexMap : MonoBehaviour {
     public static void ShowMovementTiles(Unit unit) {
         ClearMovementTiles();
         List<Tile> mvtTiles = GetMovementTiles(unit);
-        foreach(Tile mvtTile in mvtTiles){
-            mvtTile.ShowMovementTile();
+        List<Tile> atkTiles = GetAttackTiles(unit);
+        foreach (Tile mvtTile in mvtTiles){
+            if (atkTiles.Contains(mvtTile))
+            {
+                mvtTile.ShowAttackableMovementTile();
+            }
+            else
+            {
+                mvtTile.ShowMovementTile();
+            }
         }
     }
 
