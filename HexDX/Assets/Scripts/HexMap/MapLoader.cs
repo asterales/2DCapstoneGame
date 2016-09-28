@@ -5,7 +5,7 @@ using System.IO;
 
 public class MapLoader : MonoBehaviour {
     public List<Sprite> sprites;
-    public string csvMapFile = "Assets/Maps/test.csv";
+    public string csvMapFile = "Assets/Maps/oldTest.csv";
 
     private HexMap battleMap;
     private HexDimension hexDimension;

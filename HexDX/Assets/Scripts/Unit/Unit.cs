@@ -268,7 +268,7 @@ public class Unit : MonoBehaviour {
         damage.transform.position = target.transform.position+new Vector3(-1f, 6f, 0f);
         Image healthBar = target.transform.Find("HealthBar").GetComponent<Image>(); // Find() is expensive
         healthBar.fillAmount = (float)target.Health / (float)target.MaxHealth;
-        target.MakeDone();
+        target.MakeOpen();
         if (target.Health <= 0)
         {
             Destroy(target.gameObject);
