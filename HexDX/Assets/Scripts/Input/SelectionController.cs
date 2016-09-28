@@ -85,7 +85,10 @@ public class SelectionController : MonoBehaviour {
 
     public static void ShowTarget(Unit unit) {
         if (unit)
+        {
+            target = unit;
             targetSpaceObj.transform.position = unit.currentTile.transform.position + visibilityOffset;
+        }
     }
 
     public static void HideSelection() {
@@ -93,6 +96,7 @@ public class SelectionController : MonoBehaviour {
     }
 
     public static void HideTarget() {
+        target = null;
         targetSpaceObj.transform.position = new Vector3(-1000, -1000, 0);
     }
 
