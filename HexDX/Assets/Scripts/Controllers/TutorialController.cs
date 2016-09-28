@@ -7,6 +7,7 @@ public class TutorialController : MonoBehaviour {
 	public RuntimeAnimatorController animation;
 	public PlayerBattleController player;
 	public ScriptedAIBattleController scriptedAI;
+    public AIBattleController ai;
 
 	public static Tile targetTile;
 	public static ScriptList eventsList;
@@ -22,6 +23,7 @@ public class TutorialController : MonoBehaviour {
 
 	void Start() {
 		player.enabled = false;
+		ai.enabled = false;
 	}
 
 	private void InitSelectionPrompt() {
@@ -69,7 +71,9 @@ public class TutorialController : MonoBehaviour {
 			HideSelectionPrompt();
 		}
 		if (eventsList.EventsCompleted){
-			EndTutorialMode();
+			if(eventsList.dialogueMgr.HasFinishedAllLines()) {
+				EndTutorialMode();
+			}
 		}
 	}
 
@@ -80,6 +84,8 @@ public class TutorialController : MonoBehaviour {
 		SelectionController.ClearAllSelections();
 		player.enabled = true;
 		player.StartTurn();
+		scriptedAI.HandOffAIControl(ai);
+		ai.enabled = true;
 		this.enabled = false;
 	}
 }

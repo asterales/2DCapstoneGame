@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class ScriptedAIBattleController : MonoBehaviour {
     public List<Unit> aiUnits;
@@ -20,6 +21,13 @@ public class ScriptedAIBattleController : MonoBehaviour {
             aiUnits[i].MakeOpen();
         }
     }
+
+    public void HandOffAIControl(AIBattleController ai){
+        ai.unitAIs = aiUnits.Where(u => u != null)
+                            .Select(u => u.gameObject.GetComponent<UnitAI>())
+                            .Where(a => a != null).ToList();
+    }
+
 
     public void StartTurn()
     {

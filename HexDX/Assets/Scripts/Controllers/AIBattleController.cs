@@ -4,7 +4,7 @@ using System.Linq;
 
 public class AIBattleController : MonoBehaviour {
     private BattleController battleController;
-    private List<UnitAI> unitAIs;
+    public List<UnitAI> unitAIs;
 
     //keeping track of last unit being modified last update
     private int currentUnitIndex;
@@ -75,6 +75,7 @@ public class AIBattleController : MonoBehaviour {
     }
 
     public void StartTurn() {
+        Debug.Log("number of units" + unitAIs.Count);
         currentUnitIndex = 0;
         SelectionController.mode = SelectionMode.AITurn;
     }

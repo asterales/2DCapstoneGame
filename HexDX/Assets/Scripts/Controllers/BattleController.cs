@@ -35,28 +35,17 @@ public class BattleController : MonoBehaviour {
 
     public void EndCurrentTurn() {
         if (isPlayerTurn) {
-            ai.EndTurn();
+            //ai.EndTurn();
             player.EndTurn();
             isPlayerTurn = false;
             ai.StartTurn();
             Debug.Log("BattleController - Starting AI Turn");
         } else {
-            player.EndTurn();
-            if (ai == null)
-            {
-                // scriptedAI stuff
-                scriptedAI.EndTurn();
-                player.StartTurn();
-                isPlayerTurn = true;
-                Debug.Log("BattleController - Starting Player Turn");
-            }
-            else
-            {
-                ai.EndTurn();
-                player.StartTurn();
-                isPlayerTurn = true;
-                Debug.Log("BattleController - Starting Player Turn");
-            }
+            //player.EndTurn();
+            ai.EndTurn();
+            player.StartTurn();
+            isPlayerTurn = true;
+            Debug.Log("BattleController - Starting Player Turn");
         }
     }
 
