@@ -4,7 +4,7 @@ using System.Collections;
 public class ScriptedAttack : ScriptEvent {
     public Unit attacker;
     public Unit victim;
-    public int damageDelt;
+    //public int damageDelt;
 
 	void Start () {
 	    ////// DEBUG CODE //////
@@ -22,9 +22,8 @@ public class ScriptedAttack : ScriptEvent {
     void Update() {
         if(isActive && isPlayerEvent){
             if (SelectionController.target == victim) {
-                float modifier = (float)damageDelt / (float)attacker.Attack;
                 attacker.MakeAttacking();   
-                StartCoroutine(attacker.DoAttack(victim, modifier));
+                StartCoroutine(attacker.PerformAttack(victim));
                 SelectionController.target = null;
                 TutorialController.targetTile = null;
             } else if (attacker.phase == UnitTurn.Done) {

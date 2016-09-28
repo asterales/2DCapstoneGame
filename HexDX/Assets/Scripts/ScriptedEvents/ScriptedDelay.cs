@@ -11,7 +11,6 @@ public class ScriptedDelay : ScriptEvent
     }
 
     public override void DoEvent() {
-        Debug.Log("DOING EVENT");
         StartCoroutine(Delay());
     }
 
