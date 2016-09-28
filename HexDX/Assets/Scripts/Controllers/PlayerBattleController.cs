@@ -51,7 +51,7 @@ public class PlayerBattleController : MonoBehaviour {
         }
     }
 
-    public void OnGUI() {
+    void OnGUI() {
         if (InUnitPhase(UnitTurn.ChoosingAction)) {
             int itemHeight = 20;
             int itemWidth = 60;

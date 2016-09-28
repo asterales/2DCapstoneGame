@@ -10,8 +10,10 @@
     ScriptedPlayerMove,
     ScriptedPlayerAttack,
     ScriptedPlayerFace,
+    ScriptedPlayerChooseAction,
     ScriptedPlayerInstruction,
     ScriptedPlayerWait,
     ScriptedPlayerEndTurn,
+    ScriptedDelay,
     ScriptedAI
 };

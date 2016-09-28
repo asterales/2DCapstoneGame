@@ -17,6 +17,7 @@ public class ScriptedDelay : ScriptEvent
 
     public IEnumerator Delay()
     {
+        SelectionController.mode = SelectionMode.ScriptedDelay;
         yield return new WaitForSeconds(seconds);
         FinishEvent();
     }
