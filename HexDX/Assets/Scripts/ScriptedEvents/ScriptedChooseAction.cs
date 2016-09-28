@@ -22,7 +22,8 @@ public class ScriptedChooseAction : ScriptEvent {
                 FinishEvent();
             }
             if (GUI.Button(new Rect(pos.x, pos.y+ itemHeight, itemWidth, itemHeight), " Wait", player.GetGUIStyle(actionEnabled[(int)Action.Wait]))) {
-                //Debug.Log("Waiting");
+                Debug.Log("Waiting");
+                SelectionController.selectedUnit = null;
                 FinishEvent();
             }
             if (GUI.Button(new Rect(pos.x, pos.y + 2*itemHeight, itemWidth, itemHeight), " Undo", player.GetGUIStyle(actionEnabled[(int)Action.Undo]))) {
