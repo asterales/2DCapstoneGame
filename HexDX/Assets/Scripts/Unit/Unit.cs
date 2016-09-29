@@ -317,6 +317,8 @@ public class Unit : MonoBehaviour {
             bound = t;
             shortestPath = new List<Tile>();
         }
+        if (shortestPath.Count == 0)
+            shortestPath.Add(currentTile);
         return shortestPath;
     }
 
