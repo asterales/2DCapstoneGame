@@ -15,9 +15,16 @@ public class MovementTile : MonoBehaviour {
                 CommitPath();
             }
         }
-        if (Input.GetMouseButtonDown(1) && TutorialController.IsTargetDestination(this)){
-            CommitPath(TutorialController.eventsList.currentScriptEvent as ScriptedMove);
-        } 
+        if (TutorialController.IsTargetDestination(this)){
+            if (path != null && path[path.Count - 1] != tile && !HexMap.AreNeighbors(tile, path[path.Count - 1]) ){
+                path = SelectionController.selectedUnit.GetShortestPath(tile);
+                DrawPath();
+            }
+            if (Input.GetMouseButtonDown(1)){
+                CommitPath(TutorialController.eventsList.currentScriptEvent as ScriptedMove);
+            }
+        }
+
     }
     
     public void OnMouseEnter() {
