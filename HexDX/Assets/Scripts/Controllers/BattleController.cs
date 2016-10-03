@@ -9,6 +9,7 @@ public class BattleController : MonoBehaviour {
     public PlayerBattleController player;
     public ScriptedAIBattleController scriptedAI;
     public VictoryCondition victoryCondition;
+    private bool nextSceneLoaded;
 
     // set in editor
     public Texture2D actionMenuItem;
@@ -50,7 +51,8 @@ public class BattleController : MonoBehaviour {
                 DisplayLoss();
                 EndBattle();
             }
-        } else if (Input.GetMouseButtonDown(0)) {
+        } else if (!nextSceneLoaded && Input.GetMouseButtonDown(0)) {
+            nextSceneLoaded = true; // prevent skipping scenes by spam click
             LoadNextScene();
         }
     }
@@ -61,6 +63,7 @@ public class BattleController : MonoBehaviour {
         lossBanner.gameObject.transform.position = new Vector3(-1000, -1000, 0);
         isPlayerTurn = true;
         BattleIsDone = false;
+        nextSceneLoaded = false;
     }
 
     public void EndCurrentTurn() {
