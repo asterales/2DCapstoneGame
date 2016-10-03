@@ -22,8 +22,8 @@ public class TutorialController : MonoBehaviour {
 	}
 
 	void Start() {
-		player.enabled = false;
-		ai.enabled = false;
+		DisableGameControllers();
+		eventsList.StartEvents();
 	}
 
 	private void InitSelectionPrompt() {
@@ -31,7 +31,6 @@ public class TutorialController : MonoBehaviour {
         SpriteRenderer sr = selectionPromptObj.AddComponent<SpriteRenderer>();
         sr.sprite = selectionSprite;
         sr.sortingOrder = 2;
-        sr.color = Color.cyan;
         Animator animator = selectionPromptObj.AddComponent<Animator>();
         animator.runtimeAnimatorController = animation;
         selectionPromptObj.transform.position = new Vector3(-1000, -1000, 0);
@@ -77,15 +76,24 @@ public class TutorialController : MonoBehaviour {
 		}
 	}
 
+	private void DisableGameControllers() {
+		player.enabled = false;
+		ai.enabled = false;
+	}
+
+	private void EnableGameControllers() {
+		player.enabled = true;
+		scriptedAI.HandOffAIControl(ai);
+		ai.enabled = true;
+	}
+
 	private void EndTutorialMode() {
 		eventsList.dialogueMgr.HideGUI();
 		HideSelectionPrompt();
 		targetTile = null;
 		SelectionController.ClearAllSelections();
-		player.enabled = true;
+		EnableGameControllers();
 		player.StartTurn();
-		scriptedAI.HandOffAIControl(ai);
-		ai.enabled = true;
 		this.enabled = false;
 	}
 }

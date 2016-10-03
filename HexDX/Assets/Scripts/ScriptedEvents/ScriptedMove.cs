@@ -20,14 +20,6 @@ public class ScriptedMove : ScriptEvent {
         ////////////////////////
 	}
 
-    void Update() {
-        if(MovementTile.path != null){
-            Debug.Log("scriptedmove " + MovementTile.path.Count);
-        } else {
-            Debug.Log("null path");
-        }
-    }
-
     public override void DoPlayerEvent() {
         SelectionController.mode = SelectionMode.ScriptedPlayerMove;
         TutorialController.targetTile = tile;

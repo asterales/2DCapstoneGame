@@ -7,10 +7,11 @@ using UnityEngine.UI;
 /* Manages cutscene dialogue */
 
 public class CutsceneManager : DialogueManager {
-	public string csvCutsceneFile = "Assets/Cutscenes/TestDialogue.txt";
+	public string csvCutsceneFile;
 	private Queue<CutsceneDialogue> dialogues;
 	private SpeakerUI leftSpeaker;
 	private SpeakerUI rightSpeaker;
+	private bool nextSceneLoaded;
 
 	void Awake() {
 		if (csvCutsceneFile != null) {
@@ -32,6 +33,16 @@ public class CutsceneManager : DialogueManager {
 
 	void Start() {
 		SetNextLine();
+		nextSceneLoaded = false;
+	}
+
+	protected override void Update() {
+		if (dialogues.Count == 0 && SpeakerLinesFinished() && Input.GetMouseButtonDown(0) && !nextSceneLoaded) {
+			nextSceneLoaded = true; // prevents spam clicks from skipping scenes
+			LevelManager.LoadNextScene();
+		} else {
+			base.Update();
+		}
 	}
 
 	protected override void SetNextLine() {

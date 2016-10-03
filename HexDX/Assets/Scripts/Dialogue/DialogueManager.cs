@@ -48,6 +48,9 @@ public abstract class DialogueManager : MonoBehaviour {
 	}
 
 	public bool SpeakerLinesFinished() {
+		if (activeSpeaker == null) {
+			return false;
+		}
 		return activeSpeaker.DialogueText.Equals(currentLine);
 	}
 

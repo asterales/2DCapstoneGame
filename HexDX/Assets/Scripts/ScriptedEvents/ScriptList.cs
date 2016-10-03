@@ -6,17 +6,13 @@ public class ScriptList : MonoBehaviour {
     public List<ScriptEvent> scriptedEvents; // to be done in order and set in UI
     private int currentEvent;
     
-    public ScriptEvent currentScriptEvent { get { return scriptedEvents[currentEvent]; }}
+    public ScriptEvent currentScriptEvent { get { return currentEvent < scriptedEvents.Count ? scriptedEvents[currentEvent] : null; }}
     public bool EventsCompleted { get; private set; } // flag for completion
-
-    public void Start() {
-        EventsCompleted = false;
-        currentEvent = 0;
-        StartEvents();
-    }
 
     public void StartEvents() {
         if (scriptedEvents.Count > 0) {
+            EventsCompleted = false;
+            currentEvent = 0;
             StartInstuctions(scriptedEvents[0]);
         }
     }

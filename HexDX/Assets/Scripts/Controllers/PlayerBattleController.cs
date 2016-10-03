@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class PlayerBattleController : MonoBehaviour {
+    private BattleController battleController;
     private List<Unit> units;
     public static Texture2D menuItem;
     public static Texture2D menuItemHovered;
@@ -20,6 +21,7 @@ public class PlayerBattleController : MonoBehaviour {
 
     void Start() {
         InitUnitList();
+        battleController = gameObject.GetComponent<BattleController>();
     }
 
     private void InitUnitList() {
@@ -40,6 +42,9 @@ public class PlayerBattleController : MonoBehaviour {
                     SelectionController.mode = SelectionMode.Open;
                     break;
             }
+        }
+        if (AllUnitsDone()) {
+            battleController.EndCurrentTurn();
         }
     }
 
@@ -113,6 +118,10 @@ public class PlayerBattleController : MonoBehaviour {
         }
     }
 
+    public bool IsAnnihilated() {
+        return units.Where(u => u != null).ToList().Count == 0;
+    }
+
     private void ClearSelections() {
         if (selectedUnit) {
             selectedUnit.MakeDone();
@@ -125,5 +134,9 @@ public class PlayerBattleController : MonoBehaviour {
 
     public static bool InUnitPhase(UnitTurn phase) {
         return !SelectionController.TakingAIInput() && selectedUnit && selectedUnit.phase == phase;
+    }
+
+    private bool AllUnitsDone() {
+        return units.Where(u => u != null && u.phase != UnitTurn.Done).ToList().Count == 0;
     }
 }

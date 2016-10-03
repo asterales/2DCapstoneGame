@@ -17,8 +17,5 @@ public class ScriptedDialogue : ScriptEvent {
 
     public override void DoPlayerEvent() {  }
 
-    public override void DoEvent() {
-        SelectionController.mode = SelectionMode.ScriptedAI;
-        FinishEvent();
-    }
+    public override void DoEvent() { }
 }

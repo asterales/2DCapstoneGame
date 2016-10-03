@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 // This class will be responsible for handling Game Loop States
@@ -7,9 +8,18 @@ public class BattleController : MonoBehaviour {
     public AIBattleController ai;
     public PlayerBattleController player;
     public ScriptedAIBattleController scriptedAI;
+    public VictoryCondition victoryCondition;
+
+    // set in editor
     public Texture2D actionMenuItem;
     public Texture2D actionMenuItemHover;
+    public Image winBanner;
+    public Image lossBanner;
+    private Vector3 bannerVisiblePos; //hack
+
     private bool isPlayerTurn;
+
+    public bool BattleIsDone { get; private set; }
 
     void Awake () {
         PlayerBattleController.menuItem = actionMenuItem;
@@ -17,31 +27,49 @@ public class BattleController : MonoBehaviour {
         ai = this.gameObject.GetComponent<AIBattleController>();
         player = this.gameObject.GetComponent<PlayerBattleController>();
         scriptedAI = this.gameObject.GetComponent<ScriptedAIBattleController>();
+        victoryCondition = this.gameObject.GetComponent<VictoryCondition>();
         ////// DEBUG CODE //////
-        if (ai == null && scriptedAI == null)
-        {
+        if (ai == null && scriptedAI == null) {
             Debug.Log("Error :: AI Battle Controller not defined -> BattleController.cs");
         }
-        if (player == null)
-        {
+        if (player == null) {
             Debug.Log("Error :: Player Battle Controller not defined -> BattleController.cs");
+        }
+        if(victoryCondition == null) {
+            Debug.Log("Error :: VictoryCondition not defined -> BattleController.cs");
         }
         ////////////////////////
     }
 
+    void Update() {
+        if(!BattleIsDone){
+            if (victoryCondition.Achieved()) {
+                DisplayWin();
+                EndBattle();
+            } else if (player.IsAnnihilated()) {
+                DisplayLoss();
+                EndBattle();
+            }
+        } else if (Input.GetMouseButtonDown(0)) {
+            LoadNextScene();
+        }
+    }
+
     void Start() {
+        bannerVisiblePos = winBanner.gameObject.transform.position;
+        winBanner.gameObject.transform.position = new Vector3(-1000, -1000, 0);
+        lossBanner.gameObject.transform.position = new Vector3(-1000, -1000, 0);
         isPlayerTurn = true;
+        BattleIsDone = false;
     }
 
     public void EndCurrentTurn() {
         if (isPlayerTurn) {
-            //ai.EndTurn();
             player.EndTurn();
             isPlayerTurn = false;
             ai.StartTurn();
             Debug.Log("BattleController - Starting AI Turn");
         } else {
-            //player.EndTurn();
             ai.EndTurn();
             player.StartTurn();
             isPlayerTurn = true;
@@ -49,4 +77,27 @@ public class BattleController : MonoBehaviour {
         }
     }
 
+    private void DisplayWin() {
+        Debug.Log("Player Wins!");
+        winBanner.gameObject.transform.position = bannerVisiblePos;
+    }
+
+    private void DisplayLoss() {
+        Debug.Log("Player lost!");
+        lossBanner.gameObject.transform.position = bannerVisiblePos;
+    }
+
+    private void EndBattle() {
+        player.EndTurn();
+        ai.EndTurn();
+        BattleIsDone = true;
+    }
+
+    private void LoadNextScene() {
+        if (victoryCondition.Achieved()) {
+            LevelManager.LoadNextScene();
+        } else if (player.IsAnnihilated()) {
+            Debug.Log("Return to World Map");
+        }
+    }
 }

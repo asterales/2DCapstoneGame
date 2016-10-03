@@ -80,6 +80,10 @@ public class AIBattleController : MonoBehaviour {
         SelectionController.mode = SelectionMode.AITurn;
     }
 
+    public bool IsAnnihilated() {
+        return unitAIs.Where(a => a != null).ToList().Count == 0;
+    }
+
     public void EndTurn() {
         for (int i = 0; i < unitAIs.Count; i++) {
             if(unitAIs[i]) {
