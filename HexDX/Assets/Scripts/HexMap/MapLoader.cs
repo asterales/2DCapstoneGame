@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 
 public class MapLoader : MonoBehaviour {
-    public List<Sprite> sprites;
-    public string csvMapFile = "Assets/Maps/oldTest.csv";
+    public string csvMapFile;
 
     private HexMap battleMap;
     private HexDimension hexDimension;
