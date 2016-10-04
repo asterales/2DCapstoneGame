@@ -14,15 +14,23 @@ public class BattleController : MonoBehaviour {
     // set in editor
     public Texture2D actionMenuItem;
     public Texture2D actionMenuItemHover;
+    
+    // end of battle banners
     public Image winBanner;
     public Image lossBanner;
     private Vector3 bannerVisiblePos; //hack
+
+    // turn banners
+    public Image playerTurnBanner;
+    public Image enemyTurnBnner;
+    public bool showTurnBanner; // to work with game dialogue manager
 
     private bool isPlayerTurn;
 
     public bool BattleIsDone { get; private set; }
 
     void Awake () {
+        showTurnBanner = true;
         PlayerBattleController.menuItem = actionMenuItem;
         PlayerBattleController.menuItemHovered = actionMenuItemHover;
         ai = this.gameObject.GetComponent<AIBattleController>();
@@ -43,6 +51,7 @@ public class BattleController : MonoBehaviour {
     }
 
     void Update() {
+        DisplayTurnBanner();
         if(!BattleIsDone){
             if (victoryCondition.Achieved()) {
                 DisplayWin();
@@ -64,6 +73,21 @@ public class BattleController : MonoBehaviour {
         isPlayerTurn = true;
         BattleIsDone = false;
         nextSceneLoaded = false;
+    }
+
+    private void DisplayTurnBanner() {
+        if (showTurnBanner) {
+            if (isPlayerTurn){
+                playerTurnBanner.enabled = true;
+                enemyTurnBnner.enabled = false;
+            } else {
+                playerTurnBanner.enabled = false;
+                enemyTurnBnner.enabled = true;
+            }
+        } else {
+            playerTurnBanner.enabled = false;
+            enemyTurnBnner.enabled = false;
+        }
     }
 
     public void EndCurrentTurn() {

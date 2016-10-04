@@ -33,7 +33,7 @@ public class LevelManager : MonoBehaviour {
 
 	// for binding to onclick() event trigger
 	public void StartLevel() {
-		SetActiveSingleton();
+		SetActiveLevel();
 		if (sceneNames.Count > 0) {
 			levelStarted = true;
 			currentScene = 0;
@@ -41,7 +41,7 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	private void SetActiveSingleton() {
+	private void SetActiveLevel() {
 		levelStarted = false;
 		activeInstance = this;
 		currentScene = 0;

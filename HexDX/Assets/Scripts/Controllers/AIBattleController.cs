@@ -35,7 +35,7 @@ public class AIBattleController : MonoBehaviour {
     }
 
     void Update() {
-        if (SelectionController.TakingAIInput()){
+        if (!battleController.BattleIsDone && SelectionController.TakingAIInput()){
             if (currentUnitIndex < unitAIs.Count) {
                 UnitAI ai = unitAIs[currentUnitIndex];
                 if (ai) {

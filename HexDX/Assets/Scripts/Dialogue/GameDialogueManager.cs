@@ -9,12 +9,16 @@ using UnityEngine.UI;
 
 public class GameDialogueManager : DialogueManager {
 	public delegate void FinishedLinesCallback();
+	public BattleController battleController;
 	private bool isVisible;
 	private Queue<string> lines;
 	private FinishedLinesCallback finishedCallback;
 	
 	void Awake(){
 		activeSpeaker = new SpeakerUI("Dialogue Portrait", "Dialogue Name Card", "Dialogue Box");
+	}
+
+	void Start() {
 		HideGUI();
 	}
 
@@ -55,10 +59,12 @@ public class GameDialogueManager : DialogueManager {
 	public void HideGUI() {
 		isVisible = false;
 		activeSpeaker.HideGUI();
+		battleController.showTurnBanner = true;
 	}
 
 	public void ShowGUI() {
 		isVisible = true;
 		activeSpeaker.ShowGUI();
+		battleController.showTurnBanner = false;
 	}
 }

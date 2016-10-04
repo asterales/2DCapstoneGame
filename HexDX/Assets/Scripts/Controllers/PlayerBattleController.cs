@@ -43,7 +43,7 @@ public class PlayerBattleController : MonoBehaviour {
                     break;
             }
         }
-        if (AllUnitsDone()) {
+        if (!battleController.BattleIsDone && AllUnitsDone()) {
             battleController.EndCurrentTurn();
         }
     }
