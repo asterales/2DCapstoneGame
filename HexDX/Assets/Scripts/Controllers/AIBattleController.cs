@@ -63,7 +63,7 @@ public class AIBattleController : MonoBehaviour {
                 } else {
                     currentUnitIndex++;
                 } 
-            } else {
+            } else if (AllUnitsDone()){
                 battleController.EndCurrentTurn();
             }
         }
@@ -78,6 +78,7 @@ public class AIBattleController : MonoBehaviour {
         Debug.Log("number of units" + unitAIs.Count);
         currentUnitIndex = 0;
         SelectionController.mode = SelectionMode.AITurn;
+        OpenAllUnits();
     }
 
     public bool IsAnnihilated() {
@@ -85,10 +86,18 @@ public class AIBattleController : MonoBehaviour {
     }
 
     public void EndTurn() {
+        OpenAllUnits();
+    }
+
+    private void OpenAllUnits() {
         for (int i = 0; i < unitAIs.Count; i++) {
             if(unitAIs[i]) {
                 unitAIs[i].unit.MakeOpen();
             }
         }
+    }
+
+    private bool AllUnitsDone() {
+        return unitAIs.Where(a => a != null && a.unit.phase != UnitTurn.Done).ToList().Count == 0;
     }
 }

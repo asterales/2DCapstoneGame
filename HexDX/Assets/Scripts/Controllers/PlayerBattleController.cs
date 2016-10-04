@@ -107,15 +107,12 @@ public class PlayerBattleController : MonoBehaviour {
 
     public void StartTurn() {
         SelectionController.mode = SelectionMode.Open;
+        OpenAllUnits();
     }
 
     public void EndTurn() {
         ClearSelections();
-        for (int i = 0; i < units.Count; i++) {
-            if (units[i]){
-                units[i].MakeOpen();    
-            } 
-        }
+        OpenAllUnits();
     }
 
     public bool IsAnnihilated() {
@@ -134,6 +131,14 @@ public class PlayerBattleController : MonoBehaviour {
 
     public static bool InUnitPhase(UnitTurn phase) {
         return !SelectionController.TakingAIInput() && selectedUnit && selectedUnit.phase == phase;
+    }
+
+    private void OpenAllUnits() {
+        for (int i = 0; i < units.Count; i++) {
+            if (units[i]){
+                units[i].MakeOpen();    
+            } 
+        }
     }
 
     private bool AllUnitsDone() {
