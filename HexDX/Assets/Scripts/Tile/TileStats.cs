@@ -14,11 +14,15 @@ public class TileStats : MonoBehaviour {
 	public string DisplayString { get; private set; }
 
 	void Awake() {
+		if (!gameObject.GetComponent<Tile>().pathable) {
+			mvtDifficulty = MovementDifficulty.Unpathable;
+		}
+
 		StringBuilder sb = new StringBuilder();
 		sb.Append(typeName + "\n");
-		sb.Append("Mvt Difficulty: " + mvtDifficulty + "\n");
+		sb.Append("Move Difficulty: " + mvtDifficulty + "\n");
 		if (mvtModifier != 0) {
-			sb.Append("Mvt Range Modifier: " + mvtModifier);
+			sb.Append("Move Range Mod: " + mvtModifier);
 		}
 		DisplayString = sb.ToString();
 	}
@@ -27,5 +31,6 @@ public class TileStats : MonoBehaviour {
 public enum MovementDifficulty {
 	Easy,
 	Medium,
-	Hard
+	Hard,
+	Unpathable
 };
