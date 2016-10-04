@@ -7,6 +7,7 @@ public class HexMap : MonoBehaviour {
     public SelectionController selectionController; // ref to hack
     public static Stack<Tile> showingMovementTiles;
     public static Stack<Tile> showingAttackTiles;
+    public static Stack<GameObject> showingAttackOutlines;
     public RowContainer rowContainer;
 
     // Make a separate directions class/enum?
@@ -21,6 +22,7 @@ public class HexMap : MonoBehaviour {
         mapArray = new List<List<Tile>>();
         showingAttackTiles = new Stack<Tile>();
         showingMovementTiles = new Stack<Tile>();
+        showingAttackOutlines = new Stack<GameObject>();
         ////// DEBUG CODE //////
         if (hexDimension == null)
         {
@@ -80,16 +82,15 @@ public class HexMap : MonoBehaviour {
         ClearMovementTiles();
         List<Tile> mvtTiles = GetMovementTiles(unit);
         List<Tile> atkTiles = GetAttackTiles(unit);
-        foreach (Tile mvtTile in mvtTiles){
-            if (atkTiles.Contains(mvtTile))
-            {
-                mvtTile.ShowAttackableMovementTile();
-            }
-            else
-            {
-                mvtTile.ShowMovementTile();
-            }
+        foreach (Tile atkTile in atkTiles)
+        {
+            GameObject g = Instantiate(Resources.Load("Tiles/AttackableOutline")) as GameObject;
+            g.transform.parent = atkTile.transform;
+            g.transform.localPosition = new Vector3(0, 0, -.01f);
+            showingAttackOutlines.Push(g);
         }
+        foreach (Tile mvtTile in mvtTiles)
+           mvtTile.ShowMovementTile();
     }
 
     public static List<Tile> GetAttackTiles(Unit unit) {
@@ -151,6 +152,10 @@ public class HexMap : MonoBehaviour {
     }
 
     public static void ClearMovementTiles() {
+        while (showingAttackOutlines.Count > 0)
+        {
+            GameObject.Destroy(showingAttackOutlines.Pop());
+        }
         while (showingMovementTiles.Count > 0) {
             showingMovementTiles.Pop().HideMovementTile();
         }

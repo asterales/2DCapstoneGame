@@ -91,31 +91,15 @@ public class Tile : MonoBehaviour {
                     currentUnit.facing = facing;
                     currentUnit.currentTile = this;
                     HexMap.ShowMovementTiles(currentUnit);
-                    foreach (Tile tile in HexMap.GetAttackTiles(currentUnit))
-                    {
-                        tile.attackTile.GetComponent<SpriteRenderer>().color = new Color(.5f, .5f, .5f, 0.95f);
-                        tile.ShowAttackTile();
-                    }
                 }
             }
         }
     }
 
-    public void ShowAttackableMovementTile()
-    {
-        if (movementTile)
-        {
-            movementTile.transform.localPosition = visibilityOffset;
-            movementTile.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.white;
-            HexMap.showingMovementTiles.Push(this);
-            HideAttackTile();
-        }
-    }
 
     public void ShowMovementTile() {
         if (movementTile) {
             movementTile.transform.localPosition = visibilityOffset;
-            movementTile.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.clear;
             HexMap.showingMovementTiles.Push(this);
             HideAttackTile();
         }
@@ -134,7 +118,6 @@ public class Tile : MonoBehaviour {
         }
     }
     public void HideAttackTile() {
-        attackTile.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.8f);
         if (attackTile) {
             attackTile.transform.localPosition = -visibilityOffset;
         }
