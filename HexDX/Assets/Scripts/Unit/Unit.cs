@@ -246,19 +246,19 @@ public class Unit : MonoBehaviour {
 
     public IEnumerator PerformAttack(Unit target) {
         if (target)
-            StartCoroutine(DoAttack(target, 1.0f, false));
+            StartCoroutine(DoAttack(target, 1.0f));
         //if (target && target.gameObject && target.HasInAttackRange(this))
         yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
-        if (target && target.Health > 0 && target.HasInAttackRange(this))
+        if (target && target.Health > 0 && target.HasInAttackRange(this) && target.phase==UnitTurn.Open)
         {
             spriteRenderer.color = Color.red;
             target.MakeAttacking();
-            StartCoroutine(target.DoAttack(this, .66f, true));
+            StartCoroutine(target.DoAttack(this, .66f));
         }
 
     }
 
-    public IEnumerator DoAttack(Unit target, float modifier, bool isCounterAttack)
+    public IEnumerator DoAttack(Unit target, float modifier)
     {
         SetFacingSprites();
         yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
@@ -290,11 +290,7 @@ public class Unit : MonoBehaviour {
             Destroy(target.gameObject);
         }
         yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
-        if (isCounterAttack){
-            MakeOpen();
-        } else {
-            MakeDone();
-        }
+        MakeDone();
     }
 
     private int max(int a, int b) { return a > b ? a : b; }
