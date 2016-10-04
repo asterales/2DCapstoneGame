@@ -15,11 +15,13 @@ public class Unit : MonoBehaviour {
     public UnitTurn phase;
     public int facing;
     private UnitFacing facingBonus;
+    private UnitSounds sounds;
     private UnitMovementCache movementCache;
     private int type; // we may want to represent types by something else
     private readonly float maxMovement = 0.2f; 
 
     private SpriteRenderer spriteRenderer;
+    private AudioSource audioSource;
     private Animator animator;
     private Tile lastTile;
 
@@ -44,6 +46,8 @@ public class Unit : MonoBehaviour {
         facingBonus = this.gameObject.GetComponent<UnitFacing>();
         movementCache = this.gameObject.GetComponent<UnitMovementCache>();
         sprites = this.gameObject.GetComponent<UnitSprites>();
+        sounds = this.gameObject.GetComponent<UnitSounds>();
+        audioSource = this.gameObject.GetComponent<AudioSource>();
         path = new Queue<Tile>();
         facing = 0;
 
@@ -123,6 +127,8 @@ public class Unit : MonoBehaviour {
         int face = (facing + 1)%6;
         switch (phase) {
             case UnitTurn.Moving:
+                audioSource.clip = sounds.movement;
+                audioSource.Play();
                 if (face < 3) {
                     spriteRenderer.flipX = false;
                     spriteRenderer.sprite = sprites.walking[(facing+3)%3];
@@ -134,6 +140,8 @@ public class Unit : MonoBehaviour {
                 }
                 break;
             case UnitTurn.Attacking:
+                audioSource.clip = sounds.attacking;
+                audioSource.Play();
                 if (face < 3) {
                     spriteRenderer.flipX = false;
                     spriteRenderer.sprite = sprites.attack[(facing + 3) % 3];
@@ -145,6 +153,7 @@ public class Unit : MonoBehaviour {
                 }
                 break;
             default:
+                audioSource.Pause();
                 if (face < 3) {
                     spriteRenderer.flipX = false;
                     spriteRenderer.sprite = sprites.idle[(facing + 3) % 3];
@@ -284,7 +293,6 @@ public class Unit : MonoBehaviour {
         target.Health -= (int)(damage * modifier);
         Image healthBar = target.transform.Find("HealthBar").GetComponent<Image>(); // Find() is expensive
         healthBar.fillAmount = (float)target.Health / (float)target.MaxHealth;
-        target.MakeOpen();
         if (target.Health <= 0)
         {
             Destroy(target.gameObject);

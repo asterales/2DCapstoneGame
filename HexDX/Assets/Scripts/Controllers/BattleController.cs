@@ -51,7 +51,7 @@ public class BattleController : MonoBehaviour {
     }
 
     void Update() {
-        DisplayTurnBanner();
+        //DisplayTurnBanner();
         if(!BattleIsDone){
             if (victoryCondition.Achieved()) {
                 DisplayWin();
@@ -75,20 +75,20 @@ public class BattleController : MonoBehaviour {
         nextSceneLoaded = false;
     }
 
-    private void DisplayTurnBanner() {
-        if (showTurnBanner) {
-            if (isPlayerTurn){
-                playerTurnBanner.enabled = true;
-                enemyTurnBnner.enabled = false;
-            } else {
-                playerTurnBanner.enabled = false;
-                enemyTurnBnner.enabled = true;
-            }
-        } else {
-            playerTurnBanner.enabled = false;
-            enemyTurnBnner.enabled = false;
-        }
-    }
+    //private void DisplayTurnBanner() {
+    //    if (showTurnBanner) {
+    //        if (isPlayerTurn){
+    //            playerTurnBanner.enabled = true;
+    //            enemyTurnBnner.enabled = false;
+    //        } else {
+    //            playerTurnBanner.enabled = false;
+    //            enemyTurnBnner.enabled = true;
+    //        }
+    //    } else {
+    //        playerTurnBanner.enabled = false;
+    //        enemyTurnBnner.enabled = false;
+    //    }
+    //}
 
     public void EndCurrentTurn() {
         if (isPlayerTurn) {
