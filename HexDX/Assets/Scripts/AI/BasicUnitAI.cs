@@ -60,7 +60,7 @@ public class BasicUnitAI : UnitAI {
     private Tile GetNextDestination(out Unit nextEnemy) {
         List<Unit> enemiesByDistance = playerUnits.Where(p => p != null).OrderBy(p => unit.GetShortestPath(p.currentTile).Count).ToList();
         List<Tile> validDestinations = HexMap.GetMovementTiles(unit).Where(t => IsValidDestination(t)).ToList();
-        if (validDestinations.Count == 0){
+        if (validDestinations.Count == 0 || enemiesByDistance.Count == 0){
             nextEnemy = null;
             return unit.currentTile;
         } else {
