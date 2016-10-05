@@ -13,7 +13,7 @@ public class LevelManager : MonoBehaviour {
 	public List<string> sceneNames;
 	private int currentScene;
 	private bool levelStarted;
-	private bool levelComplete;
+	private bool returnedToWorldMap;
 	private static LevelManager activeInstance;
 
 	// For fading transition effect
@@ -54,7 +54,7 @@ public class LevelManager : MonoBehaviour {
 
 	private void SetActiveLevel() {
 		levelStarted = false;
-		levelComplete = false;
+		returnedToWorldMap = false;
 		activeInstance = this;
 		currentScene = 0;
 		DontDestroyOnLoad(gameObject);
@@ -68,20 +68,16 @@ public class LevelManager : MonoBehaviour {
 			if (currentScene < sceneNames.Count) {
 				StartCoroutine(LoadScene(sceneNames[currentScene]));
 			} else {
-				CompleteLevel();
+				Debug.Log("Level complete");
+				ReturnToWorldMap();
 			}
 		}
-	}
-
-	private void CompleteLevel() {
-		Debug.Log("Level complete");
-		levelComplete = true;
-		ReturnToWorldMap();
 	}
 
 	public static void ReturnToWorldMap() {
 		if (activeInstance != null) {
 			//with fade effects
+			activeInstance.returnedToWorldMap = true;
             activeInstance.StartCoroutine(activeInstance.LoadScene("WorldMap"));
         } else {
         	// no fade effect b/c no fade texture associate with an levelmanager object
@@ -90,6 +86,10 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	void Update() {
+		if (Input.GetKeyDown(KeyCode.Escape)) {
+			// show a prompt instead next time;
+			ReturnToWorldMap();
+		}
 		if (fadeOutMusic != null && fadeDir == FadeDirection.Out) {
 			fadeOutMusic.volume = Mathf.Clamp01(fadeOutMusic.volume - (int)fadeDir * 1.5f * fadeSpeed * Time.deltaTime);
 		}
@@ -119,7 +119,7 @@ public class LevelManager : MonoBehaviour {
 	// delegate/event to be called when new scene is loaded
 	private void FadeIn(Scene scene, LoadSceneMode mode) {
 		BeginFade(FadeDirection.In);
-		if (levelComplete) {
+		if (returnedToWorldMap) {
 			Destroy(gameObject);
 		}
 	}
