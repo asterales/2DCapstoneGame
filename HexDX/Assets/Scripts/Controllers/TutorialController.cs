@@ -83,7 +83,6 @@ public class TutorialController : MonoBehaviour {
 
 	private void EnableGameControllers() {
 		player.enabled = true;
-		scriptedAI.HandOffAIControl(ai);
 		ai.enabled = true;
 	}
 

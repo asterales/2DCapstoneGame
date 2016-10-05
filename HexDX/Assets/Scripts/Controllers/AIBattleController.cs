@@ -2,44 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class AIBattleController : MonoBehaviour {
-    private BattleController battleController;
-    public List<UnitAI> unitAIs;
-
+public class AIBattleController : ArmyBattleController {
     //keeping track of last unit being modified last update
     private int currentUnitIndex;
 
-    void Start() {
-        InitUnitLists();
-        battleController = gameObject.GetComponent<BattleController>();
-    }
-
-    private void InitUnitLists() {
+    public override void InitUnitList() {
         Unit[] allUnits = FindObjectsOfType(typeof(Unit)) as Unit[];
+        units = new List<Unit>();
         List<Unit> playerUnits = new List<Unit>();
-        unitAIs = new List<UnitAI>();
-        foreach(Unit unit in allUnits) {
-            UnitAI ai = unit.gameObject.GetComponent<UnitAI>();
-            if (ai){
-                unitAIs.Add(ai);
+
+        for(int i = 0; i < allUnits.Length; i++) {
+            UnitAI ai = allUnits[i].gameObject.GetComponent<UnitAI>();
+            if (ai) {
+                units.Add(allUnits[i]);
+                ai.unitNum = i; // for debugging
             } else {
-                playerUnits.Add(unit);
+                playerUnits.Add(allUnits[i]);
             }
         }
         UnitAI.SetPlayerUnits(playerUnits);
-
-        //DEBUGGING CODE//
-        for(int i = 0; i < unitAIs.Count; i++) {
-            unitAIs[i].unitNum = i;
-        }
     }
 
     void Update() {
         if (!battleController.BattleIsDone && SelectionController.TakingAIInput()){
-            if (currentUnitIndex < unitAIs.Count) {
-                UnitAI ai = unitAIs[currentUnitIndex];
-                if (ai) {
-                    //Debug.Log(currentUnitIndex + " " + ai.unit.phase);
+            if (currentUnitIndex < units.Count) {
+                if (units[currentUnitIndex]) {
+                    UnitAI ai = GetAI(currentUnitIndex);
                     switch(ai.unit.phase) {
                         case UnitTurn.Open:
                             ai.SetMovement();
@@ -63,7 +51,7 @@ public class AIBattleController : MonoBehaviour {
                 } else {
                     currentUnitIndex++;
                 } 
-            } else if (AllUnitsDone()){
+            } else if (battleController.CanEndTurn()){
                 battleController.EndCurrentTurn();
             }
         }
@@ -75,29 +63,13 @@ public class AIBattleController : MonoBehaviour {
     }
 
     public void StartTurn() {
-        Debug.Log("number of units" + unitAIs.Count);
+        Debug.Log("number of units" + units.Count);
         currentUnitIndex = 0;
         SelectionController.mode = SelectionMode.AITurn;
-        OpenAllUnits();
+        base.StartTurn();
     }
 
-    public bool IsAnnihilated() {
-        return unitAIs.Where(a => a != null).ToList().Count == 0;
-    }
-
-    public void EndTurn() {
-        OpenAllUnits();
-    }
-
-    private void OpenAllUnits() {
-        for (int i = 0; i < unitAIs.Count; i++) {
-            if(unitAIs[i]) {
-                unitAIs[i].unit.MakeOpen();
-            }
-        }
-    }
-
-    private bool AllUnitsDone() {
-        return unitAIs.Where(a => a != null && a.unit.phase != UnitTurn.Done).ToList().Count == 0;
+    private UnitAI GetAI(int index) {
+        return units[index] != null ? units[index].gameObject.GetComponent<UnitAI>() : null;
     }
 }

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class PlayerBattleController : MonoBehaviour {
-    private BattleController battleController;
-    private List<Unit> units;
+public class PlayerBattleController : ArmyBattleController {
     public static Texture2D menuItem;
     public static Texture2D menuItemHovered;
     
@@ -19,12 +17,7 @@ public class PlayerBattleController : MonoBehaviour {
     public Sprite[] lineSprites;
     public Sprite[] arrowSprites;
 
-    void Start() {
-        InitUnitList();
-        battleController = gameObject.GetComponent<BattleController>();
-    }
-
-    private void InitUnitList() {
+    public override void InitUnitList() {
         Unit[] allUnits = FindObjectsOfType(typeof(Unit)) as Unit[];
         units = allUnits.Where(unit => unit.IsPlayerUnit()).ToList();
     }
@@ -43,7 +36,7 @@ public class PlayerBattleController : MonoBehaviour {
                     break;
             }
         }
-        if (!battleController.BattleIsDone && AllUnitsDone()) {
+        if (!battleController.BattleIsDone && battleController.CanEndTurn()) {
             battleController.EndCurrentTurn();
         }
     }
@@ -105,18 +98,14 @@ public class PlayerBattleController : MonoBehaviour {
         return style;
     }
 
-    public void StartTurn() {
+    public override void StartTurn() {
         SelectionController.mode = SelectionMode.Open;
-        OpenAllUnits();
+        base.StartTurn();
     }
 
-    public void EndTurn() {
+    public override void EndTurn() {
         ClearSelections();
-        OpenAllUnits();
-    }
-
-    public bool IsAnnihilated() {
-        return units.Where(u => u != null).ToList().Count == 0;
+        base.EndTurn();
     }
 
     private void ClearSelections() {
@@ -131,17 +120,5 @@ public class PlayerBattleController : MonoBehaviour {
 
     public static bool InUnitPhase(UnitTurn phase) {
         return !SelectionController.TakingAIInput() && selectedUnit && selectedUnit.phase == phase;
-    }
-
-    private void OpenAllUnits() {
-        for (int i = 0; i < units.Count; i++) {
-            if (units[i]){
-                units[i].MakeOpen();    
-            } 
-        }
-    }
-
-    private bool AllUnitsDone() {
-        return units.Where(u => u != null && u.phase != UnitTurn.Done).ToList().Count == 0;
     }
 }
