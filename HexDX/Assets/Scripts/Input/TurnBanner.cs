@@ -9,15 +9,16 @@ public class TurnBanner : MonoBehaviour {
 	public GameDialogueManager gameDialogueMgr;
 
 	void Update() {
-		if (gameDialogueMgr == null || !gameDialogueMgr.IsVisible) {
-           if (battleController.enabled && battleController.IsPlayerTurn){
+		if (battleController.enabled 
+				&& (gameDialogueMgr == null || !gameDialogueMgr.IsVisible)) {
+           if (battleController.IsPlayerTurn){
                ShowPlayerTurn();
            } else {
                ShowEnemyTurn();
            }
-       } else {
-           Hide();
-       }
+		} else {
+		   Hide();
+		}
 	}
 
 	private void ShowPlayerTurn() {

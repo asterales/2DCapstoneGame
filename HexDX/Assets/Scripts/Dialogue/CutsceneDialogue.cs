@@ -23,7 +23,7 @@ public class CutsceneDialogue {
 		}
 		Character character = Character.characters[int.Parse(tokens[0])];
 		if (tokens.Length == 5) {
-			CharacterName = tokens[5];
+			CharacterName = tokens[4];
 		} else {
 			CharacterName = character.Name;
 		}

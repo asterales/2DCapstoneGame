@@ -79,7 +79,9 @@ public class SpeakerUI {
 	}
 
 	public void ShowGUI() {
-		ShowPortrait();
+		if (portrait != null) {
+			ShowPortrait();
+		}
 		ShowTextBoxes();
 	}
 

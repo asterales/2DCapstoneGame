@@ -13,6 +13,7 @@ public class LevelManager : MonoBehaviour {
 	public List<string> sceneNames;
 	private int currentScene;
 	private bool levelStarted;
+	private bool levelComplete;
 	private static LevelManager activeInstance;
 
 	// For fading transition effect
@@ -21,6 +22,8 @@ public class LevelManager : MonoBehaviour {
 	private int drawDepth = -1000;
 	private float alpha = 1.0f;
 	private FadeDirection fadeDir = FadeDirection.In;
+
+	private AudioSource fadeOutMusic;
 
 	void Awake() {
 		SceneManager.sceneLoaded += FadeIn;
@@ -51,6 +54,7 @@ public class LevelManager : MonoBehaviour {
 
 	private void SetActiveLevel() {
 		levelStarted = false;
+		levelComplete = false;
 		activeInstance = this;
 		currentScene = 0;
 		DontDestroyOnLoad(gameObject);
@@ -71,8 +75,24 @@ public class LevelManager : MonoBehaviour {
 
 	private void CompleteLevel() {
 		Debug.Log("Level complete");
-		// maybe load back to world map at end of level?
-		//Destroy(gameObject);
+		levelComplete = true;
+		ReturnToWorldMap();
+	}
+
+	public static void ReturnToWorldMap() {
+		if (activeInstance != null) {
+			//with fade effects
+            activeInstance.StartCoroutine(activeInstance.LoadScene("WorldMap"));
+        } else {
+        	// no fade effect b/c no fade texture associate with an levelmanager object
+			SceneManager.LoadScene("WorldMap");
+        } 
+	}
+
+	void Update() {
+		if (fadeOutMusic != null && fadeDir == FadeDirection.Out) {
+			fadeOutMusic.volume = Mathf.Clamp01(fadeOutMusic.volume - (int)fadeDir * 1.5f * fadeSpeed * Time.deltaTime);
+		}
 	}
 
 	void OnGUI() {
@@ -84,17 +104,24 @@ public class LevelManager : MonoBehaviour {
 
 	private float BeginFade(FadeDirection direction) {
 		fadeDir = direction;
+		if (fadeDir == FadeDirection.Out) {
+			fadeOutMusic = FindObjectOfType(typeof(AudioSource)) as AudioSource;
+		}
 		return fadeSpeed;
 	}
 
 	private IEnumerator LoadScene(string sceneName) {
 		yield return new WaitForSeconds(BeginFade(FadeDirection.Out));
 		SceneManager.LoadScene(sceneName);
+		Debug.Log("Loaded");
 	}
 
 	// delegate/event to be called when new scene is loaded
 	private void FadeIn(Scene scene, LoadSceneMode mode) {
 		BeginFade(FadeDirection.In);
+		if (levelComplete) {
+			Destroy(gameObject);
+		}
 	}
 }
 

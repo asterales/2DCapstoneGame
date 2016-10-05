@@ -103,7 +103,7 @@ public class BattleController : MonoBehaviour {
         if (victoryCondition.Achieved()) {
             LevelManager.LoadNextScene();
         } else if (player.IsAnnihilated()) {
-            Debug.Log("Return to World Map");
+            LevelManager.ReturnToWorldMap();
         }
     }
 }
