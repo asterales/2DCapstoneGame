@@ -22,6 +22,14 @@ public class LevelManager : MonoBehaviour {
 	private float alpha = 1.0f;
 	private FadeDirection fadeDir = FadeDirection.In;
 
+	void Awake() {
+		SceneManager.sceneLoaded += FadeIn;
+	}
+
+	void OnDestroy() {
+		SceneManager.sceneLoaded -= FadeIn;
+	}
+
 	// Load next scene of active level
 	public static void LoadNextScene() {
         if (activeInstance != null) {
@@ -82,7 +90,11 @@ public class LevelManager : MonoBehaviour {
 	private IEnumerator LoadScene(string sceneName) {
 		yield return new WaitForSeconds(BeginFade(FadeDirection.Out));
 		SceneManager.LoadScene(sceneName);
-		yield return new WaitForSeconds(BeginFade(FadeDirection.In));
+	}
+
+	// delegate/event to be called when new scene is loaded
+	private void FadeIn(Scene scene, LoadSceneMode mode) {
+		BeginFade(FadeDirection.In);
 	}
 }
 

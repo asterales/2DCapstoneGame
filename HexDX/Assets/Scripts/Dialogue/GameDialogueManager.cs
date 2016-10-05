@@ -9,10 +9,9 @@ using UnityEngine.UI;
 
 public class GameDialogueManager : DialogueManager {
 	public delegate void FinishedLinesCallback();
-	public BattleController battleController;
-	private bool isVisible;
 	private Queue<string> lines;
 	private FinishedLinesCallback finishedCallback;
+	public bool IsVisible { get; private set; }
 	
 	void Awake(){
 		activeSpeaker = new SpeakerUI("Dialogue Portrait", "Dialogue Name Card", "Dialogue Box");
@@ -23,7 +22,7 @@ public class GameDialogueManager : DialogueManager {
 	}
 
 	protected override void Update() {
-		if(isVisible) {
+		if(IsVisible) {
 			if(HasFinishedAllLines() && finishedCallback != null){
 				finishedCallback();
 				finishedCallback = null;
@@ -57,14 +56,12 @@ public class GameDialogueManager : DialogueManager {
 	}
 
 	public void HideGUI() {
-		isVisible = false;
+		IsVisible = false;
 		activeSpeaker.HideGUI();
-		battleController.showTurnBanner = true;
 	}
 
 	public void ShowGUI() {
-		isVisible = true;
+		IsVisible = true;
 		activeSpeaker.ShowGUI();
-		battleController.showTurnBanner = false;
 	}
 }
