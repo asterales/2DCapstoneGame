@@ -6,7 +6,6 @@ public class TutorialController : MonoBehaviour {
 	public Sprite selectionSprite;
 	public RuntimeAnimatorController animation;
 	public PlayerBattleController player;
-	public ScriptedAIBattleController scriptedAI;
     public AIBattleController ai;
 
 	public static Tile targetTile;

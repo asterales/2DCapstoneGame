@@ -8,13 +8,11 @@ public class MapLoader : MonoBehaviour {
 
     private HexMap battleMap;
     private HexDimension hexDimension;
-    private BattleController battleController;
     private BattleSpriteCache spriteCache;
 
     void Awake() {
         battleMap = this.gameObject.GetComponent<HexMap>();
         hexDimension = this.gameObject.GetComponent<HexDimension>();
-        battleController = this.gameObject.GetComponent<BattleController>();
         spriteCache = this.gameObject.GetComponent<BattleSpriteCache>();
 
         ////// DEBUG CODE //////
