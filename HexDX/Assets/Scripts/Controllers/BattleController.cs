@@ -7,7 +7,6 @@ using System.Collections.Generic;
 public class BattleController : MonoBehaviour {
     public AIBattleController ai;
     public PlayerBattleController player;
-    public ScriptedAIBattleController scriptedAI;
     public VictoryCondition victoryCondition;
     private bool nextSceneLoaded;
 
@@ -28,10 +27,9 @@ public class BattleController : MonoBehaviour {
         PlayerBattleController.menuItemHovered = actionMenuItemHover;
         ai = this.gameObject.GetComponent<AIBattleController>();
         player = this.gameObject.GetComponent<PlayerBattleController>();
-        scriptedAI = this.gameObject.GetComponent<ScriptedAIBattleController>();
         victoryCondition = this.gameObject.GetComponent<VictoryCondition>();
         ////// DEBUG CODE //////
-        if (ai == null && scriptedAI == null) {
+        if (ai == null) {
             Debug.Log("Error :: AI Battle Controller not defined -> BattleController.cs");
         }
         if (player == null) {

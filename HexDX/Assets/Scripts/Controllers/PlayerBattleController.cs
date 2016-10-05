@@ -22,7 +22,6 @@ public class PlayerBattleController : ArmyBattleController {
         units = allUnits.Where(unit => unit.IsPlayerUnit()).ToList();
     }
 
-
     void Update(){
         if (!SelectionController.TakingAIInput() && selectedUnit) {
             switch (selectedUnit.phase) {

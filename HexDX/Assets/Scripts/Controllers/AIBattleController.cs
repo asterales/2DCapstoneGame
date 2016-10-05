@@ -62,7 +62,7 @@ public class AIBattleController : ArmyBattleController {
         SelectionController.HideTarget();
     }
 
-    public void StartTurn() {
+    public override void StartTurn() {
         Debug.Log("number of units" + units.Count);
         currentUnitIndex = 0;
         SelectionController.mode = SelectionMode.AITurn;

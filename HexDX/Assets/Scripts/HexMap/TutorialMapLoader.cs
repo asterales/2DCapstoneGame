@@ -11,14 +11,14 @@ public class TutorialMapLoader : MonoBehaviour
 
     private HexMap battleMap;
     private HexDimension hexDimension;
-    private BattleController battleController;
+    private ScriptedAIBattleController scriptedAI;
     private BattleSpriteCache spriteCache;
 
     void Start()
     {
         battleMap = this.gameObject.GetComponent<HexMap>();
         hexDimension = this.gameObject.GetComponent<HexDimension>();
-        battleController = this.gameObject.GetComponent<BattleController>();
+        scriptedAI = this.gameObject.GetComponent<ScriptedAIBattleController>();
         spriteCache = this.gameObject.GetComponent<BattleSpriteCache>();
 
         ////// DEBUG CODE //////
@@ -44,11 +44,11 @@ public class TutorialMapLoader : MonoBehaviour
         {
             // load the test battle map
             LoadHexMap(csvMapFile);
-            AddUnitToTile(5, 5, battleController.scriptedAI.aiUnits[0], false, new Vector3(0, 1, 0));
-            AddUnitToTile(10, 4, battleController.scriptedAI.aiUnits[1], false, new Vector3(0, 1, 0));
-            AddUnitToTile(6, 6, battleController.scriptedAI.aiUnits[2], false, new Vector3(0, 1, 0));
-            AddUnitToTile(4, 2, battleController.scriptedAI.aiUnits[3], true, new Vector3(0, 1, 0));
-            AddUnitToTile(3, 3, battleController.scriptedAI.aiUnits[4], true, new Vector3(0, 1, 0));
+            AddUnitToTile(5, 5, scriptedAI.aiUnits[0], false, new Vector3(0, 1, 0));
+            AddUnitToTile(10, 4, scriptedAI.aiUnits[1], false, new Vector3(0, 1, 0));
+            AddUnitToTile(6, 6, scriptedAI.aiUnits[2], false, new Vector3(0, 1, 0));
+            AddUnitToTile(4, 2, scriptedAI.aiUnits[3], true, new Vector3(0, 1, 0));
+            AddUnitToTile(3, 3, scriptedAI.aiUnits[4], true, new Vector3(0, 1, 0));
         }
 
         ////// DEBUG CODE //////
