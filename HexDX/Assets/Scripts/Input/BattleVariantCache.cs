@@ -9,12 +9,12 @@ public class BattleVariantCache : MonoBehaviour {
         sprites = new List<Sprite>();
     }
 
-    public void CreateCacheFromFiles(string[] spriteFiles)
-    {
-        for (int i = 0; i < spriteFiles.Length; i++)
-        {
-            Sprite newSprite = Resources.Load<Sprite>(spriteFiles[i]);
-            sprites.Add(newSprite);
-        }
-    }
+    // public void CreateCacheFromFiles(string[] spriteFiles)
+    // {
+    //     for (int i = 0; i < spriteFiles.Length; i++)
+    //     {
+    //         Sprite newSprite = Resources.Load<Sprite>(spriteFiles[i]);
+    //         sprites.Add(newSprite);
+    //     }
+    // }
 }
