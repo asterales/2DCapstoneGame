@@ -1,21 +1,21 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine.UI;
 
 /* Manages cutscene dialogue */
 
 public class CutsceneManager : DialogueManager {
-	public string csvCutsceneFile;
+	private static readonly string cutsceneDir = "Cutscenes/";
+	public string cutsceneFile;
 	private Queue<CutsceneDialogue> dialogues;
 	private SpeakerUI leftSpeaker;
 	private SpeakerUI rightSpeaker;
 	private bool nextSceneLoaded;
 
 	void Awake() {
-		if (csvCutsceneFile != null) {
-			LoadCutscene(csvCutsceneFile);
+		if (cutsceneFile != null) {
+			LoadCutscene(cutsceneFile);
 		}
 		leftSpeaker = new SpeakerUI("Left Portrait", "Left Name Card", "Left Dialogue Box");
 		rightSpeaker = new SpeakerUI("Right Portrait", "Right Name Card", "Right Dialogue Box");
@@ -25,9 +25,14 @@ public class CutsceneManager : DialogueManager {
 
 	private void LoadCutscene(string file) {
 		dialogues = new Queue<CutsceneDialogue>();
-		StreamReader reader = new StreamReader(File.OpenRead(file));
-		while(!reader.EndOfStream){
-			dialogues.Enqueue(new CutsceneDialogue(reader.ReadLine()));
+		TextAsset cutsceneLines = Resources.Load<TextAsset>(cutsceneDir + file);
+		if (cutsceneLines != null) {
+			string[] lines = cutsceneLines.text.Trim().Split('\n');
+			foreach(string line in lines) {
+				dialogues.Enqueue(new CutsceneDialogue(line));
+			}
+		} else {
+			Debug.Log("Error: cutscene file does not exist: " + cutsceneFile + " - CutsceneManager.cs");
 		}
 	}
 

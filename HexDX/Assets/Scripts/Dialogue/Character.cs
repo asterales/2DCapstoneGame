@@ -1,7 +1,6 @@
 using UnityEngine;
 using System;
 using System.Linq;
-using System.IO;
 using System.Collections.Generic;
 
 /* 	Container class for character data for cutscenes: id, name, portraits
@@ -21,46 +20,41 @@ using System.Collections.Generic;
 */
 
 public class Character {
-	private static string charactersFile = "Assets/Cutscenes/CharacterIds.csv";
+	private static readonly string portraitsDir = "Portraits/";
+	private static readonly string charactersFile = "Cutscenes/CharacterIds";
 	public static Dictionary<int, Character> characters = null;
-	private static string extPattern = "*.jpg"; //can change later
 
 	public int Id { get; private set; }
 	public string Name { get; private set; }
 	public List<Sprite> Portraits { get; private set; } 
 
 	static Character() {
-		LoadCharacterBank(charactersFile);
+		LoadCharacterBank();
 	}
 
-	private static void LoadCharacterBank(string file) {
+	private static void LoadCharacterBank() {
 		characters = new Dictionary<int, Character>();
-		StreamReader reader = new StreamReader(File.OpenRead(file));
-		while(!reader.EndOfStream){
-			Character character = new Character(reader.ReadLine());
-			characters[character.Id] = character;
+		TextAsset idText = Resources.Load<TextAsset>(charactersFile);
+		if (idText != null) {
+			string[] lines = idText.text.Trim().Split('\n');
+			foreach(string line in lines) {
+				Character character = new Character(line);
+				characters[character.Id] = character;
+			} 
+		} else {
+			Debug.Log("Error: Character file not found: " + charactersFile + " - Character.cs");
 		}
 	}
 
-	public Character(string csvLine){
+	public Character(string csvLine) {
 		string[] tokens = csvLine.Split(',');
 		if (tokens.Length < 2) {
 			throw new ArgumentException(string.Format("csv line has invalid number of items: {0}", csvLine));
 		}
 		Id = int.Parse(tokens[0]);
 		Name = tokens[1].Trim();
-		LoadPortraits();
-	}
-
-	private void LoadPortraits() {
-		string portraitDir = "Portraits/" + new string(Name.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
-		FileInfo[] files = new DirectoryInfo("Assets/Resources/" + portraitDir).GetFiles(extPattern).OrderBy(f => f).ToArray();
-		Portraits = new List<Sprite>();
-		foreach(FileInfo file in files) {
-			string filename = file.Name;
-			filename = filename.Remove(filename.IndexOf('.'));
-			Portraits.Add(Resources.Load<Sprite>(portraitDir + "/" + filename));
-		}	    
+		string portraitDir = portraitsDir + new string(Name.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
+		Portraits = Resources.LoadAll<Sprite>(portraitDir).ToList();  	
 	}
 }
 

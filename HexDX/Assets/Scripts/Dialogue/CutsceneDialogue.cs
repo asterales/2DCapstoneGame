@@ -32,7 +32,6 @@ public class CutsceneDialogue {
 		Side = (ScreenLocation) int.Parse(tokens[2]);
 		Line = tokens[3];
 	}
-
 }
 
 public enum ScreenLocation {
