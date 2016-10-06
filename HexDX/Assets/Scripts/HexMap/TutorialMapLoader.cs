@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 
 public class TutorialMapLoader : MonoBehaviour
 {
-    public string csvMapFile = "Assets/Maps/test.csv";
+    private static readonly string mapsDir = "Maps/";
+    public string csvMapFile = "test";
     public int numCols;
     public int numRows;
 
@@ -65,7 +65,8 @@ public class TutorialMapLoader : MonoBehaviour
 
     private void LoadHexMap(string hexMapFile)
     {
-        var reader = new StreamReader(File.OpenRead(hexMapFile));
+        TextAsset hexMapLines = Resources.Load<TextAsset>(mapsDir + hexMapFile);
+        string[] mapCsvRows = hexMapLines.text.Trim().Split('\n');
         battleMap.ClearMap();
 
         RowContainer rowContainer = battleMap.rowContainer;
@@ -76,10 +77,9 @@ public class TutorialMapLoader : MonoBehaviour
         float z = 0;
         int rowIndex = 0;
 
-        while (!reader.EndOfStream)
-        {
+        foreach (string csvRow in mapCsvRows) {
             int columnIndex = 0;
-            string[] line = reader.ReadLine().Split(',');
+            string[] line = csvRow.Trim().Split(',');
             row = rowContainer.tileRows[rowIndex];
 
             foreach (string num in line)

@@ -16,7 +16,7 @@ public class TutorialController : MonoBehaviour {
 	void Awake(){
 		Character tutorialAdvisor = Character.characters[2]; // Colonel Schmidt
 		eventsList = GameObject.Find("ScriptedEvents").GetComponent<ScriptList>();
-		eventsList.dialogueMgr.SetSpeaker(tutorialAdvisor, Expression.Neutral);
+		eventsList.dialogueMgr.SetSpeaker(tutorialAdvisor, 7);
 		InitSelectionPrompt();
 	}
 

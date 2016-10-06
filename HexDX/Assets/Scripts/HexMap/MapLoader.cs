@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 
 public class MapLoader : MonoBehaviour {
+    private static readonly string mapsDir = "Maps/";
     public string csvMapFile;
 
     private HexMap battleMap;
@@ -41,7 +41,8 @@ public class MapLoader : MonoBehaviour {
     }
 
     void LoadHexMap(string hexMapFile) {
-        var reader = new StreamReader(File.OpenRead(hexMapFile));
+        TextAsset hexMapLines = Resources.Load<TextAsset>(mapsDir + hexMapFile);
+        string[] mapCsvRows = hexMapLines.text.Trim().Split('\n');
         battleMap.ClearMap();
 
         List<Tile> row;
@@ -50,7 +51,7 @@ public class MapLoader : MonoBehaviour {
         float z = 0;
         int rowIndex = 0;
 
-        while (!reader.EndOfStream) {
+        foreach (string csvRow in mapCsvRows) {
             // Create new object for row in map, make it a subobject of hexMap
             // row objects are useless other than for organizational purposes so putting DEBUG around them
             ////// DEBUG CODE //////
@@ -59,7 +60,7 @@ public class MapLoader : MonoBehaviour {
 
             row = new List<Tile>();
             int columnIndex = 0;
-            string[] line = reader.ReadLine().Split(',');
+            string[] line = csvRow.Trim().Split(',');
 
             foreach (string num in line) {
                 GameObject tileObj = CreateTile(int.Parse(num), new Vector3(x, y, z), rowObj, rowIndex, columnIndex);

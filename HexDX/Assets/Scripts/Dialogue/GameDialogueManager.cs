@@ -51,8 +51,8 @@ public class GameDialogueManager : DialogueManager {
 		return lines.Count == 0 && SpeakerLinesFinished();
 	}
 
-	public void SetSpeaker(Character character, Expression expression) {
-		activeSpeaker.SetSpeaker(character.Portraits[(int)expression], character.Name);
+	public void SetSpeaker(Character character, int portraitNum) {
+		activeSpeaker.SetSpeaker(character.Portraits[portraitNum], character.Name);
 	}
 
 	public void HideGUI() {
