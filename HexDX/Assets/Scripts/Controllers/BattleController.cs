@@ -66,7 +66,7 @@ public class BattleController : MonoBehaviour {
     }
 
     public bool CanEndTurn() {
-        return IsPlayerTurn ? (player.AllUnitsDone() && ai.NoneAttacking()) : (ai.AllUnitsDone() && player.NoneAttacking());
+        return IsPlayerTurn ? (player.AllUnitsDone() && ai.NoneAttacking() && player.NoneAttacking()) : (ai.AllUnitsDone() && player.NoneAttacking() && ai.NoneAttacking());
     }
 
     public void EndCurrentTurn() {
