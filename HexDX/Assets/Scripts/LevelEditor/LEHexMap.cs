@@ -116,4 +116,77 @@ public class LEHexMap : MonoBehaviour {
     {
         tileArray[tileArray.Count - 1].Add(obj.GetComponent<LETile>());
     }
+
+    public void IncrementVert()
+    {
+        //Debug.Log("Incrementing Vert Dim");
+        int size = tileArray[0].Count;
+        int row = tileArray.Count;
+        List<LETile> newRow = new List<LETile>();
+
+        float x = tileArray[row-1][size-1].gameObject.transform.localPosition.x;
+        float y = tileArray[row-1][size-1].gameObject.transform.localPosition.y;
+        float z = tileArray[row-1][size-1].gameObject.transform.localPosition.z;
+        x -= 2 * hexDimension.width * (size-1) - hexDimension.width;
+        y -= 2 * hexDimension.apex - hexDimension.minorApex;
+        z -= .001f;
+
+        for (int i = 0; i < size; i++)
+        {
+            Vector3 pos = new Vector3(x, y, z);
+            x += 2 * hexDimension.width;
+            GameObject newTileObject = CreateTileObject(pos, row, i);
+            LETile newTile = newTileObject.GetComponent<LETile>();
+            newRow.Add(newTile);
+        }
+        tileArray.Add(newRow);
+    }
+
+    public void IncrementHori()
+    {
+        //Debug.Log("Incrementing Hori Dim");
+        for(int i=0;i<tileArray.Count;i++)
+        {
+            List<LETile> tileRow = tileArray[i];
+            float x = tileRow[tileRow.Count - 1].gameObject.transform.localPosition.x;
+            float y = tileRow[tileRow.Count - 1].gameObject.transform.localPosition.y;
+            float z = tileRow[tileRow.Count - 1].gameObject.transform.localPosition.z;
+            x += 2 * hexDimension.width;
+            Vector3 pos = new Vector3(x, y, z);
+            GameObject newTileObject = CreateTileObject(pos, i, tileRow.Count);
+            LETile newTile = newTileObject.GetComponent<LETile>();
+            tileRow.Add(newTile);
+        }
+    }
+
+    public void DecrementHori()
+    {
+        //Debug.Log("Decremening Hori Dim");
+        if(tileArray[0].Count > 1)
+        {
+            for(int i=0;i<tileArray.Count;i++)
+            {
+                List<LETile> row = tileArray[i];
+                LETile lastTile = row[row.Count - 1];
+                row.RemoveAt(row.Count - 1);
+                lastTile.PrepareToDestroy();
+                Destroy(lastTile.gameObject);
+            }
+        }
+    }
+
+    public void DecrementVert()
+    {
+        //Debug.Log("Decrementing Vert Dim");
+        if (tileArray.Count > 1)
+        {
+            List<LETile> lastArray = tileArray[tileArray.Count - 1];
+            for (int i = 0; i < lastArray.Count; i++)
+            {
+                lastArray[i].PrepareToDestroy();
+                Destroy(lastArray[i].gameObject);
+            }
+            tileArray.RemoveAt(tileArray.Count - 1);
+        }
+    }
 }

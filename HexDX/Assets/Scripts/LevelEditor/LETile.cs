@@ -9,11 +9,14 @@ public class LETile : MonoBehaviour {
     public SpriteRenderer spriteRenderer;
     public int type;
     public static bool canDrag=true;
+    private LEUnitInstance currentInstance;
+
     void Awake()
     {
         position = this.gameObject.GetComponent<TileLocation>();
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
         type = 0;
+        currentInstance = null;
 
         ////// DEBUG CODE //////
         if (position == null)
@@ -52,20 +55,21 @@ public class LETile : MonoBehaviour {
         {
             type = reference.selectionController.GetTileType();
             spriteRenderer.sprite = spriteCache.GetTileSprite(type);
+            canDrag = true;
         }
-        if (reference.selectionController.isInstanceMode)
+        else if (reference.selectionController.isInstanceMode)
         {
             // does nothing... will move in the future
             // to be implemented
         }
-        if (reference.selectionController.isSettingsMode)
+        else if (reference.selectionController.isSettingsMode)
         {
             Debug.Log("Placing Unit");
             Vector3 newPos = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - .2f);
             LEUnitInstance instance = unitCache.CreateNewUnitInstance(newPos, reference.selectionController.selectedSettings);
+            currentInstance = instance;
             unitCache.unitInstances.Add(instance);
         }
-        canDrag = true;
     }
 
     void OnMouseEnter()
@@ -95,5 +99,10 @@ public class LETile : MonoBehaviour {
         }
         ////////////////////////
         ChangeSprite(spriteCache.GetTileSprite(newType), newType);
+    }
+
+    public void PrepareToDestroy()
+    {
+        // delete unit instance
     }
 }
