@@ -2,11 +2,8 @@
 using System.Collections;
 
 public class CameraController : MonoBehaviour {
-    public static Camera camera;
-
     // Use this for initialization
     void Start () {
-        camera = gameObject.GetComponent<Camera>();
     }
     
     // Update is called once per frame
@@ -14,28 +11,25 @@ public class CameraController : MonoBehaviour {
         float newX, newY;
         newX = newY = 0;
         if (Input.GetKey(KeyCode.W))
-            newY += .1f;
+            newY += .2f * transform.localScale.y;
         if (Input.GetKey(KeyCode.S))
-            newY -= .1f;
+            newY -= .2f * transform.localScale.y;
         if (Input.GetKey(KeyCode.A))
-            newX -= .1f;
+            newX -= .2f * transform.localScale.x;
         if (Input.GetKey(KeyCode.D))
-            newX += .1f;
+            newX += .2f * transform.localScale.x;
 
         transform.position += new Vector3(newX, newY, 0) * 2.0f;
         if (Input.GetAxis("Mouse ScrollWheel") < 0) // forward
         {
-            camera.orthographicSize++;
-            transform.localScale = new Vector3(1.0f, 1.0f, 1.0f) * (camera.orthographicSize / (24));
+            Camera.main.orthographicSize *= 1.1f;
+            transform.localScale = new Vector3(1.0f, 1.0f, 1.0f) * (Camera.main.orthographicSize / (24));
 
         }
         if (Input.GetAxis("Mouse ScrollWheel") > 0) // back
         {
-            if (camera.orthographicSize > 1)
-            {
-                camera.orthographicSize--;
-                transform.localScale = new Vector3(1.0f, 1.0f, 1.0f) * (camera.orthographicSize / (24));
-            }
+            Camera.main.orthographicSize *= .9f;
+            transform.localScale = new Vector3(1.0f, 1.0f, 1.0f) * (Camera.main.orthographicSize / (24));
         }
     }
 }

@@ -41,7 +41,7 @@ public class PlayerBattleController : ArmyBattleController {
     }
 
     private void SelectFacing() {
-        Vector2 directionVec = Input.mousePosition - CameraController.camera.WorldToScreenPoint(selectedUnit.transform.position);
+        Vector2 directionVec = Input.mousePosition - Camera.main.WorldToScreenPoint(selectedUnit.transform.position);
         selectedUnit.SetFacing(directionVec);
         if (Input.GetMouseButtonDown(1)) {
             selectedUnit.MakeChoosingAction();
@@ -53,7 +53,7 @@ public class PlayerBattleController : ArmyBattleController {
             int itemHeight = 20;
             int itemWidth = 60;
             int offset = 60;
-            Vector3 pos = CameraController.camera.WorldToScreenPoint(selectedUnit.transform.position);
+            Vector3 pos = Camera.main.WorldToScreenPoint(selectedUnit.transform.position);
             pos = new Vector3(pos.x, Screen.height - pos.y-offset);
             Tile tile = HexMap.GetAttackTiles(selectedUnit).FirstOrDefault(t => t.currentUnit && !t.currentUnit.IsPlayerUnit());
             bool canAttack = tile;
