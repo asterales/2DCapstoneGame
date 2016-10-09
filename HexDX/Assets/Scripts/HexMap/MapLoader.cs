@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -45,18 +46,26 @@ public class MapLoader : MonoBehaviour {
         string[] mapCsvRows = hexMapLines.text.Trim().Split('\n');
         battleMap.ClearMap();
 
+        string[] dimensionRow = mapCsvRows[0].Split(',');
+
+        if (dimensionRow.Length != 2) Debug.Log("ERROR :: INVALID FORMAT FOR LEVEL FILE");
+
+        int rows = Convert.ToInt32(dimensionRow[0]);
+        int cols = Convert.ToInt32(dimensionRow[1]);
+
         List<Tile> row;
         float x = 0;
         float y = 0;
         float z = 0;
-        int rowIndex = 0;
+        int rowIndex = 1;
 
-        foreach (string csvRow in mapCsvRows) {
+        for (int i=0;i<rows;i++) {
             // Create new object for row in map, make it a subobject of hexMap
             // row objects are useless other than for organizational purposes so putting DEBUG around them
             ////// DEBUG CODE //////
             GameObject rowObj = CreateNewRowObj(rowIndex);
             ////////////////////////
+            string csvRow = mapCsvRows[i + 1];
 
             row = new List<Tile>();
             int columnIndex = 0;
@@ -75,6 +84,10 @@ public class MapLoader : MonoBehaviour {
             z -= .001f;
             rowIndex++;
         }
+
+        int numUnits = Convert.ToInt32(mapCsvRows[rowIndex]);
+        Debug.Log("Number Of Units :: " + numUnits);
+        // implement Unit parsing
     }
 
     private GameObject CreateTile(int val, Vector3 pos, GameObject rowObj, int row, int col) {

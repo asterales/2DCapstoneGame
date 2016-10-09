@@ -77,7 +77,8 @@ public class TutorialMapLoader : MonoBehaviour
         float z = 0;
         int rowIndex = 0;
 
-        foreach (string csvRow in mapCsvRows) {
+        for (int i=1;i<mapCsvRows.Length-1; i++) {
+            string csvRow = mapCsvRows[i];
             int columnIndex = 0;
             string[] line = csvRow.Trim().Split(',');
             row = rowContainer.tileRows[rowIndex];
