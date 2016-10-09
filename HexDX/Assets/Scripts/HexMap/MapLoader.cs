@@ -57,7 +57,7 @@ public class MapLoader : MonoBehaviour {
         float x = 0;
         float y = 0;
         float z = 0;
-        int rowIndex = 1;
+        int rowIndex = 0;
 
         for (int i=0;i<rows;i++) {
             // Create new object for row in map, make it a subobject of hexMap
@@ -85,7 +85,7 @@ public class MapLoader : MonoBehaviour {
             rowIndex++;
         }
 
-        int numUnits = Convert.ToInt32(mapCsvRows[rowIndex]);
+        int numUnits = Convert.ToInt32(mapCsvRows[rowIndex+1]);
         Debug.Log("Number Of Units :: " + numUnits);
         // implement Unit parsing
     }
