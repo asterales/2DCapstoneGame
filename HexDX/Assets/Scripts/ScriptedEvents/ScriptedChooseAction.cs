@@ -15,7 +15,7 @@ public class ScriptedChooseAction : ScriptEvent {
             int itemHeight = 20;
             int itemWidth = 60;
             int offset = 60;
-            Vector3 pos = CameraController.camera.WorldToScreenPoint(unit.transform.position);
+            Vector3 pos = Camera.main.WorldToScreenPoint(unit.transform.position);
             pos = new Vector3(pos.x, Screen.height - pos.y-offset);
 
             if (GUI.Button(new Rect(pos.x, pos.y, itemWidth, itemHeight), " Attack", player.GetGUIStyle(actionEnabled[(int)Action.Attack]))) {
