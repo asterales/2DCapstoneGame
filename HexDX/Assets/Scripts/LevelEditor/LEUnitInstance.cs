@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class LEUnitInstance : MonoBehaviour {
     public SpriteRenderer spriteRenderer;
     public LEUnitSettings baseSettings;
     public LESelectionController selectionController;
+    public TileLocation location;
+    public int instanceVeterancy;
     public int instanceHealth;
     public int instanceAttack;
     public int instancePower;
@@ -35,27 +38,63 @@ public class LEUnitInstance : MonoBehaviour {
 
     public int GetHealth()
     {
-        return baseSettings.baseHealth + instanceHealth;
+        return baseSettings.baseHealth[instanceVeterancy] + instanceHealth;
     }
 
     public int GetAttack()
     {
-        return baseSettings.baseAttack + instanceAttack;
+        return baseSettings.baseAttack[instanceVeterancy] + instanceAttack;
     }
 
     public int GetDefense()
     {
-        return baseSettings.baseDefense + instanceDefense;
+        return baseSettings.baseDefense[instanceVeterancy] + instanceDefense;
     }
 
     public int GetPower()
     {
-        return baseSettings.basePower + instancePower;
+        return baseSettings.basePower[instanceVeterancy] + instancePower;
     }
 
     public int GetResistence()
     {
-        return baseSettings.baseResistance + instanceResistance;
+        return baseSettings.baseResistance[instanceVeterancy] + instanceResistance;
+    }
+
+    public int GetVeterancy()
+    {
+        //return instanceVeterancy; // change once veterancy support is done
+        return 0;
+    }
+
+    public int GetMove()
+    {
+        return baseSettings.baseMove[instanceVeterancy];
+    }
+
+    public int GetLowRange()
+    {
+        return baseSettings.baseLowRange[instanceVeterancy];
+    }
+
+    public int GetHighRange()
+    {
+        return baseSettings.baseHighRange[instanceVeterancy];
+    }
+
+    public int GetManuverability()
+    {
+        return baseSettings.baseManuverability[instanceVeterancy];
+    }
+
+    public string GetId()
+    {
+        return baseSettings.id;
+    }
+
+    public int GetDirection()
+    {
+        return direction;
     }
 
     void OnMouseOver()
@@ -64,7 +103,7 @@ public class LEUnitInstance : MonoBehaviour {
         {
             // select the current
             // update selection for use with units
-            Debug.Log("Clicking");
+            //Debug.Log("Clicking");
             selectionController.SetUnitType(this);
         }
         if (Input.GetMouseButtonDown(1))
@@ -87,5 +126,49 @@ public class LEUnitInstance : MonoBehaviour {
     void OnMouseExit()
     {
         // to be implemented
+    }
+
+    public string WriteFull()
+    {
+        return "" +
+            GetVeterancy() + "," +
+            GetHealth() + "," +
+            GetAttack() + "," +
+            GetPower() + "," +
+            GetDefense() + "," +
+            GetResistence() + "," +
+            GetMove() + "," +
+            GetLowRange() + "," +
+            GetHighRange() + "," +
+            GetManuverability() + "," +
+            GetDirection() + "," +
+            GetId();
+    }
+
+    public void Read(LEUnitCache unitCache, string str)
+    {
+        string[] data = str.Split(',');
+        int vet = Convert.ToInt32(data[0]);
+        int hth = Convert.ToInt32(data[1]);
+        int atk = Convert.ToInt32(data[2]);
+        int pow = Convert.ToInt32(data[3]);
+        int def = Convert.ToInt32(data[4]);
+        int res = Convert.ToInt32(data[5]);
+        int mov = Convert.ToInt32(data[6]); // can ignore
+        int low = Convert.ToInt32(data[7]); // can ignore
+        int hih = Convert.ToInt32(data[8]); // can ignore
+        int man = Convert.ToInt32(data[9]); // can ignore
+        string id = data[10];
+        int dir = Convert.ToInt32(data[11]);
+
+        baseSettings = unitCache.GetSettingsForId(id);
+
+        instanceVeterancy = vet;
+        instanceHealth = hth - baseSettings.BaseHealth(instanceVeterancy);
+        instancePower = pow - baseSettings.BasePower(instanceVeterancy);
+        instanceAttack = atk - baseSettings.BaseAttack(instanceVeterancy);
+        instanceDefense = def - baseSettings.BaseDefense(instanceVeterancy);
+        instanceResistance = res - baseSettings.BaseDefense(instanceVeterancy);
+        direction = dir;
     }
 }

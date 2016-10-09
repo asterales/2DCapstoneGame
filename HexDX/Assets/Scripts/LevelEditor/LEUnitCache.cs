@@ -2,14 +2,16 @@
 using System.IO;
 using System.Collections.Generic;
 
-public class LEUnitCache : MonoBehaviour {
+public class LEUnitCache : MonoBehaviour
+{
     public List<LEUnitSettings> unitSettings;
     public List<LEUnitInstance> unitInstances;
     public LESelectionController selectionController;
     public LEUnitBar unitBar;
     public int numOfTypes;
-    
-	void Awake () {
+
+    void Awake()
+    {
         unitSettings = new List<LEUnitSettings>();
         unitInstances = new List<LEUnitInstance>();
 
@@ -25,7 +27,7 @@ public class LEUnitCache : MonoBehaviour {
         ////////////////////////
 
         LoadInUnitsFromResources();
-	}
+    }
 
     private void LoadInUnitsFromResources()
     {
@@ -73,7 +75,7 @@ public class LEUnitCache : MonoBehaviour {
     private void ReadInUnitSettings(LEUnitSettings unit, string[] files)
     {
         string settingsFile = "null";
-        for (int i=0;i<files.Length;i++)
+        for (int i = 0; i < files.Length; i++)
         {
             if (files[i].Substring(files[i].Length - 4, 4) == ".txt")
             {
@@ -115,5 +117,12 @@ public class LEUnitCache : MonoBehaviour {
         }
 
         unit.FindDefaultSprite();
+    }
+
+    public LEUnitSettings GetSettingsForId(string id)
+    {
+        // to be implemented
+        Debug.Log("Implement This");
+        return null;
     }
 }

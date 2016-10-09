@@ -68,6 +68,7 @@ public class LETile : MonoBehaviour {
             Vector3 newPos = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - .2f);
             LEUnitInstance instance = unitCache.CreateNewUnitInstance(newPos, reference.selectionController.selectedSettings);
             currentInstance = instance;
+            instance.location = position;
             unitCache.unitInstances.Add(instance);
         }
     }

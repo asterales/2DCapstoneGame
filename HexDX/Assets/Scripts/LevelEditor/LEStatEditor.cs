@@ -17,6 +17,7 @@ public class LEStatEditor : MonoBehaviour {
     public int singleValue;
     public int doubleValue;
     public int tripleValue;
+    public int currentVet;
 
 	void Awake () {
         ////// DEBUG CODE //////
@@ -56,6 +57,7 @@ public class LEStatEditor : MonoBehaviour {
             tripleDecrement.modifier = -tripleValue;
         }
         text.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        currentVet = 0;
     }
     
     public void TurnOn(LEUnitSettings settings, LEUnitInstance instance)
@@ -89,51 +91,51 @@ public class LEStatEditor : MonoBehaviour {
         {
             case LEStatID.ATTACK:
                 {
-                    if (currentInstance == null) currentSettings.baseAttack += val;
+                    if (currentInstance == null) currentSettings.baseAttack[currentVet] += val;
                     else currentInstance.instanceAttack += val;
                     break;
                 }
             case LEStatID.DEFENSE:
                 {
-                    if (currentInstance == null) currentSettings.baseDefense += val;
+                    if (currentInstance == null) currentSettings.baseDefense[currentVet] += val;
                     else currentInstance.instanceDefense += val;
                     break;
                 }
             case LEStatID.HEALTH:
                 {
-                    if (currentInstance == null) currentSettings.baseHealth += val;
+                    if (currentInstance == null) currentSettings.baseHealth[currentVet] += val;
                     else currentInstance.instanceHealth += val;
                     break;
                 }
             case LEStatID.HIGHRANGE:
                 {
-                    currentSettings.baseHighRange += val;
+                    currentSettings.baseHighRange[currentVet] += val;
                     break;
                 }
             case LEStatID.LOWRANGE:
                 {
-                    currentSettings.baseLowRange += val;
+                    currentSettings.baseLowRange[currentVet] += val;
                     break;
                 }
             case LEStatID.MANUVERABILITY:
                 {
-                    currentSettings.baseManuverability += val;
+                    currentSettings.baseManuverability[currentVet] += val;
                     break;
                 }
             case LEStatID.MOVE:
                 {
-                    currentSettings.baseMove += val;
+                    currentSettings.baseMove[currentVet] += val;
                     break;
                 }
             case LEStatID.POWER:
                 {
-                    if (currentInstance == null) currentSettings.basePower += val;
+                    if (currentInstance == null) currentSettings.basePower[currentVet] += val;
                     else currentInstance.instancePower += val;
                     break;
                 }
             case LEStatID.RESISTANCE:
                 {
-                    if (currentInstance == null) currentSettings.baseResistance += val;
+                    if (currentInstance == null) currentSettings.baseResistance[currentVet] += val;
                     else currentInstance.instanceResistance += val;
                     break;
                 }
@@ -154,15 +156,15 @@ public class LEStatEditor : MonoBehaviour {
     {
         switch (statType)
         {
-            case LEStatID.ATTACK: return currentSettings.baseAttack + currentInstance.instanceAttack;
-            case LEStatID.DEFENSE: return currentSettings.baseDefense + currentInstance.instanceDefense;
-            case LEStatID.HEALTH: return currentSettings.baseHealth + currentInstance.instanceHealth;
-            case LEStatID.HIGHRANGE: return currentSettings.baseHighRange;
-            case LEStatID.LOWRANGE: return currentSettings.baseLowRange;
-            case LEStatID.MANUVERABILITY: return currentSettings.baseManuverability;
-            case LEStatID.MOVE: return currentSettings.baseMove;
-            case LEStatID.POWER: return currentSettings.basePower + currentInstance.instancePower;
-            case LEStatID.RESISTANCE: return currentSettings.baseResistance + currentInstance.instanceResistance;
+            case LEStatID.ATTACK: return currentSettings.baseAttack[currentInstance.GetVeterancy()] + currentInstance.instanceAttack;
+            case LEStatID.DEFENSE: return currentSettings.baseDefense[currentInstance.GetVeterancy()] + currentInstance.instanceDefense;
+            case LEStatID.HEALTH: return currentSettings.baseHealth[currentInstance.GetVeterancy()] + currentInstance.instanceHealth;
+            case LEStatID.HIGHRANGE: return currentSettings.baseHighRange[currentInstance.GetVeterancy()];
+            case LEStatID.LOWRANGE: return currentSettings.baseLowRange[currentInstance.GetVeterancy()];
+            case LEStatID.MANUVERABILITY: return currentSettings.baseManuverability[currentInstance.GetVeterancy()];
+            case LEStatID.MOVE: return currentSettings.baseMove[currentInstance.GetVeterancy()];
+            case LEStatID.POWER: return currentSettings.basePower[currentInstance.GetVeterancy()] + currentInstance.instancePower;
+            case LEStatID.RESISTANCE: return currentSettings.baseResistance[currentInstance.GetVeterancy()] + currentInstance.instanceResistance;
         }
         return 0;
     }
@@ -171,15 +173,15 @@ public class LEStatEditor : MonoBehaviour {
     {
         switch (statType)
         {
-            case LEStatID.ATTACK: return currentSettings.baseAttack;
-            case LEStatID.DEFENSE: return currentSettings.baseDefense;
-            case LEStatID.HEALTH: return currentSettings.baseHealth;
-            case LEStatID.HIGHRANGE: return currentSettings.baseHighRange;
-            case LEStatID.LOWRANGE: return currentSettings.baseLowRange;
-            case LEStatID.MANUVERABILITY: return currentSettings.baseManuverability;
-            case LEStatID.MOVE: return currentSettings.baseMove;
-            case LEStatID.POWER: return currentSettings.basePower;
-            case LEStatID.RESISTANCE: return currentSettings.baseResistance;
+            case LEStatID.ATTACK: return currentSettings.baseAttack[currentVet];
+            case LEStatID.DEFENSE: return currentSettings.baseDefense[currentVet];
+            case LEStatID.HEALTH: return currentSettings.baseHealth[currentVet];
+            case LEStatID.HIGHRANGE: return currentSettings.baseHighRange[currentVet];
+            case LEStatID.LOWRANGE: return currentSettings.baseLowRange[currentVet];
+            case LEStatID.MANUVERABILITY: return currentSettings.baseManuverability[currentVet];
+            case LEStatID.MOVE: return currentSettings.baseMove[currentVet];
+            case LEStatID.POWER: return currentSettings.basePower[currentVet];
+            case LEStatID.RESISTANCE: return currentSettings.baseResistance[currentVet];
         }
         return 0;
     }
