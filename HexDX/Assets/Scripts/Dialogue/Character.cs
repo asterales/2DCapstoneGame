@@ -34,10 +34,9 @@ public class Character {
 
 	private static void LoadCharacterBank() {
 		characters = new Dictionary<int, Character>();
-		TextAsset idText = Resources.Load<TextAsset>(charactersFile);
+		string[] idText = GameResources.GetFileLines(charactersFile);
 		if (idText != null) {
-			string[] lines = idText.text.Trim().Split('\n');
-			foreach(string line in lines) {
+			foreach(string line in idText) {
 				Character character = new Character(line);
 				characters[character.Id] = character;
 			} 

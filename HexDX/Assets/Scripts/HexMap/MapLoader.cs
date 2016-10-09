@@ -9,12 +9,10 @@ public class MapLoader : MonoBehaviour {
 
     private HexMap battleMap;
     private HexDimension hexDimension;
-    private BattleSpriteCache spriteCache;
 
     void Awake() {
         battleMap = this.gameObject.GetComponent<HexMap>();
         hexDimension = this.gameObject.GetComponent<HexDimension>();
-        spriteCache = this.gameObject.GetComponent<BattleSpriteCache>();
 
         ////// DEBUG CODE //////
         if (battleMap == null)
@@ -42,8 +40,7 @@ public class MapLoader : MonoBehaviour {
     }
 
     void LoadHexMap(string hexMapFile) {
-        TextAsset hexMapLines = Resources.Load<TextAsset>(mapsDir + hexMapFile);
-        string[] mapCsvRows = hexMapLines.text.Trim().Split('\n');
+        string[] mapCsvRows = GameResources.GetFileLines(mapsDir + hexMapFile);
         battleMap.ClearMap();
 
         string[] dimensionRow = mapCsvRows[0].Split(',');
@@ -69,7 +66,7 @@ public class MapLoader : MonoBehaviour {
 
             row = new List<Tile>();
             int columnIndex = 0;
-            string[] line = csvRow.Trim().Split(',');
+            string[] line = csvRow.Split(',');
 
             foreach (string num in line) {
                 GameObject tileObj = CreateTile(int.Parse(num), new Vector3(x, y, z), rowObj, rowIndex, columnIndex);
@@ -93,7 +90,7 @@ public class MapLoader : MonoBehaviour {
     private GameObject CreateTile(int val, Vector3 pos, GameObject rowObj, int row, int col) {
         int type = val / 100;
         int variant = val % 100;
-        GameObject tileObj = InstantiateTileFromPrefab(type, variant);
+        GameObject tileObj = GameResources.InstantiateTile(type, variant);
         if (tileObj != null) {
             tileObj.name = string.Format("Tile ({0}, {1})", row, col);
             tileObj.transform.parent = rowObj.transform;
@@ -104,41 +101,6 @@ public class MapLoader : MonoBehaviour {
             location.row = row;
         }
         return tileObj;
-    }
-
-    private GameObject InstantiateTileFromPrefab(int type, int variant) {
-        switch(type) {
-            case 0:
-                {
-                    // forest
-                    GameObject obj = Instantiate(Resources.Load("Tiles/ForestTile")) as GameObject;
-                    obj.GetComponent<SpriteRenderer>().sprite = spriteCache.GetTileSprite(type, variant);
-                    return obj;
-                }
-            case 1:
-                {
-                    // grass
-                    GameObject obj = Instantiate(Resources.Load("Tiles/GrassTile")) as GameObject;
-                    obj.GetComponent<SpriteRenderer>().sprite = spriteCache.GetTileSprite(type, variant);
-                    return obj;
-                }
-            case 2:
-                {
-                    // mountain
-                    GameObject obj = Instantiate(Resources.Load("Tiles/MountainTile")) as GameObject;
-                    obj.GetComponent<SpriteRenderer>().sprite = spriteCache.GetTileSprite(type, variant);
-                    return obj;
-                }
-            case 3:
-                {
-                    // water
-                    GameObject obj = Instantiate(Resources.Load("Tiles/WaterTile")) as GameObject;
-                    obj.GetComponent<SpriteRenderer>().sprite = spriteCache.GetTileSprite(type, variant);
-                    return obj;
-                }
-            default:
-                return null;
-        }
     }
 
     // Debug/organizational purposes - can be removed later
