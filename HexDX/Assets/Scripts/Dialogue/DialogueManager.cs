@@ -41,8 +41,9 @@ public abstract class DialogueManager : MonoBehaviour {
 	protected IEnumerator WriteDialogue() {
 		activeSpeaker.HideContinuePrompt();
 		activeSpeaker.DialogueText = "";
-		foreach(char c in currentLine) {
-			activeSpeaker.DialogueText += c;
+        string[] words = currentLine.Split(' ');
+		foreach(string word in words) {
+			activeSpeaker.DialogueText += word + " ";
 			yield return new WaitForSeconds(0.02f);
 		}
 	}
