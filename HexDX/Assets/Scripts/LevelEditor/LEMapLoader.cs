@@ -6,6 +6,7 @@ using System.IO;
 
 public class LEMapLoader : MonoBehaviour {
     public LEHexMap hexMap;
+    public LEUnitCache unitCache;
     public string fileName;
 
     public void LoadLevel()
@@ -14,7 +15,6 @@ public class LEMapLoader : MonoBehaviour {
 
         var reader = new StreamReader(File.OpenRead(fileName));
 
-        //int i = 0;
         float x = 0.0f;
         float y = 0.0f;
         float z = 0.0f;
@@ -25,8 +25,6 @@ public class LEMapLoader : MonoBehaviour {
 
         int hei = Convert.ToInt32(mapDim[0]);
         int wid = Convert.ToInt32(mapDim[1]);
-
-        //Debug.Log("HEI :: "+hei+" WID :: "+wid);
 
         for(int i=0;i<hei;i++)
         {
@@ -47,12 +45,26 @@ public class LEMapLoader : MonoBehaviour {
             y -= 2 * hexMap.hexDimension.apex - hexMap.hexDimension.minorApex;
             x -= 2 * hexMap.hexDimension.width * line.Length - hexMap.hexDimension.width;
             z -= .001f;
-
-            //Debug.Log(hexMap.hexDimension.width);
         }
 
         int numUnits = Convert.ToInt32(reader.ReadLine());
-        //Debug.Log("NUM UNITS :: " + numUnits);
+
+        for(int i=0;i<numUnits;i++)
+        {
+            // TODO :: Clean up a bit
+            string str = reader.ReadLine();
+            string[] data = str.Split(',');
+            int row = Convert.ToInt32(data[0]);
+            int col = Convert.ToInt32(data[1]);
+            LEUnitSettings settings = unitCache.GetSettingsForId(data[data.Length-1]);
+            LETile tile = hexMap.tileArray[row][col];
+            Vector3 newPos = new Vector3(tile.gameObject.transform.position.x, tile.gameObject.transform.position.y, tile.gameObject.transform.position.z - .2f);
+            LEUnitInstance instance = unitCache.CreateNewUnitInstance(newPos, settings);
+            instance.Read(unitCache, str);
+            tile.SetInstance(instance);
+            instance.location = tile.position;
+            unitCache.unitInstances.Add(instance);
+        }
 
         reader.Close();
     }

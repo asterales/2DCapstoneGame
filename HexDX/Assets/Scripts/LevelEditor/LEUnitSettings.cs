@@ -129,7 +129,7 @@ public class LEUnitSettings : MonoBehaviour {
             baseHighRange[i] = Convert.ToInt32(lines[7 + 9*i]);
             baseManuverability[i] = Convert.ToInt32(lines[8 + 9*i]);
         }
-        id = lines[3*9];
+        id = lines[3 * 9].Trim();
     }
 
     public string WriteToText()

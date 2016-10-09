@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.IO;
 using System.Collections.Generic;
 
@@ -121,8 +122,26 @@ public class LEUnitCache : MonoBehaviour
 
     public LEUnitSettings GetSettingsForId(string id)
     {
-        // to be implemented
-        Debug.Log("Implement This");
+        //LEUnitSettings test = unitSettings[2];
+        //for (int i = 0; i < test.id.Length && i < id.Length; i++)
+        //{
+        //    if (test.id[i] != id[i])
+        //    {
+        //        throw new Exception("Difference at character: " + i + 1);
+        //    }
+        //}
+        //Debug.Log(id.Substring(0, id.Length - 2));
+        //Debug.Log(id.Substring(0, test.id.Length - 2));
+        for (int i=0;i<unitSettings.Count;i++)
+        {
+            //Debug.Log(id + " :: " + unitSettings[i].id + " :: " + string.Compare(unitSettings[i].id, id));
+            if (string.Compare(unitSettings[i].id, id) == 0)
+            //if (unitSettings[i].id.Equals(id))
+            {
+                return unitSettings[i];
+            }
+        }
+        Debug.Log("INPUT ERROR :: Could Not Find UnitSettings");
         return null;
     }
 }

@@ -131,6 +131,8 @@ public class LEUnitInstance : MonoBehaviour {
     public string WriteFull()
     {
         return "" +
+            location.row + "," +
+            location.col + "," +
             GetVeterancy() + "," +
             GetHealth() + "," +
             GetAttack() + "," +
@@ -148,18 +150,18 @@ public class LEUnitInstance : MonoBehaviour {
     public void Read(LEUnitCache unitCache, string str)
     {
         string[] data = str.Split(',');
-        int vet = Convert.ToInt32(data[0]);
-        int hth = Convert.ToInt32(data[1]);
-        int atk = Convert.ToInt32(data[2]);
-        int pow = Convert.ToInt32(data[3]);
-        int def = Convert.ToInt32(data[4]);
-        int res = Convert.ToInt32(data[5]);
-        int mov = Convert.ToInt32(data[6]); // can ignore
-        int low = Convert.ToInt32(data[7]); // can ignore
-        int hih = Convert.ToInt32(data[8]); // can ignore
-        int man = Convert.ToInt32(data[9]); // can ignore
-        string id = data[10];
-        int dir = Convert.ToInt32(data[11]);
+        int vet = Convert.ToInt32(data[2]);
+        int hth = Convert.ToInt32(data[3]);
+        int atk = Convert.ToInt32(data[4]);
+        int pow = Convert.ToInt32(data[5]);
+        int def = Convert.ToInt32(data[6]);
+        int res = Convert.ToInt32(data[7]);
+        int mov = Convert.ToInt32(data[8]); // can ignore
+        int low = Convert.ToInt32(data[9]); // can ignore
+        int hih = Convert.ToInt32(data[10]); // can ignore
+        int man = Convert.ToInt32(data[11]); // can ignore
+        int dir = Convert.ToInt32(data[12]);
+        string id = data[13];
 
         baseSettings = unitCache.GetSettingsForId(id);
 

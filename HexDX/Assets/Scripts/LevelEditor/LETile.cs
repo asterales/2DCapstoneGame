@@ -104,6 +104,12 @@ public class LETile : MonoBehaviour {
 
     public void PrepareToDestroy()
     {
+        Debug.Log("TO DO :: DESTROY UNIT");
         // delete unit instance
+    }
+
+    public void SetInstance(LEUnitInstance instance)
+    {
+        currentInstance = instance;
     }
 }
