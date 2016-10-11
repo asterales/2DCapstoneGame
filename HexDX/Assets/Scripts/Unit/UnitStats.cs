@@ -10,5 +10,10 @@ public class UnitStats : MonoBehaviour {
     public int power;
     public int resistance;
     public int mvtRange;
+
+    public static int maxAttack = 100; //rename to strength? or attack will be calculated based on power also?
+    public static int maxDefense = 100;
+    public static int maxPower = 100;
+    public static int maxResistance = 100;
     public MovementDifficulty mvtLevel;
 }

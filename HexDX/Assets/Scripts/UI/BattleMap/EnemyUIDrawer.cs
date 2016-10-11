@@ -44,10 +44,10 @@ public class EnemyUIDrawer : MonoBehaviour {
             portrait.color = Color.white;
             portrait.sprite = unit.sprites.portrait;
             healthbar.fillAmount = (float)unit.Health / (float)unit.MaxHealth;
-            attackbar.fillAmount = (float)unit.Attack / 20.0f;
-            defensebar.fillAmount = (float)unit.Defense / 20.0f;
-            powerbar.fillAmount = (float)unit.Power / 20.0f;
-            resistbar.fillAmount = (float)unit.Resistance / 20.0f;
+            attackbar.fillAmount = (float)unit.Attack / (float)UnitStats.maxAttack;
+            defensebar.fillAmount = (float)unit.Defense / (float)UnitStats.maxDefense;
+            powerbar.fillAmount = (float)unit.Power / (float)UnitStats.maxPower;
+            resistbar.fillAmount = (float)unit.Resistance / (float)UnitStats.maxResistance;
         }
         else
         {
