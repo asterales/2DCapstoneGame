@@ -37,7 +37,6 @@ public class LEUnitButton : MonoBehaviour {
         if (selectionController.isInstanceMode)
         {
             Select();
-            hexMap.TurnOnUnit();
         }
     }
 
@@ -52,5 +51,6 @@ public class LEUnitButton : MonoBehaviour {
         spriteRenderer.color = Color.white;
         depButton.Deselect();
         tileButton.Deselect();
+        hexMap.TurnOnUnit();
     }
 }

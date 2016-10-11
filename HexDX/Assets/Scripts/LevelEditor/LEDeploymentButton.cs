@@ -36,7 +36,6 @@ public class LEDeploymentButton : MonoBehaviour {
         if (selectionController.isDepMode)
         {
             Select();
-            hexMap.TurnOnDeployment();
         }
     }
 
@@ -52,5 +51,6 @@ public class LEDeploymentButton : MonoBehaviour {
         spriteRenderer.color = Color.white;
         unitButton.Deselect();
         tileButton.Deselect();
+        hexMap.TurnOnDeployment();
     }
 }

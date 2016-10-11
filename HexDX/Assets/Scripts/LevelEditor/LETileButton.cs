@@ -37,7 +37,6 @@ public class LETileButton : MonoBehaviour {
         if (selectionController.isTileMode)
         {
             Select();
-            hexMap.TurnOnTile();
         }
     }
 
@@ -52,5 +51,6 @@ public class LETileButton : MonoBehaviour {
         spriteRenderer.color = Color.white;
         unitButton.Deselect();
         depButton.Deselect();
+        hexMap.TurnOnTile();
     }
 }
