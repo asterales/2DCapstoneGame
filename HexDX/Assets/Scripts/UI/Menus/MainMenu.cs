@@ -8,10 +8,10 @@ public class MainMenu : MonoBehaviour {
 	private Button quitButton;
 
 	void Awake() {
-		startButton = GameObject.Find("Start").GetComponent<Button>();
-		optionsButton = GameObject.Find("Options").GetComponent<Button>();
-		creditsButton = GameObject.Find("Credits").GetComponent<Button>();
-		quitButton = GameObject.Find("Quit").GetComponent<Button>();
+		startButton = transform.Find("Start").GetComponent<Button>();
+		optionsButton = transform.Find("Options").GetComponent<Button>();
+		creditsButton = transform.Find("Credits").GetComponent<Button>();
+		quitButton = transform.Find("Quit").GetComponent<Button>();
 		if (startButton == null) {
 			Debug.Log("Start Button not found - MainMenu.cs");
 		}

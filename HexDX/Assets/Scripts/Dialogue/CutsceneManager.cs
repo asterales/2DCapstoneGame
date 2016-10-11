@@ -25,10 +25,9 @@ public class CutsceneManager : DialogueManager {
 
 	private void LoadCutscene(string file) {
 		dialogues = new Queue<CutsceneDialogue>();
-		TextAsset cutsceneLines = Resources.Load<TextAsset>(cutsceneDir + file);
+		string[] cutsceneLines = GameResources.GetFileLines(cutsceneDir + file);
 		if (cutsceneLines != null) {
-			string[] lines = cutsceneLines.text.Trim().Split('\n');
-			foreach(string line in lines) {
+			foreach(string line in cutsceneLines) {
 				dialogues.Enqueue(new CutsceneDialogue(line));
 			}
 		} else {

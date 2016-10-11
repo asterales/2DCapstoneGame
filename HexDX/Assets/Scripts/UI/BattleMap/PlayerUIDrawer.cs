@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class EnemyUIDrawer : MonoBehaviour {
+public class PlayerUIDrawer : MonoBehaviour {
 
     public static Unit unit;
     public static Image healthbar;
@@ -11,9 +11,8 @@ public class EnemyUIDrawer : MonoBehaviour {
     public static Image defensebar;
     public static Image powerbar;
     public static Image resistbar;
-    // Use this for initialization
-    void Start()
-    {
+	// Use this for initialization
+	void Start () {
         healthbar = transform.Find("HealthBar").GetComponent<Image>();
         portrait = transform.Find("Portrait").GetComponent<Image>();
         attackbar = transform.Find("AttackBar").GetComponent<Image>();
@@ -21,15 +20,14 @@ public class EnemyUIDrawer : MonoBehaviour {
         powerbar = transform.Find("PowerBar").GetComponent<Image>();
         resistbar = transform.Find("ResistBar").GetComponent<Image>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (SelectionController.selectedUnit != null && !SelectionController.selectedUnit.IsPlayerUnit())
+	
+	// Update is called once per frame
+	void Update () {
+	    if (SelectionController.selectedUnit!=null && SelectionController.selectedUnit.IsPlayerUnit())
         {
             unit = SelectionController.selectedUnit;
         }
-        if (SelectionController.target && !SelectionController.target.IsPlayerUnit())
+        if (SelectionController.target && SelectionController.target.IsPlayerUnit())
         {
             unit = SelectionController.target;
         }
@@ -44,10 +42,10 @@ public class EnemyUIDrawer : MonoBehaviour {
             portrait.color = Color.white;
             portrait.sprite = unit.sprites.portrait;
             healthbar.fillAmount = (float)unit.Health / (float)unit.MaxHealth;
-            attackbar.fillAmount = (float)unit.Attack / 20.0f;
-            defensebar.fillAmount = (float)unit.Defense / 20.0f;
-            powerbar.fillAmount = (float)unit.Power / 20.0f;
-            resistbar.fillAmount = (float)unit.Resistance / 20.0f;
+            attackbar.fillAmount = (float)unit.Attack / (float)UnitStats.maxAttack;
+            defensebar.fillAmount = (float)unit.Defense / (float)UnitStats.maxDefense;
+            powerbar.fillAmount = (float)unit.Power / (float)UnitStats.maxPower;
+            resistbar.fillAmount = (float)unit.Resistance / (float)UnitStats.maxResistance;
         }
         else
         {
@@ -59,4 +57,5 @@ public class EnemyUIDrawer : MonoBehaviour {
             resistbar.fillAmount = 0;
         }
     }
+
 }

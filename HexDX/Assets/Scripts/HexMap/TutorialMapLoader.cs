@@ -12,14 +12,12 @@ public class TutorialMapLoader : MonoBehaviour
     private HexMap battleMap;
     private HexDimension hexDimension;
     private ScriptedAIBattleController scriptedAI;
-    private BattleSpriteCache spriteCache;
 
     void Start()
     {
         battleMap = this.gameObject.GetComponent<HexMap>();
         hexDimension = this.gameObject.GetComponent<HexDimension>();
         scriptedAI = this.gameObject.GetComponent<ScriptedAIBattleController>();
-        spriteCache = this.gameObject.GetComponent<BattleSpriteCache>();
 
         ////// DEBUG CODE //////
         if (battleMap == null)
@@ -65,8 +63,7 @@ public class TutorialMapLoader : MonoBehaviour
 
     private void LoadHexMap(string hexMapFile)
     {
-        TextAsset hexMapLines = Resources.Load<TextAsset>(mapsDir + hexMapFile);
-        string[] mapCsvRows = hexMapLines.text.Trim().Split('\n');
+        string[] mapCsvRows = GameResources.GetFileLines(mapsDir + hexMapFile);
         battleMap.ClearMap();
 
         RowContainer rowContainer = battleMap.rowContainer;
@@ -80,7 +77,7 @@ public class TutorialMapLoader : MonoBehaviour
         for (int i=1;i<mapCsvRows.Length-1; i++) {
             string csvRow = mapCsvRows[i];
             int columnIndex = 0;
-            string[] line = csvRow.Trim().Split(',');
+            string[] line = csvRow.Split(',');
             row = rowContainer.tileRows[rowIndex];
 
             foreach (string num in line)
@@ -104,7 +101,7 @@ public class TutorialMapLoader : MonoBehaviour
         int type = val / 100;
         int variant = val % 100;
         SpriteRenderer tileRenderer = tileObj.GetComponent<SpriteRenderer>();
-        tileRenderer.sprite = spriteCache.GetTileSprite(type, variant);
+        tileRenderer.sprite = GameResources.GetTileSprite(type, variant);
         if (type > 1) tileObj.GetComponent<Tile>().pathable = false;
         if (tileObj != null)
         {

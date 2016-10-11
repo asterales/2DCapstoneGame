@@ -14,10 +14,7 @@ public class BattleController : MonoBehaviour {
     public Texture2D actionMenuItem;
     public Texture2D actionMenuItemHover;
     
-    // end of battle banners
-    public Image winBanner;
-    public Image lossBanner;
-    private Vector3 bannerVisiblePos; //hack
+    public EndBattleBanner endBanner;
 
     public bool IsPlayerTurn { get; private set; }
     public bool BattleIsDone { get; private set; }
@@ -44,10 +41,10 @@ public class BattleController : MonoBehaviour {
     void Update() {
         if(!BattleIsDone){
             if (victoryCondition.Achieved()) {
-                DisplayWin();
+                endBanner.ShowWin();
                 EndBattle();
             } else if (player.IsAnnihilated()) {
-                DisplayLoss();
+                endBanner.ShowLoss();
                 EndBattle();
             }
         } else if (!nextSceneLoaded && Input.GetMouseButtonDown(0)) {
@@ -57,9 +54,6 @@ public class BattleController : MonoBehaviour {
     }
 
     void Start() {
-        bannerVisiblePos = winBanner.gameObject.transform.position;
-        winBanner.gameObject.transform.position = new Vector3(-1000, -1000, 0);
-        lossBanner.gameObject.transform.position = new Vector3(-1000, -1000, 0);
         IsPlayerTurn = true;
         BattleIsDone = false;
         nextSceneLoaded = false;
@@ -82,17 +76,7 @@ public class BattleController : MonoBehaviour {
             Debug.Log("BattleController - Starting Player Turn");
         }
     }
-
-    private void DisplayWin() {
-        Debug.Log("Player Wins!");
-        winBanner.gameObject.transform.position = bannerVisiblePos;
-    }
-
-    private void DisplayLoss() {
-        Debug.Log("Player lost!");
-        lossBanner.gameObject.transform.position = bannerVisiblePos;
-    }
-
+    
     private void EndBattle() {
         player.EndTurn();
         ai.EndTurn();

@@ -14,16 +14,20 @@ public class Unit : MonoBehaviour {
     private Queue<Tile> path;
     public UnitTurn phase;
     public int facing;
-    private UnitFacing facingBonus;
-    private UnitSounds sounds;
-    private UnitMovementCache movementCache;
-    private int type; // we may want to represent types by something else
-    private readonly float maxMovement = 0.2f; 
+    public int experience;
+    public int veterancy;
 
+    private PlayerBattleController player;
+    private AIBattleController ai;
     private SpriteRenderer spriteRenderer;
     private AudioSource audioSource;
     private Animator animator;
     private Tile lastTile;
+    private int type; // we may want to represent types by something else
+    private readonly float maxMovement = 0.2f;
+    private UnitFacing facingBonus;
+    private UnitSounds sounds;
+    private UnitMovementCache movementCache;
 
     // temporary storage for scripted stuff
     ScriptedMove scriptedMove;
@@ -42,6 +46,8 @@ public class Unit : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        player = GameObject.FindGameObjectWithTag("Map").GetComponent<BattleController>().player;
+        ai = GameObject.FindGameObjectWithTag("Map").GetComponent<BattleController>().ai;
         unitStats = this.gameObject.GetComponent<UnitStats>();
         facingBonus = this.gameObject.GetComponent<UnitFacing>();
         movementCache = this.gameObject.GetComponent<UnitMovementCache>();
@@ -118,10 +124,36 @@ public class Unit : MonoBehaviour {
                     facing = HexMap.GetNeighbors(lastTile).IndexOf(path.Peek());
                     SetFacingSprites();
                 }
+                //CheckZonesOfControl();
             }
         }
     }
 
+    private void CheckZonesOfControl()
+    {
+        if (IsPlayerUnit())
+        {
+            foreach (Unit unit in ai.units)
+            {
+                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open)
+                {
+                    unit.MakeAttacking();
+                    StartCoroutine(unit.DoAttack(this, 0.8f));
+                }
+            }
+        }
+        else
+        {
+            foreach (Unit unit in player.units)
+            {
+                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open)
+                {
+                    unit.MakeAttacking();
+                    StartCoroutine(unit.DoAttack(this, 0.8f));
+                }
+            }
+        }
+    }
 
     private void SetFacingSprites() {
         int face = (facing + 1)%6;
@@ -244,7 +276,7 @@ public class Unit : MonoBehaviour {
     }
 
     public void MakeDone() {
-        if (gameObject)
+        if (this != null && gameObject)
         {
             phase = UnitTurn.Done;
             HexMap.ClearAttackTiles();
@@ -262,7 +294,7 @@ public class Unit : MonoBehaviour {
         {
             spriteRenderer.color = Color.red;
             target.MakeAttacking();
-            StartCoroutine(target.DoAttack(this, .66f));
+            StartCoroutine(target.DoAttack(this, .8f));
         }
 
     }
@@ -272,15 +304,15 @@ public class Unit : MonoBehaviour {
         SetFacingSprites();
         yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
         GameObject indicator = new GameObject();
-        int basedamage = (int)(Attack * (10.0f /(10.0f + (float)target.Defense)));
+        int basedamage = (int)(Attack * (50.0f /(50.0f + (float)target.Defense)));
         int damage = basedamage;
         if (target.facing == facing)
         {
-            damage = (int)(Attack * (15.0f / (5.0f + (float)target.Defense)));
+            damage = basedamage * 2;
             indicator.AddComponent<DamageIndicator>().SetDamage("-" + (int)(basedamage * modifier) + "\nSneak!\n-"+(int)((damage-basedamage)*modifier));
         }
         else if (Mathf.Abs(target.facing-facing)==1||Mathf.Abs(target.facing-facing)==5){
-            damage = (int)(Attack * (10.0f / (5.0f + (float)target.Defense)));
+            damage = basedamage*3/2;
             indicator.AddComponent<DamageIndicator>().SetDamage("-" + (int)(basedamage * modifier) + "\nFlank!\n-" + (int)((damage - basedamage) * modifier));
         }
         else
