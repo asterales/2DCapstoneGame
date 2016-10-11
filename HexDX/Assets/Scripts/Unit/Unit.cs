@@ -107,7 +107,6 @@ public class Unit : MonoBehaviour {
             if (transform.position != destination) {
                 transform.position = Vector3.MoveTowards(transform.position, destination, maxMovement);
             } else {
-                CheckZonesOfControl();
                 if (path.Count == 1) {
                     SetTile(path.Dequeue());
                     // re-enable the players ability to select
@@ -125,6 +124,7 @@ public class Unit : MonoBehaviour {
                     facing = HexMap.GetNeighbors(lastTile).IndexOf(path.Peek());
                     SetFacingSprites();
                 }
+                //CheckZonesOfControl();
             }
         }
     }
@@ -276,7 +276,7 @@ public class Unit : MonoBehaviour {
     }
 
     public void MakeDone() {
-        if (gameObject)
+        if (this != null && gameObject)
         {
             phase = UnitTurn.Done;
             HexMap.ClearAttackTiles();
