@@ -294,7 +294,7 @@ public class Unit : MonoBehaviour {
         {
             spriteRenderer.color = Color.red;
             target.MakeAttacking();
-            StartCoroutine(target.DoAttack(this, .66f));
+            StartCoroutine(target.DoAttack(this, .8f));
         }
 
     }
