@@ -41,11 +41,13 @@ public abstract class DialogueManager : MonoBehaviour {
 	protected IEnumerator WriteDialogue() {
 		activeSpeaker.HideContinuePrompt();
 		activeSpeaker.DialogueText = "";
+		currentLine = currentLine.Trim();
         string[] words = currentLine.Split(' ');
 		foreach(string word in words) {
 			activeSpeaker.DialogueText += word + " ";
 			yield return new WaitForSeconds(0.02f);
 		}
+		activeSpeaker.DialogueText = activeSpeaker.DialogueText.Trim();
 	}
 
 	public bool SpeakerLinesFinished() {

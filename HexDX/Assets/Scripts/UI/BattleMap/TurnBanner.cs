@@ -3,10 +3,15 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class TurnBanner : MonoBehaviour {
-	public Image playerTurnBanner;
-	public Image enemyTurnBanner;
+	private Image playerTurnBanner;
+	private Image enemyTurnBanner;
 	public BattleController battleController;
 	public GameDialogueManager gameDialogueMgr;
+
+	void Awake() {
+		playerTurnBanner = transform.Find("PlayerTurn").GetComponent<Image>();
+		enemyTurnBanner = transform.Find("EnemyTurn").GetComponent<Image>();
+	}
 
 	void Update() {
 		if (battleController.enabled 
