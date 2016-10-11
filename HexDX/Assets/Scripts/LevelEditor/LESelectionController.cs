@@ -9,19 +9,25 @@ public class LESelectionController : MonoBehaviour {
     // cache for units
     public LEUnitCache unitCache;
     public int selectedUnitCacheID;
-    // currently selected unitSettings
+    // cache for depZones
+    public LEDeploymentCache depCache;
+    // cache for levels
+    public LELevelCache levelCache;
+    // currently selected unit info
     public LEUnitSettings selectedSettings;
-    // currently selected unit
     public LEUnitInstance selectedUnit;
     //public int selectedUnitID;
     public LEUnitSettingsEditor unitEditor;
-    // cache for maps
-    public LESpriteCache mapSpriteCache;
     public int selectedMapID;
+    // reference to buttons
+    public LEDeploymentButton depButton;
+    public LETileButton tileButton;
+    public LEUnitButton unitButton;
 
     public bool isTileMode;
     public bool isSettingsMode;
     public bool isInstanceMode;
+    public bool isDepMode;
 
     void Start()
     {
@@ -34,6 +40,8 @@ public class LESelectionController : MonoBehaviour {
 
         // for now this works, but eventually there will be 3 separate sprite caches
         tileSpriteCache = this.gameObject.GetComponent<LESpriteCache>();
+        depCache = this.gameObject.GetComponent<LEDeploymentCache>();
+        levelCache = this.gameObject.GetComponent<LELevelCache>();
         ////// DEBUG CODE //////
         if (tileSpriteCache == null)
         {
@@ -41,18 +49,36 @@ public class LESelectionController : MonoBehaviour {
         }
         if (unitCache == null)
         {
-            // For future sprint
             Debug.Log("ERROR :: Unit Sprite Cache Needs to be defined -> LESelectionController.cs");
         }
-        if (mapSpriteCache == null)
+        if (depCache == null)
         {
-            // For future sprint
-            //Debug.Log("ERROR :: Map Sprite Cache Needs to be defined -> LESelectionController.cs");
+            Debug.Log("ERROR :: Deployment Cache Needs to be defined -> LESelectionController.cs");
+        }
+        if (levelCache == null)
+        {
+            Debug.Log("ERROR :: Level Cache Needs to be defined -> LESelectionController.cs");
+        }
+        if (depButton == null)
+        {
+            Debug.Log("ERROR :: Reference to Deployment Button needs to be defined -> LESelectionController.cs");
+        }
+        if (unitButton == null)
+        {
+            Debug.Log("ERROR :: Reference to Deployment Button needs to be defined -> LESelectionController.cs");
+        }
+        if (tileButton == null)
+        {
+            Debug.Log("ERROR :: Reference to Deployment Button needs to be defined -> LESelectionController.cs");
         }
         ////////////////////////
         isTileMode = false;
         isInstanceMode = false;
         isSettingsMode = false;
+        isDepMode = false;
+        depButton.Deselect();
+        tileButton.Deselect();
+        unitButton.Deselect();
     }
 
     public void SetSelectTile(int sprite, int variant)
@@ -60,22 +86,38 @@ public class LESelectionController : MonoBehaviour {
         isTileMode = true;
         isInstanceMode = false;
         isSettingsMode = false;
+        isDepMode = false;
+        tileButton.Select();
         selectedTileID = sprite;
         selectedTileVariantID = variant;
+    }
+
+    public void SetSelectTile()
+    {
+        isTileMode = true;
+        isInstanceMode = false;
+        isSettingsMode = false;
+        isDepMode = false;
+        Debug.Log("WHAT");
+        tileButton.Select();
     }
 
     public void NullifyMode()
     {
         isInstanceMode = false;
         isSettingsMode = false;
+        isDepMode = false;
         isTileMode = true;
+        tileButton.Select();
     }
 
     public void SetSettingsType(LEUnitSettings settings)
     {
         isTileMode = false;
         isInstanceMode = false;
+        isDepMode = false;
         isSettingsMode = true;
+        unitButton.Select();
         selectedSettings = settings;
     }
 
@@ -84,7 +126,30 @@ public class LESelectionController : MonoBehaviour {
         isTileMode = false;
         isInstanceMode = true;
         isSettingsMode = false;
+        isDepMode = false;
+        unitButton.Select();
         selectedUnit = unit;
+    }
+
+    public void SetUnitMode()
+    {
+        if (selectedUnit != null)
+        {
+            isTileMode = false;
+            isSettingsMode = false;
+            isInstanceMode = true;
+            isDepMode = false;
+            unitButton.Select();
+        }
+    }
+
+    public void SetDepMode()
+    {
+        isTileMode = false;
+        isInstanceMode = false;
+        isSettingsMode = false;
+        isDepMode = true;
+        depButton.Select();
     }
 
     public int GetTileType()

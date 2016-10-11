@@ -5,11 +5,13 @@ public class LETile : MonoBehaviour {
     public LEHexMap reference;
     public LESpriteCache spriteCache;
     public LEUnitCache unitCache;
+    public LEDeploymentCache depCache;
     public TileLocation position;
     public SpriteRenderer spriteRenderer;
     public int type;
     public static bool canDrag=true;
     private LEUnitInstance currentInstance;
+    private GameObject deploymentTile;
 
     void Awake()
     {
@@ -17,6 +19,7 @@ public class LETile : MonoBehaviour {
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
         type = 0;
         currentInstance = null;
+        deploymentTile = null;
 
         ////// DEBUG CODE //////
         if (position == null)
@@ -27,14 +30,6 @@ public class LETile : MonoBehaviour {
         {
             Debug.Log("Error :: The Sprit Renderer Object of the Tile needs to be defined -> LETile.cs");
         }
-        //if (unitCache == null)
-        //{
-        //    Debug.Log("Error :: The Unit Cache Object of the Tile needs to be defined -> LETile.cs");
-        //}
-        //if (spriteCache == null)
-        //{
-        //    Debug.Log("Error :: The LE Sprite Cache needs to be set -> LETile.cs");
-        //}
         ////////////////////////
     }
 
@@ -48,8 +43,6 @@ public class LETile : MonoBehaviour {
 
     void OnMouseDown()
     {
-        // global call to disable expansion
-        //LEExpansionController.DisableExpansion();
         Debug.Log("On Mouse Down");
         if (reference.selectionController.isTileMode)
         {
@@ -70,6 +63,17 @@ public class LETile : MonoBehaviour {
             currentInstance = instance;
             instance.location = position;
             unitCache.unitInstances.Add(instance);
+        }
+        else if (reference.selectionController.isDepMode)
+        {
+            if (deploymentTile == null)
+            {
+                CreateDeploymentTile();
+            }
+            else
+            {
+                DestroyDeploymentTile();
+            }
         }
     }
 
@@ -105,11 +109,49 @@ public class LETile : MonoBehaviour {
     public void PrepareToDestroy()
     {
         Debug.Log("TO DO :: DESTROY UNIT");
+        DestroyDeploymentTile();
         // delete unit instance
     }
 
     public void SetInstance(LEUnitInstance instance)
     {
         currentInstance = instance;
+    }
+
+    public void CreateDeploymentTile()
+    {
+        GameObject newTile = new GameObject("Deployment Tile");
+        newTile.transform.parent = this.gameObject.transform;
+        Vector3 pos = this.gameObject.transform.position;
+        newTile.transform.position = new Vector3(pos.x, pos.y, pos.z - 0.001f);
+        depCache.AddTile(newTile.AddComponent<LEDeploymentTile>(), position.row, position.col);
+        SpriteRenderer tileSpriteRenderer = newTile.AddComponent<SpriteRenderer>();
+        tileSpriteRenderer.sprite = reference.deploymentSprite;
+        deploymentTile = newTile;
+    }
+
+    public void DestroyDeploymentTile()
+    {
+        depCache.RemoveTile(position.row, position.col);
+        Destroy(deploymentTile);
+        deploymentTile = null;
+    }
+
+    public void TurnOnDeployment()
+    {
+        if (deploymentTile != null)
+        {
+            Vector3 position = this.gameObject.transform.position;
+            deploymentTile.transform.position = new Vector3(position.x, position.y, position.z - 0.001f);
+        }
+    }
+
+    public void TurnOffDeployment()
+    {
+        if (deploymentTile != null)
+        {
+            Vector3 position = this.gameObject.transform.position;
+            deploymentTile.transform.position = new Vector3(position.x, position.y, position.z + 0.001f);
+        }
     }
 }

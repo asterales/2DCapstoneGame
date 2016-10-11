@@ -6,13 +6,16 @@ public class LEHexMap : MonoBehaviour {
     public HexDimension hexDimension;
     public LESpriteCache spriteCache;
     public LEUnitCache unitCache;
+    public LEDeploymentCache depCache;
     public List<List<LETile>> tileArray;
+    public Sprite deploymentSprite;
 
     void Awake()
     {
         hexDimension = this.gameObject.GetComponent<HexDimension>();
         spriteCache = this.gameObject.GetComponent<LESpriteCache>();
         selectionController = this.gameObject.GetComponent<LESelectionController>();
+        depCache = this.gameObject.GetComponent<LEDeploymentCache>();
         tileArray = new List<List<LETile>>();
 
         ////// DEBUG CODE //////
@@ -27,6 +30,14 @@ public class LEHexMap : MonoBehaviour {
         if (unitCache == null)
         {
             Debug.Log("Unit Cache needs to be set -> LEHexMap.cs");
+        }
+        if (depCache == null)
+        {
+            Debug.Log("Deployment Cache needs to be set -> LEHexMap.cs");
+        }
+        if (deploymentSprite == null)
+        {
+            Debug.Log("ERROR :: Deployment Sprite needs to be set -> LEHexMap.cs");
         }
         this.gameObject.transform.position = new Vector3(hexDimension.globalTopLeftX, hexDimension.globalTopLeftY, 0); // temp
         ////////////////////////
@@ -71,6 +82,7 @@ public class LEHexMap : MonoBehaviour {
         newTile.GetComponent<BoxCollider2D>().size = new Vector2(8f, 5f);
         newTile.GetComponent<LETile>().spriteCache = spriteCache;
         newTile.GetComponent<LETile>().unitCache = unitCache;
+        newTile.GetComponent<LETile>().depCache = depCache;
         newTile.GetComponent<LETile>().ChangeType(0);
         newTile.GetComponent<LETile>().reference = this;
         return newTile;
@@ -119,7 +131,6 @@ public class LEHexMap : MonoBehaviour {
 
     public void IncrementVert()
     {
-        //Debug.Log("Incrementing Vert Dim");
         int size = tileArray[0].Count;
         int row = tileArray.Count;
         List<LETile> newRow = new List<LETile>();
@@ -144,7 +155,6 @@ public class LEHexMap : MonoBehaviour {
 
     public void IncrementHori()
     {
-        //Debug.Log("Incrementing Hori Dim");
         for(int i=0;i<tileArray.Count;i++)
         {
             List<LETile> tileRow = tileArray[i];
@@ -161,7 +171,6 @@ public class LEHexMap : MonoBehaviour {
 
     public void DecrementHori()
     {
-        //Debug.Log("Decremening Hori Dim");
         if(tileArray[0].Count > 1)
         {
             for(int i=0;i<tileArray.Count;i++)
@@ -177,7 +186,6 @@ public class LEHexMap : MonoBehaviour {
 
     public void DecrementVert()
     {
-        //Debug.Log("Decrementing Vert Dim");
         if (tileArray.Count > 1)
         {
             List<LETile> lastArray = tileArray[tileArray.Count - 1];
@@ -187,6 +195,28 @@ public class LEHexMap : MonoBehaviour {
                 Destroy(lastArray[i].gameObject);
             }
             tileArray.RemoveAt(tileArray.Count - 1);
+        }
+    }
+
+    public void TurnOnDeployment()
+    {
+        for(int i=0;i<tileArray.Count;i++)
+        {
+            for (int j=0;j<tileArray[i].Count;j++)
+            {
+                tileArray[i][j].TurnOnDeployment();
+            }
+        }
+    }
+
+    public void TurnfOffDeployment()
+    {
+        for (int i = 0; i < tileArray.Count; i++)
+        {
+            for (int j = 0; j < tileArray[i].Count; j++)
+            {
+                tileArray[i][j].TurnOffDeployment();
+            }
         }
     }
 }
