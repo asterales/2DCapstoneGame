@@ -43,7 +43,7 @@ public class LEDeploymentButton : MonoBehaviour {
     public void Deselect()
     {
         spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
-        hexMap.TurnfOffDeployment();
+        hexMap.TurnOffDeployment();
     }
 
     public void Select()

@@ -209,13 +209,48 @@ public class LEHexMap : MonoBehaviour {
         }
     }
 
-    public void TurnfOffDeployment()
+    public void TurnOffDeployment()
     {
+        TurnOffUnit();
         for (int i = 0; i < tileArray.Count; i++)
         {
             for (int j = 0; j < tileArray[i].Count; j++)
             {
                 tileArray[i][j].TurnOffDeployment();
+            }
+        }
+    }
+
+    public void TurnOnTile()
+    {
+        for (int i = 0; i < tileArray.Count; i++)
+        {
+            for (int j = 0; j < tileArray[i].Count; j++)
+            {
+                tileArray[i][j].TurnOnTile();
+            }
+        }
+    }
+
+    public void TurnOnUnit()
+    {
+        TurnOffDeployment();
+        for (int i = 0; i < tileArray.Count; i++)
+        {
+            for (int j = 0; j < tileArray[i].Count; j++)
+            {
+                tileArray[i][j].TurnOnUnit();
+            }
+        }
+    }
+
+    public void TurnOffUnit()
+    {
+        for (int i = 0; i < tileArray.Count; i++)
+        {
+            for (int j = 0; j < tileArray[i].Count; j++)
+            {
+                tileArray[i][j].TurnOffUnit();
             }
         }
     }

@@ -5,9 +5,10 @@ public class LETileButton : MonoBehaviour {
     public LESelectionController selectionController;
     public LEUnitButton unitButton;
     public LEDeploymentButton depButton;
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
+    public LEHexMap hexMap;
 
-    void Start()
+    void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         ////// DEBUG CODE //////
@@ -36,6 +37,7 @@ public class LETileButton : MonoBehaviour {
         if (selectionController.isTileMode)
         {
             Select();
+            hexMap.TurnOnTile();
         }
     }
 

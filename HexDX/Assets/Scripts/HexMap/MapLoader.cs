@@ -87,7 +87,7 @@ public class MapLoader : MonoBehaviour {
 
         int numUnits = Convert.ToInt32(mapCsvRows[++rowIndex]);
         Debug.Log("Number Of Units :: " + numUnits);
-        // implement Unit parsing
+        // Unit Parsing
         for (int i = 0; i < numUnits; i++)
         {
             string[] data = mapCsvRows[++rowIndex].Split(',');
@@ -103,9 +103,17 @@ public class MapLoader : MonoBehaviour {
             unit.SetFacing(new Vector3(0, 0, 0));
             unitObject.AddComponent<BasicUnitAI>();
         }
+
         int numDep = Convert.ToInt32(mapCsvRows[++rowIndex]);
         Debug.Log("Number Of Deployment Zones :: " + numDep);
-        // implement DeploymentZone parsing
+        // DeploymentZone parsing
+        for (int i = 0; i < numDep; i++)
+        {
+            string[] data = mapCsvRows[++rowIndex].Split(',');
+            int depRow = Convert.ToInt32(data[0]);
+            int depCol = Convert.ToInt32(data[1]);
+            CreateDeploymentZoneTile(depRow, depCol);
+        }
     }
 
     private GameObject CreateTile(int val, Vector3 pos, GameObject rowObj, int row, int col) {
@@ -122,6 +130,11 @@ public class MapLoader : MonoBehaviour {
             location.row = row;
         }
         return tileObj;
+    }
+
+    private void CreateDeploymentZoneTile(int row, int col)
+    {
+        // to be implemented
     }
 
     // Debug/organizational purposes - can be removed later

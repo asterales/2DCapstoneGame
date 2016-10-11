@@ -58,7 +58,7 @@ public class LETile : MonoBehaviour {
         else if (reference.selectionController.isSettingsMode)
         {
             Debug.Log("Placing Unit");
-            Vector3 newPos = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - .2f);
+            Vector3 newPos = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - .001f);
             LEUnitInstance instance = unitCache.CreateNewUnitInstance(newPos, reference.selectionController.selectedSettings);
             currentInstance = instance;
             instance.location = position;
@@ -152,6 +152,30 @@ public class LETile : MonoBehaviour {
         {
             Vector3 position = this.gameObject.transform.position;
             deploymentTile.transform.position = new Vector3(position.x, position.y, position.z + 0.001f);
+        }
+    }
+
+    public void TurnOnTile()
+    {
+        TurnOffDeployment();
+        TurnOffUnit();
+    }
+
+    public void TurnOnUnit()
+    {
+        if (currentInstance != null)
+        {
+            Vector3 position = this.gameObject.transform.position;
+            currentInstance.transform.position = new Vector3(position.x, position.y, position.z - 0.001f);
+        }
+    }
+
+    public void TurnOffUnit()
+    {
+        if (currentInstance != null)
+        {
+            Vector3 position = this.gameObject.transform.position;
+            currentInstance.transform.position = new Vector3(position.x, position.y, position.z + 0.001f);
         }
     }
 }

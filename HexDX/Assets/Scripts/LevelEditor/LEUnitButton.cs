@@ -5,7 +5,8 @@ public class LEUnitButton : MonoBehaviour {
     public LESelectionController selectionController;
     public LEDeploymentButton depButton;
     public LETileButton tileButton;
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
+    public LEHexMap hexMap;
 
     void Start()
     {
@@ -36,6 +37,7 @@ public class LEUnitButton : MonoBehaviour {
         if (selectionController.isInstanceMode)
         {
             Select();
+            hexMap.TurnOnUnit();
         }
     }
 
