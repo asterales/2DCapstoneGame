@@ -6,6 +6,7 @@ using System.IO;
 public class LEMapWriter : MonoBehaviour {
     public LEHexMap hexMap;
     public LEUnitCache unitCache;
+    public LEDeploymentCache depCache;
     public string fileName;
 
     public void WriteUnitSettings()
@@ -39,10 +40,17 @@ public class LEMapWriter : MonoBehaviour {
         }
 
         data += unitCache.unitInstances.Count + "\n";
-        for(int i=0;i<unitCache.unitInstances.Count;i++)
+        for (int i=0;i<unitCache.unitInstances.Count;i++)
         {
             LEUnitInstance unit = unitCache.unitInstances[i];
             data += unit.WriteFull();
+        }
+
+        data += depCache.depTiles.Count + "\n";
+        for (int i=0;i<depCache.depTiles.Count;i++)
+        {
+            LEDeploymentTile tile = depCache.depTiles[i];
+            data += tile.WriteFull();
         }
 
         File.WriteAllText(fileName, data);

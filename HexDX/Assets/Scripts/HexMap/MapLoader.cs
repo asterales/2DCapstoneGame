@@ -85,6 +85,9 @@ public class MapLoader : MonoBehaviour {
         int numUnits = Convert.ToInt32(mapCsvRows[rowIndex+1]);
         Debug.Log("Number Of Units :: " + numUnits);
         // implement Unit parsing
+        // int numDep = Convert.ToInt32(mapCsvRows[rowIndex+1]);
+        // Debug.Log("Number Of Deployment Zones :: " + numDep);
+        // implement DeploymentZone parsing
     }
 
     private GameObject CreateTile(int val, Vector3 pos, GameObject rowObj, int row, int col) {

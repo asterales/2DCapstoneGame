@@ -49,7 +49,7 @@ public class LEMapLoader : MonoBehaviour {
 
         int numUnits = Convert.ToInt32(reader.ReadLine());
 
-        for(int i=0;i<numUnits;i++)
+        for (int i=0;i<numUnits;i++)
         {
             // TODO :: Clean up a bit
             string str = reader.ReadLine();
@@ -64,6 +64,17 @@ public class LEMapLoader : MonoBehaviour {
             tile.SetInstance(instance);
             instance.location = tile.position;
             unitCache.unitInstances.Add(instance);
+        }
+
+        int numDepTiles = Convert.ToInt32(reader.ReadLine());
+
+        for (int i=0;i<numDepTiles;i++)
+        {
+            string[] line = reader.ReadLine().Split(',');
+            int row = Convert.ToInt32(line[0]);
+            int col = Convert.ToInt32(line[1]);
+            hexMap.tileArray[row][col].CreateDeploymentTile();
+            hexMap.tileArray[row][col].TurnOffDeployment();
         }
 
         reader.Close();
