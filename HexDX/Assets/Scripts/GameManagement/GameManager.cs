@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 
 public class GameManager : MonoBehaviour {
-	private static GameManager instance; //singleton
+	public static GameManager instance; //singleton
 
 	// public for debugging in editor
 	public List<Unit> playerAllUnits;

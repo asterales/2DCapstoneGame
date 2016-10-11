@@ -12,10 +12,10 @@ public class WorldMapMenu : MonoBehaviour {
 	public RecruitingPanel recruitingPanel;
 
 	void Awake() {
-		trainButton = transform.Find("Train").gameObject.GetComponent<Button>();
-		promoteButton = transform.Find("Promote").gameObject.GetComponent<Button>();
-		recruitButton = transform.Find("Recruit").gameObject.GetComponent<Button>();
-		quitButton = transform.Find("Quit").gameObject.GetComponent<Button>();
+		trainButton = transform.Find("Train").GetComponent<Button>();
+		promoteButton = transform.Find("Promote").GetComponent<Button>();
+		recruitButton = transform.Find("Recruit").GetComponent<Button>();
+		quitButton = transform.Find("Quit").GetComponent<Button>();
 		if (trainButton == null) {
 			Debug.Log("Train Button not found - WorldMapMenu.cs");
 		}
