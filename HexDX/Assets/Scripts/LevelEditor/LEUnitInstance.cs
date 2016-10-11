@@ -144,7 +144,7 @@ public class LEUnitInstance : MonoBehaviour {
             GetHighRange() + "," +
             GetManuverability() + "," +
             GetDirection() + "," +
-            GetId();
+            GetId() + "\n";
     }
 
     public void Read(LEUnitCache unitCache, string str)
