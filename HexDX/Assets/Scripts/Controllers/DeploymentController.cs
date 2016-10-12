@@ -4,19 +4,117 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class DeploymentController : PreBattleController {
-	private GameObject hud;
-	private GameObject endTurnButton;
+	// For disabling specifc HUD elements
+	private static readonly List<string> disabledHudElementNames = new List<string> { 
+		//"EndTurnButton", "EndBanners", "TurnBanners", "TileUI", "EnemyUI"
+		"EndTurnButton", "HUD"
+	};
+
+	private List<GameObject> disabledHudElements;
 	private GameObject deploymentUI;
 	private List<DeploymentTile> deploymentTiles;
-	public static Unit selectedUnit;
+	
+	private static Tile selectedUnitDest;
+	private static Unit displacedUnit;
+	private static Tile displacedUnitDest;
+
+	private static readonly float maxMovement = 0.35f;
 
 	void Awake() {
 		deploymentTiles = new List<DeploymentTile>();
 		deploymentUI = GameObject.Find("Deployment UI");
-		hud = GameObject.Find("HUD");
-		endTurnButton = GameObject.Find("EndTurnButton");
+		disabledHudElements = disabledHudElementNames.Select(n => GameObject.Find(n)).ToList();
 	}
 
+	protected override void Start() {
+		base.Start();
+		SelectionController.mode = SelectionMode.DeploymentOpen;
+		disabledHudElements.ForEach(d => d.SetActive(false));
+	}
+
+	void Update() {
+		DisplaySelectedUnit();
+		if (SelectionController.selectedUnit) {
+			if (selectedUnitDest) {
+				MoveUnit(SelectionController.selectedUnit, selectedUnitDest);
+			} else if (SelectionController.selectedUnit.phase == UnitTurn.Facing) {
+				FaceSelectedUnit();
+			}
+		}
+		if (displacedUnit) {
+			MoveUnit(displacedUnit, displacedUnitDest);
+		}
+	}
+
+	private void DisplaySelectedUnit() {
+		if(SelectionController.selectedUnit) {
+			SelectionController.ShowSelection(SelectionController.selectedUnit);
+		} else {
+			SelectionController.HideSelection();
+		}
+	}
+
+	private void MoveUnit(Unit unit, Tile destTile) {
+    	Vector3 destination = destTile.transform.position;
+    	Vector3 unitPos = unit.transform.position;
+    	if (unitPos != destination) {
+    		unit.transform.position = Vector3.MoveTowards(unitPos, destination, maxMovement);
+    	} else {
+    		unit.SetTile(destTile);
+    		unit.MakeOpen();
+    		if (destTile == selectedUnitDest) {
+    			SelectionController.selectedUnit = null;
+    			selectedUnitDest = null;
+    		} else if (unit == displacedUnit) {
+    			displacedUnit = null;
+    			displacedUnitDest = null;
+    		}
+    		if(selectedUnitDest == null && displacedUnitDest == null) {
+    			SelectionController.mode = SelectionMode.DeploymentOpen;
+    		}
+    	}
+    }
+
+	private void FaceSelectedUnit() {
+		SelectionController.mode = SelectionMode.DeploymentFace;
+		SelectionController.RegisterFacing();
+		if(Input.GetMouseButtonDown(1)) {
+			HexMap.ClearAttackTiles();
+			SelectionController.selectedUnit.MakeOpen();
+			SelectionController.selectedUnit = null;
+			SelectionController.mode = SelectionMode.DeploymentOpen;
+		}
+	}
+
+	void OnGUI() {
+        if (SelectionController.selectedUnit && SelectionController.selectedUnit.phase == UnitTurn.Open) {
+            int itemHeight = 20;
+            int itemWidth = 60;
+            int offset = 60;
+            Vector3 pos = Camera.main.WorldToScreenPoint(SelectionController.selectedUnit.transform.position);
+            pos = new Vector3(pos.x, Screen.height - pos.y-offset);
+
+            if (GUI.Button(new Rect(pos.x, pos.y, itemWidth, itemHeight), " Move", player.GetGUIStyle(true))) {
+                SelectionController.selectedUnit.MakeMoving();
+            }
+            if (GUI.Button(new Rect(pos.x, pos.y+ itemHeight, itemWidth, itemHeight), " Face", player.GetGUIStyle(true))) {
+                SelectionController.selectedUnit.MakeFacing();
+            }
+        }
+    }
+
+	public static void SetSelectedUnitDestination(Tile destTile) {
+		selectedUnitDest = destTile;
+		if (destTile.currentUnit) {
+			displacedUnit = destTile.currentUnit;
+			displacedUnitDest = SelectionController.selectedUnit.currentTile;
+			displacedUnit.currentTile = null;
+			SelectionController.selectedUnit.currentTile = null;
+		}
+		SelectionController.mode = SelectionMode.DeploymentMove;
+	}
+
+	// Used with MapLoader
 	public void AddDeploymentTile(int row, int col) {
 		Tile tile = HexMap.mapArray[row][col];
         GameObject deployTileObj = Instantiate(Resources.Load("Tiles/DeploymentTile")) as GameObject;
@@ -27,18 +125,10 @@ public class DeploymentController : PreBattleController {
         deploymentTiles.Add(deployTile);
 	}
 
-	protected override void Start() {
-		base.Start();
-		SelectionController.mode = SelectionMode.Deployment;
-		hud.SetActive(false);
-		endTurnButton.SetActive(false);
-	}
-
 	public override void EndPreBattlePhase() {
 		deploymentTiles.ForEach(d => Destroy(d.gameObject));
-		hud.SetActive(true);
-		endTurnButton.SetActive(true);
 		deploymentUI.SetActive(false);
+		disabledHudElements.ForEach(h => h.SetActive(true));
 		base.EndPreBattlePhase();
 	}
 }

@@ -16,5 +16,4 @@ public class DeploymentUI : MonoBehaviour {
 			gameObject.SetActive(false);
 		}
 	}
-
 }

@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class DeploymentTile : MonoBehaviour {
 	public Tile tile;
 
 	public void OnMouseOver() {
-		if (SelectionController.mode == SelectionMode.Deployment) {
+		if (SelectionController.mode == SelectionMode.DeploymentOpen) {
 			if (Input.GetMouseButtonDown(0)) {
 				SelectUnit();
 			} else if (Input.GetMouseButtonDown(1)) {
-				MoveSelectedUnit();
+				SelectMoveDestination();
 			}
 		}
 	}
@@ -17,13 +17,17 @@ public class DeploymentTile : MonoBehaviour {
 	private void SelectUnit() {
 		if (tile.currentUnit) {
 			SelectionController.selectedUnit = tile.currentUnit;
-			SelectionController.ShowSelection(tile);
 		}
 	}
 
-	private void MoveSelectedUnit() {
-		if (SelectionController.selectedUnit && tile.currentUnit != SelectionController.selectedUnit) {
-			
+	private void SelectMoveDestination() {
+		if (SelectionController.selectedUnit 
+				&& SelectionController.selectedUnit.phase == UnitTurn.Moving) {
+			if (tile.currentUnit != SelectionController.selectedUnit) {
+				DeploymentController.SetSelectedUnitDestination(tile);
+			} else {
+				SelectionController.selectedUnit.MakeFacing();
+			}
 		}
 	}
 }

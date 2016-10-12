@@ -17,7 +17,7 @@ public class ScriptedFace : ScriptEvent {
 
     void Update() {
         if (isActive && isPlayerEvent) {
-            SelectionController.SelectFacing();
+            SelectionController.RegisterFacing();
             if (Input.GetMouseButtonDown(1) && SelectionController.selectedUnit.facing == direction) {
                 SelectionController.selectedUnit = null;
                 FinishEvent();

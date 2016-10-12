@@ -123,8 +123,10 @@ public class SelectionController : MonoBehaviour {
         return mode == SelectionMode.AITurn;
     }
 
-    public static void SelectFacing() {
-        Vector2 directionVec = Input.mousePosition - Camera.main.WorldToScreenPoint(selectedUnit.transform.position);
-        selectedUnit.SetFacing(directionVec);
+    public static void RegisterFacing() {
+        if (SelectionController.selectedUnit) {
+            Vector2 directionVec = Input.mousePosition - Camera.main.WorldToScreenPoint(selectedUnit.transform.position);
+            selectedUnit.SetFacing(directionVec);
+        }
     }
 }

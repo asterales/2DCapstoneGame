@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 // this class represents a Unit and stores its data
 
-public class Unit : MonoBehaviour {
+public class Unit : MonoBehaviour {    
     public Tile currentTile;
     private UnitStats unitStats;
     public UnitSprites sprites;
@@ -33,16 +33,16 @@ public class Unit : MonoBehaviour {
     ScriptedMove scriptedMove;
 
     // Properties for shorthand access to stats, includes tile modifiers
-    public int MvtRange { get { return unitStats.mvtRange + currentTile.tileStats.mvtModifier; } }
+    public int MvtRange { get { return unitStats.mvtRange + (currentTile ? currentTile.tileStats.mvtModifier : 0); } }
     public int MaxHealth { get { return unitStats.maxHealth; } }
     public int Health {
         get { return unitStats.health; }
         set { unitStats.health = value; }
     }
-    public int Attack { get { return unitStats.attack + currentTile.tileStats.attackModifier; } }
-    public int Defense { get { return unitStats.defense + currentTile.tileStats.defenseModifier; } }
-    public int Power { get { return unitStats.power + currentTile.tileStats.powerModifier; } }
-    public int Resistance { get { return unitStats.resistance + currentTile.tileStats.resistanceModifier; } }
+    public int Attack { get { return unitStats.attack + (currentTile ? currentTile.tileStats.attackModifier : 0); } }
+    public int Defense { get { return unitStats.defense + (currentTile ? currentTile.tileStats.defenseModifier : 0); } }
+    public int Power { get { return unitStats.power + (currentTile ? currentTile.tileStats.powerModifier : 0); } }
+    public int Resistance { get { return unitStats.resistance + (currentTile ? currentTile.tileStats.resistanceModifier : 0); } }
 
     // Use this for initialization
     void Start () {

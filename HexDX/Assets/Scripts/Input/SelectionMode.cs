@@ -1,6 +1,9 @@
 ﻿public enum SelectionMode
 {
-    Deployment,
+    DeploymentOpen,
+    DeploymentMove,
+    DeploymentFace,
+
     Open,
 	Moving,
  	Facing,

@@ -6,9 +6,10 @@ public class TurnBanner : MonoBehaviour {
 	private Image playerTurnBanner;
 	private Image enemyTurnBanner;
 	public BattleController battleController;
-	public GameDialogueManager gameDialogueMgr;
+	private GameDialogueManager gameDialogueMgr;
 
 	void Awake() {
+		gameDialogueMgr = FindObjectOfType(typeof(GameDialogueManager)) as GameDialogueManager;
 		playerTurnBanner = transform.Find("PlayerTurn").GetComponent<Image>();
 		enemyTurnBanner = transform.Find("EnemyTurn").GetComponent<Image>();
 	}
