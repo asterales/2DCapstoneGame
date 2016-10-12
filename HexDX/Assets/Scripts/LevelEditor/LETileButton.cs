@@ -3,7 +3,8 @@ using System.Collections;
 
 public class LETileButton : MonoBehaviour {
     public LESelectionController selectionController;
-    public LEUnitButton unitButton;
+    public LEUnitInstanceButton instanceButton;
+    public LEUnitSettingsButton settingsButton;
     public LEDeploymentButton depButton;
     public SpriteRenderer spriteRenderer;
     public LEHexMap hexMap;
@@ -14,19 +15,23 @@ public class LETileButton : MonoBehaviour {
         ////// DEBUG CODE //////
         if (spriteRenderer == null)
         {
-            Debug.Log("ERROR :: Need reference to sprite renderer -> LEDeploymentButton.cs");
+            Debug.Log("ERROR :: Need reference to sprite renderer -> LETileButton.cs");
         }
         if (selectionController == null)
         {
-            Debug.Log("ERROR :: Need reference to selection controller -> LEDeploymentButton.cs");
+            Debug.Log("ERROR :: Need reference to selection controller -> LETileButton.cs");
         }
-        if (unitButton == null)
+        if (instanceButton == null)
         {
-            Debug.Log("ERROR :: Need reference to unit button -> LEDeploymentButton.cs");
+            Debug.Log("ERROR :: Need reference to instance button -> LETileButton.cs");
+        }
+        if (settingsButton == null)
+        {
+            Debug.Log("ERROR :: Need reference to settings button -> LETileButton.cs");
         }
         if (depButton == null)
         {
-            Debug.Log("ERROR :: Need reference to tile button -> LEDeploymentButton.cs");
+            Debug.Log("ERROR :: Need reference to tile button -> LETileButton.cs");
         }
         ////////////////////////
     }
@@ -49,7 +54,8 @@ public class LETileButton : MonoBehaviour {
     {
         // deselect other modes
         spriteRenderer.color = Color.white;
-        unitButton.Deselect();
+        instanceButton.Deselect();
+        settingsButton.Deselect();
         depButton.Deselect();
         hexMap.TurnOnTile();
     }

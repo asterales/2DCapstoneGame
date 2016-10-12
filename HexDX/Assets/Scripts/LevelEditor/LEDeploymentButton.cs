@@ -4,7 +4,8 @@ using System.Collections;
 public class LEDeploymentButton : MonoBehaviour {
     public LESelectionController selectionController;
     public LEHexMap hexMap;
-    public LEUnitButton unitButton;
+    public LEUnitInstanceButton instanceButton;
+    public LEUnitSettingsButton settingsButton;
     public LETileButton tileButton;
     private SpriteRenderer spriteRenderer;
 
@@ -19,9 +20,13 @@ public class LEDeploymentButton : MonoBehaviour {
         {
             Debug.Log("ERROR :: Need reference to selection controller -> LEDeploymentButton.cs");
         }
-        if (unitButton == null)
+        if (instanceButton == null)
         {
-            Debug.Log("ERROR :: Need reference to unit button -> LEDeploymentButton.cs");
+            Debug.Log("ERROR :: Need reference to instance button -> LEDeploymentButton.cs");
+        }
+        if (settingsButton == null)
+        {
+            Debug.Log("ERROR :: Need reference to settings button -> LEDeploymentButton.cs");
         }
         if (tileButton == null)
         {
@@ -49,7 +54,8 @@ public class LEDeploymentButton : MonoBehaviour {
     {
         // deselect other modes
         spriteRenderer.color = Color.white;
-        unitButton.Deselect();
+        instanceButton.Deselect();
+        settingsButton.Deselect();
         tileButton.Deselect();
         hexMap.TurnOnDeployment();
     }
