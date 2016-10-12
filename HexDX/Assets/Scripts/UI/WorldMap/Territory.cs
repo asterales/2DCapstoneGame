@@ -10,7 +10,7 @@ public class Territory : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
     public bool captured;
 
     public void Start() {
-        this.GetComponent<SpriteRenderer>().color = Color.gray;
+        this.GetComponent<SpriteRenderer>().color = new Color(0.8f, 0.8f, 0.8f);
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
@@ -18,7 +18,7 @@ public class Territory : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        this.GetComponent<SpriteRenderer>().color = Color.gray;
+        this.GetComponent<SpriteRenderer>().color = new Color(0.8f, 0.8f, 0.8f);
     }
 
     public void OnPointerClick(PointerEventData eventData) {
