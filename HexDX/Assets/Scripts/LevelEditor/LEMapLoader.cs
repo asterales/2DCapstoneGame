@@ -9,9 +9,16 @@ public class LEMapLoader : MonoBehaviour {
     public LEUnitCache unitCache;
     public string fileName;
 
+    public void LoadSettings()
+    {
+        // to be implemented
+    }
+
     public void LoadLevel()
     {
         hexMap.ClearMap();
+
+        LoadSettings();
 
         var reader = new StreamReader(File.OpenRead(fileName));
 

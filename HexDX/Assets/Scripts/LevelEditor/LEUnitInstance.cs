@@ -99,6 +99,7 @@ public class LEUnitInstance : MonoBehaviour {
 
     void OnMouseOver()
     {
+        // TODO :: MOVE THIS TO LETILE
         if (Input.GetMouseButtonDown(0))
         {
             // select the current

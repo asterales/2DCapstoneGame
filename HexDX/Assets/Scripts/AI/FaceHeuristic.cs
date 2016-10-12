@@ -1,0 +1,27 @@
+﻿using UnityEngine;
+using System.Collections.Generic;
+
+public class FaceHeuristic {
+    public List<UnitFaceHeuristic> unitFaceHeuristics;
+    public int direction;
+    public int weight;
+	
+    public FaceHeuristic(int dir, int w)
+    {
+        unitFaceHeuristics = new List<UnitFaceHeuristic>();
+        direction = dir;
+        weight = w;
+    }
+
+    public void GetUnitFaceHeuristics(Tile tile, List<Unit> units)
+    {
+        for(int i = 0; i < units.Count; i++)
+        {
+            int result = units[i].CanReachTileAndAttack(tile, direction);
+            if (result > 0)
+            {
+                unitFaceHeuristics.Add(new UnitFaceHeuristic(units[i], result));
+            }
+        }
+    }
+}

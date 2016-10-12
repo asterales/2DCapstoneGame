@@ -27,52 +27,41 @@ public class LEIncrementButton : MonoBehaviour {
     {
         spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         isOn = true;
+        Vector3 pos = this.transform.localPosition;
+        this.transform.localPosition = new Vector3(pos.x, pos.y, 0.0f);
     }
 
     public void TurnOff()
     {
         spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
         isOn = false;
+        Vector3 pos = this.transform.localPosition;
+        this.transform.localPosition = new Vector3(pos.x, pos.y, -10.0f);
     }
 
     void OnMouseDown()
     {
-        if (isOn)
-        {
-            spriteRenderer.color = new Color(0.3f, 0.3f, 0.3f);
-            parent.ChangeState(modifier);
-        }
+        spriteRenderer.color = new Color(0.3f, 0.3f, 0.3f);
+        parent.ChangeState(modifier);
     }
 
     void OnMouseHover()
     {
-        if (isOn)
-        {
-            spriteRenderer.color = new Color(0.7f, 0.7f, 0.7f);
-        }
+        spriteRenderer.color = new Color(0.7f, 0.7f, 0.7f);
     }
 
     void OnMouseEnter()
     {
-        if (isOn)
-        {
-            spriteRenderer.color = new Color(0.7f, 0.7f, 0.7f);
-        }
+        spriteRenderer.color = new Color(0.7f, 0.7f, 0.7f);
     }
 
     void OnMouseUp()
     {
-        if (isOn)
-        {
-            spriteRenderer.color = new Color(0.7f, 0.7f, 0.7f);
-        }
+        spriteRenderer.color = new Color(0.7f, 0.7f, 0.7f);
     }
 
     void OnMouseExit()
     {
-        if (isOn)
-        {
-            spriteRenderer.color = Color.white;
-        }
+        spriteRenderer.color = Color.white;
     }
 }

@@ -13,6 +13,8 @@ public class DeploymentController : PreBattleController {
 	private List<GameObject> disabledHudElements;
 	private GameObject deploymentUI;
 	private List<DeploymentTile> deploymentTiles;
+
+	private ScriptList preBattleComments; //pull this out later, currently added for prebattle comments
 	
 	private static Tile selectedUnitDest;
 	private static Unit displacedUnit;
@@ -21,6 +23,16 @@ public class DeploymentController : PreBattleController {
 	private static readonly float maxMovement = 0.35f;
 
 	void Awake() {
+		preBattleComments = FindObjectOfType(typeof(ScriptList)) as ScriptList;
+		if (preBattleComments && 
+				preBattleComments.scriptedEvents.Where(e => e.GetType() != typeof(ScriptedDialogue)).ToList().Count > 0) {
+			Debug.Log("ERROR: cannot have other scripted events other than ScriptedDialogues in ScriptList - DeploymentController.cs");
+			preBattleComments = null;
+		} else {
+			Character tutorialAdvisor = Character.characters[2]; // Colonel Schmidt
+			preBattleComments.dialogueMgr.SetSpeaker(tutorialAdvisor, 7);
+		}
+
 		deploymentTiles = new List<DeploymentTile>();
 		deploymentUI = GameObject.Find("Deployment UI");
 		disabledHudElements = disabledHudElementNames.Select(n => GameObject.Find(n)).ToList();
@@ -28,21 +40,31 @@ public class DeploymentController : PreBattleController {
 
 	protected override void Start() {
 		base.Start();
-		SelectionController.mode = SelectionMode.DeploymentOpen;
 		disabledHudElements.ForEach(d => d.SetActive(false));
+		if (preBattleComments) {
+			preBattleComments.StartEvents();
+		} else {
+			SelectionController.mode = SelectionMode.DeploymentOpen;
+		}
 	}
 
 	void Update() {
-		DisplaySelectedUnit();
-		if (SelectionController.selectedUnit) {
-			if (selectedUnitDest) {
-				MoveUnit(SelectionController.selectedUnit, selectedUnitDest);
-			} else if (SelectionController.selectedUnit.phase == UnitTurn.Facing) {
-				FaceSelectedUnit();
+		if (preBattleComments && preBattleComments.EventsCompleted) {
+			SelectionController.mode = SelectionMode.DeploymentOpen;
+			preBattleComments.dialogueMgr.HideGUI();
+			preBattleComments = null;
+		} else {
+			DisplaySelectedUnit();
+			if (SelectionController.selectedUnit) {
+				if (selectedUnitDest) {
+					MoveUnit(SelectionController.selectedUnit, selectedUnitDest);
+				} else if (SelectionController.selectedUnit.phase == UnitTurn.Facing) {
+					FaceSelectedUnit();
+				}
 			}
-		}
-		if (displacedUnit) {
-			MoveUnit(displacedUnit, displacedUnitDest);
+			if (displacedUnit) {
+				MoveUnit(displacedUnit, displacedUnitDest);
+			}
 		}
 	}
 
@@ -108,8 +130,6 @@ public class DeploymentController : PreBattleController {
 		if (destTile.currentUnit) {
 			displacedUnit = destTile.currentUnit;
 			displacedUnitDest = SelectionController.selectedUnit.currentTile;
-			displacedUnit.currentTile = null;
-			SelectionController.selectedUnit.currentTile = null;
 		}
 		SelectionController.mode = SelectionMode.DeploymentMove;
 	}

@@ -57,7 +57,7 @@ public class LETile : MonoBehaviour {
         }
         else if (reference.selectionController.isSettingsMode)
         {
-            Debug.Log("Placing Unit");
+            //Debug.Log("Placing Unit");
             Vector3 newPos = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - .001f);
             LEUnitInstance instance = unitCache.CreateNewUnitInstance(newPos, reference.selectionController.selectedSettings);
             currentInstance = instance;

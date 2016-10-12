@@ -16,6 +16,7 @@ public class LEUnitSettings : MonoBehaviour {
     public int[] baseHighRange;
     public int[] baseManuverability; // what terrain it can bypass
     public string id;
+    public string fileName;
 
     public int BaseHealth(int vet)
     {
@@ -112,8 +113,9 @@ public class LEUnitSettings : MonoBehaviour {
     //   baseManuverability
     // id
 
-    public void InitializeFromText(string data)
+    public void InitializeFromText(string data, string file)
     {
+        fileName = file + ".txt";
         string[] lines = data.Split('\n');
         if (lines.Length < 9*3) Debug.Log("NOT ENOUGH LINES -> LEUnitSettings.cs");
         //veterancyLv = Convert.ToInt32(lines[0]);
