@@ -11,7 +11,12 @@ public class LEMapWriter : MonoBehaviour {
 
     public void WriteUnitSettings()
     {
-        // to be implemented
+        for (int i=0;i<unitCache.unitSettings.Count; i++)
+        {
+            string data = unitCache.unitSettings[i].WriteToText();
+            string file = unitCache.unitSettings[i].fileName;
+            File.WriteAllText(file, data);
+        }
     }
 
     public void WriteLevel()

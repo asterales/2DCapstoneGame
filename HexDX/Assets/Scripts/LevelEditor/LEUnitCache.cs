@@ -88,7 +88,7 @@ public class LEUnitCache : MonoBehaviour
         {
             settingsFile = settingsFile.Remove(settingsFile.IndexOf('.'));
             TextAsset settings = Resources.Load(settingsFile) as TextAsset;
-            unit.InitializeFromText(settings.text);
+            unit.InitializeFromText(settings.text, "Assets\\Resources\\"+settingsFile);
         }
         else
         {

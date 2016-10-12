@@ -110,8 +110,11 @@ public class LESelectionController : MonoBehaviour {
         isInstanceMode = false;
         isSettingsMode = false;
         isDepMode = false;
-        isTileMode = true;
-        tileButton.Select();
+        isTileMode = false;
+        //tileButton.Deselect();
+        depButton.Deselect();
+        instanceButton.Deselect();
+        settingsButton.Deselect();
     }
 
     public void SetSettingsType(LEUnitSettings settings)
