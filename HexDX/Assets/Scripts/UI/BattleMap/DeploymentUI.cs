@@ -4,9 +4,13 @@ using System.Collections;
 
 public class DeploymentUI : MonoBehaviour {
 	public DeploymentController deploymentController;
+	private GameObject phasePanel;
 	private Button startBattleButton;
+	private GameDialogueManager gameDialogueMgr;
 
 	void Awake() {
+		gameDialogueMgr = FindObjectOfType(typeof(GameDialogueManager)) as GameDialogueManager;
+		phasePanel = transform.Find("Title Panel").gameObject;
 		startBattleButton = transform.Find("Start Button").GetComponent<Button>();
 		startBattleButton.onClick.AddListener(deploymentController.EndPreBattlePhase);
 	}
@@ -14,6 +18,14 @@ public class DeploymentUI : MonoBehaviour {
 	void Start() {
 		if (!deploymentController.enabled) {
 			gameObject.SetActive(false);
+		}
+	}
+
+	void Update() {
+		if (gameDialogueMgr == null || !gameDialogueMgr.IsVisible) {
+			phasePanel.SetActive(true);
+		} else {
+			phasePanel.SetActive(false);
 		}
 	}
 }

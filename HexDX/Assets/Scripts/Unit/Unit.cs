@@ -207,7 +207,7 @@ public class Unit : MonoBehaviour {
     public void SetTile(Tile newTile) {
         transform.position = newTile.transform.position;
         transform.parent = newTile.transform;
-        if (currentTile) {
+        if (currentTile && currentTile.currentUnit == this) {
             currentTile.currentUnit = null;
         }
         newTile.currentUnit = this;
