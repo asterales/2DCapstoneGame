@@ -41,8 +41,7 @@ public class PlayerBattleController : ArmyBattleController {
     }
 
     private void SelectFacing() {
-        Vector2 directionVec = Input.mousePosition - Camera.main.WorldToScreenPoint(selectedUnit.transform.position);
-        selectedUnit.SetFacing(directionVec);
+        SelectionController.SelectFacing();
         if (Input.GetMouseButtonDown(1)) {
             selectedUnit.MakeChoosingAction();
         }

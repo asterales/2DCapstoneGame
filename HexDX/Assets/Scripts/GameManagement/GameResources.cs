@@ -8,6 +8,8 @@ public static class GameResources {
     private static Dictionary<int, List<Sprite>> tileSprites;
     private static Dictionary<int, GameObject> tilePrefabs;
 
+    public static readonly Vector3 visibilityOffset = new Vector3(0, 0, -0.01f);
+
 	static GameResources() {
         LoadTileCache();
 	}

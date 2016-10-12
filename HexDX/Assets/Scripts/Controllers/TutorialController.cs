@@ -2,16 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class TutorialController : MonoBehaviour {
+public class TutorialController : PreBattleController {
 	public Sprite selectionSprite;
 	public RuntimeAnimatorController animation;
-	public PlayerBattleController player;
-    public AIBattleController ai;
 
 	public static Tile targetTile;
 	public static ScriptList eventsList;
 	public static GameObject selectionPromptObj;
-	private static readonly Vector3 visibilityOffset = new Vector3(0, 0, -0.01f);
 
 	void Awake(){
 		Character tutorialAdvisor = Character.characters[2]; // Colonel Schmidt
@@ -20,8 +17,8 @@ public class TutorialController : MonoBehaviour {
 		InitSelectionPrompt();
 	}
 
-	void Start() {
-		DisableGameControllers();
+	protected override void Start() {
+		base.Start();
 		eventsList.StartEvents();
 	}
 
@@ -36,7 +33,7 @@ public class TutorialController : MonoBehaviour {
 	}
 
 	public static void ShowSelectionPrompt(Tile tile) {
-		selectionPromptObj.transform.position = tile.transform.position + visibilityOffset;
+		selectionPromptObj.transform.position = tile.transform.position + GameResources.visibilityOffset;
 	}
 
 	public static void HideSelectionPrompt() {
@@ -70,28 +67,15 @@ public class TutorialController : MonoBehaviour {
 		}
 		if (eventsList.EventsCompleted){
 			if(eventsList.dialogueMgr.HasFinishedAllLines()) {
-				EndTutorialMode();
+				EndPreBattlePhase();
 			}
 		}
 	}
 
-	private void DisableGameControllers() {
-		player.enabled = false;
-		ai.enabled = false;
-	}
-
-	private void EnableGameControllers() {
-		player.enabled = true;
-		ai.enabled = true;
-	}
-
-	private void EndTutorialMode() {
+	public override void EndPreBattlePhase() {
 		eventsList.dialogueMgr.HideGUI();
 		HideSelectionPrompt();
 		targetTile = null;
-		SelectionController.ClearAllSelections();
-		EnableGameControllers();
-		player.StartTurn();
-		this.enabled = false;
+		base.EndPreBattlePhase();
 	}
 }

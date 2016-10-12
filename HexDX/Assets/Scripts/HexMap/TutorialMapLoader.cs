@@ -66,6 +66,11 @@ public class TutorialMapLoader : MonoBehaviour
         string[] mapCsvRows = GameResources.GetFileLines(mapsDir + hexMapFile);
         battleMap.ClearMap();
 
+        string[] dimensionRow = mapCsvRows[0].Split(',');
+        if (dimensionRow.Length != 2) Debug.Log("ERROR :: INVALID FORMAT FOR LEVEL FILE");
+        int rows = int.Parse(dimensionRow[0]);
+        int cols = int.Parse(dimensionRow[1]);
+
         RowContainer rowContainer = battleMap.rowContainer;
         RowOfTiles row;
 
@@ -74,7 +79,7 @@ public class TutorialMapLoader : MonoBehaviour
         float z = 0;
         int rowIndex = 0;
 
-        for (int i=1;i<mapCsvRows.Length-1; i++) {
+        for (int i=1;i<=rows; i++) {
             string csvRow = mapCsvRows[i];
             int columnIndex = 0;
             string[] line = csvRow.Split(',');
@@ -91,6 +96,7 @@ public class TutorialMapLoader : MonoBehaviour
             x -= 2 * hexDimension.width * line.Length - hexDimension.width;
             z -= .001f;
             rowIndex++;
+            Debug.Log(rowIndex);
         }
 
         HexMap.LoadMapFromRowContainer(rowContainer);

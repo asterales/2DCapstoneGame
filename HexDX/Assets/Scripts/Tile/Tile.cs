@@ -11,7 +11,6 @@ public class Tile : MonoBehaviour {
     public TileStats tileStats;
     private GameObject movementTile;
     private GameObject attackTile;
-    private static readonly Vector3 visibilityOffset = new Vector3(0, 0, -0.01f);
 
     public void Awake() {
         tileStats = this.gameObject.GetComponent<TileStats>();
@@ -96,10 +95,9 @@ public class Tile : MonoBehaviour {
         }
     }
 
-
     public void ShowMovementTile() {
         if (movementTile) {
-            movementTile.transform.localPosition = visibilityOffset;
+            movementTile.transform.localPosition = GameResources.visibilityOffset;
             HexMap.showingMovementTiles.Push(this);
             HideAttackTile();
         }
@@ -107,19 +105,19 @@ public class Tile : MonoBehaviour {
 
     public void HideMovementTile() {
         if (movementTile) {
-            movementTile.transform.localPosition = -visibilityOffset;
+            movementTile.transform.localPosition = -GameResources.visibilityOffset;
         }
     }
     public void ShowAttackTile() {
         if (attackTile) {
-            attackTile.transform.localPosition = visibilityOffset;
+            attackTile.transform.localPosition = GameResources.visibilityOffset;
             HexMap.showingAttackTiles.Push(this);
             HideMovementTile();
         }
     }
     public void HideAttackTile() {
         if (attackTile) {
-            attackTile.transform.localPosition = -visibilityOffset;
+            attackTile.transform.localPosition = -GameResources.visibilityOffset;
         }
     }
 }

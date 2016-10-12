@@ -15,16 +15,13 @@ public class MapLoader : MonoBehaviour {
         hexDimension = this.gameObject.GetComponent<HexDimension>();
 
         ////// DEBUG CODE //////
-        if (battleMap == null)
-        {
+        if (battleMap == null) {
             Debug.Log("BattleMap needs to be set -> MapLoader.cs");
         }
-        if (hexDimension == null)
-        {
+        if (hexDimension == null) {
             Debug.Log("HexDimension needs to be set -> MapLoader.cs");
         }
-        if (battleMap.selectionController == null)
-        {
+        if (battleMap.selectionController == null) {
             Debug.Log("Major Error :: Hex Map Needs Selection Controller");
         }
         ////////////////////////
@@ -33,45 +30,50 @@ public class MapLoader : MonoBehaviour {
     // row and colum indices start at 0 at upper left corner
     void Start() {
         if (battleMap != null && hexDimension != null) {
-            // load the test battle map
             LoadHexMap(csvMapFile);
-            LoadUnits();
+            LoadPlayerUnits();
         }
     }
 
-    void LoadHexMap(string hexMapFile)
-    {
+    void LoadHexMap(string hexMapFile) {
         string[] mapCsvRows = GameResources.GetFileLines(mapsDir + hexMapFile);
         battleMap.ClearMap();
+        int currentLine = 0;
 
-        string[] dimensionRow = mapCsvRows[0].Split(',');
-
+        string[] dimensionRow = mapCsvRows[currentLine++].Split(',');
         if (dimensionRow.Length != 2) Debug.Log("ERROR :: INVALID FORMAT FOR LEVEL FILE");
-
         int rows = Convert.ToInt32(dimensionRow[0]);
         int cols = Convert.ToInt32(dimensionRow[1]);
+        LoadMapTiles(mapCsvRows, rows);
+        currentLine += rows;
 
+        if(currentLine < mapCsvRows.Length) {
+            /* Load enemy unit if specified */
+            int numUnits = Convert.ToInt32(mapCsvRows[currentLine++]);
+            LoadEnemyUnits(mapCsvRows, currentLine, numUnits);
+            currentLine += numUnits;
+
+            if(currentLine < mapCsvRows.Length) {
+                /* Load deployment zone if specified */
+                int numDep = Convert.ToInt32(mapCsvRows[currentLine++]);
+                LoadDeploymentZone(mapCsvRows, currentLine, numDep);
+            }
+        }
+    }
+
+    private void LoadMapTiles(string[] mapCsvRows, int numRows) {
         List<Tile> row;
         float x = 0;
         float y = 0;
         float z = 0;
-        int rowIndex = 0;
-
-        for (int i = 0; i < rows; i++)
-        {
-            // Create new object for row in map, make it a subobject of hexMap
-            // row objects are useless other than for organizational purposes so putting DEBUG around them
+        for (int rowIndex = 0; rowIndex < numRows; rowIndex++) {
             ////// DEBUG CODE //////
             GameObject rowObj = CreateNewRowObj(rowIndex);
             ////////////////////////
-            string csvRow = mapCsvRows[i + 1];
-
             row = new List<Tile>();
             int columnIndex = 0;
-            string[] line = csvRow.Split(',');
-
-            foreach (string num in line)
-            {
+            string[] line = mapCsvRows[rowIndex + 1].Split(',');
+            foreach (string num in line) {
                 GameObject tileObj = CreateTile(int.Parse(num), new Vector3(x, y, z), rowObj, rowIndex, columnIndex);
                 Tile newTile = tileObj != null ? tileObj.GetComponent<Tile>() : null;
                 row.Add(newTile);
@@ -82,38 +84,15 @@ public class MapLoader : MonoBehaviour {
             y -= 2 * hexDimension.apex - hexDimension.minorApex;
             x -= 2 * hexDimension.width * line.Length - hexDimension.width;
             z -= .001f;
-            rowIndex++;
         }
+    }
 
-        int numUnits = Convert.ToInt32(mapCsvRows[++rowIndex]);
-        Debug.Log("Number Of Units :: " + numUnits);
-        // Unit Parsing
-        for (int i = 0; i < numUnits; i++)
-        {
-            string[] data = mapCsvRows[++rowIndex].Split(',');
-            int unitRow = Convert.ToInt32(data[0]);
-            int unitCol = Convert.ToInt32(data[1]);
-            string type = data[data.Length - 1].Trim();
-            GameObject unitObject = null;
-            Debug.Log(type);
-            Debug.Log("Units/" + type);
-            unitObject = Instantiate(Resources.Load("Units/" + type)) as GameObject;
-            Unit unit = unitObject.GetComponent<Unit>();
-            unit.SetTile(HexMap.mapArray[unitRow][unitCol]);
-            unit.SetFacing(new Vector3(0, 0, 0));
-            unitObject.AddComponent<BasicUnitAI>();
-        }
-
-        int numDep = Convert.ToInt32(mapCsvRows[++rowIndex]);
-        Debug.Log("Number Of Deployment Zones :: " + numDep);
-        // DeploymentZone parsing
-        for (int i = 0; i < numDep; i++)
-        {
-            string[] data = mapCsvRows[++rowIndex].Split(',');
-            int depRow = Convert.ToInt32(data[0]);
-            int depCol = Convert.ToInt32(data[1]);
-            CreateDeploymentZoneTile(depRow, depCol);
-        }
+    // Debug/organizational purposes - can be removed later
+    private GameObject CreateNewRowObj(int rowIndex) {
+        GameObject rowObj = new GameObject("Row " + rowIndex);
+        rowObj.transform.parent = battleMap.transform;
+        rowObj.transform.localPosition = new Vector3(0, 0, 0);
+        return rowObj;
     }
 
     private GameObject CreateTile(int val, Vector3 pos, GameObject rowObj, int row, int col) {
@@ -132,25 +111,40 @@ public class MapLoader : MonoBehaviour {
         return tileObj;
     }
 
-    private void CreateDeploymentZoneTile(int row, int col)
-    {
-        // to be implemented
+    private void LoadEnemyUnits(string[] mapCvsLines, int startLineIndex, int numUnits) {
+        Debug.Log("Number Of Units :: " + numUnits);
+        for (int i = 0; i < numUnits; i++) {
+            string[] data = mapCvsLines[startLineIndex + i].Split(',');
+            int unitRow = Convert.ToInt32(data[0]);
+            int unitCol = Convert.ToInt32(data[1]);
+            string type = data[data.Length - 1].Trim();
+            GameObject unitObject = null;
+            unitObject = Instantiate(Resources.Load("Units/" + type)) as GameObject;
+            Unit unit = unitObject.GetComponent<Unit>();
+            unit.SetTile(HexMap.mapArray[unitRow][unitCol]);
+            unit.SetFacing(new Vector3(0, 0, 0));
+            unitObject.AddComponent<BasicUnitAI>();
+        }
+        Debug.Log("LoadedEnemies");
     }
 
-    // Debug/organizational purposes - can be removed later
-    private GameObject CreateNewRowObj(int rowIndex) {
-        GameObject rowObj = new GameObject("Row " + rowIndex);
-        rowObj.transform.parent = battleMap.transform;
-        rowObj.transform.localPosition = new Vector3(0, 0, 0);
-        return rowObj;
+    private void LoadDeploymentZone(string[] mapCvsLines, int startLineIndex, int numDep) {
+        Debug.Log("Number Of Deployment Zones :: " + numDep);
+        DeploymentController deployController = FindObjectOfType(typeof(DeploymentController)) as DeploymentController;
+        if (deployController != null && deployController.enabled) {
+            for (int i = 0; i < numDep; i++) {
+                string[] data = mapCvsLines[startLineIndex + i].Split(',');
+                int depRow = Convert.ToInt32(data[0]);
+                int depCol = Convert.ToInt32(data[1]);
+                deployController.AddDeploymentTile(depRow, depCol);
+            }
+        }
     }
 
-    private void LoadUnits() {
+    private void LoadPlayerUnits() {
         Vector2 faceRight = new Vector2(1, 0);
-        //Vector2 faceLeft = new Vector2(-1, 0);
         for(int i = 0; i < 4; i++) {
             AddUnitToTile(i, 0, true, faceRight);
-            //AddUnitToTile(i, 5, false, faceLeft);
         }
     }
 

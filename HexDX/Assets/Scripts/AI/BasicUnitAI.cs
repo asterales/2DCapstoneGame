@@ -52,11 +52,6 @@ public class BasicUnitAI : UnitAI {
     	attackStarted = false;
     }
 
-    private Unit GetEnemyInRange() {
-        List<Tile> attackTiles = HexMap.GetAttackTiles(unit);
-        return playerUnits.FirstOrDefault(playerUnit => playerUnit != null && attackTiles.Contains(playerUnit.currentTile));
-    }
-
     private Tile GetNextDestination(out Unit nextEnemy) {
         List<Unit> enemiesByDistance = playerUnits.Where(p => p != null).OrderBy(p => unit.GetShortestPath(p.currentTile).Count).ToList();
         List<Tile> validDestinations = HexMap.GetMovementTiles(unit).Where(t => IsValidDestination(t)).ToList();

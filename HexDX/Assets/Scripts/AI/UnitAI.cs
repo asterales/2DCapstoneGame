@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 // Base class for AI scripts
 public abstract class UnitAI : MonoBehaviour {
@@ -23,6 +24,11 @@ public abstract class UnitAI : MonoBehaviour {
     
     public virtual void Reset() {
         SelectionController.HideTarget();
+    }
+
+    protected Unit GetEnemyInRange() {
+        List<Tile> attackTiles = HexMap.GetAttackTiles(unit);
+        return playerUnits.FirstOrDefault(playerUnit => playerUnit != null && attackTiles.Contains(playerUnit.currentTile));
     }
 }
 

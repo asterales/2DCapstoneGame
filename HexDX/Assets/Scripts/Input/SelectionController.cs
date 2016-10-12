@@ -11,10 +11,12 @@ public class SelectionController : MonoBehaviour {
     public static SelectionMode mode;
     private static GameObject selectedSpaceObj; // object for selected space
     private static GameObject targetSpaceObj; // object for target space
-    protected static readonly Vector3 visibilityOffset = new Vector3(0, 0, -0.01f);
+
+    void Awake() {
+        mode = SelectionMode.Open;
+    }
 
 	void Start () {
-        mode = SelectionMode.Open;
         selectedTile = null;
         InitSelectSpaceObj();
         InitTargetSpaceObj();
@@ -76,18 +78,18 @@ public class SelectionController : MonoBehaviour {
     }
 
     public static void ShowSelection(Tile tile) {
-        selectedSpaceObj.transform.position = tile.transform.position + visibilityOffset;
+        selectedSpaceObj.transform.position = tile.transform.position + GameResources.visibilityOffset;
     }
 
     public static void ShowSelection(Unit unit) {
-        selectedSpaceObj.transform.position = unit.transform.position + visibilityOffset;
+        selectedSpaceObj.transform.position = unit.transform.position + GameResources.visibilityOffset;
     }
 
     public static void ShowTarget(Unit unit) {
         if (unit)
         {
             target = unit;
-            targetSpaceObj.transform.position = unit.currentTile.transform.position + visibilityOffset;
+            targetSpaceObj.transform.position = unit.currentTile.transform.position + GameResources.visibilityOffset;
         }
     }
 
@@ -119,5 +121,10 @@ public class SelectionController : MonoBehaviour {
 
     public static bool TakingAIInput() {
         return mode == SelectionMode.AITurn;
+    }
+
+    public static void SelectFacing() {
+        Vector2 directionVec = Input.mousePosition - Camera.main.WorldToScreenPoint(selectedUnit.transform.position);
+        selectedUnit.SetFacing(directionVec);
     }
 }
