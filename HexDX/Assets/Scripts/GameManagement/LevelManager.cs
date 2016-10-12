@@ -11,6 +11,7 @@ using System.Collections;
 public class LevelManager : MonoBehaviour {
 	// Level scene management
 	public List<string> sceneNames;
+	public int monetaryReward;
 	private int currentScene;
 	private bool levelStarted;
 	private bool returnedToWorldMap;
@@ -69,6 +70,7 @@ public class LevelManager : MonoBehaviour {
 				StartCoroutine(LoadScene(sceneNames[currentScene]));
 			} else {
 				Debug.Log("Level complete");
+				GameManager.instance.funds += monetaryReward;
 				ReturnToWorldMap();
 			}
 		}
@@ -113,7 +115,7 @@ public class LevelManager : MonoBehaviour {
 	private IEnumerator LoadScene(string sceneName) {
 		yield return new WaitForSeconds(BeginFade(FadeDirection.Out));
 		SceneManager.LoadScene(sceneName);
-		Debug.Log("Loaded");
+		Debug.Log("Loaded scene");
 	}
 
 	// delegate/event to be called when new scene is loaded
