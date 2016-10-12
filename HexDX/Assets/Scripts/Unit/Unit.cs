@@ -351,7 +351,7 @@ public class Unit : MonoBehaviour {
                 shortestPath.Add(dest);
                 break;
             }
-            if (t == int.MaxValue) {
+            if (t == int.MaxValue) { // wat
                 break;
             }
             bound = t;
@@ -392,5 +392,17 @@ public class Unit : MonoBehaviour {
 
     public bool IsPlayerUnit() {
         return gameObject.GetComponent<UnitAI>() == null;
+    }
+
+    // AI pathfinding methods
+    public int CanReachTileAndAttack(Tile dest, int direction)
+    {
+        // return values:
+        // -- 0 cant reach
+        // -- 1 can reach
+        // -- 2 can flank
+        // -- 3 can counter
+        // to be implemented
+        return 0;
     }
 }
