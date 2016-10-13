@@ -1,4 +1,6 @@
-﻿// A container for the weights of an AI
+﻿using System;
+
+// A container for the weights of an AI
 
 public class AIWeights {
     // tile weights
@@ -21,6 +23,8 @@ public class AIWeights {
     public float unitKillAdvantage;
     public float unitStateComparison;
     public float unitGlobal;
+    // input data
+    public string fileName;
 
     public AIWeights()
     {
@@ -41,5 +45,52 @@ public class AIWeights {
         unitKillAdvantage = 0.0f;
         unitStateComparison = 0.0f;
         unitGlobal = 0.0f;
+        fileName = "";
+    }
+
+    public void ReadFromFile(string name)
+    {
+        fileName = name;
+        string[] aiRows = GameResources.GetFileLines(fileName);
+        tileStatBoost = (float)Convert.ToDouble(aiRows[0].Trim());
+        tileEnemyCloosness = (float)Convert.ToDouble(aiRows[1].Trim());
+        tileEnemyDistance = (float)Convert.ToDouble(aiRows[2].Trim());
+        tileClosenessObjective = (float)Convert.ToDouble(aiRows[3].Trim());
+        tileGlobal = (float)Convert.ToDouble(aiRows[4].Trim());
+        faceFlankDisadvantage = (float)Convert.ToDouble(aiRows[5].Trim());
+        faceSneakDisadvantage = (float)Convert.ToDouble(aiRows[6].Trim());
+        faceAttackDisadvantage = (float)Convert.ToDouble(aiRows[7].Trim());
+        faceStateComparison = (float)Convert.ToDouble(aiRows[8].Trim());
+        faceDeathDisadvantage = (float)Convert.ToDouble(aiRows[9].Trim());
+        faceGlobal = (float)Convert.ToDouble(aiRows[10].Trim());
+        unitFlankAdvantage = (float)Convert.ToDouble(aiRows[11].Trim());
+        unitSneakAdvangage = (float)Convert.ToDouble(aiRows[12].Trim());
+        unitAttackAdvantage = (float)Convert.ToDouble(aiRows[13].Trim());
+        unitKillAdvantage = (float)Convert.ToDouble(aiRows[14].Trim());
+        unitStateComparison = (float)Convert.ToDouble(aiRows[15].Trim());
+        unitGlobal = (float)Convert.ToDouble(aiRows[16].Trim());
+    }
+
+    public string WriteToString()
+    {
+        string data = "";
+        data += (double)tileStatBoost + "\n";
+        data += (double)tileEnemyCloosness + "\n";
+        data += (double)tileEnemyDistance + "\n";
+        data += (double)tileClosenessObjective + "\n";
+        data += (double)tileGlobal + "\n";
+        data += (double)faceFlankDisadvantage + "\n";
+        data += (double)faceSneakDisadvantage + "\n";
+        data += (double)faceAttackDisadvantage + "\n";
+        data += (double)faceStateComparison + "\n";
+        data += (double)faceDeathDisadvantage + "\n";
+        data += (double)faceGlobal + "\n";
+        data += (double)unitFlankAdvantage + "\n";
+        data += (double)unitSneakAdvangage + "\n";
+        data += (double)unitAttackAdvantage + "\n";
+        data += (double)unitKillAdvantage + "\n";
+        data += (double)unitStateComparison + "\n";
+        data += (double)unitGlobal + "\n";
+        return data;
     }
 }

@@ -329,6 +329,11 @@ public class Unit : MonoBehaviour {
         healthBar.fillAmount = (float)target.Health / (float)target.MaxHealth;
         if (target.Health <= 0)
         {
+            if (target.scriptedMove != null)
+            {
+                target.scriptedMove.FinishEvent();
+                target.scriptedMove = null;
+            }
             Destroy(target.gameObject);
         }
         StartCoroutine(finishAttack());
@@ -410,6 +415,7 @@ public class Unit : MonoBehaviour {
         // -- 2 can flank
         // -- 3 can counter
         // to be implemented
+        // i think this has already been implemented... future note: look at HasInAtackRange
         return 0;
     }
 }

@@ -6,16 +6,17 @@ using System.Collections.Generic;
 // tile with most weight is the decided move
 
 public abstract class HeuristicAI : UnitAI {
-    public List<TileHeuristic> tileWeights;
+    public List<TileHeuristic> tileWHeuristics;
+    public AIWeights aiWeights;
 
     public void PerformAIAction()
     {
-        tileWeights = new List<TileHeuristic>();
+        tileWHeuristics = new List<TileHeuristic>();
         AIChoice choice = DecideAIAction();
         SetMovement(choice);
         SetFacing(choice);
         SetAttack(choice);
-        tileWeights.Clear();
+        tileWHeuristics.Clear();
     }
 
     public void CalculateAIHeuristics()
@@ -24,13 +25,13 @@ public abstract class HeuristicAI : UnitAI {
         CreateTileHeuristics();
 
         // initialize all  other heuristics
-        for (int i = 0; i < tileWeights.Count; i++)
+        for (int i = 0; i < tileWHeuristics.Count; i++)
         {
-            tileWeights[i].InitializeFaceHeuristics();
-            tileWeights[i].InitializeUnitHeuristics(playerUnits);
-            for(int j=0;j<tileWeights[i].faceHeuristics.Count;j++)
+            tileWHeuristics[i].InitializeFaceHeuristics();
+            tileWHeuristics[i].InitializeUnitHeuristics(playerUnits);
+            for(int j=0;j< tileWHeuristics[i].faceHeuristics.Count;j++)
             {
-                tileWeights[i].faceHeuristics[j].GetUnitFaceHeuristics(tileWeights[i].tile, playerUnits);
+                tileWHeuristics[i].faceHeuristics[j].GetUnitFaceHeuristics(tileWHeuristics[i].tile, playerUnits);
             }
         }
 
@@ -39,17 +40,17 @@ public abstract class HeuristicAI : UnitAI {
         //   vice versa. Need to fix that but I am not going to now
 
         // calculate heuristics for each tile
-        for (int i = 0; i < tileWeights.Count; i++)
+        for (int i = 0; i < tileWHeuristics.Count; i++)
         {
-            for (int j = 0; j < tileWeights[i].faceHeuristics.Count; j++)
+            for (int j = 0; j < tileWHeuristics[i].faceHeuristics.Count; j++)
             {
-                CalculateFaceHeuristic(tileWeights[i].faceHeuristics[j]);
+                CalculateFaceHeuristic(tileWHeuristics[i].faceHeuristics[j]);
             }
-            for (int j = 0; j < tileWeights[i].unitHeuristics.Count; j++)
+            for (int j = 0; j < tileWHeuristics[i].unitHeuristics.Count; j++)
             {
-                CalculateUnitHeuristic(tileWeights[i].unitHeuristics[j]);
+                CalculateUnitHeuristic(tileWHeuristics[i].unitHeuristics[j]);
             }
-            CalculateTileHeuristic(tileWeights[i]);
+            CalculateTileHeuristic(tileWHeuristics[i]);
         }
     }
 
@@ -59,9 +60,20 @@ public abstract class HeuristicAI : UnitAI {
     }
 
     // individual heuristic calculations differ between AIs
-    public abstract void CalculateTileHeuristic(TileHeuristic tile);
-    public abstract void CalculateFaceHeuristic(FaceHeuristic face);
-    public abstract void CalculateUnitHeuristic(UnitHeuristic unit);
+    public void CalculateTileHeuristic(TileHeuristic tile)
+    {
+        // to be implemented
+    }
+
+    public void CalculateFaceHeuristic(FaceHeuristic face)
+    {
+        // to be implemented
+    }
+
+    public void CalculateUnitHeuristic(UnitHeuristic unit)
+    {
+        // to be implemented
+    }
 
     public AIChoice DecideAIAction()
     {
@@ -75,7 +87,7 @@ public abstract class HeuristicAI : UnitAI {
 
     public TileHeuristic FindBestMoveChoice(AIChoice choice)
     {
-        List<TileHeuristic> tiles = tileWeights;
+        List<TileHeuristic> tiles = tileWHeuristics;
         TileHeuristic bestChoice = null;
         int bestWeight = -1000000;
         for (int i = 0; i < tiles.Count; i++)
@@ -121,22 +133,26 @@ public abstract class HeuristicAI : UnitAI {
         return bestChoice;
     }
 
+    // probably not needed
     public void SetMovement(AIChoice choice)
     {
         // to be implemented
     }
 
+    // probably not needed
     public void SetFacing(AIChoice choice)
     {
         // to be implemented
     }
 
+    // probably not needed
     public void SetAction(AIChoice choice)
     {
         // I dont think this is needed since the action will be done if no
         // unit attack choice is made
     }
 
+    // probably not needed
     public void SetAttack(AIChoice choice)
     {
         if (choice.unitChoice == null)
