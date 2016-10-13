@@ -3,7 +3,8 @@
 
 using System.Collections.Generic;
 
-public class TileHeuristic {
+public class TileHeuristic
+{
     public List<UnitHeuristic> unitHeuristics;
     public List<FaceHeuristic> faceHeuristics;
     public FaceHeuristic bestFace;
@@ -33,7 +34,7 @@ public class TileHeuristic {
 
     public void InitializeUnitHeuristics(List<Unit> units)
     {
-        for(int i=0;i<units.Count;i++)
+        for (int i = 0; i < units.Count; i++)
         {
             //if ()
             // to be implemented
@@ -42,19 +43,24 @@ public class TileHeuristic {
 
     public void InitializeFaceHeuristics()
     {
-        for(int i=0;i<6;i++)
+        for (int i = 0; i < 6; i++)
         {
             faceHeuristics.Add(new FaceHeuristic(i, -1000000));
         }
     }
 
-    public void ChooseBestUnit()
+    public float CalculateHeuristic()
     {
+        ChooseBestCombination();
+        // CONTINUE FROM HERE
         // to be implemented
+        return 0.0f;
     }
 
-    public void ChooseBestFace()
+    public void ChooseBestCombination()
     {
         // to be implemented
+        bestFace = null;
+        bestUnit = null;
     }
 }
