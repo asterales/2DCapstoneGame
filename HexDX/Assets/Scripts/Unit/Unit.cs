@@ -135,7 +135,7 @@ public class Unit : MonoBehaviour {
         {
             foreach (Unit unit in ai.units)
             {
-                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open)
+                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health>0)
                 {
                     unit.MakeAttacking();
                     StartCoroutine(unit.DoAttack(this, 0.8f));
@@ -146,7 +146,7 @@ public class Unit : MonoBehaviour {
         {
             foreach (Unit unit in player.units)
             {
-                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open)
+                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health>0)
                 {
                     unit.MakeAttacking();
                     StartCoroutine(unit.DoAttack(this, 0.8f));
@@ -302,27 +302,29 @@ public class Unit : MonoBehaviour {
     public IEnumerator DoAttack(Unit target, float modifier)
     {
         SetFacingSprites();
-        yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
-        GameObject indicator = new GameObject();
-        int basedamage = (int)(Attack * (50.0f /(50.0f + (float)target.Defense)));
+        int basedamage = (int)(Attack * (50.0f / (50.0f + (float)target.Defense)));
         int damage = basedamage;
+        string indicatorText = "";
         if (target.facing == facing)
         {
             damage = basedamage * 2;
-            indicator.AddComponent<DamageIndicator>().SetDamage("-" + (int)(basedamage * modifier) + "\nSneak!\n-"+(int)((damage-basedamage)*modifier));
+            indicatorText = "-" + (int)(basedamage * modifier) + "\nSneak!\n-" + (int)((damage - basedamage) * modifier);
         }
-        else if (Mathf.Abs(target.facing-facing)==1||Mathf.Abs(target.facing-facing)==5){
-            damage = basedamage*3/2;
-            indicator.AddComponent<DamageIndicator>().SetDamage("-" + (int)(basedamage * modifier) + "\nFlank!\n-" + (int)((damage - basedamage) * modifier));
+        else if (Mathf.Abs(target.facing - facing) == 1 || Mathf.Abs(target.facing - facing) == 5)
+        {
+            damage = basedamage * 3 / 2;
+            indicatorText = "-" + (int)(basedamage * modifier) + "\nFlank!\n-" + (int)((damage - basedamage) * modifier);
         }
         else
         {
             damage = basedamage;
-            indicator.AddComponent<DamageIndicator>().SetDamage("-" + (int)(basedamage * modifier) );
+            indicatorText = "-" + (int)(basedamage * modifier);
         }
-        Debug.Log(target == null);
-        indicator.transform.position = target.transform.position+new Vector3(-1f, 6f, 0f);
         target.Health -= (int)(damage * modifier);
+        yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
+        GameObject indicator = new GameObject();
+        indicator.AddComponent<DamageIndicator>().SetDamage(indicatorText);
+        indicator.transform.position = target.transform.position + new Vector3(-1f, 6f, 0f);
         Image healthBar = target.transform.Find("HealthBar").GetComponent<Image>(); // Find() is expensive
         healthBar.fillAmount = (float)target.Health / (float)target.MaxHealth;
         if (target.Health <= 0)
