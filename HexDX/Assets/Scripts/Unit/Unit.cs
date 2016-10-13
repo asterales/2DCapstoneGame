@@ -124,7 +124,7 @@ public class Unit : MonoBehaviour {
                     facing = HexMap.GetNeighbors(lastTile).IndexOf(path.Peek());
                     SetFacingSprites();
                 }
-                //CheckZonesOfControl();
+                CheckZonesOfControl();
             }
         }
     }
@@ -329,6 +329,11 @@ public class Unit : MonoBehaviour {
         {
             Destroy(target.gameObject);
         }
+        StartCoroutine(finishAttack());
+    }
+
+    public IEnumerator finishAttack()
+    {
         yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
         MakeDone();
     }
