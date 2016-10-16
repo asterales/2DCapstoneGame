@@ -2,8 +2,8 @@
 using System.Collections;
 
 public class UnitStats : MonoBehaviour {
-    // to be implemented
     public string className;
+    public int veterency;
     public int maxHealth;
     public int health;
     public int attack; //rename to strength? or attack will be calculated based on power also?

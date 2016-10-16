@@ -117,10 +117,30 @@ public class MapLoader : MonoBehaviour {
             string[] data = mapCvsLines[startLineIndex + i].Split(',');
             int unitRow = Convert.ToInt32(data[0]);
             int unitCol = Convert.ToInt32(data[1]);
+            int veterency = Convert.ToInt32(data[2]);
+            int health = Convert.ToInt32(data[3]);
+            int attack = Convert.ToInt32(data[4]);
+            int power = Convert.ToInt32(data[5]);
+            int defense = Convert.ToInt32(data[6]);
+            int resist = Convert.ToInt32(data[7]);
+            int move = Convert.ToInt32(data[8]);
             string type = data[data.Length - 1].Trim();
             GameObject unitObject = null;
             unitObject = Instantiate(Resources.Load("Units/" + type)) as GameObject;
             Unit unit = unitObject.GetComponent<Unit>();
+            // Read in the stats //
+            UnitStats stats = unitObject.GetComponent<UnitStats>();
+            stats.maxHealth = health;
+            stats.health = health;
+            Debug.Log("Health: " + stats.health);
+            stats.veterency = veterency;
+            stats.attack = attack;
+            stats.power = power;
+            stats.defense = defense;
+            stats.resistance = resist;
+            stats.mvtRange = move;
+            stats.className = type;
+            ///////////////////////
             unit.SetTile(HexMap.mapArray[unitRow][unitCol]);
             unit.SetFacing(new Vector3(0, 0, 0));
             unitObject.AddComponent<BasicUnitAI>();
