@@ -20,6 +20,7 @@ public class LEMapLoader : MonoBehaviour {
 
         LoadSettings();
 
+        // TODO :: LOAD FROM RESOURCES
         var reader = new StreamReader(File.OpenRead(fileName));
 
         float x = 0.0f;
