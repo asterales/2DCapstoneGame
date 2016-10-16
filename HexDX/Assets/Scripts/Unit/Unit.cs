@@ -269,6 +269,12 @@ public class Unit : MonoBehaviour {
 
     public void MakeAttacking() {
         phase = UnitTurn.Attacking;
+        if (this.IsPlayerUnit() && !SelectionController.TakingAIInput())
+            HexMap.ShowAttackTiles(this);
+        else if (!this.IsPlayerUnit())
+        {
+            HexMap.ShowAttackTiles(this);
+        }
     }
 
     public void MakeFacing() {
