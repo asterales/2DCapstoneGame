@@ -6,6 +6,7 @@ public class LEUnitSettingsEditor : MonoBehaviour {
     public LEUnitInstance currentInstance;
     public List<LEStatEditor> settingsStatEditors;
     public List<LEStatEditor> instanceStatEditors;
+    public LEDirectionEditor directionEditor;
     public LESelectionController selectionController;
     private int onCounter = 10;
 
