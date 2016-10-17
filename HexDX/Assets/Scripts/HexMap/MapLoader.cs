@@ -6,13 +6,16 @@ using System.Collections.Generic;
 public class MapLoader : MonoBehaviour {
     private static readonly string mapsDir = "Maps/";
     public string csvMapFile;
+    public bool isTutorial;
 
     private HexMap battleMap;
     private HexDimension hexDimension;
+    private ScriptedAIBattleController scriptedAI;
 
     void Awake() {
         battleMap = this.gameObject.GetComponent<HexMap>();
         hexDimension = this.gameObject.GetComponent<HexDimension>();
+        scriptedAI = this.gameObject.GetComponent<ScriptedAIBattleController>(); // can be null
 
         ////// DEBUG CODE //////
         if (battleMap == null) {
@@ -25,11 +28,9 @@ public class MapLoader : MonoBehaviour {
             Debug.Log("Major Error :: Hex Map Needs Selection Controller");
         }
         ////////////////////////
-    }
 
-    // row and colum indices start at 0 at upper left corner
-    void Start() {
-        if (battleMap != null && hexDimension != null) {
+        if (battleMap != null && hexDimension != null)
+        {
             LoadHexMap(csvMapFile);
         }
     }
@@ -46,7 +47,7 @@ public class MapLoader : MonoBehaviour {
         LoadMapTiles(mapCsvRows, rows);
         currentLine += rows;
 
-        if(currentLine < mapCsvRows.Length) {
+        if(!isTutorial && currentLine < mapCsvRows.Length) {
             /* Load enemy unit if specified */
             int numUnits = Convert.ToInt32(mapCsvRows[currentLine++]);
             LoadEnemyUnits(mapCsvRows, currentLine, numUnits);
@@ -57,6 +58,25 @@ public class MapLoader : MonoBehaviour {
                 int numDep = Convert.ToInt32(mapCsvRows[currentLine++]);
                 LoadDeploymentZone(mapCsvRows, currentLine, numDep);
             }
+        }
+
+        if (isTutorial)
+        {
+            AddUnitToTile(5, 5, scriptedAI.aiUnits[0], false, new Vector3(0, 1, 0));
+            AddUnitToTile(10, 4, scriptedAI.aiUnits[1], false, new Vector3(0, 1, 0));
+            AddUnitToTile(6, 6, scriptedAI.aiUnits[2], false, new Vector3(0, 1, 0));
+            AddUnitToTile(4, 2, scriptedAI.aiUnits[3], true, new Vector3(0, 1, 0));
+            AddUnitToTile(3, 3, scriptedAI.aiUnits[4], true, new Vector3(0, 1, 0));
+        }
+    }
+
+    private void AddUnitToTile(int row, int col, Unit unit, bool isPlayerUnit, Vector3 facing)
+    {
+        unit.SetTile(HexMap.mapArray[row][col]);
+        unit.SetFacing(facing);
+        if (!isPlayerUnit)
+        {
+            unit.gameObject.AddComponent<BasicUnitAI>();
         }
     }
 

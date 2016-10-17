@@ -4,7 +4,6 @@ using System.Collections;
 public class ScriptedAttack : ScriptEvent {
     public Unit attacker;
     public Unit victim;
-    //public int damageDelt;
 
 	void Start () {
 	    ////// DEBUG CODE //////
