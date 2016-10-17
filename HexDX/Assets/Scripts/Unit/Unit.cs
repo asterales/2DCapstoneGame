@@ -20,7 +20,7 @@ public class Unit : MonoBehaviour {
 
     private PlayerBattleController player;
     private AIBattleController ai;
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
     private AudioSource audioSource;
     private Animator animator;
     private Tile lastTile;
@@ -28,7 +28,7 @@ public class Unit : MonoBehaviour {
     private readonly float maxMovement = 0.2f;
     private UnitFacing facingBonus;
     private UnitSounds sounds;
-
+    private static bool attackLock = false;
 
     // temporary storage for scripted stuff
     ScriptedMove scriptedMove;
@@ -45,10 +45,7 @@ public class Unit : MonoBehaviour {
     public int Power { get { return unitStats.power + (currentTile ? currentTile.tileStats.powerModifier : 0); } }
     public int Resistance { get { return unitStats.resistance + (currentTile ? currentTile.tileStats.resistanceModifier : 0); } }
 
-    // Use this for initialization
-    void Start () {
-        player = GameObject.FindGameObjectWithTag("Map").GetComponent<BattleController>().player;
-        ai = GameObject.FindGameObjectWithTag("Map").GetComponent<BattleController>().ai;
+    void Awake() {
         unitStats = this.gameObject.GetComponent<UnitStats>();
         facingBonus = this.gameObject.GetComponent<UnitFacing>();
         sprites = this.gameObject.GetComponent<UnitSprites>();
@@ -76,7 +73,10 @@ public class Unit : MonoBehaviour {
             Debug.Log("Unit Needs SpriteRenderer to be defined -> Unit.cs");
         }
         ////////////////////////
+    }
 
+    // Use this for initialization
+    void Start () {
         MakeOpen();
     }
 
@@ -90,6 +90,11 @@ public class Unit : MonoBehaviour {
                 break;
         }
 
+    }
+
+    public void InitForBattle() {
+        player = GameObject.FindGameObjectWithTag("Map").GetComponent<BattleController>().player;
+        ai = GameObject.FindGameObjectWithTag("Map").GetComponent<BattleController>().ai;
     }
 
     private void Move() {
@@ -131,7 +136,7 @@ public class Unit : MonoBehaviour {
         {
             foreach (Unit unit in ai.units)
             {
-                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health>0)
+                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health>0 && unit.Health>0)
                 {
                     unit.MakeAttacking();
                     StartCoroutine(unit.DoAttack(this, 0.8f));
@@ -142,7 +147,7 @@ public class Unit : MonoBehaviour {
         {
             foreach (Unit unit in player.units)
             {
-                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health>0)
+                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health>0 && unit.Health>0)
                 {
                     unit.MakeAttacking();
                     StartCoroutine(unit.DoAttack(this, 0.8f));
@@ -151,12 +156,14 @@ public class Unit : MonoBehaviour {
         }
     }
 
-    private void SetFacingSprites() {
+    public void SetFacingSprites() {
         int face = (facing + 1)%6;
         switch (phase) {
             case UnitTurn.Moving:
-                audioSource.clip = sounds.movement;
-                audioSource.Play();
+                if (audioSource != null) {
+                    audioSource.clip = sounds.movement;
+                    audioSource.Play();
+                }
                 if (face < 3) {
                     spriteRenderer.flipX = false;
                     spriteRenderer.sprite = sprites.walking[(facing+3)%3];
@@ -168,8 +175,10 @@ public class Unit : MonoBehaviour {
                 }
                 break;
             case UnitTurn.Attacking:
-                audioSource.clip = sounds.attacking;
-                audioSource.Play();
+                if (audioSource != null) {
+                    audioSource.clip = sounds.attacking;
+                    audioSource.Play();                    
+                }
                 if (face < 3) {
                     spriteRenderer.flipX = false;
                     spriteRenderer.sprite = sprites.attack[(facing + 3) % 3];
@@ -181,7 +190,9 @@ public class Unit : MonoBehaviour {
                 }
                 break;
             default:
-                audioSource.Pause();
+                if(audioSource != null) {
+                    audioSource.Pause();
+                }
                 if (face < 3) {
                     spriteRenderer.flipX = false;
                     spriteRenderer.sprite = sprites.idle[(facing + 3) % 3];
@@ -287,13 +298,24 @@ public class Unit : MonoBehaviour {
         }
     }
 
+    public void Die()
+    {
+        MakeDone();
+        path = null;
+        lastTile = null;
+        this.gameObject.AddComponent<UnitDeath>();
+
+    }
+   
+
     public IEnumerator PerformAttack(Unit target) {
-        if (target)
+        if (target && target.Health>0 && Health>0)
             StartCoroutine(DoAttack(target, 1.0f));
         //if (target && target.gameObject && target.HasInAttackRange(this))
         yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
-        if (target && target.Health > 0 && target.HasInAttackRange(this) && target.phase==UnitTurn.Open)
+        if (target && target.Health > 0 && target.HasInAttackRange(this) && target.phase==UnitTurn.Open && Health>0)
         {
+            Debug.Log(target.phase);
             spriteRenderer.color = Color.red;
             target.MakeAttacking();
             StartCoroutine(target.DoAttack(this, .8f));
@@ -304,6 +326,7 @@ public class Unit : MonoBehaviour {
     public IEnumerator DoAttack(Unit target, float modifier)
     {
         SetFacingSprites();
+        int healthStart = target.Health;
         int basedamage = (int)(Attack * (50.0f / (50.0f + (float)target.Defense)));
         int damage = basedamage;
         string indicatorText = "";
@@ -324,21 +347,21 @@ public class Unit : MonoBehaviour {
         }
         target.Health -= (int)(damage * modifier);
         yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
+        StartCoroutine(finishAttack());
         GameObject indicator = new GameObject();
         indicator.AddComponent<DamageIndicator>().SetDamage(indicatorText);
         indicator.transform.position = target.transform.position + new Vector3(-1f, 6f, 0f);
         Image healthBar = target.transform.Find("HealthBar").GetComponent<Image>(); // Find() is expensive
         healthBar.fillAmount = (float)target.Health / (float)target.MaxHealth;
-        if (target.Health <= 0)
+        if (healthStart-(int)(damage*modifier)<=0)
         {
             if (target.scriptedMove != null)
             {
                 target.scriptedMove.FinishEvent();
                 target.scriptedMove = null;
             }
-            Destroy(target.gameObject);
+            target.Die();
         }
-        StartCoroutine(finishAttack());
     }
 
     public IEnumerator finishAttack()

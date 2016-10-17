@@ -31,7 +31,6 @@ public class MapLoader : MonoBehaviour {
     void Start() {
         if (battleMap != null && hexDimension != null) {
             LoadHexMap(csvMapFile);
-            LoadPlayerUnits();
         }
     }
 
@@ -158,27 +157,6 @@ public class MapLoader : MonoBehaviour {
                 int depCol = Convert.ToInt32(data[1]);
                 deployController.AddDeploymentTile(depRow, depCol);
             }
-        }
-    }
-
-    private void LoadPlayerUnits() {
-        Vector2 faceRight = new Vector2(1, 0);
-        for(int i = 0; i < 4; i++) {
-            AddUnitToTile(i, 0, true, faceRight);
-        }
-    }
-
-    private void AddUnitToTile(int row, int col, bool isPlayerUnit, Vector3 facing) {
-        GameObject unitObject = null;
-        if (isPlayerUnit)
-            unitObject = Instantiate(Resources.Load("Units/Rifleman")) as GameObject;
-        else
-            unitObject = Instantiate(Resources.Load("Units/Swordsman")) as GameObject;
-        Unit unit = unitObject.GetComponent<Unit>();
-        unit.SetTile(HexMap.mapArray[row][col]);
-        unit.SetFacing(facing);
-        if(!isPlayerUnit) {
-            unitObject.AddComponent<BasicUnitAI>();
         }
     }
 }

@@ -40,11 +40,21 @@ public class DeploymentController : PreBattleController {
 
 	protected override void Start() {
 		base.Start();
+		LoadActiveUnits();
 		disabledHudElements.ForEach(d => d.SetActive(false));
 		if (preBattleComments) {
 			preBattleComments.StartEvents();
 		} else {
 			SelectionController.mode = SelectionMode.DeploymentOpen;
+		}
+	}
+
+	private void LoadActiveUnits() {
+		List<Unit> activeUnits = GameManager.instance.activeUnits;
+		if (activeUnits != null) {
+			for(int i = 0; i < activeUnits.Count; i++) {
+				activeUnits[i].SetTile(deploymentTiles[i].tile);
+			}
 		}
 	}
 

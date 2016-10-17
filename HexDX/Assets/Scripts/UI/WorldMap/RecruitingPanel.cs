@@ -1,12 +1,32 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RecruitingPanel : UnitManagementPanel {
-	protected override void PurchaseAction() {
-		// to be implemented
+public class RecruitingPanel : WorldMapPopupPanel {
+	private Button recruitButton;
+	private Text fundsText;
+
+	protected override void Awake() {
+		base.Awake();
+		fundsText = transform.Find("Funds").GetComponent<Text>();
+		InitRecruitButton();
 	}
 
-	protected override bool CanPurchase() {
-		return true; //placeholder, to be implemented
+	private void InitRecruitButton() {
+		recruitButton = transform.Find("Recruit Button").GetComponent<Button>();
+		recruitButton.onClick.AddListener(RecruitUnit);
 	}
+
+	protected void RecruitUnit() {
+
+	}
+
+	protected bool CanPurchase() {
+		return false;
+	}
+
+	protected virtual void Update() {
+		recruitButton.interactable = CanPurchase();
+		fundsText.text = "Current Funds: " + GameManager.instance.funds;
+	}
+
 }

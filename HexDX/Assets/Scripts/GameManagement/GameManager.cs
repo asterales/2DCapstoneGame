@@ -1,8 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 
 public class GameManager : MonoBehaviour {
+	public const int ACTIVE_UNIT_LIMIT = 8;
+	public const int TOTAL_UNIT_LIMIT = 16;
 	public static GameManager instance; //singleton
 
 	// public for debugging in editor
@@ -13,9 +16,45 @@ public class GameManager : MonoBehaviour {
 	void Awake() {
 		if (instance == null) {
 			instance = this;
+			InitUnitList();
+			gameObject.transform.position = GameResources.hidingPosition;
+			DontDestroyOnLoad(this.gameObject);
 		} else if (instance != this) {
 			Destroy(gameObject);
 		}
-		DontDestroyOnLoad(this);
+	}
+
+	private void InitUnitList() {
+		Unit[] allUnits = FindObjectsOfType(typeof(Unit)) as Unit[];
+		playerAllUnits = allUnits.Where(u => u.IsPlayerUnit()).ToList();
+		activeUnits = playerAllUnits.GetRange(0, ACTIVE_UNIT_LIMIT);
+		foreach(Unit unit in playerAllUnits) {
+			unit.transform.parent = gameObject.transform;
+			unit.transform.position = GameResources.hidingPosition;
+			unit.gameObject.SetActive(false);
+		}
+		activeUnits.ForEach(u => u.gameObject.SetActive(true));
+	}
+
+	public void ClearNullUnits() {
+		playerAllUnits = playerAllUnits.Where(u => u != null).ToList();
+		activeUnits = activeUnits.Where(u => u != null).ToList();
+	}
+
+	public void UpdateArmyAfterBattle() {
+		ClearNullUnits();
+		foreach(Unit unit in activeUnits) {
+			unit.transform.parent = gameObject.transform;
+			unit.transform.position = GameResources.hidingPosition;
+			unit.Health = unit.MaxHealth;
+		}
+	}
+
+	void Update() {
+		// For debugging
+		if (Input.GetKeyDown(KeyCode.Escape)) {
+            GameManager.instance.UpdateArmyAfterBattle();
+            LevelManager.ReturnToWorldMap();
+        }
 	}
 }

@@ -23,6 +23,10 @@ public class PlayerBattleController : ArmyBattleController {
     }
 
     void Update(){
+        if (!SelectionController.TakingAIInput() && selectedUnit == null)
+        {
+            SelectionController.mode = SelectionMode.Open;
+        }
         if (!SelectionController.TakingAIInput() && selectedUnit) {
             switch (selectedUnit.phase) {
                 case UnitTurn.Facing:
