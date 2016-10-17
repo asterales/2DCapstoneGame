@@ -1,12 +1,12 @@
 ﻿public class AIChoice {
-    public TileHeuristic tileChoice;
-    public FaceHeuristic faceChoice;
-    public UnitHeuristic unitChoice;
+    public TileOption tileChoice;
+    public FaceOption faceChoice;
+    public AttackOption attackChoice;
 
     public AIChoice()
     {
         tileChoice = null;
         faceChoice = null;
-        unitChoice = null;
+        attackChoice = null;
     }
 }

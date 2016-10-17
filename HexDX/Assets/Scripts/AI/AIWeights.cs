@@ -5,7 +5,7 @@
 public class AIWeights {
     // tile weights
     public float tileStatBoost;
-    public float tileEnemyCloosness;
+    public float tileEnemyCloseness;
     public float tileEnemyDistance;
     public float tileClosenessObjective;
     public float tileGlobal;
@@ -29,7 +29,7 @@ public class AIWeights {
     public AIWeights()
     {
         tileStatBoost = 0.0f;
-        tileEnemyCloosness = 0.0f;
+        tileEnemyCloseness = 0.0f;
         tileEnemyDistance = 0.0f;
         tileClosenessObjective = 0.0f;
         tileGlobal = 0.0f;
@@ -53,7 +53,7 @@ public class AIWeights {
         fileName = name;
         string[] aiRows = GameResources.GetFileLines(fileName);
         tileStatBoost = (float)Convert.ToDouble(aiRows[0].Trim());
-        tileEnemyCloosness = (float)Convert.ToDouble(aiRows[1].Trim());
+        tileEnemyCloseness = (float)Convert.ToDouble(aiRows[1].Trim());
         tileEnemyDistance = (float)Convert.ToDouble(aiRows[2].Trim());
         tileClosenessObjective = (float)Convert.ToDouble(aiRows[3].Trim());
         tileGlobal = (float)Convert.ToDouble(aiRows[4].Trim());
@@ -75,7 +75,7 @@ public class AIWeights {
     {
         string data = "";
         data += (double)tileStatBoost + "\n";
-        data += (double)tileEnemyCloosness + "\n";
+        data += (double)tileEnemyCloseness + "\n";
         data += (double)tileEnemyDistance + "\n";
         data += (double)tileClosenessObjective + "\n";
         data += (double)tileGlobal + "\n";

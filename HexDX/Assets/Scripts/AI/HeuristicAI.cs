@@ -5,7 +5,9 @@ using System.Collections.Generic;
 // heuristic based AIs assign a weight to every possible tile that they can move to
 // tile with most weight is the decided move
 
-public abstract class HeuristicAI : UnitAI {
+// TEMPORARILY COMMENTING OUT WHILE I FIX THE STRUCTURE OF THE AI
+
+/*public abstract class HeuristicAI : UnitAI {
     public List<TileHeuristic> tileWHeuristics;
     public AIWeights aiWeights;
 
@@ -167,3 +169,4 @@ public abstract class HeuristicAI : UnitAI {
     public override void SetAction() { }
     public override void SetAttack() { }
 }
+*/
