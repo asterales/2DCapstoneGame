@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UnitDisplayPanel : MonoBehaviour {
+public class UnitDisplay : MonoBehaviour {
 	private Image unitPanel;
 	public Unit unit;
 

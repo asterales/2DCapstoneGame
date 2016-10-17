@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Linq;
 
-public class ActiveArmyDisplay : ArmyDisplay {
+public class InactiveArmyDisplay : ArmyDisplay {
 	private GameManager gm;
 
 	protected override void Start() {
@@ -11,11 +12,12 @@ public class ActiveArmyDisplay : ArmyDisplay {
 	}
 
 	protected override int DisplayLimit() {
-		return GameManager.ACTIVE_UNIT_LIMIT;
+		return GameManager.TOTAL_UNIT_LIMIT;
 	}
 
 	protected override List<Unit> GetUnitsToDisplay() {
-		gm.ClearNullUnits();
-		return gm.activeUnits;
+		List<Unit> inactiveUnits = gm.playerAllUnits.Where(u => !gm.activeUnits.Contains(u)).ToList();
+		inactiveUnits.ForEach(u => u.gameObject.SetActive(true));
+		return inactiveUnits;
 	}
 }

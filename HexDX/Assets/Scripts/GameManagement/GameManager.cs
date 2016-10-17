@@ -4,7 +4,8 @@ using System.Collections;
 using System.Linq;
 
 public class GameManager : MonoBehaviour {
-	public const int UNIT_LIMIT = 8;
+	public const int ACTIVE_UNIT_LIMIT = 8;
+	public const int TOTAL_UNIT_LIMIT = 16;
 	public static GameManager instance; //singleton
 
 	// public for debugging in editor
@@ -26,7 +27,7 @@ public class GameManager : MonoBehaviour {
 	private void InitUnitList() {
 		Unit[] allUnits = FindObjectsOfType(typeof(Unit)) as Unit[];
 		playerAllUnits = allUnits.Where(u => u.IsPlayerUnit()).ToList();
-		activeUnits = playerAllUnits.GetRange(0, 4);
+		activeUnits = playerAllUnits.GetRange(0, ACTIVE_UNIT_LIMIT);
 		foreach(Unit unit in playerAllUnits) {
 			unit.transform.parent = gameObject.transform;
 			unit.transform.position = GameResources.hidingPosition;
