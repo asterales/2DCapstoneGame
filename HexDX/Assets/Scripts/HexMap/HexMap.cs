@@ -58,7 +58,7 @@ public class HexMap : MonoBehaviour {
         while (toCheck.Count > 0) {
             Tile t = toCheck.Dequeue();
             distance = dist.Dequeue();
-            if (distance > 0 && t.pathable ) {
+            if (distance > 0 && t.tileStats.mvtDifficulty<=unit.mvtDifficulty ) {
                 if (t.currentUnit == null || t.currentUnit.IsPlayerUnit() == unit.IsPlayerUnit()) {
                     mvtTiles.Add(t);
                     neighbors = GetNeighbors(t);
@@ -82,7 +82,7 @@ public class HexMap : MonoBehaviour {
         {
             GameObject g = Instantiate(Resources.Load("Tiles/AttackableOutline")) as GameObject;
             g.transform.parent = atkTile.transform;
-            g.transform.localPosition = new Vector3(0, 0, -.01f);
+            g.transform.localPosition = new Vector3(0, 0, -.0001f);
             showingAttackOutlines.Push(g);
         }
         foreach (Tile mvtTile in mvtTiles)

@@ -16,6 +16,7 @@ public class Unit : MonoBehaviour {
     public int facing;
     public int experience;
     public int veterancy;
+    public MovementDifficulty mvtDifficulty;
 
     private PlayerBattleController player;
     private AIBattleController ai;
@@ -27,7 +28,7 @@ public class Unit : MonoBehaviour {
     private readonly float maxMovement = 0.2f;
     private UnitFacing facingBonus;
     private UnitSounds sounds;
-    private UnitMovementCache movementCache;
+
 
     // temporary storage for scripted stuff
     ScriptedMove scriptedMove;
@@ -50,7 +51,6 @@ public class Unit : MonoBehaviour {
         ai = GameObject.FindGameObjectWithTag("Map").GetComponent<BattleController>().ai;
         unitStats = this.gameObject.GetComponent<UnitStats>();
         facingBonus = this.gameObject.GetComponent<UnitFacing>();
-        movementCache = this.gameObject.GetComponent<UnitMovementCache>();
         sprites = this.gameObject.GetComponent<UnitSprites>();
         sounds = this.gameObject.GetComponent<UnitSounds>();
         audioSource = this.gameObject.GetComponent<AudioSource>();
@@ -70,10 +70,6 @@ public class Unit : MonoBehaviour {
         if (facingBonus == null)
         {
             Debug.Log("Unit Needs Unit Facing to be defined -> Unit.cs");
-        }
-        if (movementCache == null)
-        {
-            Debug.Log("Unit Needs MovementCache to be defined -> Unit.cs");
         }
         if (spriteRenderer == null)
         {
