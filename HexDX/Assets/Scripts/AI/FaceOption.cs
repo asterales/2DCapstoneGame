@@ -1,9 +1,41 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
+
+public class FaceOption : AIOption
+{
+    public Tile chosenTile;
+    public List<AttackOption> attackOptions;
+    public FaceHeuristic heuristic;
+
+    public FaceOption()
+    {
+        chosenTile = null;
+        attackOptions = new List<AttackOption>();
+        heuristic = null;
+    }
+
+    public FaceOption(Tile tile)
+    {
+        chosenTile = tile;
+        attackOptions = new List<AttackOption>();
+        heuristic = null;
+    }
+
+    public override void LoadOptionData()
+    {
+        // to be implemented
+    }
+
+    public override void EvaluateOptionData()
+    {
+        // to be implemented
+    }
+}
 
 // Ignore implementation for now. Currently in the process of refactoring
 
-public class FaceOption
+/*public class FaceOption
 {
     public List<UnitFaceHeuristic> unitFaceHeuristics;
     public int direction;
@@ -27,4 +59,4 @@ public class FaceOption
             }
         }
     }
-}
+}*/

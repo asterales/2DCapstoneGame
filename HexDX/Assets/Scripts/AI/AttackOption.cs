@@ -1,6 +1,40 @@
-﻿// Ignore implementation for now. Currently in the process of refactoring
+﻿public class AttackOption : AIOption
+{
+    public Tile chosenTile;
+    public int chosenDirection;
+    public Unit chosenUnit;
+    public AttackHeuristic heuristic;
 
-public class AttackOption
+    public AttackOption()
+    {
+        chosenTile = null;
+        chosenDirection = -1;
+        chosenUnit = null;
+        heuristic = null;
+    }
+
+    public AttackOption(Tile tile, Unit unit)
+    {
+        chosenTile = tile;
+        chosenDirection = -1;
+        chosenUnit = unit;
+        heuristic = null;
+    }
+
+    public override void LoadOptionData()
+    {
+        // to be implemented
+    }
+
+    public override void EvaluateOptionData()
+    {
+        // to be implemented
+    }
+}
+
+// Ignore below information. Currently refactoring
+
+/*public class AttackOption
 {
     public Unit unit;
     public int direction;
@@ -19,4 +53,4 @@ public class AttackOption
         weight = w;
         direction = dir;
     }
-}
+}*/

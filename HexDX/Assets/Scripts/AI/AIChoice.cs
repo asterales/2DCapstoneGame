@@ -9,4 +9,11 @@
         faceChoice = null;
         attackChoice = null;
     }
+
+    public AIChoice(TileOption tile, FaceOption face, AttackOption attack)
+    {
+        tileChoice = tile;
+        faceChoice = face;
+        attackChoice = attack;
+    }
 }
