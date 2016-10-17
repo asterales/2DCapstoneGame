@@ -28,7 +28,7 @@ public class Unit : MonoBehaviour {
     private readonly float maxMovement = 0.2f;
     private UnitFacing facingBonus;
     private UnitSounds sounds;
-
+    private static bool attackLock = false;
 
     // temporary storage for scripted stuff
     ScriptedMove scriptedMove;
@@ -131,7 +131,7 @@ public class Unit : MonoBehaviour {
         {
             foreach (Unit unit in ai.units)
             {
-                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health>0)
+                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health>0 && unit.Health>0)
                 {
                     unit.MakeAttacking();
                     StartCoroutine(unit.DoAttack(this, 0.8f));
@@ -142,7 +142,7 @@ public class Unit : MonoBehaviour {
         {
             foreach (Unit unit in player.units)
             {
-                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health>0)
+                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health>0 && unit.Health>0)
                 {
                     unit.MakeAttacking();
                     StartCoroutine(unit.DoAttack(this, 0.8f));
@@ -289,17 +289,20 @@ public class Unit : MonoBehaviour {
 
     public void Die()
     {
+        MakeDone();
+        path = null;
+        lastTile = null;
         this.gameObject.AddComponent<UnitDeath>();
 
     }
    
 
     public IEnumerator PerformAttack(Unit target) {
-        if (target)
+        if (target && target.Health>0 && Health>0)
             StartCoroutine(DoAttack(target, 1.0f));
         //if (target && target.gameObject && target.HasInAttackRange(this))
         yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
-        if (target && target.Health > 0 && target.HasInAttackRange(this) && target.phase==UnitTurn.Open)
+        if (target && target.Health > 0 && target.HasInAttackRange(this) && target.phase==UnitTurn.Open && Health>0)
         {
             Debug.Log(target.phase);
             spriteRenderer.color = Color.red;
@@ -312,6 +315,7 @@ public class Unit : MonoBehaviour {
     public IEnumerator DoAttack(Unit target, float modifier)
     {
         SetFacingSprites();
+        int healthStart = target.Health;
         int basedamage = (int)(Attack * (50.0f / (50.0f + (float)target.Defense)));
         int damage = basedamage;
         string indicatorText = "";
@@ -332,12 +336,13 @@ public class Unit : MonoBehaviour {
         }
         target.Health -= (int)(damage * modifier);
         yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
+        StartCoroutine(finishAttack());
         GameObject indicator = new GameObject();
         indicator.AddComponent<DamageIndicator>().SetDamage(indicatorText);
         indicator.transform.position = target.transform.position + new Vector3(-1f, 6f, 0f);
         Image healthBar = target.transform.Find("HealthBar").GetComponent<Image>(); // Find() is expensive
         healthBar.fillAmount = (float)target.Health / (float)target.MaxHealth;
-        if (target.Health <= 0)
+        if (healthStart-(int)(damage*modifier)<=0)
         {
             if (target.scriptedMove != null)
             {
@@ -346,7 +351,6 @@ public class Unit : MonoBehaviour {
             }
             target.Die();
         }
-        StartCoroutine(finishAttack());
     }
 
     public IEnumerator finishAttack()

@@ -58,7 +58,7 @@ public class HexMap : MonoBehaviour {
         while (toCheck.Count > 0) {
             Tile t = toCheck.Dequeue();
             distance = dist.Dequeue();
-            if (distance > 0 && t.tileStats.mvtDifficulty<=unit.mvtDifficulty ) {
+            if (distance > 0 && t.pathable ) {
                 if (t.currentUnit == null || t.currentUnit.IsPlayerUnit() == unit.IsPlayerUnit()) {
                     mvtTiles.Add(t);
                     neighbors = GetNeighbors(t);
