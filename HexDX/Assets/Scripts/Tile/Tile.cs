@@ -17,7 +17,7 @@ public class Tile : MonoBehaviour {
         position = this.gameObject.GetComponent<TileLocation>();
         InitMovementTile();
         InitAttackTile();
-        InitOutline();
+        //InitOutline();
         ////// DEBUG CODE //////
         if (tileStats == null)
         {
