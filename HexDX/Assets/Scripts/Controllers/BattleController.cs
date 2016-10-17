@@ -48,6 +48,7 @@ public class BattleController : MonoBehaviour {
                 EndBattle();
             }
         } else if (!nextSceneLoaded && Input.GetMouseButtonDown(0)) {
+            GameManager.instance.UpdateArmyAfterBattle();
             nextSceneLoaded = true; // prevent skipping scenes by spam click
             LoadNextScene();
         }

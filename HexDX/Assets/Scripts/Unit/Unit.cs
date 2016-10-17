@@ -20,7 +20,7 @@ public class Unit : MonoBehaviour {
 
     private PlayerBattleController player;
     private AIBattleController ai;
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
     private AudioSource audioSource;
     private Animator animator;
     private Tile lastTile;
@@ -45,10 +45,7 @@ public class Unit : MonoBehaviour {
     public int Power { get { return unitStats.power + (currentTile ? currentTile.tileStats.powerModifier : 0); } }
     public int Resistance { get { return unitStats.resistance + (currentTile ? currentTile.tileStats.resistanceModifier : 0); } }
 
-    // Use this for initialization
-    void Start () {
-        player = GameObject.FindGameObjectWithTag("Map").GetComponent<BattleController>().player;
-        ai = GameObject.FindGameObjectWithTag("Map").GetComponent<BattleController>().ai;
+    void Awake() {
         unitStats = this.gameObject.GetComponent<UnitStats>();
         facingBonus = this.gameObject.GetComponent<UnitFacing>();
         sprites = this.gameObject.GetComponent<UnitSprites>();
@@ -76,7 +73,10 @@ public class Unit : MonoBehaviour {
             Debug.Log("Unit Needs SpriteRenderer to be defined -> Unit.cs");
         }
         ////////////////////////
+    }
 
+    // Use this for initialization
+    void Start () {
         MakeOpen();
     }
 
@@ -90,6 +90,11 @@ public class Unit : MonoBehaviour {
                 break;
         }
 
+    }
+
+    public void InitForBattle() {
+        player = GameObject.FindGameObjectWithTag("Map").GetComponent<BattleController>().player;
+        ai = GameObject.FindGameObjectWithTag("Map").GetComponent<BattleController>().ai;
     }
 
     private void Move() {
@@ -151,12 +156,14 @@ public class Unit : MonoBehaviour {
         }
     }
 
-    private void SetFacingSprites() {
+    public void SetFacingSprites() {
         int face = (facing + 1)%6;
         switch (phase) {
             case UnitTurn.Moving:
-                audioSource.clip = sounds.movement;
-                audioSource.Play();
+                if (audioSource != null) {
+                    audioSource.clip = sounds.movement;
+                    audioSource.Play();
+                }
                 if (face < 3) {
                     spriteRenderer.flipX = false;
                     spriteRenderer.sprite = sprites.walking[(facing+3)%3];
@@ -168,8 +175,10 @@ public class Unit : MonoBehaviour {
                 }
                 break;
             case UnitTurn.Attacking:
-                audioSource.clip = sounds.attacking;
-                audioSource.Play();
+                if (audioSource != null) {
+                    audioSource.clip = sounds.attacking;
+                    audioSource.Play();                    
+                }
                 if (face < 3) {
                     spriteRenderer.flipX = false;
                     spriteRenderer.sprite = sprites.attack[(facing + 3) % 3];
@@ -181,7 +190,9 @@ public class Unit : MonoBehaviour {
                 }
                 break;
             default:
-                audioSource.Pause();
+                if(audioSource != null) {
+                    audioSource.Pause();
+                }
                 if (face < 3) {
                     spriteRenderer.flipX = false;
                     spriteRenderer.sprite = sprites.idle[(facing + 3) % 3];
