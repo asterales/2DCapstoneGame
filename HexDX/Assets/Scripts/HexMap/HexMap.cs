@@ -82,7 +82,7 @@ public class HexMap : MonoBehaviour {
         {
             GameObject g = Instantiate(Resources.Load("Tiles/AttackableOutline")) as GameObject;
             g.transform.parent = atkTile.transform;
-            g.transform.localPosition = new Vector3(0, 0, -.0001f);
+            g.transform.localPosition = new Vector3(0, 0, .0001f);
             showingAttackOutlines.Push(g);
         }
         foreach (Tile mvtTile in mvtTiles)

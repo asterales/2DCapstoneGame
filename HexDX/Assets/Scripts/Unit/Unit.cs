@@ -287,6 +287,13 @@ public class Unit : MonoBehaviour {
         }
     }
 
+    public void Die()
+    {
+        this.gameObject.AddComponent<UnitDeath>();
+
+    }
+   
+
     public IEnumerator PerformAttack(Unit target) {
         if (target)
             StartCoroutine(DoAttack(target, 1.0f));
@@ -294,6 +301,7 @@ public class Unit : MonoBehaviour {
         yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
         if (target && target.Health > 0 && target.HasInAttackRange(this) && target.phase==UnitTurn.Open)
         {
+            Debug.Log(target.phase);
             spriteRenderer.color = Color.red;
             target.MakeAttacking();
             StartCoroutine(target.DoAttack(this, .8f));
@@ -336,7 +344,7 @@ public class Unit : MonoBehaviour {
                 target.scriptedMove.FinishEvent();
                 target.scriptedMove = null;
             }
-            Destroy(target.gameObject);
+            target.Die();
         }
         StartCoroutine(finishAttack());
     }
