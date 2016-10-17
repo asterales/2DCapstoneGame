@@ -88,10 +88,6 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Input.GetKeyDown(KeyCode.Escape)) {
-			// show a prompt instead next time;
-			ReturnToWorldMap();
-		}
 		if (fadeOutMusic != null && fadeDir == FadeDirection.Out) {
 			fadeOutMusic.volume = Mathf.Clamp01(fadeOutMusic.volume - (int)fadeDir * 1.5f * fadeSpeed * Time.deltaTime);
 		}

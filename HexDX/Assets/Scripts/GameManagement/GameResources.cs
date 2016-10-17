@@ -9,6 +9,7 @@ public static class GameResources {
     private static Dictionary<int, GameObject> tilePrefabs;
 
     public static readonly Vector3 visibilityOffset = new Vector3(0, 0, -0.01f);
+    public static readonly Vector3 hidingPosition = new Vector3(-1000, -1000, 0);
 
 	static GameResources() {
         LoadTileCache();

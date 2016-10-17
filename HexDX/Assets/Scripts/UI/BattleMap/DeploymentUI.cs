@@ -24,8 +24,10 @@ public class DeploymentUI : MonoBehaviour {
 	void Update() {
 		if (gameDialogueMgr == null || !gameDialogueMgr.IsVisible) {
 			phasePanel.SetActive(true);
+			startBattleButton.enabled = true;
 		} else {
 			phasePanel.SetActive(false);
+			startBattleButton.enabled = false;
 		}
 	}
 }

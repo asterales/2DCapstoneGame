@@ -29,7 +29,7 @@ public class TutorialController : PreBattleController {
         sr.sortingOrder = 2;
         Animator animator = selectionPromptObj.AddComponent<Animator>();
         animator.runtimeAnimatorController = animation;
-        selectionPromptObj.transform.position = new Vector3(-1000, -1000, 0);
+        selectionPromptObj.transform.position = GameResources.hidingPosition;
 	}
 
 	public static void ShowSelectionPrompt(Tile tile) {
@@ -37,7 +37,7 @@ public class TutorialController : PreBattleController {
 	}
 
 	public static void HideSelectionPrompt() {
-		selectionPromptObj.transform.position = new Vector3(-1000, -1000, 0);
+		selectionPromptObj.transform.position = GameResources.hidingPosition;
 	}
 
 	public static bool IsTargetTile(Tile tile){

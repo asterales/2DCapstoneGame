@@ -30,7 +30,7 @@ public class SelectionController : MonoBehaviour {
         sr.color = Color.black;
         Animator animator = selectedSpaceObj.AddComponent<Animator>();
         animator.runtimeAnimatorController = animation;
-        selectedSpaceObj.transform.position = new Vector3(-1000, -1000, 0);
+        selectedSpaceObj.transform.position = GameResources.hidingPosition;
     }
 
     private void InitTargetSpaceObj() {
@@ -41,7 +41,7 @@ public class SelectionController : MonoBehaviour {
         sr.color = Color.white;
         Animator animator = targetSpaceObj.AddComponent<Animator>();
         animator.runtimeAnimatorController = animation;
-        targetSpaceObj.transform.position = new Vector3(-1000, -1000, 0);
+        targetSpaceObj.transform.position = GameResources.hidingPosition;
     }
 
 
@@ -94,12 +94,12 @@ public class SelectionController : MonoBehaviour {
     }
 
     public static void HideSelection() {
-        selectedSpaceObj.transform.position = new Vector3(-1000, -1000, 0);
+        selectedSpaceObj.transform.position = GameResources.hidingPosition;
     }
 
     public static void HideTarget() {
         target = null;
-        targetSpaceObj.transform.position = new Vector3(-1000, -1000, 0);
+        targetSpaceObj.transform.position = GameResources.hidingPosition;
     }
 
     public static void ClearSelection() {
