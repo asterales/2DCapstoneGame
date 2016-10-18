@@ -69,7 +69,7 @@ public class PlayerBattleController : ArmyBattleController {
                 selectedUnit.MakeDone();
             }
             if (GUI.Button(new Rect(pos.x, pos.y + 2*itemHeight, itemWidth, itemHeight), " Undo", GetGUIStyle(true))) {
-                SelectionController.ResetLastTile(selectedUnit);
+                UnitState.RestoreStates();
                 SelectionController.selectedTile = selectedUnit.currentTile;
                 SelectionController.mode = SelectionMode.Open;
                 selectedUnit.MakeOpen();

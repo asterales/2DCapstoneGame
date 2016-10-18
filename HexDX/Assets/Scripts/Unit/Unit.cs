@@ -18,8 +18,8 @@ public class Unit : MonoBehaviour {
     public int veterancy;
     public MovementDifficulty mvtDifficulty;
 
-    private PlayerBattleController player;
-    private AIBattleController ai;
+    private static PlayerBattleController player;
+    private static AIBattleController ai;
     public SpriteRenderer spriteRenderer;
     private AudioSource audioSource;
     private Animator animator;
@@ -108,6 +108,8 @@ public class Unit : MonoBehaviour {
             if (transform.position != destination) {
                 transform.position = Vector3.MoveTowards(transform.position, destination, maxMovement);
             } else {
+                if (lastTile!=currentTile)
+                    CheckZonesOfControl();
                 if (path.Count == 1) {
                     SetTile(path.Dequeue());
                     // re-enable the players ability to select
@@ -125,7 +127,6 @@ public class Unit : MonoBehaviour {
                     facing = HexMap.GetNeighbors(lastTile).IndexOf(path.Peek());
                     SetFacingSprites();
                 }
-                CheckZonesOfControl();
             }
         }
     }
@@ -264,6 +265,19 @@ public class Unit : MonoBehaviour {
         SetFacingSprites();
     }
 
+    public void SetPhase(UnitTurn phase)
+    {
+        switch (phase) {
+            case UnitTurn.Attacking: MakeAttacking(); break;
+            case UnitTurn.Moving: MakeMoving(); break;
+            case UnitTurn.Open: MakeOpen(); break;
+            case UnitTurn.Done: MakeDone(); break;
+            case UnitTurn.ChoosingAction: MakeChoosingAction(); break;
+        }
+
+
+    }
+
     public void MakeMoving(ScriptedMove move = null) {
         phase = UnitTurn.Moving;
         scriptedMove = move;
@@ -329,21 +343,19 @@ public class Unit : MonoBehaviour {
         int healthStart = target.Health;
         int basedamage = (int)(Attack * (50.0f / (50.0f + (float)target.Defense)));
         int damage = basedamage;
-        string indicatorText = "";
-        if (target.facing == facing)
+        string indicatorText = "-" + (int)(basedamage * modifier); ;
+        if (target.phase != UnitTurn.Moving)
         {
-            damage = basedamage * 2;
-            indicatorText = "-" + (int)(basedamage * modifier) + "\nSneak!\n-" + (int)((damage - basedamage) * modifier);
-        }
-        else if (Mathf.Abs(target.facing - facing) == 1 || Mathf.Abs(target.facing - facing) == 5)
-        {
-            damage = basedamage * 3 / 2;
-            indicatorText = "-" + (int)(basedamage * modifier) + "\nFlank!\n-" + (int)((damage - basedamage) * modifier);
-        }
-        else
-        {
-            damage = basedamage;
-            indicatorText = "-" + (int)(basedamage * modifier);
+            if (target.facing == facing)
+            {
+                damage = basedamage * 2;
+                indicatorText = "-" + (int)(basedamage * modifier) + "\nSneak!\n-" + (int)((damage - basedamage) * modifier);
+            }
+            else if (Mathf.Abs(target.facing - facing) == 1 || Mathf.Abs(target.facing - facing) == 5)
+            {
+                damage = basedamage * 3 / 2;
+                indicatorText = "-" + (int)(basedamage * modifier) + "\nFlank!\n-" + (int)((damage - basedamage) * modifier);
+            }
         }
         target.Health -= (int)(damage * modifier);
         yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
@@ -351,8 +363,7 @@ public class Unit : MonoBehaviour {
         GameObject indicator = new GameObject();
         indicator.AddComponent<DamageIndicator>().SetDamage(indicatorText);
         indicator.transform.position = target.transform.position + new Vector3(-1f, 6f, 0f);
-        Image healthBar = target.transform.Find("HealthBar").GetComponent<Image>(); // Find() is expensive
-        healthBar.fillAmount = (float)target.Health / (float)target.MaxHealth;
+        target.DrawHealth();
         if (healthStart-(int)(damage*modifier)<=0)
         {
             if (target.scriptedMove != null)
@@ -362,6 +373,12 @@ public class Unit : MonoBehaviour {
             }
             target.Die();
         }
+    }
+
+    public void DrawHealth()
+    {
+        Image healthBar = this.transform.Find("HealthBar").GetComponent<Image>(); // Find() is expensive
+        healthBar.fillAmount = (float)Health / (float)MaxHealth;
     }
 
     public IEnumerator finishAttack()
@@ -442,5 +459,59 @@ public class Unit : MonoBehaviour {
         // to be implemented
         // i think this has already been implemented... future note: look at HasInAtackRange
         return 0;
+    }
+
+    public static void SaveAllStates()
+    {
+        UnitState.ClearStates();
+        foreach (Unit unit in ai.units)
+        {
+            UnitState.SaveState(unit);
+        }
+        foreach (Unit unit in player.units)
+        {
+            UnitState.SaveState(unit);
+        }
+    }
+}
+
+
+public class UnitState {
+    public UnitTurn phase;
+    public Tile tile;
+    public int facing;
+    public int health;
+    public static Dictionary<Unit, UnitState> savedStates = new Dictionary<Unit, UnitState>();
+    public UnitState(UnitTurn phase, Tile tile, int facing, int health)
+    {
+        this.phase = phase;
+        this.tile = tile;
+        this.facing = facing;
+        this.health = health;
+    }
+
+    public static void SaveState(Unit unit)
+    {
+        savedStates[unit] = new UnitState(unit.phase, unit.currentTile, unit.facing, unit.Health);
+    }
+
+    public static void RestoreStates()
+    {
+        foreach (Unit unit in savedStates.Keys)
+        {
+            if (unit)
+            {
+                unit.SetTile(savedStates[unit].tile);
+                unit.facing = savedStates[unit].facing;
+                unit.Health = savedStates[unit].health;
+                unit.SetPhase(savedStates[unit].phase);
+                unit.DrawHealth();
+            }
+        }
+    }
+
+    public static void ClearStates()
+    {
+        savedStates = new Dictionary<Unit, UnitState>();
     }
 }

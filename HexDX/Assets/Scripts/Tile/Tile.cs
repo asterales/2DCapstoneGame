@@ -66,6 +66,7 @@ public class Tile : MonoBehaviour {
             SelectionController.selectedUnit = currentUnit ? currentUnit : SelectionController.selectedUnit;
             if (currentUnit) {
                 //TO ADD: display stats
+                Unit.SaveAllStates();
                 if (currentUnit.IsPlayerUnit()) {
                     StatDisplay.DisplayPlayerUnit(currentUnit);
                     if (currentUnit.phase == UnitTurn.Open) {

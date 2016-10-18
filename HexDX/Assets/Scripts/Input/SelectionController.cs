@@ -7,7 +7,7 @@ public class SelectionController : MonoBehaviour {
     public static Unit selectedUnit;
     public static Tile selectedTile;
     public static Unit target;
-    private static Dictionary<Unit, Tile> lastTiles = new Dictionary<Unit, Tile>();
+    public static Dictionary<Unit, Tile> lastTiles = new Dictionary<Unit, Tile>();
     public static SelectionMode mode;
     private static GameObject selectedSpaceObj; // object for selected space
     private static GameObject targetSpaceObj; // object for target space
