@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public abstract class ArmyDisplay : MonoBehaviour {
 	public List<UnitDisplay> unitPanels;
+	public const int DEFAULT_FACING = 5;
 
 	protected virtual void Awake() {
 		unitPanels = new List<UnitDisplay>();
@@ -24,7 +25,7 @@ public abstract class ArmyDisplay : MonoBehaviour {
 		List<Unit> units = GetUnitsToDisplay();
 		for(int i = 0; i < units.Count; i++) {
 			Unit unit = units[i];
-			unit.facing = 0;
+			unit.facing = DEFAULT_FACING;
 			unit.phase = UnitTurn.Open;
 			unit.SetFacingSprites();
 			unitPanels[i].unit = unit;

@@ -4,15 +4,19 @@ using UnityEngine.EventSystems;
 
 public class UnitDisplayClickHandler : MonoBehaviour, IPointerClickHandler {
 	private UnitDisplay displayPanel;
-	public delegate void OnDoubleClick(UnitDisplay unitPanel);
-	public OnDoubleClick onDoubleClickCallback;
+	public delegate void OnClick(UnitDisplay unitPanel);
+	public OnClick onSingleClickCallback;
+	public OnClick onDoubleClickCallback;
 
 	void Awake() {
 		displayPanel = gameObject.GetComponent<UnitDisplay>();
 	}
 
 	public void OnPointerClick(PointerEventData eventData) {
-		if (eventData.clickCount == 2) {
+		if (eventData.clickCount == 1 && onSingleClickCallback != null) {
+			onSingleClickCallback(displayPanel);
+		}
+		if (eventData.clickCount == 2 && onDoubleClickCallback != null) {
 			onDoubleClickCallback(displayPanel);
 		}
 	}
