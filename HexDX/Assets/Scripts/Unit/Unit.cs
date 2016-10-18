@@ -162,6 +162,7 @@ public class Unit : MonoBehaviour {
         switch (phase) {
             case UnitTurn.Moving:
                 if (audioSource != null) {
+                    audioSource.Stop();
                     audioSource.clip = sounds.movement;
                     audioSource.Play();
                 }
@@ -177,6 +178,7 @@ public class Unit : MonoBehaviour {
                 break;
             case UnitTurn.Attacking:
                 if (audioSource != null) {
+                    audioSource.Stop();
                     audioSource.clip = sounds.attacking;
                     audioSource.Play();                    
                 }
@@ -358,6 +360,13 @@ public class Unit : MonoBehaviour {
             }
         }
         target.Health -= (int)(damage * modifier);
+        if (target.Health <= 0)
+        {
+            target.path = new Queue<Tile>();
+            target.lastTile = null;
+            target.MakeDone();
+            target.spriteRenderer.color = Color.white;
+        }
         yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
         StartCoroutine(finishAttack());
         GameObject indicator = new GameObject();
