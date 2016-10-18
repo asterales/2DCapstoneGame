@@ -22,6 +22,8 @@ public class RecruitListing : MonoBehaviour {
 	void Start() {
 		if (unitObj != null) {
 			unitPanel.unit = unitObj.GetComponent<Unit>();
+			unitPanel.unit.facing = GameManager.DISPLAY_FACING;
+			unitPanel.unit.SetFacingSprites();
 		}
 	}
 

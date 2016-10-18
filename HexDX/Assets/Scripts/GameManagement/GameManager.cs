@@ -4,6 +4,7 @@ using System.Collections;
 using System.Linq;
 
 public class GameManager : MonoBehaviour {
+	public const int DISPLAY_FACING = 5;
 	public const int ACTIVE_UNIT_LIMIT = 8;
 	public const int TOTAL_UNIT_LIMIT = 16;
 	public static GameManager instance; //singleton
