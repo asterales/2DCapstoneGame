@@ -50,6 +50,10 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	public List<Unit> GetInactiveUnits() {
+		return playerAllUnits.Where(u => !activeUnits.Contains(u)).ToList();
+	}
+
 	void Update() {
 		// For debugging
 		if (Input.GetKeyDown(KeyCode.Escape)) {

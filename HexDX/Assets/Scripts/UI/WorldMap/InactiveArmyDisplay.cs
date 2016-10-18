@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class InactiveArmyDisplay : ArmyDisplay {
-	private GameManager gm;
 
 	protected override void Start() {
-		gm = GameManager.instance;
 		base.Start();
 	}
 
@@ -16,7 +14,7 @@ public class InactiveArmyDisplay : ArmyDisplay {
 	}
 
 	protected override List<Unit> GetUnitsToDisplay() {
-		List<Unit> inactiveUnits = gm.playerAllUnits.Where(u => !gm.activeUnits.Contains(u)).ToList();
+		List<Unit> inactiveUnits = GameManager.instance.GetInactiveUnits();
 		inactiveUnits.ForEach(u => u.gameObject.SetActive(true));
 		return inactiveUnits;
 	}

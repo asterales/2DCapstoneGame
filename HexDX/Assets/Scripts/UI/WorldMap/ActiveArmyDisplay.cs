@@ -3,10 +3,8 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class ActiveArmyDisplay : ArmyDisplay {
-	private GameManager gm;
 
 	protected override void Start() {
-		gm = GameManager.instance;
 		base.Start();
 	}
 
@@ -15,6 +13,7 @@ public class ActiveArmyDisplay : ArmyDisplay {
 	}
 
 	protected override List<Unit> GetUnitsToDisplay() {
+		GameManager gm = GameManager.instance;
 		gm.ClearNullUnits();
 		return gm.activeUnits;
 	}

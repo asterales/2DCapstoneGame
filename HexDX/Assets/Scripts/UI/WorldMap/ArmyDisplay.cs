@@ -1,26 +1,26 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 using System.Collections.Generic;
 
 public abstract class ArmyDisplay : MonoBehaviour {
-	protected List<UnitDisplay> unitPanels;
+	public List<UnitDisplay> unitPanels;
 
 	protected virtual void Awake() {
-		GetUnitPanels();
+		unitPanels = new List<UnitDisplay>();
+		for(int i = 1; i <= DisplayLimit(); i++) {
+			unitPanels.Add(transform.Find("Unit Panel " + i).GetComponent<UnitDisplay>());
+		}	
 	}
 
 	protected virtual void Start() {
 		RefreshDisplay();
 	}
 
-	private void GetUnitPanels() {
-		unitPanels = new List<UnitDisplay>();
-		for(int i = 1; i <= DisplayLimit(); i++) {
-			unitPanels.Add(transform.Find("Unit Panel " + i).GetComponent<UnitDisplay>());
-		}
-	}
-
 	public void RefreshDisplay() {
+		foreach(UnitDisplay panel in unitPanels) {
+			panel.unit = null;
+		}
 		List<Unit> units = GetUnitsToDisplay();
 		for(int i = 0; i < units.Count; i++) {
 			Unit unit = units[i];
@@ -29,6 +29,10 @@ public abstract class ArmyDisplay : MonoBehaviour {
 			unit.SetFacingSprites();
 			unitPanels[i].unit = unit;
 		}
+	}
+
+	public UnitDisplay GetFirstEmptySlot() {
+		return unitPanels.FirstOrDefault(u => u.unit == null);
 	}
 
 	protected abstract int DisplayLimit();

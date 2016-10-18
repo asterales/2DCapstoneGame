@@ -1,8 +1,80 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine.EventSystems;
 
 public class UnitSelectionPanel : WorldMapPopupPanel {
+	private ActiveArmyDisplay activeUnitsDisplay;
+	public ActiveArmyDisplay worldMapActiveArmyDisplay;
+	private InactiveArmyDisplay inactiveUnitsDisplay;
+	private Button saveButton;
 
+	protected override void Awake() {
+		base.Awake();
+		InitSaveButton();
+		activeUnitsDisplay = transform.Find("Active Units").GetComponent<ActiveArmyDisplay>();
+		inactiveUnitsDisplay = transform.Find("Inactive Units").GetComponent<InactiveArmyDisplay>();
+	}
 
+	void Start() {
+		AddClickHandlerToPanels(activeUnitsDisplay);
+		AddClickHandlerToPanels(inactiveUnitsDisplay);
+	}
 
+	void Update() {
+		saveButton.interactable = activeUnitsDisplay.unitPanels.Where(p => p.unit != null).ToList().Count > 0;
+	}
+
+	private void AddClickHandlerToPanels(ArmyDisplay armyDisplay) {
+		foreach(UnitDisplay panel in armyDisplay.unitPanels) {
+			UnitDisplayClickHandler clickHandler = panel.gameObject.AddComponent<UnitDisplayClickHandler>();
+			clickHandler.onDoubleClickCallback = SwitchUnitToOtherArmy;
+		}
+	}
+
+	private void InitSaveButton() {
+		saveButton = transform.Find("Save Button").GetComponent<Button>();
+		saveButton.onClick.AddListener(ConfirmArmySelection);
+	}
+
+	private void ConfirmArmySelection() {
+		GameManager gm = GameManager.instance;
+		gm.activeUnits = activeUnitsDisplay.unitPanels.Where(p => p.unit != null).Select(p => p.unit).ToList();
+		RefreshDisplays();
+	}
+
+	public override void Show() {
+		base.Show();
+		RefreshDisplays();
+	}
+
+	public override void Hide() {
+		InactivateInactiveArmy();
+		base.Hide();
+	}
+
+	private void RefreshDisplays() {
+		worldMapActiveArmyDisplay.RefreshDisplay();
+		activeUnitsDisplay.RefreshDisplay();
+		inactiveUnitsDisplay.RefreshDisplay();
+	}
+
+	private void InactivateInactiveArmy() {
+		List<Unit> inactiveUnits = GameManager.instance.GetInactiveUnits();
+		inactiveUnits.ForEach(u => u.gameObject.SetActive(false));
+	}
+
+	public void SwitchUnitToOtherArmy(UnitDisplay unitPanel) {
+		UnitDisplay nextDisplayPanel;
+		if(activeUnitsDisplay.unitPanels.Contains(unitPanel)) {
+			nextDisplayPanel = inactiveUnitsDisplay.GetFirstEmptySlot();
+		} else {
+			nextDisplayPanel = activeUnitsDisplay.GetFirstEmptySlot();
+		}
+		if(nextDisplayPanel != null) {
+			nextDisplayPanel.unit = unitPanel.unit;
+			unitPanel.unit = null;
+		}
+	}
 }

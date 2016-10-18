@@ -13,11 +13,11 @@ public abstract class WorldMapPopupPanel : MonoBehaviour {
 		backButton.onClick.AddListener(Hide);
 	}
 
-	public void Hide() {
+	public virtual void Hide() {
 		gameObject.SetActive(false);
 	}
 
-	public void Show() {
+	public virtual void Show() {
 		gameObject.SetActive(true);
 	}
 }

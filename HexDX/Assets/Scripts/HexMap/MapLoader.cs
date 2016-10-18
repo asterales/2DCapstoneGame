@@ -28,9 +28,10 @@ public class MapLoader : MonoBehaviour {
             Debug.Log("Major Error :: Hex Map Needs Selection Controller");
         }
         ////////////////////////
+    }
 
-        if (battleMap != null && hexDimension != null)
-        {
+    void Start() {
+        if (battleMap != null && hexDimension != null) {
             LoadHexMap(csvMapFile);
         }
     }
