@@ -15,8 +15,7 @@ public class UnitDisplayClickHandler : MonoBehaviour, IPointerClickHandler {
 	public void OnPointerClick(PointerEventData eventData) {
 		if (eventData.clickCount == 1 && onSingleClickCallback != null) {
 			onSingleClickCallback(displayPanel);
-		}
-		if (eventData.clickCount == 2 && onDoubleClickCallback != null) {
+		}else if (eventData.clickCount == 2 && onDoubleClickCallback != null) {
 			onDoubleClickCallback(displayPanel);
 		}
 	}

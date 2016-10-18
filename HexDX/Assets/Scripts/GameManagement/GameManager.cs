@@ -25,14 +25,11 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private void InitUnitList() {
-		Unit[] allUnits = FindObjectsOfType(typeof(Unit)) as Unit[];
-		playerAllUnits = allUnits.Where(u => u.IsPlayerUnit()).ToList();
-		activeUnits = playerAllUnits.GetRange(0, ACTIVE_UNIT_LIMIT);
-		foreach(Unit unit in playerAllUnits) {
-			unit.transform.parent = gameObject.transform;
-			unit.transform.position = GameResources.hidingPosition;
-			unit.gameObject.SetActive(false);
+		playerAllUnits = new List<Unit>();
+		foreach(Unit childUnit in GetComponentsInChildren<Unit>()) {
+			AddNewPlayerUnit(childUnit);
 		}
+		activeUnits = playerAllUnits.GetRange(0, ACTIVE_UNIT_LIMIT);
 		activeUnits.ForEach(u => u.gameObject.SetActive(true));
 	}
 
@@ -52,6 +49,13 @@ public class GameManager : MonoBehaviour {
 
 	public List<Unit> GetInactiveUnits() {
 		return playerAllUnits.Where(u => !activeUnits.Contains(u)).ToList();
+	}
+
+	public void AddNewPlayerUnit(Unit unit) {
+		playerAllUnits.Add(unit);
+		unit.transform.parent = transform;
+		unit.transform.position = GameResources.hidingPosition;
+		unit.gameObject.SetActive(false);
 	}
 
 	void Update() {

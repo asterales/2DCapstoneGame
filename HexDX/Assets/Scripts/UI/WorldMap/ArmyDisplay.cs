@@ -8,10 +8,7 @@ public abstract class ArmyDisplay : MonoBehaviour {
 	public const int DEFAULT_FACING = 5;
 
 	protected virtual void Awake() {
-		unitPanels = new List<UnitDisplay>();
-		for(int i = 1; i <= DisplayLimit(); i++) {
-			unitPanels.Add(transform.Find("Unit Panel " + i).GetComponent<UnitDisplay>());
-		}	
+		unitPanels = GetComponentsInChildren<UnitDisplay>().ToList();
 	}
 
 	protected virtual void Start() {
