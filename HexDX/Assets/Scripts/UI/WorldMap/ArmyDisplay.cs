@@ -32,6 +32,5 @@ public abstract class ArmyDisplay : MonoBehaviour {
 		return unitPanels.FirstOrDefault(u => u.unit == null);
 	}
 
-	protected abstract int DisplayLimit();
 	protected abstract List<Unit> GetUnitsToDisplay();
 }

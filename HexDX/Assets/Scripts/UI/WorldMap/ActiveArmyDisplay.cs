@@ -8,10 +8,6 @@ public class ActiveArmyDisplay : ArmyDisplay {
 		base.Start();
 	}
 
-	protected override int DisplayLimit() {
-		return GameManager.ACTIVE_UNIT_LIMIT;
-	}
-
 	protected override List<Unit> GetUnitsToDisplay() {
 		GameManager gm = GameManager.instance;
 		gm.ClearNullUnits();
