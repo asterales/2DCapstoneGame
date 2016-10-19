@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class Unit : MonoBehaviour {    
     public Tile currentTile;
-    private UnitStats unitStats;
+    public UnitStats unitStats;
     public UnitSprites sprites;
     public List<Vector2> attackablePositions;
 

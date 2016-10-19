@@ -7,29 +7,31 @@ using UnityEngine.EventSystems;
 public class UnitSelectionPanel : WorldMapPopupPanel {
 	private ActiveArmyDisplay activeUnitsDisplay;
 	public ActiveArmyDisplay worldMapActiveArmyDisplay;
+	public UnitStatDisplay statDisplay;
 	private InactiveArmyDisplay inactiveUnitsDisplay;
 	private Button saveButton;
 
 	protected override void Awake() {
 		base.Awake();
 		InitSaveButton();
+		statDisplay = transform.Find("Stats Panel").GetComponent<UnitStatDisplay>();
 		activeUnitsDisplay = transform.Find("Active Units").GetComponent<ActiveArmyDisplay>();
 		inactiveUnitsDisplay = transform.Find("Inactive Units").GetComponent<InactiveArmyDisplay>();
 	}
 
 	void Start() {
-		AddClickHandlerToPanels(activeUnitsDisplay);
-		AddClickHandlerToPanels(inactiveUnitsDisplay);
+		AddMouseHandlerToPanels(activeUnitsDisplay);
+		AddMouseHandlerToPanels(inactiveUnitsDisplay);
 	}
 
 	void Update() {
 		saveButton.interactable = activeUnitsDisplay.unitPanels.Where(p => p.unit != null).ToList().Count > 0;
 	}
 
-	private void AddClickHandlerToPanels(ArmyDisplay armyDisplay) {
+	private void AddMouseHandlerToPanels(ArmyDisplay armyDisplay) {
 		foreach(UnitDisplay panel in armyDisplay.unitPanels) {
-			UnitDisplayClickHandler clickHandler = panel.gameObject.AddComponent<UnitDisplayClickHandler>();
-			clickHandler.onDoubleClickCallback = SwitchUnitToOtherArmy;
+			UnitSelectionMouseHandler mouseHandler = panel.gameObject.AddComponent<UnitSelectionMouseHandler>();
+			mouseHandler.selectionPanel = this;
 		}
 	}
 

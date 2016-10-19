@@ -5,6 +5,7 @@ using System.Linq;
 
 public class RecruitingPanel : WorldMapPopupPanel {
 	public List<RecruitListing> unitChoices;
+	private UnitStatDisplay statDisplay;
 	private Button recruitButton;
 	private Text recruitButtonText;
 	private Text fundsText;
@@ -13,6 +14,7 @@ public class RecruitingPanel : WorldMapPopupPanel {
 
 	protected override void Awake() {
 		base.Awake();
+		statDisplay = transform.Find("Stats Panel").GetComponent<UnitStatDisplay>();
 		unitChoices = GetComponentsInChildren<RecruitListing>().ToList();
 		fundsText = transform.Find("Funds").GetComponent<Text>();
 		descriptionText = transform.Find("Description").GetComponent<Text>();
@@ -26,19 +28,12 @@ public class RecruitingPanel : WorldMapPopupPanel {
 	}
 
 	void Start() {
-		AddClickHandlersToChoices();
+		RegisterClickCallbacks();
 	}
 
-	private void AddClickHandlersToChoices() {
+	private void RegisterClickCallbacks() {
 		foreach (RecruitListing listing in unitChoices) {
-			UnitDisplayClickHandler clickHandler = listing.gameObject.AddComponent<UnitDisplayClickHandler>();
-			clickHandler.onSingleClickCallback = DisplayUnitInfo;
-		}
-	}
-
-	private void DisplayUnitInfo(UnitDisplay unitPanel) {
-		if (unitPanel.unit) {
-			SetSelectedListing(unitPanel.GetComponent<RecruitListing>());
+			listing.onClickCallback = SetSelectedListing;
 		}
 	}
 
@@ -57,14 +52,23 @@ public class RecruitingPanel : WorldMapPopupPanel {
 	}
 
 	private void SetSelectedListing(RecruitListing listing) {
-		selectedListing = listing;
-		if (selectedListing) {
-			descriptionText.text = listing.unitPanel.unit.GetComponent<UnitStats>().className;
-			recruitButtonText.text = "Recruit (Cost: " + selectedListing.cost + ")";
-		} else {
-			descriptionText.text = "";
-			recruitButtonText.text = "Recruit";
+		if (selectedListing == null || selectedListing.unitPanel.unit) {
+			selectedListing = listing;
+			if (selectedListing) {
+				statDisplay.DisplayUnit(selectedListing.unitPanel.unit);
+				descriptionText.text = selectedListing.unitPanel.unit.unitStats.className + "\nCost: " + selectedListing.cost;
+				recruitButtonText.text = "Recruit (Cost: " + selectedListing.cost + ")";
+			} else {
+				statDisplay.ClearDisplay();
+				descriptionText.text = "";
+				recruitButtonText.text = "Recruit";
+			}
 		}
+	}
+
+	public override void Show() {
+		base.Show();
+		SetSelectedListing(null);
 	}
 
 	protected virtual void Update() {
