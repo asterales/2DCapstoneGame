@@ -57,6 +57,7 @@ public class LEUnitSettingsEditor : MonoBehaviour {
         {
             instanceStatEditors[i].TurnOn(currentSettings, currentInstance);
         }
+        directionEditor.TurnOn(instance);
         onCounter = 0;
     }
 
@@ -66,7 +67,8 @@ public class LEUnitSettingsEditor : MonoBehaviour {
         {
             settingsStatEditors[i].TurnOff();
         }
+        directionEditor.TurnOff();
         onCounter = 10;
-        selectionController.NullifyMode();
+        //selectionController.NullifyMode();
     }
 }

@@ -110,6 +110,8 @@ public class LEUnitInstance : MonoBehaviour {
         if (Input.GetMouseButtonDown(1))
         {
             //Debug.Log("Should Work");
+            selectionController.SetUnitType(this);
+            selectionController.unitEditor.TurnOff();
             selectionController.unitEditor.TurnOn(baseSettings, this);
         }
     }

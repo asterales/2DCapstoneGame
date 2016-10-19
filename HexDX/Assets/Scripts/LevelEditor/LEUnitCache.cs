@@ -99,6 +99,7 @@ public class LEUnitCache : MonoBehaviour
     private void ReadSpritesForUnit(LEUnitSettings unit, string[] files)
     {
         List<string> imageFiles = new List<string>();
+        Debug.Log("FILES:: " + files.Length);
         for (int i = 0; i < files.Length; i++)
         {
             if (files[i].Substring(files[i].Length - 4, 4) == ".png")
@@ -106,12 +107,12 @@ public class LEUnitCache : MonoBehaviour
                 imageFiles.Add(files[i]);
             }
         }
-
+        Debug.Log("IMAGE FILES:: " + imageFiles.Count);
         for (int i = 0; i < imageFiles.Count; i++)
         {
-            if (files[i].Substring(files[i].Length - 4, 4) == ".png")
+            if (imageFiles[i].Substring(imageFiles[i].Length - 4, 4) == ".png")
             {
-                string file = files[i].Remove(files[i].IndexOf('.'));
+                string file = imageFiles[i].Remove(imageFiles[i].IndexOf('.'));
                 Sprite sprite = Resources.Load<Sprite>(file);
                 unit.facingSprites.Add(sprite);
             }

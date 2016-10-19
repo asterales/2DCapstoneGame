@@ -35,8 +35,9 @@ public class LEDirectionEditor : MonoBehaviour {
         }
     }
 
-    public void TurnOn()
+    public void TurnOn(LEUnitInstance instance)
     {
+        currentInstance = instance;
         for (int i=0;i<directionButtons.Count;i++)
         {
             directionButtons[i].Activate();

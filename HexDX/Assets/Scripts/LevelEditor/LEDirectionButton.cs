@@ -13,6 +13,7 @@ public class LEDirectionButton : MonoBehaviour {
             Debug.Log("ERROR :: Sprite Renderer needs to be defined");
         }
         ////////////////////////
+        DeActivate();
 	}
 
     public void TurnOff()
@@ -28,13 +29,15 @@ public class LEDirectionButton : MonoBehaviour {
     public void Activate()
     {
         spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-        // move it
+        Vector3 pos = this.transform.localPosition;
+        this.transform.localPosition = new Vector3(pos.x, pos.y, 0.0f);
     }
 
     public void DeActivate()
     {
         spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-        // move it
+        Vector3 pos = this.transform.localPosition;
+        this.transform.localPosition = new Vector3(pos.x, pos.y, -10.0f);
     }
 
     void OnMouseDown()
