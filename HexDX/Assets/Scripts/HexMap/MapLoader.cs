@@ -163,7 +163,7 @@ public class MapLoader : MonoBehaviour {
             stats.className = type;
             ///////////////////////
             unit.SetTile(HexMap.mapArray[unitRow][unitCol]);
-            unit.facing = 0;
+            unit.facing = direction;
             unitObject.AddComponent<BasicUnitAI>();
         }
         Debug.Log("LoadedEnemies");
