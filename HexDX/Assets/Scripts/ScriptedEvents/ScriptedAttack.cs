@@ -5,7 +5,8 @@ public class ScriptedAttack : ScriptEvent {
     public Unit attacker;
     public Unit victim;
 
-	void Start () {
+	protected override void Start () {
+        base.Start();
 	    ////// DEBUG CODE //////
         if (attacker == null)
         {

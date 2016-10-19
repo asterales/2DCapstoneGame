@@ -6,7 +6,8 @@ public class ScriptedFace : ScriptEvent {
     public Unit unit;
     public int direction;
 
-	void Start () {
+	protected override void Start () {
+        base.Start();
 	    ////// DEBUG CODE //////
         if (unit == null)
         {

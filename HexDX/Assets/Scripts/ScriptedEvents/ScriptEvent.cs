@@ -17,7 +17,7 @@ public abstract class ScriptEvent : MonoBehaviour {
         ////////////////////////
 	}
 
-    void Start() {
+    protected virtual void Start() {
         isActive = false;
     }
 

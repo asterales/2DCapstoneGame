@@ -5,7 +5,8 @@ using System;
 public class ScriptedWait : ScriptEvent {
     public Unit unit;
 
-	void Start () {
+	protected override void Start () {
+        base.Start();
 	    ////// DEBUG CODE //////
         if (unit == null) {
             Debug.Log("ERROR :: Unit needs to be defined");
