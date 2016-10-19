@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using MovementEffects;
 using System.Linq;
 
 public class StationaryAI : UnitAI {
@@ -34,7 +35,7 @@ public class StationaryAI : UnitAI {
     		unit.MakeDone();
     	} else if (!attackStarted) {
             attackStarted = true;
-            StartCoroutine(unit.PerformAttack(currentEnemy));
+            Timing.RunCoroutine(unit.PerformAttack(currentEnemy));
             SelectionController.ShowTarget(currentEnemy); 
         }
     }

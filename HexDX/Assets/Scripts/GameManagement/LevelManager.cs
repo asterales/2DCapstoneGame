@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using MovementEffects;
 using System.Collections;
 
 /* 	Loads scenes that belongs to a level.
@@ -49,7 +50,7 @@ public class LevelManager : MonoBehaviour {
 		if (sceneNames.Count > 0) {
 			levelStarted = true;
 			currentScene = 0;
-			StartCoroutine(LoadScene(sceneNames[currentScene]));
+			Timing.RunCoroutine(LoadScene(sceneNames[currentScene]));
 		}
 	}
 
@@ -67,7 +68,7 @@ public class LevelManager : MonoBehaviour {
 		} else {
 			currentScene++;
 			if (currentScene < sceneNames.Count) {
-				StartCoroutine(LoadScene(sceneNames[currentScene]));
+				Timing.RunCoroutine(LoadScene(sceneNames[currentScene]));
 			} else {
 				Debug.Log("Level complete");
 				GameManager.instance.funds += monetaryReward;
@@ -80,7 +81,7 @@ public class LevelManager : MonoBehaviour {
 		if (activeInstance != null) {
 			//with fade effects
 			activeInstance.returnedToWorldMap = true;
-            activeInstance.StartCoroutine(activeInstance.LoadScene("WorldMap"));
+            Timing.RunCoroutine(activeInstance.LoadScene("WorldMap"));
         } else {
         	// no fade effect b/c no fade texture associate with an levelmanager object
 			SceneManager.LoadScene("WorldMap");
@@ -108,8 +109,8 @@ public class LevelManager : MonoBehaviour {
 		return fadeSpeed;
 	}
 
-	private IEnumerator LoadScene(string sceneName) {
-		yield return new WaitForSeconds(BeginFade(FadeDirection.Out));
+	private IEnumerator<float> LoadScene(string sceneName) {
+		yield return Timing.WaitForSeconds(BeginFade(FadeDirection.Out));
 		SceneManager.LoadScene(sceneName);
 		Debug.Log("Loaded scene");
 	}

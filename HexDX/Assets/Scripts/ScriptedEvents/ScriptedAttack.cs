@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using MovementEffects;
 
 public class ScriptedAttack : ScriptEvent {
     public Unit attacker;
@@ -23,7 +24,7 @@ public class ScriptedAttack : ScriptEvent {
         if(isActive && isPlayerEvent){
             if (SelectionController.target == victim && SelectionController.target) {
                 attacker.MakeAttacking();   
-                StartCoroutine(attacker.PerformAttack(victim));
+                Timing.RunCoroutine(attacker.PerformAttack(victim));
                 SelectionController.target = null;
                 TutorialController.targetTile = null;
             } else if (attacker.phase == UnitTurn.Done) {
@@ -41,7 +42,7 @@ public class ScriptedAttack : ScriptEvent {
     public override void DoEvent() {
         SelectionController.mode = SelectionMode.ScriptedAI;
         attacker.MakeAttacking();
-        StartCoroutine(attacker.PerformAttack(victim));
+        Timing.RunCoroutine(attacker.PerformAttack(victim));
         FinishEvent();
     }
 }

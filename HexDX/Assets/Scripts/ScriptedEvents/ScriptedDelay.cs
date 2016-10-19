@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using MovementEffects;
 using System;
 
 public class ScriptedDelay : ScriptEvent
@@ -7,17 +9,17 @@ public class ScriptedDelay : ScriptEvent
     public float seconds;
 
     public override void DoPlayerEvent() {
-        StartCoroutine(Delay());
+        Timing.RunCoroutine(Delay());
     }
 
     public override void DoEvent() {
-        StartCoroutine(Delay());
+        Timing.RunCoroutine(Delay());
     }
 
-    public IEnumerator Delay()
+    public IEnumerator<float> Delay()
     {
         SelectionController.mode = SelectionMode.ScriptedDelay;
-        yield return new WaitForSeconds(seconds);
+        yield return Timing.WaitForSeconds(seconds);
         FinishEvent();
     }
 }

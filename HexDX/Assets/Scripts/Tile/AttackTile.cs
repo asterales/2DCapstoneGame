@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using MovementEffects;
 
 public class AttackTile : MonoBehaviour {
     // to be implemented
@@ -30,7 +32,7 @@ public class AttackTile : MonoBehaviour {
                 }
                 if (Input.GetMouseButtonDown(1)){
                     SelectionController.target = null;
-                    StartCoroutine(SelectionController.selectedUnit.PerformAttack(tile.currentUnit));
+                    Timing.RunCoroutine(SelectionController.selectedUnit.PerformAttack(tile.currentUnit));
                     SelectionController.HideTarget();
                 }
             }

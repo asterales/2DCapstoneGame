@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using MovementEffects;
 using System.IO;
 using UnityEngine.UI;
 
@@ -9,7 +10,7 @@ using UnityEngine.UI;
 public abstract class DialogueManager : MonoBehaviour {
 	protected SpeakerUI activeSpeaker;
 	protected string currentLine;
-	protected IEnumerator currentSpeechRoutine;
+	protected IEnumerator<float> currentSpeechRoutine;
     protected int counter = 5; // used to avoid bug where text immediatly appears due to previous event click
 
 	protected virtual void Update() {
@@ -34,18 +35,18 @@ public abstract class DialogueManager : MonoBehaviour {
 		if (currentLine != null) {
             counter = 5;
 			currentSpeechRoutine = WriteDialogue();
-			StartCoroutine(currentSpeechRoutine);
+			Timing.RunCoroutine(currentSpeechRoutine);
 		}
 	}
 
-	protected IEnumerator WriteDialogue() {
+	protected IEnumerator<float> WriteDialogue() {
 		activeSpeaker.HideContinuePrompt();
 		activeSpeaker.DialogueText = "";
 		currentLine = currentLine.Trim();
         string[] words = currentLine.Split(' ');
 		foreach(string word in words) {
 			activeSpeaker.DialogueText += word + " ";
-			yield return new WaitForSeconds(0.02f);
+			yield return Timing.WaitForSeconds(0.02f);
 		}
 		activeSpeaker.DialogueText = activeSpeaker.DialogueText.Trim();
 	}

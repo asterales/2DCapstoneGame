@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using MovementEffects;
 using UnityEngine.UI;
 
 // this class represents a Unit and stores its data
@@ -140,7 +141,7 @@ public class Unit : MonoBehaviour {
                 if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health>0 && unit.Health>0)
                 {
                     unit.MakeAttacking();
-                    StartCoroutine(unit.DoAttack(this, 0.8f));
+                    Timing.RunCoroutine(unit.DoAttack(this, 0.8f));
                 }
             }
         }
@@ -151,7 +152,7 @@ public class Unit : MonoBehaviour {
                 if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health>0 && unit.Health>0)
                 {
                     unit.MakeAttacking();
-                    StartCoroutine(unit.DoAttack(this, 0.8f));
+                    Timing.RunCoroutine(unit.DoAttack(this, 0.8f));
                 }
             }
         }
@@ -324,22 +325,22 @@ public class Unit : MonoBehaviour {
     }
    
 
-    public IEnumerator PerformAttack(Unit target) {
+    public IEnumerator<float> PerformAttack(Unit target) {
         if (target && target.Health>0 && Health>0)
-            StartCoroutine(DoAttack(target, 1.0f));
+            Timing.RunCoroutine(DoAttack(target, 1.0f));
         //if (target && target.gameObject && target.HasInAttackRange(this))
-        yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
+        yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
         if (target && target.Health > 0 && target.HasInAttackRange(this) && target.phase==UnitTurn.Open && Health>0)
         {
             Debug.Log(target.phase);
             spriteRenderer.color = Color.red;
             target.MakeAttacking();
-            StartCoroutine(target.DoAttack(this, .8f));
+            Timing.RunCoroutine(target.DoAttack(this, .8f));
         }
 
     }
 
-    public IEnumerator DoAttack(Unit target, float modifier)
+    public IEnumerator<float> DoAttack(Unit target, float modifier)
     {
         SetFacingSprites();
         int healthStart = target.Health;
@@ -367,8 +368,8 @@ public class Unit : MonoBehaviour {
             target.MakeDone();
             target.spriteRenderer.color = Color.white;
         }
-        yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
-        StartCoroutine(finishAttack());
+        yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
+        Timing.RunCoroutine(finishAttack());
         GameObject indicator = new GameObject();
         indicator.AddComponent<DamageIndicator>().SetDamage(indicatorText);
         indicator.transform.position = target.transform.position + new Vector3(-1f, 6f, 0f);
@@ -390,9 +391,9 @@ public class Unit : MonoBehaviour {
         healthBar.fillAmount = (float)Health / (float)MaxHealth;
     }
 
-    public IEnumerator finishAttack()
+    public IEnumerator<float> finishAttack()
     {
-        yield return new WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
+        yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
         MakeDone();
     }
 

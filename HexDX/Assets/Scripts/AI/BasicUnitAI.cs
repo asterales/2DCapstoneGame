@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using MovementEffects;
 using System.Linq;
 
 public class BasicUnitAI : UnitAI {
@@ -38,7 +39,7 @@ public class BasicUnitAI : UnitAI {
             Unit enemy = GetEnemyInRange();
             if (enemy) {
                 attackStarted = true;
-                StartCoroutine(unit.PerformAttack(enemy));
+                Timing.RunCoroutine(unit.PerformAttack(enemy));
                 SelectionController.ShowTarget(enemy); 
             } else {
                 unit.MakeDone();
