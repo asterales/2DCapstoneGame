@@ -139,14 +139,11 @@ public class LESelectionController : MonoBehaviour {
 
     public void SetUnitMode()
     {
-        if (selectedUnit != null)
-        {
-            isTileMode = false;
-            isSettingsMode = false;
-            isInstanceMode = true;
-            isDepMode = false;
-            instanceButton.Select();
-        }
+        isTileMode = false;
+        isSettingsMode = false;
+        isInstanceMode = true;
+        isDepMode = false;
+        instanceButton.Select();
     }
 
     public void SetUnitSettingsMode()

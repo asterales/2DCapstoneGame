@@ -63,11 +63,11 @@ public class MapLoader : MonoBehaviour {
 
         if (isTutorial)
         {
-            AddUnitToTile(5, 5, scriptedAI.aiUnits[0], false, new Vector3(0, 1, 0));
+            AddUnitToTile(5, 5, scriptedAI.aiUnits[0], false, new Vector3(1, 0, 0));
             AddUnitToTile(10, 4, scriptedAI.aiUnits[1], false, new Vector3(0, 1, 0));
             AddUnitToTile(6, 6, scriptedAI.aiUnits[2], false, new Vector3(0, 1, 0));
-            AddUnitToTile(4, 2, scriptedAI.aiUnits[3], true, new Vector3(0, 1, 0));
-            AddUnitToTile(3, 3, scriptedAI.aiUnits[4], true, new Vector3(0, 1, 0));
+            AddUnitToTile(4, 2, scriptedAI.aiUnits[3], true, new Vector3(2f, -1f, 0));
+            AddUnitToTile(3, 3, scriptedAI.aiUnits[4], true, new Vector3(2f, -1f, 0));
         }
     }
 
@@ -144,6 +144,7 @@ public class MapLoader : MonoBehaviour {
             int defense = Convert.ToInt32(data[6]);
             int resist = Convert.ToInt32(data[7]);
             int move = Convert.ToInt32(data[8]);
+            int direction = Convert.ToInt32(data[12]);
             string type = data[data.Length - 1].Trim();
             GameObject unitObject = null;
             unitObject = Instantiate(Resources.Load("Units/" + type)) as GameObject;
@@ -162,7 +163,7 @@ public class MapLoader : MonoBehaviour {
             stats.className = type;
             ///////////////////////
             unit.SetTile(HexMap.mapArray[unitRow][unitCol]);
-            unit.SetFacing(new Vector3(0, 0, 0));
+            unit.facing = 0;
             unitObject.AddComponent<BasicUnitAI>();
         }
         Debug.Log("LoadedEnemies");
