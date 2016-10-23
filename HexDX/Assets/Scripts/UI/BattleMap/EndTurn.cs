@@ -24,9 +24,9 @@ public class EndTurn : MonoBehaviour {
         }
     }
 
-    void OnMouseHover()
+    void OnMouseOver()
     {
-        spriteRenderer.color = new Color(0.7f, 0.7f, 0.7f);
+        Camera.main.GetComponent<CameraController>().DontMove();
     }
 
     void OnMouseEnter()
