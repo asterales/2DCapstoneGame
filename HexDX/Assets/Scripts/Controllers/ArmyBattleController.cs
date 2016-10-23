@@ -13,7 +13,7 @@ public abstract class ArmyBattleController : MonoBehaviour {
 	}
 
 	protected virtual void Start() {
-		Debug.Log(this.GetType()+ "start");
+		//Debug.Log(this.GetType()+ "start");
 		InitUnitList();
 		units.ForEach(u => u.InitForBattle());
 	}
