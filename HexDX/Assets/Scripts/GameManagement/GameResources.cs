@@ -16,11 +16,13 @@ public static class GameResources {
 	}
 
     private static void LoadTileCache() {
+        Debug.Log("HI");
         tileSprites = new Dictionary<int, List<Sprite>>();
         tilePrefabs = new Dictionary<int, GameObject>();
         string[] tileIdLines = GetFileLines(tileSpriteDir + tileIdsFile);
         foreach(string line in tileIdLines) {
             string[] tokens = line.Split(',');
+            if (tokens.Length != 2) continue;
             int id = int.Parse(tokens[0]);
             string folderName = tokens[1];
             tileSprites[id] = Resources.LoadAll<Sprite>(tileSpriteDir + folderName).ToList();
@@ -34,7 +36,8 @@ public static class GameResources {
 
     public static GameObject InstantiateTile(int type, int variant) {
         GameObject obj = UnityEngine.Object.Instantiate<GameObject>(tilePrefabs[type]);
-        obj.GetComponent<SpriteRenderer>().sprite = GetTileSprite(type, variant);
+        if (type != 4)
+            obj.GetComponent<SpriteRenderer>().sprite = GetTileSprite(type, variant);
         return obj;
     }
 

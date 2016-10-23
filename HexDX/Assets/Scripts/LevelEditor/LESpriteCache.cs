@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
+using System;
 using System.IO;
 using System.Collections.Generic;
 
 public class LESpriteCache : MonoBehaviour {
+    private static readonly string tileIdsFile = "TileIds";
+    private static readonly string tileSpriteDir = "EditorSprites/Tiles/";
     public List<Sprite> sprites;
     public List<LESpriteVariantCache> variantCaches;
     public GameObject tileBar;
@@ -34,13 +37,19 @@ public class LESpriteCache : MonoBehaviour {
 
     private void LoadInVariantsForTiles()
     {
-        string path = "Assets\\Resources\\EditorSprites\\Tiles";
-        string[] directories = Directory.GetDirectories(path);
+        string path = "Assets/Resources/EditorSprites/Tiles";
 
-        for (int i=0;i<directories.Length;i++)
+        string[] tileIdLines = Resources.Load<TextAsset>("EditorSprites/Tiles/" + tileIdsFile).text.Split('\n');
+
+        for (int i=0; i< tileIdLines.Length; i++)
         {
+            string[] lines = tileIdLines[i].Split(',');
+            if (lines.Length != 2) continue;
+
+            int id = Convert.ToInt32(lines[0]);
+            string directory = lines[1];
             // get all of the files
-            string[] files = Directory.GetFiles(directories[i]);
+            string[] files = Directory.GetFiles(path + "/" + directory.Trim() + "/");
             // store all the sprites (ignore the meta files)
             string[] spriteFiles = new string[files.Length / 2];
             for(int j=0;j<files.Length;j+=2)
@@ -54,7 +63,7 @@ public class LESpriteCache : MonoBehaviour {
             variantCaches.Add(this.gameObject.AddComponent<LESpriteVariantCache>());
             // initialize the variant cache
             variantCaches[i].CreateCacheFromFiles(spriteFiles);
-            variantCaches[i].id = i;
+            variantCaches[i].id = id;
         }
     }
 }

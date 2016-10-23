@@ -16,7 +16,6 @@ public class LETileBar : MonoBehaviour {
             Debug.Log("TileBar needs a reference to the tile cache -> LETileBar.cs");
         }
         spriteVariants = tileCache.variantCaches;
-        //Debug.Log("Number Of Variants: " + spriteVariants.Count);
         ////////////////////////
         numberOfButtons = barButtons.Count;
         UpdateButtonsForIndex(0);
@@ -30,19 +29,19 @@ public class LETileBar : MonoBehaviour {
 
     public void MoveUp()
     {
-        if (currentIndex + numberOfButtons != spriteVariants.Count)
+        if (currentIndex > 0)
         {
-            currentIndex++;
-            UpdateButtonSprites();
+            currentIndex--;
+            UpdateButtonsForIndex(currentIndex);
         }
     }
 
     public void MoveDown()
     {
-        if (currentIndex > 0)
+        if (currentIndex + numberOfButtons != spriteVariants.Count)
         {
-            currentIndex--;
-            UpdateButtonSprites();
+            currentIndex++;
+            UpdateButtonsForIndex(currentIndex);
         }
     }
 

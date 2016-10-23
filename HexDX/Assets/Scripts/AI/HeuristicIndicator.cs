@@ -15,7 +15,7 @@ public class HeuristicIndicator : MonoBehaviour {
         textmesh.alignment = TextAlignment.Center;
         textmesh.anchor = TextAnchor.LowerCenter;
     }
-
+    
     public void SetHeuristic(float heuristic)
     {
         textmesh.text = "" + heuristic;
