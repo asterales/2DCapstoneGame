@@ -410,13 +410,15 @@ public class Unit : MonoBehaviour {
         int bound = HexMap.Cost(dest, currentTile);
         List<Tile> shortestPath = new List<Tile>();
         while (true) {
-            int t = Search(dest,currentTile, 0, bound, ref shortestPath);
+            List<Tile> exploredNodes = new List<Tile>();
+            int t = Search(dest,currentTile, 0, bound, ref shortestPath, ref exploredNodes);
             if (t == -1) {
                 shortestPath.Add(dest);
                 break;
             }
             if (t == int.MaxValue) { // wat
-                break;
+                Debug.Log("Impossible to reach");
+                return new List<Tile>();
             }
             bound = t;
             shortestPath = new List<Tile>();
@@ -426,7 +428,7 @@ public class Unit : MonoBehaviour {
         return shortestPath;
     }
 
-    private int Search(Tile node, Tile dest, int g, int bound, ref List<Tile> currentPath) {
+    private int Search(Tile node, Tile dest, int g, int bound, ref List<Tile> currentPath, ref List<Tile> exploredNodes) {
         int f = g + HexMap.Cost(node, dest);
         if (f > bound) {
             return f;
@@ -434,10 +436,11 @@ public class Unit : MonoBehaviour {
         if (node == dest) {
             return -1;
         }
+        exploredNodes.Add(node);
         int min = int.MaxValue;
         foreach (Tile neighbor in HexMap.GetNeighbors(node)) {
-            if (neighbor == dest || CanPathThrough(neighbor)) { // hack to allow bfs to terminate even if dest tile is not pathable
-                int t = Search(neighbor, dest, g + 1, bound, ref currentPath);
+            if (!exploredNodes.Contains(neighbor) && (neighbor == dest || CanPathThrough(neighbor))) { // hack to allow bfs to terminate even if dest tile is not pathable
+                int t = Search(neighbor, dest, g + 1, bound, ref currentPath, ref exploredNodes);
                 if (t == -1) {
                     currentPath.Add(neighbor);
                     return -1;

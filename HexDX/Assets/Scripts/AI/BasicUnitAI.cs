@@ -54,22 +54,35 @@ public class BasicUnitAI : UnitAI {
     }
 
     private Tile GetNextDestination(out Unit nextEnemy) {
-        List<Unit> enemiesByDistance = playerUnits.Where(p => p != null).OrderBy(p => unit.GetShortestPath(p.currentTile).Count).ToList();
+        List<Unit> remainingEnemies = playerUnits.Where(p => p != null).ToList();
         List<Tile> validDestinations = HexMap.GetMovementTiles(unit).Where(t => IsValidDestination(t)).ToList();
-        if (validDestinations.Count == 0 || enemiesByDistance.Count == 0){
+        if (validDestinations.Count == 0 || remainingEnemies.Count == 0){
             nextEnemy = null;
             return unit.currentTile;
-        } else {
-            int cost = HexMap.Cost(unit.currentTile, enemiesByDistance[0].currentTile);
-            int attackRange = 1; //hard coded attack range
-            if (cost < unit.MvtRange + attackRange) {
-                validDestinations = validDestinations.Where(t => HexMap.Cost(t, enemiesByDistance[0].currentTile) >= 1).ToList();
-            }
-            nextEnemy = enemiesByDistance[0];
-            return validDestinations.OrderBy(t => HexMap.Cost(t, enemiesByDistance[0].currentTile)).ToList()[0];
         }
+        // sort enemies by distance and determine next enemy to attack
+        List<Unit> enemiesByDistance = remainingEnemies.OrderBy(p => IdaStarDistance(p)).ToList();
+        if (IdaStarDistance(enemiesByDistance[0]) == int.MaxValue) {
+            // all enemies unreachable, readjust list so destination calculation below will use closest enemy instead
+            enemiesByDistance = remainingEnemies.OrderBy(p => HexMap.Cost(unit.currentTile, p.currentTile)).ToList();
+            nextEnemy = null;
+        } else {
+            nextEnemy = enemiesByDistance[0];
+        }
+
+        // determine the next destination to move to
+        int cost = HexMap.Cost(unit.currentTile, enemiesByDistance[0].currentTile);
+        int attackRange = 1; //hard coded attack range
+        if (cost < unit.MvtRange + attackRange) {
+            validDestinations = validDestinations.Where(t => HexMap.Cost(t, enemiesByDistance[0].currentTile) >= 1).ToList();
+        }
+        return validDestinations.OrderBy(t => HexMap.Cost(t, enemiesByDistance[0].currentTile)).ToList()[0];
     }
 
+    private int IdaStarDistance(Unit playerUnit) {
+        List<Tile> shortestPath = unit.GetShortestPath(playerUnit.currentTile);
+        return shortestPath.Count > 0 ? shortestPath.Count : int.MaxValue;  // empty list returned for impossible path
+    }
 
     private bool IsValidDestination(Tile tile) {
         return tile != null && tile.pathable && !tile.currentUnit;

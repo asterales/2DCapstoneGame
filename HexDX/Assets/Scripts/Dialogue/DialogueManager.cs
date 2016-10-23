@@ -60,7 +60,7 @@ public abstract class DialogueManager : MonoBehaviour {
 
 	protected void FinishSpeakerLines() {
 		if (currentSpeechRoutine != null) {
-			StopCoroutine(currentSpeechRoutine);
+			Timing.KillCoroutines(currentSpeechRoutine);
 		}
 		activeSpeaker.DialogueText = currentLine;
 	}
