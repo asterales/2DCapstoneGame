@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour {
     private float originalSize, xmin, xmax, ymin, ymax;
+    private Vector3 prev;
     // Use this for initialization
     void Start () {
         originalSize = Camera.main.orthographicSize;
@@ -17,6 +18,7 @@ public class CameraController : MonoBehaviour {
     
     // Update is called once per frame
     void Update () {
+        prev = transform.position;
         float newX, newY;
         newX = newY = 0;
         if (Input.GetKey(KeyCode.W) || Input.mousePosition.y > Screen.height * .9f) 
@@ -50,5 +52,10 @@ public class CameraController : MonoBehaviour {
             transform.localScale = new Vector3(1.0f, 1.0f, 1.0f) * (Camera.main.orthographicSize / originalSize);
         }
 
+    }
+
+    public void DontMove()
+    {
+        transform.position = prev;
     }
 }
