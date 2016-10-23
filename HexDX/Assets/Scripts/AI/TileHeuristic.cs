@@ -33,19 +33,19 @@ public class TileHeuristic : Heuristic
 
     private void CalculateStatBoost()
     {
-        // to be implemented
+        // return the stat boost of the tile
         statBoost = 0.0f;
     }
 
     private void CalculateEnemyDist()
     {
-        // to be implemented
+        // calculate distance to nearest enemy (1.0 if right next to ai 1.0 / dist otherwise)
         distToClosestEnemy = 0.0f;
     }
 
     private void CalculateObjectiveDist()
     {
-        // to be implemented
+        // calculate distance to nearest objective (1.0 if right next to ai 1.0 / dist otherwise)
         distToObjective = 0.0f;
     }
 

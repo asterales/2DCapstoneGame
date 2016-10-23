@@ -4,6 +4,7 @@
     public int chosenDirection;
     public Unit chosenUnit;
     public AttackHeuristic heuristic;
+    public float weight;
 
     public AttackOption()
     {
@@ -11,6 +12,7 @@
         chosenDirection = -1;
         chosenUnit = null;
         heuristic = null;
+        weight = 0.0f;
     }
 
     public AttackOption(Tile tile, Unit unit)
@@ -19,38 +21,16 @@
         chosenDirection = -1;
         chosenUnit = unit;
         heuristic = null;
+        weight = 0.0f;
     }
 
     public override void LoadOptionData()
     {
-        // to be implemented
+        heuristic.EvaluateData();
     }
 
-    public override void EvaluateOptionData()
+    public override void EvaluateOptionData(AIWeights weights)
     {
-        // to be implemented
+        weight = heuristic.CalculateHeuristic(weights);
     }
 }
-
-// Ignore below information. Currently refactoring
-
-/*public class AttackOption
-{
-    public Unit unit;
-    public int direction;
-    public int weight;
-
-    public AttackOption()
-    {
-        unit = null;
-        direction = -1;
-        weight = -1000000;
-    }
-
-    public AttackOption(Unit u, int w, int dir)
-    {
-        unit = u;
-        weight = w;
-        direction = dir;
-    }
-}*/

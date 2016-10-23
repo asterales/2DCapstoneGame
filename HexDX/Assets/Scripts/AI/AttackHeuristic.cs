@@ -30,6 +30,9 @@
 
     private void DecideAttackDirectionBonus()
     {
+        // check if sneak
+        // check if flank
+        // check if hit
         // to be implemented
         attackingDirect = false;
         attackingFlank = false;
@@ -38,6 +41,9 @@
 
     private void DecideAttackStates()
     {
+        // check if kills
+        // check if lower stats
+        // check if does more damage
         // to be implemented
         stateComparison = 0.0f;
         attackKills = false;

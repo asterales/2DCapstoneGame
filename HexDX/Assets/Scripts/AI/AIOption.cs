@@ -1,4 +1,4 @@
 ﻿public abstract class AIOption {
     public abstract void LoadOptionData();
-    public abstract void EvaluateOptionData();
+    public abstract void EvaluateOptionData(AIWeights weights);
 }

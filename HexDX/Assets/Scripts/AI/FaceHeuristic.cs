@@ -42,6 +42,10 @@ public class FaceHeuristic : Heuristic {
 
     private void CalculateAttackForUnit(Unit unit)
     {
+        // check if unit can hit you
+        // check if unit can flank you
+        // check if unit can sneak you
+        // check if they can kill
         // to be implemented
         if (false)
         {
@@ -54,6 +58,9 @@ public class FaceHeuristic : Heuristic {
     private void CalculateStateDifferencesForUnit(Unit unit)
     {
         // to be implemented
+        // if unit can hit you
+        // check if relatively stronger
+        // check if they have more health
         if (false)
         {
             stateComparisons += 1.0f;

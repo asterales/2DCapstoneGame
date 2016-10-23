@@ -7,6 +7,7 @@ public class FaceOption : AIOption
     public Tile chosenTile;
     public List<AttackOption> attackOptions;
     public FaceHeuristic heuristic;
+    public float weight;
 
     public FaceOption()
     {
@@ -24,39 +25,12 @@ public class FaceOption : AIOption
 
     public override void LoadOptionData()
     {
-        // to be implemented
+        heuristic.EvaluateData();
     }
 
-    public override void EvaluateOptionData()
+    public override void EvaluateOptionData(AIWeights weights)
     {
-        // to be implemented
+        weight = heuristic.CalculateHeuristic(weights);
     }
 }
 
-// Ignore implementation for now. Currently in the process of refactoring
-
-/*public class FaceOption
-{
-    public List<UnitFaceHeuristic> unitFaceHeuristics;
-    public int direction;
-    public int weight;
-
-    public FaceOption(int dir, int w)
-    {
-        unitFaceHeuristics = new List<UnitFaceHeuristic>();
-        direction = dir;
-        weight = w;
-    }
-
-    public void GetUnitFaceHeuristics(Tile tile, List<Unit> units)
-    {
-        for (int i = 0; i < units.Count; i++)
-        {
-            int result = units[i].CanReachTileAndAttack(tile, direction);
-            if (result > 0)
-            {
-                unitFaceHeuristics.Add(new UnitFaceHeuristic(units[i], result));
-            }
-        }
-    }
-}*/

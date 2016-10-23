@@ -39,7 +39,7 @@ public class HeuristicAI : UnitAI
     {
         for (int i=0;i<tileOptions.Count;i++)
         {
-            tileOptions[i].EvaluateOptionData();
+            tileOptions[i].EvaluateOptionData(weightFunction);
         }
     }
 
