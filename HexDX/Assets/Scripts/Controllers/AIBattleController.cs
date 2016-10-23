@@ -57,6 +57,11 @@ public class AIBattleController : ArmyBattleController {
         }
     }
 
+    public Unit GetUnit()
+    {
+        return units[currentUnitIndex];
+    }
+
     private void ResetUnit() {
         //Debug.Log ("Resetting "+ currentUnitIndex);
         SelectionController.HideTarget();

@@ -19,14 +19,14 @@ public class Unit : MonoBehaviour {
     public int veterancy;
     public MovementDifficulty mvtDifficulty;
 
-    private static PlayerBattleController player;
-    private static AIBattleController ai;
+    public static PlayerBattleController player;
+    public static AIBattleController ai;
     public SpriteRenderer spriteRenderer;
     private AudioSource audioSource;
     private Animator animator;
     private Tile lastTile;
     private int type; // we may want to represent types by something else
-    private readonly float maxMovement = 0.2f;
+    private readonly float maxMovement = 0.13f;
     private UnitFacing facingBonus;
     private UnitSounds sounds;
     private static bool attackLock = false;

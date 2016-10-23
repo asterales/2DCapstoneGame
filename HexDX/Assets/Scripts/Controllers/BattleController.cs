@@ -16,7 +16,7 @@ public class BattleController : MonoBehaviour {
     
     public EndBattleBanner endBanner;
 
-    public bool IsPlayerTurn { get; private set; }
+    public static bool IsPlayerTurn { get; private set; }
     public bool BattleIsDone { get; private set; }
 
     void Awake () {
