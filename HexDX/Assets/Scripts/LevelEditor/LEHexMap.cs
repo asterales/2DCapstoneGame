@@ -79,7 +79,7 @@ public class LEHexMap : MonoBehaviour {
         location.col = col;
         location.row = row;
         // box collider initial settings (temp values)
-        newTile.GetComponent<BoxCollider2D>().size = new Vector2(8f, 5f);
+        newTile.GetComponent<BoxCollider2D>().size = new Vector2(3.1f, 2f);
         newTile.GetComponent<LETile>().spriteCache = spriteCache;
         newTile.GetComponent<LETile>().unitCache = unitCache;
         newTile.GetComponent<LETile>().depCache = depCache;
