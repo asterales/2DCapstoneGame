@@ -58,12 +58,12 @@ public class AIBattleController : ArmyBattleController {
     }
 
     private void ResetUnit() {
-        Debug.Log ("Resetting "+ currentUnitIndex);
+        //Debug.Log ("Resetting "+ currentUnitIndex);
         SelectionController.HideTarget();
     }
 
     public override void StartTurn() {
-        Debug.Log("number of units" + units.Count);
+        //Debug.Log("number of units" + units.Count);
         currentUnitIndex = 0;
         SelectionController.mode = SelectionMode.AITurn;
         base.StartTurn();

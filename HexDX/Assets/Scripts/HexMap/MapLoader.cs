@@ -132,7 +132,7 @@ public class MapLoader : MonoBehaviour {
     }
 
     private void LoadEnemyUnits(string[] mapCvsLines, int startLineIndex, int numUnits) {
-        Debug.Log("Number Of Units :: " + numUnits);
+        //Debug.Log("Number Of Units :: " + numUnits);
         for (int i = 0; i < numUnits; i++) {
             string[] data = mapCvsLines[startLineIndex + i].Split(',');
             int unitRow = Convert.ToInt32(data[0]);
@@ -153,7 +153,7 @@ public class MapLoader : MonoBehaviour {
             UnitStats stats = unitObject.GetComponent<UnitStats>();
             stats.maxHealth = health;
             stats.health = health;
-            Debug.Log("Health: " + stats.health);
+            //Debug.Log("Health: " + stats.health);
             stats.veterency = veterency;
             stats.attack = attack;
             stats.power = power;
@@ -166,11 +166,11 @@ public class MapLoader : MonoBehaviour {
             unit.facing = direction;
             unitObject.AddComponent<BasicUnitAI>();
         }
-        Debug.Log("LoadedEnemies");
+        //Debug.Log("LoadedEnemies");
     }
 
     private void LoadDeploymentZone(string[] mapCvsLines, int startLineIndex, int numDep) {
-        Debug.Log("Number Of Deployment Zones :: " + numDep);
+        //Debug.Log("Number Of Deployment Zones :: " + numDep);
         DeploymentController deployController = FindObjectOfType(typeof(DeploymentController)) as DeploymentController;
         if (deployController != null && deployController.enabled) {
             for (int i = 0; i < numDep; i++) {
