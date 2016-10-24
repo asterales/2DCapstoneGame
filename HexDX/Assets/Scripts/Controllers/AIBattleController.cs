@@ -57,9 +57,8 @@ public class AIBattleController : ArmyBattleController {
         }
     }
 
-    public Unit GetUnit()
-    {
-        return units[currentUnitIndex];
+    public Unit GetUnit() {
+        return currentUnitIndex < units.Count ? units[currentUnitIndex] :  null;
     }
 
     private void ResetUnit() {

@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class TutorialController : PreBattleController {
 	public Sprite selectionSprite;
 	public RuntimeAnimatorController animation;
+	public ScriptedAIBattleController scriptedAI;
 
 	public static Tile targetTile;
 	public static ScriptList eventsList;
@@ -76,6 +78,8 @@ public class TutorialController : PreBattleController {
 		eventsList.dialogueMgr.HideGUI();
 		HideSelectionPrompt();
 		targetTile = null;
+		player.units = scriptedAI.aiUnits.Where(p => p != null && p.IsPlayerUnit()).ToList();
+		UnitAI.playerUnits = player.units;
 		base.EndPreBattlePhase();
 	}
 }

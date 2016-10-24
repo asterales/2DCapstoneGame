@@ -85,6 +85,7 @@ public class BattleController : MonoBehaviour {
     }
 
     private void LoadNextScene() {
+        LevelManager.SetVictory(victoryCondition.Achieved());
         if (victoryCondition.Achieved()) {
             LevelManager.LoadNextScene();
         } else if (player.IsAnnihilated()) {

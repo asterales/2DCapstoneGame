@@ -8,20 +8,33 @@ public class Territory : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
     public List<Territory> neighbors;
     public LevelManager lm;
     public bool captured;
+    public bool active;
+
+    private static readonly Color hoverColor = Color.white;
+    private static readonly Color activeColor = new Color(0.8f, 0.8f, 0.8f);
+    private static readonly Color inactiveColor = new Color(0.5f, 0.5f, 0.5f);
 
     public void Start() {
-        this.GetComponent<SpriteRenderer>().color = new Color(0.8f, 0.8f, 0.8f);
+        SetDefaultColor();
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
-        this.GetComponent<SpriteRenderer>().color = Color.white;
+        if (active) {
+            this.GetComponent<SpriteRenderer>().color = hoverColor;
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        this.GetComponent<SpriteRenderer>().color = new Color(0.8f, 0.8f, 0.8f);
+        SetDefaultColor();
+    }
+
+    private void SetDefaultColor() {
+        this.GetComponent<SpriteRenderer>().color = active ? activeColor : inactiveColor;
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        lm.StartLevel();
+        if (active) {
+            lm.StartLevel();
+        }
     }
 }

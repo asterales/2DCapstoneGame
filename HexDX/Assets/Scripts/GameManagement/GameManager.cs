@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour {
 	public static GameManager instance; //singleton
 
 	// public for debugging in editor
+	public List<int> defeatedLevelIds;
 	public List<Unit> playerAllUnits;
 	public List<Unit> activeUnits;
 	public int funds; 
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour {
 			unit.transform.parent = gameObject.transform;
 			unit.transform.position = GameResources.hidingPosition;
 			unit.Health = unit.MaxHealth;
+			unit.phase = UnitTurn.Open;
 		}
 	}
 

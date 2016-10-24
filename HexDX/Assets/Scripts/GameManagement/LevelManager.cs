@@ -11,8 +11,11 @@ using System.Collections;
 
 public class LevelManager : MonoBehaviour {
 	// Level scene management
+	public int levelId;
 	public List<string> sceneNames;
 	public int monetaryReward;
+
+	private bool levelDefeated;
 	private int currentScene;
 	private bool levelStarted;
 	private bool returnedToWorldMap;
@@ -28,6 +31,7 @@ public class LevelManager : MonoBehaviour {
 	private AudioSource fadeOutMusic;
 
 	void Awake() {
+		levelDefeated = false;
 		SceneManager.sceneLoaded += FadeIn;
 	}
 
@@ -42,6 +46,13 @@ public class LevelManager : MonoBehaviour {
         } else {
             Debug.Log("No active level loader set");
         } 
+	}
+
+	public static void SetVictory(bool victory) {
+		if (activeInstance != null) {
+			activeInstance.levelDefeated = victory;
+			GameManager.instance.defeatedLevelIds.Add(activeInstance.levelId);
+		}
 	}
 
 	// for binding to onclick() event trigger
@@ -70,8 +81,6 @@ public class LevelManager : MonoBehaviour {
 			if (currentScene < sceneNames.Count) {
 				Timing.RunCoroutine(LoadScene(sceneNames[currentScene]));
 			} else {
-				Debug.Log("Level complete");
-				GameManager.instance.funds += monetaryReward;
 				ReturnToWorldMap();
 			}
 		}
@@ -119,6 +128,9 @@ public class LevelManager : MonoBehaviour {
 	private void FadeIn(Scene scene, LoadSceneMode mode) {
 		BeginFade(FadeDirection.In);
 		if (returnedToWorldMap) {
+			if (levelDefeated) {
+				GameManager.instance.funds += monetaryReward;
+			}
 			Destroy(gameObject);
 		}
 	}
