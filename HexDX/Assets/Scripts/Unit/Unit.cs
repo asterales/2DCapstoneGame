@@ -15,9 +15,6 @@ public class Unit : MonoBehaviour {
     private Queue<Tile> path;
     public UnitTurn phase;
     public int facing;
-    public int experience;
-    public int veterancy;
-    public MovementDifficulty mvtDifficulty;
 
     public static PlayerBattleController player;
     public static AIBattleController ai;
@@ -31,6 +28,7 @@ public class Unit : MonoBehaviour {
     private UnitSounds sounds;
     private static bool attackLock = false;
 
+    private Image v1, v2, v3, v4, v5;
     // temporary storage for scripted stuff
     ScriptedMove scriptedMove;
 
@@ -40,6 +38,16 @@ public class Unit : MonoBehaviour {
     public int Health {
         get { return unitStats.health; }
         set { unitStats.health = value; }
+    }
+    public int Experience
+    {
+        get { return unitStats.experience; }
+        set { unitStats.experience = value; }
+    }
+    public int Veterancy
+    {
+        get { return unitStats.veterancy; }
+        set { unitStats.veterancy = value; }
     }
     public int Attack { get { return unitStats.attack + (currentTile ? currentTile.tileStats.attackModifier : 0); } }
     public int Defense { get { return unitStats.defense + (currentTile ? currentTile.tileStats.defenseModifier : 0); } }
@@ -53,6 +61,21 @@ public class Unit : MonoBehaviour {
         sounds = this.gameObject.GetComponent<UnitSounds>();
         audioSource = this.gameObject.GetComponent<AudioSource>();
         path = new Queue<Tile>();
+
+        //veterancy images
+        try
+        {
+            v1 = this.transform.GetChild(2).GetChild(0).GetComponent<Image>();
+            v2 = this.transform.GetChild(2).GetChild(1).GetComponent<Image>();
+            v3 = this.transform.GetChild(2).GetChild(2).GetComponent<Image>();
+            v4 = this.transform.GetChild(2).GetChild(3).GetComponent<Image>();
+            v5 = this.transform.GetChild(2).GetChild(4).GetComponent<Image>();
+            DrawVeterancy();
+        } catch (UnityException e)
+        {
+            Debug.Log(e.StackTrace);
+        }
+
         facing = 0;
 
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
@@ -75,6 +98,8 @@ public class Unit : MonoBehaviour {
         }
         ////////////////////////
     }
+
+    
 
     // Use this for initialization
     void Start () {
@@ -210,6 +235,125 @@ public class Unit : MonoBehaviour {
         }
     }
 
+
+    public void AddExp(int exp)
+    {
+        if (Veterancy < 3)
+        {
+            Experience += exp;
+            if (Experience > (Veterancy + 1) * 100)
+            {
+                Experience = Experience%((Veterancy+1)*100);
+                Veterancy += 1;
+                LevelUp();
+            }
+        }
+        DrawVeterancy();
+    }
+    public void DrawVeterancy()
+    {
+        SpriteRenderer b1, b2, b3, b4, b5;
+        b1 = v1.gameObject.GetComponent<SpriteRenderer>();
+        b2 = v2.gameObject.GetComponent<SpriteRenderer>();
+        b3 = v3.gameObject.GetComponent<SpriteRenderer>();
+        b4 = v4.gameObject.GetComponent<SpriteRenderer>();
+        b5 = v5.gameObject.GetComponent<SpriteRenderer>();
+        if (IsPlayerUnit())
+        {
+            switch (Veterancy)
+            {
+                case 0:
+                    v1.fillAmount = (float)Experience / 100.0f;
+                    v2.fillAmount = 0;
+                    v3.fillAmount = 0;
+                    v4.fillAmount = 0;
+                    v5.fillAmount = 0;
+                    b1.color = Color.white;
+                    b2.color = Color.clear;
+                    b3.color = Color.clear;
+                    b4.color = Color.clear;
+                    b5.color = Color.clear;
+                    break;
+                case 1:
+                    v1.fillAmount = 0;
+                    v2.fillAmount = 0;
+                    v3.fillAmount = 0;
+                    v4.fillAmount = 1;
+                    v5.fillAmount = (float)Experience / 200.0f;
+                    b1.color = Color.clear;
+                    b2.color = Color.clear;
+                    b3.color = Color.clear;
+                    b4.color = Color.white;
+                    b5.color = Color.white;
+                    break;
+                case 2:
+                    v1.fillAmount = 1;
+                    v2.fillAmount = 1;
+                    v3.fillAmount = (float)Experience / 300.0f;
+                    v4.fillAmount = 0;
+                    v5.fillAmount = 0;
+                    b1.color = Color.white;
+                    b2.color = Color.white;
+                    b3.color = Color.white;
+                    b4.color = Color.clear;
+                    b5.color = Color.clear;
+                    break;
+                default:
+                    v1.fillAmount = 1;
+                    v2.fillAmount = 1;
+                    v3.fillAmount = 1;
+                    v4.fillAmount = 0;
+                    v5.fillAmount = 0;
+                    b1.color = Color.white;
+                    b2.color = Color.white;
+                    b3.color = Color.white;
+                    b4.color = Color.clear;
+                    b5.color = Color.clear;
+                    break;
+            }
+        }
+        else
+        {
+            switch (Veterancy)
+            {
+                case 0:
+                    v1.fillAmount = 0;
+                    v2.fillAmount = 0;
+                    v3.fillAmount = 0;
+                    v4.fillAmount = 0;
+                    v5.fillAmount = 0;
+                    break;
+                case 1:
+                    v1.fillAmount = 1;
+                    v2.fillAmount = 0;
+                    v3.fillAmount = 0;
+                    v4.fillAmount = 0;
+                    v5.fillAmount = 0;
+                    break;
+                case 2:
+                    v1.fillAmount = 0;
+                    v2.fillAmount = 0;
+                    v3.fillAmount = 0;
+                    v4.fillAmount = 1;
+                    v5.fillAmount = 1;
+                    break;
+                default:
+                    v1.fillAmount = 1;
+                    v2.fillAmount = 1;
+                    v3.fillAmount = 1;
+                    v4.fillAmount = 0;
+                    v5.fillAmount = 0;
+                    break;
+            }
+            b1.color = Color.clear;
+            b2.color = Color.clear;
+            b3.color = Color.clear;
+            b4.color = Color.clear;
+            b5.color = Color.clear;
+
+        }
+    }
+
     private void Face() {
         SetFacingSprites();
         HexMap.ShowAttackTiles(this);
@@ -324,6 +468,25 @@ public class Unit : MonoBehaviour {
 
     }
    
+    public void LevelUp()
+    {
+        unitStats.attack = (int)(Attack * 1.3f);
+        unitStats.defense = (int)(Defense * 1.3f);
+        unitStats.power = (int)(Power * 1.3f);
+        unitStats.resistance = (int)(Resistance * 1.3f);
+        unitStats.health += (int)(MaxHealth * 0.3f);
+        unitStats.maxHealth = (int)(MaxHealth* 1.3f);
+    }
+
+    public void LevelDown()
+    {
+        unitStats.attack = (int)(Attack / 1.3f);
+        unitStats.defense = (int)(Defense / 1.3f);
+        unitStats.power = (int)(Power / 1.3f);
+        unitStats.resistance = (int)(Resistance / 1.3f);
+        unitStats.maxHealth = (int)(MaxHealth / 1.3f);
+        unitStats.health -= (int)(MaxHealth * 0.3f);
+    }
 
     public IEnumerator<float> PerformAttack(Unit target) {
         if (target && target.Health>0 && Health>0)
@@ -368,11 +531,20 @@ public class Unit : MonoBehaviour {
             target.MakeDone();
             target.spriteRenderer.color = Color.white;
         }
+
+        if (IsPlayerUnit())
+        {
+            AddExp((int)(damage * modifier));
+        }
+        else
+        {
+            target.AddExp((int)(0.5f*damage * modifier));
+        }
         yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
         Timing.RunCoroutine(finishAttack());
         GameObject indicator = new GameObject();
         indicator.AddComponent<DamageIndicator>().SetDamage(indicatorText);
-        indicator.transform.position = target.transform.position + new Vector3(-1f, 6f, 0f);
+        indicator.transform.position = target.transform.position + new Vector3(-0.5f, 3f, 0f);
         target.DrawHealth();
         if (healthStart-(int)(damage*modifier)<=0)
         {
@@ -494,18 +666,22 @@ public class UnitState {
     public Tile tile;
     public int facing;
     public int health;
+    public int experience;
+    public int veterancy;
     public static Dictionary<Unit, UnitState> savedStates = new Dictionary<Unit, UnitState>();
-    public UnitState(UnitTurn phase, Tile tile, int facing, int health)
+    public UnitState(UnitTurn phase, Tile tile, int facing, int health, int experience, int veterancy)
     {
         this.phase = phase;
         this.tile = tile;
         this.facing = facing;
         this.health = health;
+        this.experience = experience;
+        this.veterancy = veterancy;
     }
 
     public static void SaveState(Unit unit)
     {
-        savedStates[unit] = new UnitState(unit.phase, unit.currentTile, unit.facing, unit.Health);
+        savedStates[unit] = new UnitState(unit.phase, unit.currentTile, unit.facing, unit.Health, unit.Experience, unit.Veterancy);
     }
 
     public static void RestoreStates()
@@ -514,11 +690,17 @@ public class UnitState {
         {
             if (unit)
             {
+                if (unit.Veterancy > savedStates[unit].veterancy)
+                    unit.LevelDown();
                 unit.SetTile(savedStates[unit].tile);
                 unit.facing = savedStates[unit].facing;
                 unit.Health = savedStates[unit].health;
+                unit.Experience = savedStates[unit].experience;
+                unit.Veterancy = savedStates[unit].veterancy;
+                unit.Health = savedStates[unit].health;
                 unit.SetPhase(savedStates[unit].phase);
                 unit.DrawHealth();
+                unit.DrawVeterancy();
             }
         }
     }

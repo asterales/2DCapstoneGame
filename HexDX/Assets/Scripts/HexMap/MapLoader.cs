@@ -137,7 +137,7 @@ public class MapLoader : MonoBehaviour {
             string[] data = mapCvsLines[startLineIndex + i].Split(',');
             int unitRow = Convert.ToInt32(data[0]);
             int unitCol = Convert.ToInt32(data[1]);
-            int veterency = Convert.ToInt32(data[2]);
+            int veterancy = Convert.ToInt32(data[2]);
             int health = Convert.ToInt32(data[3]);
             int attack = Convert.ToInt32(data[4]);
             int power = Convert.ToInt32(data[5]);
@@ -154,7 +154,7 @@ public class MapLoader : MonoBehaviour {
             stats.maxHealth = health;
             stats.health = health;
             //Debug.Log("Health: " + stats.health);
-            stats.veterency = veterency;
+            stats.veterancy = veterancy;
             stats.attack = attack;
             stats.power = power;
             stats.defense = defense;
