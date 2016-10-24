@@ -476,6 +476,7 @@ public class Unit : MonoBehaviour {
         unitStats.resistance = (int)(Resistance * 1.3f);
         unitStats.health += (int)(MaxHealth * 0.3f);
         unitStats.maxHealth = (int)(MaxHealth* 1.3f);
+        DrawHealth();
     }
 
     public void LevelDown()

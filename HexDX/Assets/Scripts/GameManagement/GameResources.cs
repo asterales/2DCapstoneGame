@@ -38,6 +38,10 @@ public static class GameResources {
         GameObject obj = UnityEngine.Object.Instantiate<GameObject>(tilePrefabs[type]);
         if (type != 4)
             obj.GetComponent<SpriteRenderer>().sprite = GetTileSprite(type, variant);
+        if (obj.GetComponent<Tile>().animations.Count > 0)
+        {
+            obj.GetComponent<Animator>().runtimeAnimatorController = obj.GetComponent<Tile>().animations[variant];
+        }
         return obj;
     }
 

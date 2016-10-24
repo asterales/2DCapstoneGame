@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
+using MovementEffects;
 
 public class MapLoader : MonoBehaviour {
     private static readonly string mapsDir = "Maps/";
@@ -124,11 +126,24 @@ public class MapLoader : MonoBehaviour {
             tileObj.transform.parent = rowObj.transform;
             tileObj.transform.localPosition = pos;
             tileObj.GetComponent<Tile>().selectionController = battleMap.selectionController;
+            Animator animator = tileObj.GetComponent<Animator>();
+            if (animator)
+            {
+               Timing.RunCoroutine(OffsetTile(tileObj.GetComponent<Tile>(), (float)col % 6.0f / 6.0f));
+            }
             TileLocation location = tileObj.GetComponent<TileLocation>();
             location.col = col;
             location.row = row;
         }
         return tileObj;
+    }
+
+    private IEnumerator<float> OffsetTile(Tile tile, float t)
+    {
+        yield return Timing.WaitForSeconds(t);
+         RuntimeAnimatorController controller =tile.gameObject.GetComponent<Animator>().runtimeAnimatorController;
+        tile.gameObject.GetComponent<Animator>().runtimeAnimatorController = tile.animations[(tile.animations.IndexOf(controller)+1)%tile.animations.Count];
+        tile.gameObject.GetComponent<Animator>().runtimeAnimatorController = controller;
     }
 
     private void LoadEnemyUnits(string[] mapCvsLines, int startLineIndex, int numUnits) {
