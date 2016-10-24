@@ -9,6 +9,7 @@ public class Tile : MonoBehaviour {
     public SelectionController selectionController; // hack for movement
     public Unit currentUnit;
     public TileStats tileStats;
+    public List<RuntimeAnimatorController> animations;
     private GameObject movementTile;
     private GameObject attackTile;
 
