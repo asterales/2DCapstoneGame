@@ -28,14 +28,14 @@ public class TutorialController : PreBattleController {
 		selectionPromptObj = new GameObject(string.Format("Selection Prompt"));
         SpriteRenderer sr = selectionPromptObj.AddComponent<SpriteRenderer>();
         sr.sprite = selectionSprite;
-        sr.sortingOrder = 2;
+        sr.sortingOrder = 1;
         Animator animator = selectionPromptObj.AddComponent<Animator>();
         animator.runtimeAnimatorController = animation;
         selectionPromptObj.transform.position = GameResources.hidingPosition;
 	}
 
 	public static void ShowSelectionPrompt(Tile tile) {
-		selectionPromptObj.transform.position = tile.transform.position + GameResources.visibilityOffset;
+		selectionPromptObj.transform.position = tile.transform.position + GameResources.visibilityOffset + new Vector3(0, 0, 0.1f);
 	}
 
 	public static void HideSelectionPrompt() {
