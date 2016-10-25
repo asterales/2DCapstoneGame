@@ -8,6 +8,7 @@ public class LEUnitSettingsEditor : MonoBehaviour {
     public List<LEStatEditor> instanceStatEditors;
     public LEDirectionEditor directionEditor;
     public LESelectionController selectionController;
+    public int currentVet;
     private int onCounter = 10;
 
     void Awake()
@@ -26,6 +27,14 @@ public class LEUnitSettingsEditor : MonoBehaviour {
             Debug.Log("Need reference to selection controller -> LEUnitSettingsEditor.cs");
         }
         ////////////////////////
+        for (int i = 0; i < instanceStatEditors.Count; i++)
+        {
+            instanceStatEditors[i].reference = this;
+        }
+        for (int i = 0; i < settingsStatEditors.Count; i++)
+        {
+            settingsStatEditors[i].reference = this;
+        }
     }
 
     void Update()
@@ -41,7 +50,6 @@ public class LEUnitSettingsEditor : MonoBehaviour {
     {
         currentSettings = settings;
         currentInstance = null;
-        //Debug.Log("Turning On");
         for (int i = 0; i < settingsStatEditors.Count; i++)
         {
             settingsStatEditors[i].TurnOn(currentSettings, currentInstance);
@@ -69,6 +77,5 @@ public class LEUnitSettingsEditor : MonoBehaviour {
         }
         directionEditor.TurnOff();
         onCounter = 10;
-        //selectionController.NullifyMode();
     }
 }

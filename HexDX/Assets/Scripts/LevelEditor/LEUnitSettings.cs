@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 
 public class LEUnitSettings : MonoBehaviour {
+    private static int numOfVets = 4;
     public List<Sprite> facingSprites;
     public Sprite defaultSprite;
     //public int veterancyLv; // i dont think this is needed
@@ -68,30 +69,30 @@ public class LEUnitSettings : MonoBehaviour {
         facingSprites = new List<Sprite>();
         defaultSprite = null;
         //veterancyLv = -1;
-        baseHealth = new int[] { -1, -1, -1 };
-        baseAttack = new int[] { -1, -1, -1 };
-        basePower = new int[] { -1, -1, -1 };
-        baseDefense = new int[] { -1, -1, -1 };
-        baseResistance = new int[] { -1, -1, -1 };
-        baseMove = new int[] { -1, -1, -1 };
-        baseLowRange = new int[] { -1, -1, -1 };
-        baseHighRange = new int[] { -1, -1, -1 };
-        baseManuverability = new int[] { -1, -1, -1 };
+        baseHealth = new int[] { -1, -1, -1, -1 };
+        baseAttack = new int[] { -1, -1, -1, -1 };
+        basePower = new int[] { -1, -1, -1, -1 };
+        baseDefense = new int[] { -1, -1, -1, -1 };
+        baseResistance = new int[] { -1, -1, -1, -1 };
+        baseMove = new int[] { -1, -1, -1, -1 };
+        baseLowRange = new int[] { -1, -1, -1, -1 };
+        baseHighRange = new int[] { -1, -1, -1, -1 };
+        baseManuverability = new int[] { -1, -1, -1, -1 };
         id = "";
     }
 
     public void CreateFromScratch()
     {
         //veterancyLv = 0;
-        baseHealth = new int[] { 100, 200, 300 };
-        baseAttack = new int[] { 1, 5, 10 };
-        basePower = new int[] { 1, 5, 10 };
-        baseDefense = new int[] { 1, 5, 10 };
-        baseResistance = new int[] { 1, 5, 10 };
-        baseMove = new int[] { 5, 5, 5 };
-        baseLowRange = new int[] { 1, 1, 1 };
-        baseHighRange = new int[] { 1, 1, 1 };
-        baseManuverability = new int[] { 1, 1, 1 };
+        baseHealth = new int[] { 100, 200, 300, 400 };
+        baseAttack = new int[] { 1, 5, 10, 20 };
+        basePower = new int[] { 1, 5, 10, 20 };
+        baseDefense = new int[] { 1, 5, 10, 20 };
+        baseResistance = new int[] { 1, 5, 10, 20 };
+        baseMove = new int[] { 5, 5, 5, 5 };
+        baseLowRange = new int[] { 1, 1, 1, 1 };
+        baseHighRange = new int[] { 1, 1, 1, 1 };
+        baseManuverability = new int[] { 1, 1, 1, 1 };
         id = ""; // do we needs ids ???
     }
 
@@ -117,9 +118,9 @@ public class LEUnitSettings : MonoBehaviour {
     {
         fileName = file + ".txt";
         string[] lines = data.Split('\n');
-        if (lines.Length < 9*3) Debug.Log("NOT ENOUGH LINES -> LEUnitSettings.cs");
+        if (lines.Length < 9*numOfVets) Debug.Log("NOT ENOUGH LINES -> LEUnitSettings.cs");
         //veterancyLv = Convert.ToInt32(lines[0]);
-        for(int i=0;i<3;i++)
+        for(int i=0;i<4;i++)
         {
             baseHealth[i] = Convert.ToInt32(lines[0 + 9*i]);
             baseAttack[i] = Convert.ToInt32(lines[1 + 9*i]);
@@ -131,13 +132,13 @@ public class LEUnitSettings : MonoBehaviour {
             baseHighRange[i] = Convert.ToInt32(lines[7 + 9*i]);
             baseManuverability[i] = Convert.ToInt32(lines[8 + 9*i]);
         }
-        id = lines[3 * 9].Trim();
+        id = lines[numOfVets * 9].Trim();
     }
 
     public string WriteToText()
     {
         string data = "";
-        for(int i=0;i<3;i++)
+        for(int i=0;i<numOfVets; i++)
         {
             data += baseHealth[i] + "\n";
             data += baseAttack[i] + "\n";

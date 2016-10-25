@@ -23,6 +23,7 @@ public class LEUnitInstance : MonoBehaviour {
         instancePower = 0;
         instanceDefense = 0;
         instanceResistance = 0;
+        instanceVeterancy = 0;
         ////// DEBUG CODE //////
         if (spriteRenderer == null)
         {
@@ -63,8 +64,7 @@ public class LEUnitInstance : MonoBehaviour {
 
     public int GetVeterancy()
     {
-        //return instanceVeterancy; // change once veterancy support is done
-        return 0;
+        return instanceVeterancy; // change once veterancy support is done
     }
 
     public int GetMove()
