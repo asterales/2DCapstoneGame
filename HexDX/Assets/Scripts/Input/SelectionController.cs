@@ -17,9 +17,9 @@ public class SelectionController : MonoBehaviour {
     }
 
 	void Start () {
-        selectedTile = null;
         InitSelectSpaceObj();
         InitTargetSpaceObj();
+        ClearAllSelections();
     }
 	
     private void InitSelectSpaceObj() {
@@ -37,7 +37,6 @@ public class SelectionController : MonoBehaviour {
         sr.sortingOrder = 1;
         targetSpaceObj.transform.position = GameResources.hidingPosition;
     }
-
 
     protected virtual void Update () {
         if(!SelectionController.TakingAIInput()) {

@@ -26,8 +26,7 @@ public class RecruitListing : MonoBehaviour, IPointerClickHandler {
 	void Start() {
 		if (unitObj != null) {
 			unitPanel.unit = unitObj.GetComponent<Unit>();
-			unitPanel.unit.facing = GameManager.DISPLAY_FACING;
-			unitPanel.unit.SetFacingSprites();
+			GameManager.SetDefaultUnitView(unitPanel.unit);
 		}
 	}
 

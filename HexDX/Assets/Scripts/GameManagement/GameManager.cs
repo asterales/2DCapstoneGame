@@ -26,12 +26,21 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	public static void SetDefaultUnitView(Unit unit) {
+		unit.facing = DISPLAY_FACING;
+		unit.MakeOpen();
+	}
+
 	private void InitUnitList() {
 		playerAllUnits = new List<Unit>();
 		foreach(Unit childUnit in GetComponentsInChildren<Unit>()) {
 			AddNewPlayerUnit(childUnit);
 		}
-		activeUnits = playerAllUnits.GetRange(0, ACTIVE_UNIT_LIMIT);
+		if (playerAllUnits.Count > ACTIVE_UNIT_LIMIT) {
+			activeUnits = playerAllUnits.GetRange(0, ACTIVE_UNIT_LIMIT);
+		} else {
+			activeUnits = playerAllUnits;
+		}
 		activeUnits.ForEach(u => u.gameObject.SetActive(true));
 	}
 
@@ -46,7 +55,7 @@ public class GameManager : MonoBehaviour {
 			unit.transform.parent = gameObject.transform;
 			unit.transform.position = GameResources.hidingPosition;
 			unit.Health = unit.MaxHealth;
-			unit.phase = UnitTurn.Open;
+			SetDefaultUnitView(unit);
 		}
 	}
 

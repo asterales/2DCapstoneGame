@@ -41,12 +41,19 @@ public class DeploymentController : PreBattleController {
 	protected override void Start() {
 		base.Start();
 		LoadActiveUnits();
+		ClearSelections();
 		disabledHudElements.ForEach(d => d.SetActive(false));
 		if (preBattleComments) {
 			preBattleComments.StartEvents();
 		} else {
 			SelectionController.mode = SelectionMode.DeploymentOpen;
 		}
+	}
+
+	private static void ClearSelections() {
+		selectedUnitDest = null;
+		displacedUnit = null;
+		displacedUnitDest = null;
 	}
 
 	private void LoadActiveUnits() {

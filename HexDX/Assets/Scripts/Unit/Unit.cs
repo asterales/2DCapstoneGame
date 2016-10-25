@@ -119,6 +119,7 @@ public class Unit : MonoBehaviour {
     }
 
     public void InitForBattle() {
+        DrawHealth();
         player = GameObject.FindGameObjectWithTag("Map").GetComponent<BattleController>().player;
         ai = GameObject.FindGameObjectWithTag("Map").GetComponent<BattleController>().ai;
     }
