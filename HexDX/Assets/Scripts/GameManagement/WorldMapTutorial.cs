@@ -22,6 +22,7 @@ public class WorldMapTutorial : MonoBehaviour {
 	void Update() {
 		if (eventsList.EventsCompleted){
 			if(eventsList.dialogueMgr.HasFinishedAllLines()) {
+				eventsList.dialogueMgr.HideGUI();
 				info.RegisterCompleted();
 			}
 		}

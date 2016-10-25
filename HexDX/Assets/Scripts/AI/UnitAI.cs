@@ -10,7 +10,7 @@ public abstract class UnitAI : MonoBehaviour {
     // to add - reference to deployment area
 
     public void Start() {
-    	unit = gameObject.GetComponent<Unit>();
+    	unit = GetComponent<Unit>();
     }
 
     public static void SetPlayerUnits(List<Unit> playerUnitList) {

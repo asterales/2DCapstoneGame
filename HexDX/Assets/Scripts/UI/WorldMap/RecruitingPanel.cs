@@ -6,7 +6,7 @@ using System.Linq;
 public class RecruitingPanel : WorldMapPopupPanel {
 	public List<RecruitListing> unitChoices;
 	private UnitStatDisplay statDisplay;
-	private Button recruitButton;
+	public Button recruitButton;
 	private Text recruitButtonText;
 	private Text fundsText;
 	private Text descriptionText;
