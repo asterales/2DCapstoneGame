@@ -5,10 +5,10 @@ using System.Linq;
 using UnityEngine.EventSystems;
 
 public class UnitSelectionPanel : WorldMapPopupPanel {
-	private ActiveArmyDisplay activeUnitsDisplay;
+	public ActiveArmyDisplay activeUnitsDisplay;
+	public InactiveArmyDisplay inactiveUnitsDisplay;
 	public ActiveArmyDisplay worldMapActiveArmyDisplay;
 	public UnitStatDisplay statDisplay;
-	private InactiveArmyDisplay inactiveUnitsDisplay;
 	private Button saveButton;
 
 	protected override void Awake() {
@@ -25,7 +25,7 @@ public class UnitSelectionPanel : WorldMapPopupPanel {
 	}
 
 	void Update() {
-		saveButton.interactable = activeUnitsDisplay.unitPanels.Where(p => p.unit != null).ToList().Count > 0;
+		saveButton.interactable = activeUnitsDisplay.HasUnits();
 	}
 
 	private void AddMouseHandlerToPanels(ArmyDisplay armyDisplay) {
@@ -42,7 +42,7 @@ public class UnitSelectionPanel : WorldMapPopupPanel {
 
 	private void ConfirmArmySelection() {
 		GameManager gm = GameManager.instance;
-		gm.activeUnits = activeUnitsDisplay.unitPanels.Where(p => p.unit != null).Select(p => p.unit).ToList();
+		gm.activeUnits = activeUnitsDisplay.GetUnits();
 		RefreshDisplays();
 	}
 

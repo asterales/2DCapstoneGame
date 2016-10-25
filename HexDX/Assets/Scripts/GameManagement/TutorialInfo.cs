@@ -12,12 +12,12 @@ public class TutorialInfo : MonoBehaviour {
 	}
 
 	public bool HasBeenCompleted() {
-		return GameManager.instance.completedTutorials.Contains(tutorialFocus);
+		return GameManager.instance ? GameManager.instance.completedTutorials.Contains(tutorialFocus) : false;
 	}
 
 	public void RegisterCompleted() {
 		GameManager gm = GameManager.instance;
-		if(!gm.completedTutorials.Contains(tutorialFocus)) {
+		if(gm && !gm.completedTutorials.Contains(tutorialFocus)) {
 			gm.completedTutorials.Add(tutorialFocus);
 		}
 	}

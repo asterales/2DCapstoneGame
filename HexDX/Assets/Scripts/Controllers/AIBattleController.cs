@@ -12,7 +12,7 @@ public class AIBattleController : ArmyBattleController {
         List<Unit> playerUnits = new List<Unit>();
 
         for(int i = 0; i < allUnits.Length; i++) {
-            UnitAI ai = allUnits[i].gameObject.GetComponent<UnitAI>();
+            UnitAI ai = allUnits[i].GetComponent<UnitAI>();
             if (ai) {
                 units.Add(allUnits[i]);
                 ai.unitNum = i; // for debugging
@@ -74,6 +74,6 @@ public class AIBattleController : ArmyBattleController {
     }
 
     private UnitAI GetAI(int index) {
-        return units[index] != null ? units[index].gameObject.GetComponent<UnitAI>() : null;
+        return units[index] != null ? units[index].GetComponent<UnitAI>() : null;
     }
 }

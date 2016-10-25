@@ -42,9 +42,9 @@ public class BattleControllerManager : MonoBehaviour {
 
 	private void InitPreBattleControllers() {
 		prebattlePhases = new List<PreBattleController>();
-		tutorialController = FindObjectOfType(typeof(TutorialController)) as TutorialController;
-		deploymentController = FindObjectOfType(typeof(DeploymentController)) as DeploymentController;
-		scriptedAI = FindObjectOfType(typeof(ScriptedAIBattleController)) as ScriptedAIBattleController;
+		tutorialController = tutorialController != null ? tutorialController : FindObjectOfType(typeof(TutorialController)) as TutorialController;
+		deploymentController = deploymentController != null ? deploymentController : FindObjectOfType(typeof(DeploymentController)) as DeploymentController;
+		scriptedAI = scriptedAI != null ? scriptedAI : FindObjectOfType(typeof(ScriptedAIBattleController)) as ScriptedAIBattleController;
 		if (deploymentController) {
 			prebattlePhases.Add(deploymentController);
 		}
@@ -59,9 +59,9 @@ public class BattleControllerManager : MonoBehaviour {
 	}
 
 	private void InitMainControllers() {
-		battleController = FindObjectOfType(typeof(BattleController)) as BattleController;
-		player = FindObjectOfType(typeof(PlayerBattleController)) as PlayerBattleController;
-		ai = FindObjectOfType(typeof(AIBattleController)) as AIBattleController;
+		battleController = battleController != null ? battleController : FindObjectOfType(typeof(BattleController)) as BattleController;
+		player = player != null ? player : FindObjectOfType(typeof(PlayerBattleController)) as PlayerBattleController;
+		ai = ai != null ? ai : FindObjectOfType(typeof(AIBattleController)) as AIBattleController;
 	}
 
 	void Start() {
