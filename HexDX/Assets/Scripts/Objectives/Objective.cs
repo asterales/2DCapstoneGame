@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class Objective : MonoBehaviour {
+    public Tile location;
+
     // to be implemented
     // objective will be used for alternate win conditions
 

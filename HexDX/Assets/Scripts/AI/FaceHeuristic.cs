@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System;
 
+// this one will be difficult
+
 public class FaceHeuristic : Heuristic {
     public List<Unit> unitsInRange;
-    public Tile tilePosition;
     public int direction;
     public float flankAmount;
     public float directAmount;
@@ -15,14 +16,16 @@ public class FaceHeuristic : Heuristic {
     public FaceHeuristic()
     {
         unitsInRange = null;
-        tilePosition = null;
+        tile = null;
+        unit = null;
         direction = -1;
     }
 
-    public FaceHeuristic(List<Unit> enemies, Tile tile, int dir)
+    public FaceHeuristic(List<Unit> enemies, Tile t, Unit u, int dir)
     {
         unitsInRange = enemies;
-        tilePosition = tile;
+        tile = t;
+        unit = u;
         direction = dir;
     }
 

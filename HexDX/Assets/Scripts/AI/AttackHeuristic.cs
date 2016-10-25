@@ -1,25 +1,23 @@
 ﻿public class AttackHeuristic : Heuristic {
     public Unit unitToBeAttacked;
-    public Unit unitAttacking;
-    public Tile attackLocation;    // where the attacking unit will be
     bool attackingFlank;           // if attacking flank
     bool attackingDirect;          // if attacking directly
     bool attackingSneak;           // if attacking sneak
     bool attackKills;              // if the attack will kill
     float stateComparison;         // comparing the unit stats (0.0 <= v <= 1.0)
 
-    public AttackHeuristic()
+    public AttackHeuristic(Tile t, Unit u)
     {
         unitToBeAttacked = null;
-        unitAttacking = null;
-        attackLocation = null;
+        unit = u;
+        tile = t;
     }
 
     public AttackHeuristic(Unit attacker, Unit victim, Tile location)
     {
-        unitAttacking = attacker;
+        unit = attacker;
         unitToBeAttacked = victim;
-        attackLocation = location;
+        tile = location;
     }
 
     public override void EvaluateData()

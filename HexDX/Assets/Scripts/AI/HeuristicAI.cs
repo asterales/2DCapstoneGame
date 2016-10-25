@@ -70,7 +70,7 @@ public class HeuristicAI : UnitAI
             // create tile option
             TileOption tileOption = new TileOption(tilesWithinRange[i]);
             // create tile heuristic
-            tileOption.heuristic = new TileHeuristic(tilesWithinRange[i], /*enemies*/null, /*objectives*/null);
+            tileOption.heuristic = new TileHeuristic(tilesWithinRange[i], unit, /*enemies*/null, /*objectives*/null);
             // create the facing options for that tile
             for (int j = 0; j < 6; j++)
             {

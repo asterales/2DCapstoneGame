@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 public class TileHeuristic : Heuristic
 {
-    public Tile tileToMoveTo;
     public List<Unit> enemyUnits;
     public List<Objective> objectives;
     public float statBoost;        // stat boost from tile (0.0 <= v <= 1.0)
@@ -14,12 +13,14 @@ public class TileHeuristic : Heuristic
 
     public TileHeuristic()
     {
-        tileToMoveTo = null;
+        tile = null;
+        unit = null;
     }
 
-    public TileHeuristic(Tile tile, List<Unit> enemies, List<Objective> obj)
+    public TileHeuristic(Tile t, Unit u, List<Unit> enemies, List<Objective> obj)
     {
-        tileToMoveTo = tile;
+        tile = t;
+        unit = u;
         enemyUnits = enemies;
         objectives = obj;
     }
@@ -40,12 +41,13 @@ public class TileHeuristic : Heuristic
     private void CalculateEnemyDist()
     {
         // calculate distance to nearest enemy (1.0 if right next to ai 1.0 / dist otherwise)
-        float minDistance = 0.0f;
-        for (int i = 0; i < objectives.Count; i++)
+        float minDistance = 1110.0f;
+        for (int i = 0; i < enemyUnits.Count; i++)
         {
-            // to be implemented
+            float dist = (float)IdaStarDistance(enemyUnits[i]);
+            minDistance = dist < minDistance ? dist : minDistance;
         }
-        distToClosestEnemy = minDistance;
+        distToClosestEnemy = 1.0f / minDistance;
     }
 
     private void CalculateObjectiveDist()
@@ -54,7 +56,8 @@ public class TileHeuristic : Heuristic
         float minDistance = 0.0f;
         for (int i=0;i<objectives.Count;i++)
         {
-            // to be implemented
+            float dist = (float)IdaStarDistance(objectives[i]);
+            minDistance = dist < minDistance ? dist : minDistance;
         }
         distToObjective = minDistance;
     }
@@ -68,5 +71,17 @@ public class TileHeuristic : Heuristic
         heuristic += distToObjective * weights.tileClosenessObjective;
         heuristic *= weights.tileGlobal;
         return heuristic;
+    }
+
+    private int IdaStarDistance(Unit playerUnit)
+    {
+        List<Tile> shortestPath = unit.GetShortestPath(playerUnit.currentTile);
+        return shortestPath.Count > 0 ? shortestPath.Count : int.MaxValue;  // empty list returned for impossible path
+    }
+
+    private int IdaStarDistance(Objective objective)
+    {
+        List<Tile> shortestPath = unit.GetShortestPath(objective.location);
+        return shortestPath.Count > 0 ? shortestPath.Count : int.MaxValue;  // empty list returned for impossible path
     }
 }
