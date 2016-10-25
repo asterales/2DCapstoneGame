@@ -6,7 +6,6 @@ using System;
 public class Tile : MonoBehaviour {
     public bool pathable;
     public TileLocation position;
-    public SelectionController selectionController; // hack for movement
     public Unit currentUnit;
     public TileStats tileStats;
     public List<RuntimeAnimatorController> animations;

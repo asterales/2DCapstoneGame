@@ -64,7 +64,7 @@ public class MovementTile : MonoBehaviour {
     }
 
     private void DrawPath() {
-        PlayerBattleController pbc = GameObject.Find("TestHexMap").GetComponent<PlayerBattleController>();
+        PlayerBattleController pbc = BattleControllerManager.instance.player;
         Object.Destroy(GameObject.Find("path"));
         if (path!=null && path.Count > 1) {
             GameObject pathDraw = new GameObject("path");

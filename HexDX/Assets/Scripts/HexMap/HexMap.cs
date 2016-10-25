@@ -4,7 +4,6 @@ using System.Collections.Generic;
 public class HexMap : MonoBehaviour {
     private HexDimension hexDimension;
     public static List<List<Tile>> mapArray;
-    public SelectionController selectionController; // ref to hack
     public static Stack<Tile> showingMovementTiles;
     public static Stack<Tile> showingAttackTiles;
     public static Stack<GameObject> showingAttackOutlines;

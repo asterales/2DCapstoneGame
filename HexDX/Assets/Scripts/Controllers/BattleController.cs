@@ -38,6 +38,12 @@ public class BattleController : MonoBehaviour {
         ////////////////////////
     }
 
+    void Start() {
+        IsPlayerTurn = true;
+        BattleIsDone = false;
+        nextSceneLoaded = false;
+    }
+
     void Update() {
         if(!BattleIsDone){
             if (victoryCondition.Achieved()) {
@@ -48,16 +54,12 @@ public class BattleController : MonoBehaviour {
                 EndBattle();
             }
         } else if (!nextSceneLoaded && Input.GetMouseButtonDown(0)) {
-            GameManager.instance.UpdateArmyAfterBattle();
+            if (GameManager.instance) {
+                GameManager.instance.UpdateArmyAfterBattle();
+            }
             nextSceneLoaded = true; // prevent skipping scenes by spam click
             LoadNextScene();
         }
-    }
-
-    void Start() {
-        IsPlayerTurn = true;
-        BattleIsDone = false;
-        nextSceneLoaded = false;
     }
 
     public bool CanEndTurn() {
@@ -85,7 +87,7 @@ public class BattleController : MonoBehaviour {
     }
 
     private void LoadNextScene() {
-        LevelManager.SetVictory(victoryCondition.Achieved());
+        LevelManager.RegisterVictory(victoryCondition.Achieved());
         if (victoryCondition.Achieved()) {
             LevelManager.LoadNextScene();
         } else if (player.IsAnnihilated()) {

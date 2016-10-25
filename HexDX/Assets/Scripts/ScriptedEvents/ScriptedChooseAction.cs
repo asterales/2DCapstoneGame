@@ -10,6 +10,11 @@ public class ScriptedChooseAction : ScriptEvent {
 
     private bool[] actionEnabled = new bool[Enum.GetNames(typeof(Action)).Length];
 
+    protected override void Start() {
+        base.Start();
+        player = BattleControllerManager.instance.player;
+    }
+
     void OnGUI() {
         if (isActive && isPlayerEvent) {
             int itemHeight = 20;

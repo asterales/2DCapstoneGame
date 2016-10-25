@@ -12,12 +12,10 @@ public class MapLoader : MonoBehaviour {
 
     private HexMap battleMap;
     private HexDimension hexDimension;
-    private ScriptedAIBattleController scriptedAI;
 
     void Awake() {
         battleMap = this.gameObject.GetComponent<HexMap>();
         hexDimension = this.gameObject.GetComponent<HexDimension>();
-        scriptedAI = this.gameObject.GetComponent<ScriptedAIBattleController>(); // can be null
 
         ////// DEBUG CODE //////
         if (battleMap == null) {
@@ -26,15 +24,13 @@ public class MapLoader : MonoBehaviour {
         if (hexDimension == null) {
             Debug.Log("HexDimension needs to be set -> MapLoader.cs");
         }
-        if (battleMap.selectionController == null) {
-            Debug.Log("Major Error :: Hex Map Needs Selection Controller");
-        }
         ////////////////////////
     }
 
     void Start() {
         if (battleMap != null && hexDimension != null) {
             LoadHexMap(csvMapFile);
+            Debug.Log("Finished Loading Map");
         }
     }
 
@@ -50,7 +46,8 @@ public class MapLoader : MonoBehaviour {
         LoadMapTiles(mapCsvRows, rows);
         currentLine += rows;
 
-        if(!isTutorial && currentLine < mapCsvRows.Length) {
+        ScriptedAIBattleController scriptedAI = BattleControllerManager.instance.scriptedAI;
+        if(scriptedAI == null && currentLine < mapCsvRows.Length) {
             /* Load enemy unit if specified */
             int numUnits = Convert.ToInt32(mapCsvRows[currentLine++]);
             LoadEnemyUnits(mapCsvRows, currentLine, numUnits);
@@ -63,8 +60,7 @@ public class MapLoader : MonoBehaviour {
             }
         }
 
-        if (isTutorial)
-        {
+        if (scriptedAI) {
             AddUnitToTile(5, 5, scriptedAI.aiUnits[0], false, new Vector3(1, 0, 0));
             AddUnitToTile(10, 4, scriptedAI.aiUnits[1], false, new Vector3(0, 1, 0));
             AddUnitToTile(6, 6, scriptedAI.aiUnits[2], false, new Vector3(0, 1, 0));
@@ -125,7 +121,6 @@ public class MapLoader : MonoBehaviour {
             tileObj.name = string.Format("Tile ({0}, {1})", row, col);
             tileObj.transform.parent = rowObj.transform;
             tileObj.transform.localPosition = pos;
-            tileObj.GetComponent<Tile>().selectionController = battleMap.selectionController;
             Animator animator = tileObj.GetComponent<Animator>();
             if (animator)
             {
@@ -186,7 +181,7 @@ public class MapLoader : MonoBehaviour {
 
     private void LoadDeploymentZone(string[] mapCvsLines, int startLineIndex, int numDep) {
         //Debug.Log("Number Of Deployment Zones :: " + numDep);
-        DeploymentController deployController = FindObjectOfType(typeof(DeploymentController)) as DeploymentController;
+        DeploymentController deployController = BattleControllerManager.instance.deploymentController;
         if (deployController != null && deployController.enabled) {
             for (int i = 0; i < numDep; i++) {
                 string[] data = mapCvsLines[startLineIndex + i].Split(',');

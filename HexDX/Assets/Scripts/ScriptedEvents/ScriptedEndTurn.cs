@@ -5,6 +5,12 @@ public class ScriptedEndTurn : ScriptEvent {
     public PlayerBattleController player;
     public ScriptedAIBattleController scriptedAI;
 
+    protected override void Start() {
+        base.Start();
+        player = BattleControllerManager.instance.player;
+        scriptedAI = BattleControllerManager.instance.scriptedAI;
+    }
+
     public override void DoPlayerEvent() {
         SelectionController.mode = SelectionMode.ScriptedPlayerEndTurn;
     }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 public class ScriptList : MonoBehaviour {
@@ -8,6 +9,19 @@ public class ScriptList : MonoBehaviour {
     
     public ScriptEvent currentScriptEvent { get { return currentEvent < scriptedEvents.Count ? scriptedEvents[currentEvent] : null; }}
     public bool EventsCompleted { get; private set; } // flag for completion
+
+    void Awake() {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        EventsCompleted = false;
+    }
+
+    void OnDestroy() {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode){
+        dialogueMgr = FindObjectOfType(typeof(GameDialogueManager)) as GameDialogueManager;
+    }
 
     public void StartEvents() {
         if (scriptedEvents.Count > 0) {

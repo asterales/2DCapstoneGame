@@ -16,7 +16,6 @@ public static class GameResources {
 	}
 
     private static void LoadTileCache() {
-        Debug.Log("HI");
         tileSprites = new Dictionary<int, List<Sprite>>();
         tilePrefabs = new Dictionary<int, GameObject>();
         string[] tileIdLines = GetFileLines(tileSpriteDir + tileIdsFile);
