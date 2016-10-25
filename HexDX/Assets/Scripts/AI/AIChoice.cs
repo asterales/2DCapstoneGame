@@ -16,4 +16,11 @@
         faceChoice = face;
         attackChoice = attack;
     }
+
+    public float Heuristic()
+    {
+        float heuristic = tileChoice.weight + faceChoice.weight;
+        if (attackChoice != null) heuristic += attackChoice.weight;
+        return heuristic;
+    }
 }

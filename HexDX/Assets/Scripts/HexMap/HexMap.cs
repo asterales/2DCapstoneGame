@@ -125,6 +125,49 @@ public class HexMap : MonoBehaviour {
         return output;
     }
 
+    public static List<Tile> GetAttackTiles(Tile tile, Unit unit, int direction)
+    {
+        List<Tile> output = new List<Tile>();
+        Vector2 rowDot = new Vector2(1, 1);
+        Vector2 colDot = new Vector2(1, 1);
+        switch (direction)
+        {
+            case 0:
+                rowDot = new Vector2(1, 0);
+                colDot = new Vector2(0, 1);
+                break;
+            case 1:
+                rowDot = new Vector2(0, -1);
+                colDot = new Vector2(1, 1);
+                break;
+            case 2:
+                rowDot = new Vector2(-1, -1);
+                colDot = new Vector2(1, 0);
+                break;
+            case 3:
+                rowDot = new Vector2(-1, 0);
+                colDot = new Vector2(0, -1);
+                break;
+            case 4:
+                rowDot = new Vector2(0, 1);
+                colDot = new Vector2(-1, -1);
+                break;
+            case 5:
+                rowDot = new Vector2(1, 1);
+                colDot = new Vector2(-1, 0);
+                break;
+        }
+        foreach (Vector2 pos in unit.attackablePositions)
+        {
+            try
+            {
+                output.Add(mapArray[unit.currentTile.position.row + (int)Vector2.Dot(pos, rowDot)][unit.currentTile.position.col + (int)Vector2.Dot(pos, colDot)]);
+            }
+            catch { }
+        }
+        return output;
+    }
+
     public static void ShowAttackTiles(Unit unit)
     {
         ClearAttackTiles();

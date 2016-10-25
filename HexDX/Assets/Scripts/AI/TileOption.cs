@@ -29,6 +29,10 @@ public class TileOption : AIOption
     public override void LoadOptionData()
     {
         heuristic.EvaluateData();
+        for (int i = 0; i < faceOptions.Count; i++)
+        {
+            faceOptions[i].LoadOptionData();
+        }
     }
 
     public override void EvaluateOptionData(AIWeights weights)

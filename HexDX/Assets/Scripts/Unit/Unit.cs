@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using MovementEffects;
@@ -635,19 +636,6 @@ public class Unit : MonoBehaviour {
         return gameObject.GetComponent<UnitAI>() == null;
     }
 
-    // AI pathfinding methods
-    public int CanReachTileAndAttack(Tile dest, int direction)
-    {
-        // return values:
-        // -- 0 cant reach
-        // -- 1 can reach
-        // -- 2 can flank
-        // -- 3 can counter
-        // to be implemented
-        // i think this has already been implemented... future note: look at HasInAtackRange
-        return 0;
-    }
-
     public static void SaveAllStates()
     {
         UnitState.ClearStates();
@@ -659,12 +647,6 @@ public class Unit : MonoBehaviour {
         {
             UnitState.SaveState(unit);
         }
-    }
-
-    public List<Tile> GetAllMoveTilesInRange()
-    {
-        // to be implemented
-        return null;
     }
 }
 
