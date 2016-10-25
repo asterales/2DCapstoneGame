@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using MovementEffects;
 using System;
 
 // base class for heuristic based AIs
@@ -8,10 +9,6 @@ using System;
 
 public class HeuristicAI : UnitAI
 {
-    // UnitAI's variables for reference
-    //protected static List<Unit> playerUnits;
-    //public Unit unit;
-    //public int unitNum;
     public List<TileOption> tileOptions;
     public AIWeights weightFunction;
     public AIChoice choice;
@@ -116,22 +113,39 @@ public class HeuristicAI : UnitAI
 
     public override void SetAction()
     {
-        // to be implemented
+        unit.MakeAttacking();
     }
 
     public override void SetAttack()
     {
-        // to be implemented
+        if (choice.attackChoice != null)
+        {
+            Timing.RunCoroutine(unit.PerformAttack(choice.attackChoice.chosenUnit));
+            SelectionController.ShowTarget(choice.attackChoice.chosenUnit);
+        }
+        else
+        {
+            unit.MakeDone();
+        }
     }
 
     public override void SetFacing()
     {
-        // to be implemented
+        unit.facing = choice.faceChoice.direction;
+        unit.MakeChoosingAction();
     }
 
     public override void SetMovement()
     {
-        // to be implemented
+        if (choice.tileChoice.chosenTile != unit.currentTile)
+        {
+            unit.SetPath(unit.GetShortestPath(choice.tileChoice.chosenTile));
+            unit.MakeMoving(null);
+        }
+        else
+        {
+            unit.MakeFacing();
+        }
     }
 
     private List<Unit> GetPlayerUnitsInRange(Tile tile, int direction)
