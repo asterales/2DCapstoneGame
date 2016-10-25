@@ -85,7 +85,7 @@ public class HeuristicAI : UnitAI
                     // create attack option
                     AttackOption attackOption = new AttackOption(tilesWithinRange[i], unit);
                     // create the attack heuristic
-                    attackOption.heuristic = new AttackHeuristic(unit, unitsWithinRange[k], tilesWithinRange[i]);
+                    attackOption.heuristic = new AttackHeuristic(unit, unitsWithinRange[k], tilesWithinRange[i], j);
                     // add attack option to face option
                     faceOption.attackOptions.Add(attackOption);
                 }
