@@ -16,7 +16,6 @@ public static class GameResources {
 	}
 
     private static void LoadTileCache() {
-        Debug.Log("HI");
         tileSprites = new Dictionary<int, List<Sprite>>();
         tilePrefabs = new Dictionary<int, GameObject>();
         string[] tileIdLines = GetFileLines(tileSpriteDir + tileIdsFile);
@@ -38,6 +37,10 @@ public static class GameResources {
         GameObject obj = UnityEngine.Object.Instantiate<GameObject>(tilePrefabs[type]);
         if (type != 4)
             obj.GetComponent<SpriteRenderer>().sprite = GetTileSprite(type, variant);
+        if (obj.GetComponent<Tile>().animations.Count > 0)
+        {
+            obj.GetComponent<Animator>().runtimeAnimatorController = obj.GetComponent<Tile>().animations[variant];
+        }
         return obj;
     }
 

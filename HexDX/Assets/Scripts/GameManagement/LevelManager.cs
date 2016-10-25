@@ -10,10 +10,15 @@ using System.Collections;
 	Fading transition reference: https://unity3d.com/learn/tutorials/topics/graphics/fading-between-scenes */
 
 public class LevelManager : MonoBehaviour {
+	private static readonly string battleSceneName = "TestScene";
+	private static readonly string worldMapSceneName = "WorldMap";
+
 	// Level scene management
-	public List<string> sceneNames;
-	public int monetaryReward;
-	private int currentScene;
+	public int levelId;
+	public string mapFileName;
+	public int moneyRewarded;
+	private GameObject tutorialObjs; // for levels with tutorial stuff
+
 	private bool levelStarted;
 	private bool returnedToWorldMap;
 	private static LevelManager activeInstance;
@@ -28,11 +33,39 @@ public class LevelManager : MonoBehaviour {
 	private AudioSource fadeOutMusic;
 
 	void Awake() {
-		SceneManager.sceneLoaded += FadeIn;
+		GetTutorialObjs();
+		SceneManager.sceneLoaded += OnSceneLoaded;
+	}
+
+	private void GetTutorialObjs() {
+		Transform tutorialTransform = transform.Find("TutorialObjects");
+		if (tutorialTransform) {
+			tutorialObjs = tutorialTransform.gameObject;
+			tutorialObjs.SetActive(false);
+		}
+	}
+
+	void Start() {
+		returnedToWorldMap = false;
+		levelStarted = false;
 	}
 
 	void OnDestroy() {
-		SceneManager.sceneLoaded -= FadeIn;
+		SceneManager.sceneLoaded -= OnSceneLoaded;
+	}
+
+	// delegate/event to be called when new scene is loaded
+	private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+		BeginFade(FadeDirection.In);
+		MapLoader mapLoader = FindObjectOfType(typeof(MapLoader)) as MapLoader;
+		if (mapLoader) {
+			mapLoader.csvMapFile = mapFileName;
+			if (tutorialObjs) {
+				tutorialObjs.SetActive(true);
+			}
+		} else if (returnedToWorldMap) {
+			Destroy(gameObject);
+		}
 	}
 
 	// Load next scene of active level
@@ -40,40 +73,17 @@ public class LevelManager : MonoBehaviour {
         if (activeInstance != null) {
             activeInstance.NextScene();
         } else {
-            Debug.Log("No active level loader set");
+            Debug.Log("No active level loader set");	
         } 
 	}
 
-	// for binding to onclick() event trigger
-	public void StartLevel() {
-		SetActiveLevel();
-		if (sceneNames.Count > 0) {
-			levelStarted = true;
-			currentScene = 0;
-			Timing.RunCoroutine(LoadScene(sceneNames[currentScene]));
-		}
-	}
-
-	private void SetActiveLevel() {
-		levelStarted = false;
-		returnedToWorldMap = false;
-		activeInstance = this;
-		currentScene = 0;
-		DontDestroyOnLoad(gameObject);
-	}
-
-	private void NextScene() {
-		if (!levelStarted) {
-			StartLevel();
-		} else {
-			currentScene++;
-			if (currentScene < sceneNames.Count) {
-				Timing.RunCoroutine(LoadScene(sceneNames[currentScene]));
-			} else {
-				Debug.Log("Level complete");
-				GameManager.instance.funds += monetaryReward;
-				ReturnToWorldMap();
+	public static void RegisterVictory(bool victory) {
+		if (activeInstance != null && victory) {
+			GameManager gm = GameManager.instance;
+			if (!gm.defeatedLevelIds.Contains(activeInstance.levelId)) {
+				gm.defeatedLevelIds.Add(activeInstance.levelId);
 			}
+			gm.funds += activeInstance.moneyRewarded;
 		}
 	}
 
@@ -81,11 +91,38 @@ public class LevelManager : MonoBehaviour {
 		if (activeInstance != null) {
 			//with fade effects
 			activeInstance.returnedToWorldMap = true;
-            Timing.RunCoroutine(activeInstance.LoadScene("WorldMap"));
+            Timing.RunCoroutine(activeInstance.LoadScene(worldMapSceneName));
         } else {
         	// no fade effect b/c no fade texture associate with an levelmanager object
-			SceneManager.LoadScene("WorldMap");
+			SceneManager.LoadScene(worldMapSceneName);
         } 
+	}
+
+	private IEnumerator<float> LoadScene(string sceneName) {
+		yield return Timing.WaitForSeconds(BeginFade(FadeDirection.Out));
+		SceneManager.LoadScene(sceneName);
+		Debug.Log("Loaded scene");
+	}
+
+	// for binding to onclick() event trigger
+	public void StartLevel() {
+		SetActiveLevel();
+		levelStarted = true;
+		Timing.RunCoroutine(LoadScene(battleSceneName));
+	}
+
+	private void SetActiveLevel() {
+		activeInstance = this;
+		DontDestroyOnLoad(gameObject);
+	}
+
+	private void NextScene() {
+		if (!levelStarted) {
+			StartLevel();
+		} else {
+			// change later to load also cutscenes
+			ReturnToWorldMap();
+		}
 	}
 
 	void Update() {
@@ -109,19 +146,6 @@ public class LevelManager : MonoBehaviour {
 		return fadeSpeed;
 	}
 
-	private IEnumerator<float> LoadScene(string sceneName) {
-		yield return Timing.WaitForSeconds(BeginFade(FadeDirection.Out));
-		SceneManager.LoadScene(sceneName);
-		Debug.Log("Loaded scene");
-	}
-
-	// delegate/event to be called when new scene is loaded
-	private void FadeIn(Scene scene, LoadSceneMode mode) {
-		BeginFade(FadeDirection.In);
-		if (returnedToWorldMap) {
-			Destroy(gameObject);
-		}
-	}
 }
 
 public enum FadeDirection {

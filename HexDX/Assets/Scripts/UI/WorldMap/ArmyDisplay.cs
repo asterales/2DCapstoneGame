@@ -21,9 +21,7 @@ public abstract class ArmyDisplay : MonoBehaviour {
 		List<Unit> units = GetUnitsToDisplay();
 		for(int i = 0; i < units.Count; i++) {
 			Unit unit = units[i];
-			unit.facing = GameManager.DISPLAY_FACING;
-			unit.phase = UnitTurn.Open;
-			unit.SetFacingSprites();
+			GameManager.SetDefaultUnitView(unit);
 			unitPanels[i].unit = unit;
 		}
 	}

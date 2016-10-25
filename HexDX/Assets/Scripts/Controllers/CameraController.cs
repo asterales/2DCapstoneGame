@@ -40,19 +40,6 @@ public class CameraController : MonoBehaviour {
                 transform.position = new Vector3(transform.position.x, ymin, transform.position.z);
             else if (transform.position.y > ymax)
                 transform.position = new Vector3(transform.position.x, ymax, transform.position.z);
-            if (Input.GetAxis("Mouse ScrollWheel") < 0) // forward
-            {
-                Camera.main.orthographicSize *= 1.1f;
-                Camera.main.orthographicSize = Mathf.Min(Camera.main.orthographicSize, 20.0f);
-                transform.localScale = new Vector3(1.0f, 1.0f, 1.0f) * (Camera.main.orthographicSize / originalSize);
-
-            }
-            if (Input.GetAxis("Mouse ScrollWheel") > 0) // back
-            {
-                Camera.main.orthographicSize *= .9f;
-                Camera.main.orthographicSize = Mathf.Max(Camera.main.orthographicSize, 2.0f);
-                transform.localScale = new Vector3(1.0f, 1.0f, 1.0f) * (Camera.main.orthographicSize / originalSize);
-            }
         }
         else
         {
@@ -62,7 +49,19 @@ public class CameraController : MonoBehaviour {
                 transform.position = Vector3.MoveTowards(transform.position, destination, transform.localScale.x);
             }
         }
-        
+        if (Input.GetAxis("Mouse ScrollWheel") > 0) // back
+        {
+            Camera.main.orthographicSize *= .9f;
+            Camera.main.orthographicSize = Mathf.Max(Camera.main.orthographicSize, 2.0f);
+            transform.localScale = new Vector3(1.0f, 1.0f, 1.0f) * (Camera.main.orthographicSize / originalSize);
+        }
+        if (Input.GetAxis("Mouse ScrollWheel") < 0) // forward
+        {
+            Camera.main.orthographicSize *= 1.1f;
+            Camera.main.orthographicSize = Mathf.Min(Camera.main.orthographicSize, 20.0f);
+            transform.localScale = new Vector3(1.0f, 1.0f, 1.0f) * (Camera.main.orthographicSize / originalSize);
+
+        }
     }
 
     public void DontMove()

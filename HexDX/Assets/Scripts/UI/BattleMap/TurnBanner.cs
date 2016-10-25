@@ -14,6 +14,10 @@ public class TurnBanner : MonoBehaviour {
 		enemyTurnBanner = transform.Find("EnemyTurn").GetComponent<Image>();
 	}
 
+	void Start() {
+		battleController = BattleControllerManager.instance.battleController;
+	}
+
 	void Update() {
 		if (battleController.enabled 
 				&& (gameDialogueMgr == null || !gameDialogueMgr.IsVisible)) {

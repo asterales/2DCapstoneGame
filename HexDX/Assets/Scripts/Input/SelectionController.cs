@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class SelectionController : MonoBehaviour {
     public Sprite selectedSprite;
-    public RuntimeAnimatorController animation;
+    public Sprite targetSprite;
     public static Unit selectedUnit;
     public static Tile selectedTile;
     public static Unit target;
@@ -17,33 +17,26 @@ public class SelectionController : MonoBehaviour {
     }
 
 	void Start () {
-        selectedTile = null;
         InitSelectSpaceObj();
         InitTargetSpaceObj();
+        ClearAllSelections();
     }
 	
     private void InitSelectSpaceObj() {
         selectedSpaceObj = new GameObject(string.Format("Selected Space"));
         SpriteRenderer sr = selectedSpaceObj.AddComponent<SpriteRenderer>();
         sr.sprite = selectedSprite;
-        sr.sortingOrder = 2;
-        sr.color = Color.black;
-        Animator animator = selectedSpaceObj.AddComponent<Animator>();
-        animator.runtimeAnimatorController = animation;
+        sr.sortingOrder = 1;
         selectedSpaceObj.transform.position = GameResources.hidingPosition;
     }
 
     private void InitTargetSpaceObj() {
         targetSpaceObj = new GameObject(string.Format("Target Space"));
         SpriteRenderer sr = targetSpaceObj.AddComponent<SpriteRenderer>();
-        sr.sprite = selectedSprite;
-        sr.sortingOrder = 2;
-        sr.color = Color.white;
-        Animator animator = targetSpaceObj.AddComponent<Animator>();
-        animator.runtimeAnimatorController = animation;
+        sr.sprite = targetSprite;
+        sr.sortingOrder = 1;
         targetSpaceObj.transform.position = GameResources.hidingPosition;
     }
-
 
     protected virtual void Update () {
         if(!SelectionController.TakingAIInput()) {
@@ -78,18 +71,18 @@ public class SelectionController : MonoBehaviour {
     }
 
     public static void ShowSelection(Tile tile) {
-        selectedSpaceObj.transform.position = tile.transform.position + GameResources.visibilityOffset;
+        selectedSpaceObj.transform.position = tile.transform.position + GameResources.visibilityOffset + new Vector3(0, 0, 0.1f);
     }
 
     public static void ShowSelection(Unit unit) {
-        selectedSpaceObj.transform.position = unit.transform.position + GameResources.visibilityOffset;
+        selectedSpaceObj.transform.position = unit.transform.position + GameResources.visibilityOffset + new Vector3(0, 0, 0.1f);
     }
 
     public static void ShowTarget(Unit unit) {
         if (unit)
         {
             target = unit;
-            targetSpaceObj.transform.position = unit.currentTile.transform.position + GameResources.visibilityOffset;
+            targetSpaceObj.transform.position = unit.currentTile.transform.position + GameResources.visibilityOffset+new Vector3(0, 0, 0.1f);
         }
     }
 

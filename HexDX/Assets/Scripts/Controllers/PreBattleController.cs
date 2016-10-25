@@ -2,27 +2,35 @@ using UnityEngine;
 using System.Collections;
 
 public abstract class PreBattleController : MonoBehaviour {
-	public PlayerBattleController player;
-    public AIBattleController ai;
+	protected PlayerBattleController player;
+	public bool isActive;
 
-    protected virtual void Start() {
-    	DisableGameControllers();
-    }
-
-    protected void DisableGameControllers() {
-		player.enabled = false;
-		ai.enabled = false;
+	protected virtual void Awake() {
+		isActive = false;
 	}
 
-	protected void EnableGameControllers() {
-		player.enabled = true;
-		ai.enabled = true;
+	protected virtual void Start() {
+		player = BattleControllerManager.instance.player;
+	}
+
+	private void Update() {
+		if (isActive) {
+			PhaseUpdateAction();
+		}
+	}
+
+	protected abstract void PhaseUpdateAction();
+
+	public virtual void StartPreBattlePhase() {
+		Debug.Log("Starting phase for " + GetType());
+		SelectionController.ClearAllSelections();
+		isActive = true;
 	}
 
 	public virtual void EndPreBattlePhase() {
+		Debug.Log("Ending phase for " + GetType());
 		SelectionController.ClearAllSelections();
-		EnableGameControllers();
-		player.StartTurn();
-		this.enabled = false;
+		isActive = false;
+		enabled = false;
 	}
 }
