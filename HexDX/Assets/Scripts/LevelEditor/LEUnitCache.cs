@@ -62,6 +62,7 @@ public class LEUnitCache : MonoBehaviour
     {
         GameObject newTile = new GameObject();
         newTile.transform.parent = this.gameObject.transform;
+        newTile.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         SpriteRenderer newRenderer = newTile.AddComponent<SpriteRenderer>();
         LEUnitInstance newInstance = newTile.AddComponent<LEUnitInstance>();
         newInstance.selectionController = selectionController;
@@ -69,7 +70,7 @@ public class LEUnitCache : MonoBehaviour
         newRenderer.sprite = settings.defaultSprite;
         newTile.transform.position = position;
         newTile.AddComponent<BoxCollider2D>();
-        newTile.GetComponent<BoxCollider2D>().size = new Vector2(6f, 5f);
+        newTile.GetComponent<BoxCollider2D>().size = new Vector2(3f, 2.5f);
         return newInstance;
     }
 
