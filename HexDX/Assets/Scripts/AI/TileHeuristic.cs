@@ -40,13 +40,23 @@ public class TileHeuristic : Heuristic
     private void CalculateEnemyDist()
     {
         // calculate distance to nearest enemy (1.0 if right next to ai 1.0 / dist otherwise)
-        distToClosestEnemy = 0.0f;
+        float minDistance = 0.0f;
+        for (int i = 0; i < objectives.Count; i++)
+        {
+            // to be implemented
+        }
+        distToClosestEnemy = minDistance;
     }
 
     private void CalculateObjectiveDist()
     {
         // calculate distance to nearest objective (1.0 if right next to ai 1.0 / dist otherwise)
-        distToObjective = 0.0f;
+        float minDistance = 0.0f;
+        for (int i=0;i<objectives.Count;i++)
+        {
+            // to be implemented
+        }
+        distToObjective = minDistance;
     }
 
     public override float CalculateHeuristic(AIWeights weights)
