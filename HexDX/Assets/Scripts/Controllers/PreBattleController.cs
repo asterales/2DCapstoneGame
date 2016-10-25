@@ -22,11 +22,13 @@ public abstract class PreBattleController : MonoBehaviour {
 	protected abstract void PhaseUpdateAction();
 
 	public virtual void StartPreBattlePhase() {
+		Debug.Log("Starting phase for " + GetType());
 		SelectionController.ClearAllSelections();
 		isActive = true;
 	}
 
 	public virtual void EndPreBattlePhase() {
+		Debug.Log("Ending phase for " + GetType());
 		SelectionController.ClearAllSelections();
 		isActive = false;
 		enabled = false;

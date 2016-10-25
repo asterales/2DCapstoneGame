@@ -4,22 +4,31 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class TutorialController : PreBattleController {
+	public bool isBeforeDeployment;
+	private TutorialInfo info;
+	
 	public Sprite selectionSprite;
 	public RuntimeAnimatorController animation;
-	public bool isBeforeDeployment;
 
 	public static Tile targetTile;
 	public static ScriptList eventsList;
 	public static GameObject selectionPromptObj;
 
+	protected override void Awake() {
+		base.Awake();
+		info = GetComponent<TutorialInfo>();
+	}
+
 	public override void StartPreBattlePhase() {
-		Debug.Log("Starting Tutorial");
-		base.StartPreBattlePhase();
-		InitSelectionPrompt();
-		eventsList = GameObject.Find("ScriptedEvents").GetComponent<ScriptList>();
-		Character tutorialAdvisor = Character.characters[2]; // Colonel Schmidt
-		eventsList.dialogueMgr.SetSpeaker(tutorialAdvisor, 7);
-		eventsList.StartEvents();
+		if (!info.HasBeenCompleted()) {
+			base.StartPreBattlePhase();
+			InitSelectionPrompt();
+			eventsList = GameObject.Find("ScriptedEvents").GetComponent<ScriptList>();
+			eventsList.dialogueMgr.SetSpeaker(info.tutorialAdvisor, info.advisorPortraitIndex);
+			eventsList.StartEvents();
+		} else {
+			base.EndPreBattlePhase();
+		}
 	}
 
 	private void InitSelectionPrompt() {
@@ -73,7 +82,6 @@ public class TutorialController : PreBattleController {
 	}
 
 	public override void EndPreBattlePhase() {
-		Debug.Log("Ending Tutorial");
 		eventsList.dialogueMgr.HideGUI();
 		HideSelectionPrompt();
 		targetTile = null;
@@ -82,6 +90,8 @@ public class TutorialController : PreBattleController {
 			player.units = scriptedAI.aiUnits.Where(p => p != null && p.IsPlayerUnit()).ToList();
 			UnitAI.playerUnits = player.units;
 		}
+		info.RegisterCompleted();
 		base.EndPreBattlePhase();
 	}
+
 }

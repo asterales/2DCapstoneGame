@@ -36,7 +36,6 @@ public class DeploymentController : PreBattleController {
 	}
 
 	public override void StartPreBattlePhase() {
-		Debug.Log("starting deployment");
 		base.StartPreBattlePhase();
 		if (deploymentTiles.Count > 0) {
 			ClearSelections();
@@ -153,7 +152,6 @@ public class DeploymentController : PreBattleController {
 	}
 
 	public override void EndPreBattlePhase() {
-		Debug.Log("Ending Deployment");
 		deploymentTiles.ForEach(d => Destroy(d.gameObject));
 		deploymentUI.SetActive(false);
 		disabledHudElements.ForEach(h => h.SetActive(true));

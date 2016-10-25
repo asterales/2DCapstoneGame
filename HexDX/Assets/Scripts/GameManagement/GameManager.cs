@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
 
 	// public for debugging in editor
 	public List<int> defeatedLevelIds;
+	public List<string> completedTutorials;
 	public List<Unit> playerAllUnits;
 	public List<Unit> activeUnits;
 	public int funds; 
