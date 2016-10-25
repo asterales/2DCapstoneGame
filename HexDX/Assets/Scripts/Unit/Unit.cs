@@ -486,6 +486,12 @@ public class Unit : MonoBehaviour {
             UnitState.SaveState(unit);
         }
     }
+
+    public List<Tile> GetAllMoveTilesInRange()
+    {
+        // to be implemented
+        return null;
+    }
 }
 
 
