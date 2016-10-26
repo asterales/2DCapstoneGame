@@ -88,6 +88,7 @@ public class LEStatEditor : MonoBehaviour {
     {
         switch(statType)
         {
+            case LEStatID.UNITNAME: break;
             case LEStatID.VETERANCY:
                 {
                     if (reference.currentVet + val > -1 && reference.currentVet + val < 4)
@@ -160,7 +161,7 @@ public class LEStatEditor : MonoBehaviour {
         text.text = statName + ": " + GetStatValue();
     }
 
-    public int GetStatValue()
+    public string GetStatValue()
     {
         if (currentInstance == null)
         {
@@ -169,39 +170,41 @@ public class LEStatEditor : MonoBehaviour {
         return GetInstanceValue();
     }
 
-    private int GetInstanceValue()
+    private string GetInstanceValue()
     {
         switch (statType)
         {
-            case LEStatID.VETERANCY: return currentInstance.instanceVeterancy;
-            case LEStatID.ATTACK: return currentSettings.baseAttack[currentInstance.GetVeterancy()] + currentInstance.instanceAttack;
-            case LEStatID.DEFENSE: return currentSettings.baseDefense[currentInstance.GetVeterancy()] + currentInstance.instanceDefense;
-            case LEStatID.HEALTH: return currentSettings.baseHealth[currentInstance.GetVeterancy()] + currentInstance.instanceHealth;
-            case LEStatID.HIGHRANGE: return currentSettings.baseHighRange[currentInstance.GetVeterancy()];
-            case LEStatID.LOWRANGE: return currentSettings.baseLowRange[currentInstance.GetVeterancy()];
-            case LEStatID.MANUVERABILITY: return currentSettings.baseManuverability[currentInstance.GetVeterancy()];
-            case LEStatID.MOVE: return currentSettings.baseMove[currentInstance.GetVeterancy()];
-            case LEStatID.POWER: return currentSettings.basePower[currentInstance.GetVeterancy()] + currentInstance.instancePower;
-            case LEStatID.RESISTANCE: return currentSettings.baseResistance[currentInstance.GetVeterancy()] + currentInstance.instanceResistance;
+            case LEStatID.UNITNAME: return currentSettings.id;
+            case LEStatID.VETERANCY: return currentInstance.instanceVeterancy + "";
+            case LEStatID.ATTACK: return currentSettings.baseAttack[currentInstance.GetVeterancy()] + currentInstance.instanceAttack + "";
+            case LEStatID.DEFENSE: return currentSettings.baseDefense[currentInstance.GetVeterancy()] + currentInstance.instanceDefense + "";
+            case LEStatID.HEALTH: return currentSettings.baseHealth[currentInstance.GetVeterancy()] + currentInstance.instanceHealth + "";
+            case LEStatID.HIGHRANGE: return currentSettings.baseHighRange[currentInstance.GetVeterancy()] + "";
+            case LEStatID.LOWRANGE: return currentSettings.baseLowRange[currentInstance.GetVeterancy()] + "";
+            case LEStatID.MANUVERABILITY: return currentSettings.baseManuverability[currentInstance.GetVeterancy()] + "";
+            case LEStatID.MOVE: return currentSettings.baseMove[currentInstance.GetVeterancy()] + "";
+            case LEStatID.POWER: return currentSettings.basePower[currentInstance.GetVeterancy()] + currentInstance.instancePower + "";
+            case LEStatID.RESISTANCE: return currentSettings.baseResistance[currentInstance.GetVeterancy()] + currentInstance.instanceResistance + "";
         }
-        return 0;
+        return "0";
     }
 
-    private int GetSettingsValue()
+    private string GetSettingsValue()
     {
         switch (statType)
         {
-            case LEStatID.VETERANCY: return reference.currentVet;
-            case LEStatID.ATTACK: return currentSettings.baseAttack[reference.currentVet];
-            case LEStatID.DEFENSE: return currentSettings.baseDefense[reference.currentVet];
-            case LEStatID.HEALTH: return currentSettings.baseHealth[reference.currentVet];
-            case LEStatID.HIGHRANGE: return currentSettings.baseHighRange[reference.currentVet];
-            case LEStatID.LOWRANGE: return currentSettings.baseLowRange[reference.currentVet];
-            case LEStatID.MANUVERABILITY: return currentSettings.baseManuverability[reference.currentVet];
-            case LEStatID.MOVE: return currentSettings.baseMove[reference.currentVet];
-            case LEStatID.POWER: return currentSettings.basePower[reference.currentVet];
-            case LEStatID.RESISTANCE: return currentSettings.baseResistance[reference.currentVet];
+            case LEStatID.UNITNAME: return currentSettings.id;
+            case LEStatID.VETERANCY: return reference.currentVet + "";
+            case LEStatID.ATTACK: return currentSettings.baseAttack[reference.currentVet] + "";
+            case LEStatID.DEFENSE: return currentSettings.baseDefense[reference.currentVet] + "";
+            case LEStatID.HEALTH: return currentSettings.baseHealth[reference.currentVet] + "";
+            case LEStatID.HIGHRANGE: return currentSettings.baseHighRange[reference.currentVet] + "";
+            case LEStatID.LOWRANGE: return currentSettings.baseLowRange[reference.currentVet] + "";
+            case LEStatID.MANUVERABILITY: return currentSettings.baseManuverability[reference.currentVet] + "";
+            case LEStatID.MOVE: return currentSettings.baseMove[reference.currentVet] + "";
+            case LEStatID.POWER: return currentSettings.basePower[reference.currentVet] + "";
+            case LEStatID.RESISTANCE: return currentSettings.baseResistance[reference.currentVet] + "";
         }
-        return 0;
+        return "0";
     }
 }

@@ -1,5 +1,6 @@
 ﻿public enum LEStatID
 {
+    UNITNAME,
     VETERANCY,
     HEALTH,
     ATTACK,

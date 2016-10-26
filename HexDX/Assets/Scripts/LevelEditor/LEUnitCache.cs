@@ -33,7 +33,7 @@ public class LEUnitCache : MonoBehaviour
     private void LoadInUnitsFromResources()
     {
         // get all the directories for the units
-        string path = "Assets\\Resources\\EditorSprites\\Units";
+        string path = "Assets/Resources/EditorSprites/Units";
         string[] directories = Directory.GetDirectories(path);
 
         // each unit will have its own directory
@@ -89,7 +89,7 @@ public class LEUnitCache : MonoBehaviour
         {
             settingsFile = settingsFile.Remove(settingsFile.IndexOf('.'));
             TextAsset settings = Resources.Load(settingsFile) as TextAsset;
-            unit.InitializeFromText(settings.text, "Assets\\Resources\\"+settingsFile);
+            unit.InitializeFromText(settings.text, "Assets/Resources/"+settingsFile);
         }
         else
         {
@@ -100,7 +100,6 @@ public class LEUnitCache : MonoBehaviour
     private void ReadSpritesForUnit(LEUnitSettings unit, string[] files)
     {
         List<string> imageFiles = new List<string>();
-        Debug.Log("FILES:: " + files.Length);
         for (int i = 0; i < files.Length; i++)
         {
             if (files[i].Substring(files[i].Length - 4, 4) == ".png")
@@ -108,7 +107,6 @@ public class LEUnitCache : MonoBehaviour
                 imageFiles.Add(files[i]);
             }
         }
-        Debug.Log("IMAGE FILES:: " + imageFiles.Count);
         for (int i = 0; i < imageFiles.Count; i++)
         {
             if (imageFiles[i].Substring(imageFiles[i].Length - 4, 4) == ".png")
@@ -124,21 +122,9 @@ public class LEUnitCache : MonoBehaviour
 
     public LEUnitSettings GetSettingsForId(string id)
     {
-        //LEUnitSettings test = unitSettings[2];
-        //for (int i = 0; i < test.id.Length && i < id.Length; i++)
-        //{
-        //    if (test.id[i] != id[i])
-        //    {
-        //        throw new Exception("Difference at character: " + i + 1);
-        //    }
-        //}
-        //Debug.Log(id.Substring(0, id.Length - 2));
-        //Debug.Log(id.Substring(0, test.id.Length - 2));
         for (int i=0;i<unitSettings.Count;i++)
         {
-            //Debug.Log(id + " :: " + unitSettings[i].id + " :: " + string.Compare(unitSettings[i].id, id));
             if (string.Compare(unitSettings[i].id, id) == 0)
-            //if (unitSettings[i].id.Equals(id))
             {
                 return unitSettings[i];
             }
