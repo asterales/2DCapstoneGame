@@ -173,7 +173,7 @@ public class LEUnitInstance : MonoBehaviour {
         instancePower = pow - baseSettings.BasePower(instanceVeterancy);
         instanceAttack = atk - baseSettings.BaseAttack(instanceVeterancy);
         instanceDefense = def - baseSettings.BaseDefense(instanceVeterancy);
-        instanceResistance = res - baseSettings.BaseDefense(instanceVeterancy);
+        instanceResistance = res - baseSettings.BaseResistance(instanceVeterancy);
         direction = dir;
     }
 }
