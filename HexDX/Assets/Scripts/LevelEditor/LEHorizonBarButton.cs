@@ -66,7 +66,7 @@ public class LEHorizonBarButton : MonoBehaviour {
         color = spriteRenderer.color;
         spriteRenderer.color = new Color(color.r, color.g, color.b, 0.0f);
         Vector3 currentPos = this.transform.position;
-        this.transform.position = new Vector3(currentPos.x, currentPos.y, 4.0f);
+        this.transform.position = new Vector3(currentPos.x, currentPos.y, 20.0f);
         currentIndex = -1;
     }
 }
