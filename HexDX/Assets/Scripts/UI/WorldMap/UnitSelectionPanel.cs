@@ -19,20 +19,8 @@ public class UnitSelectionPanel : WorldMapPopupPanel {
 		inactiveUnitsDisplay = transform.Find("Inactive Units").GetComponent<InactiveArmyDisplay>();
 	}
 
-	void Start() {
-		AddMouseHandlerToPanels(activeUnitsDisplay);
-		AddMouseHandlerToPanels(inactiveUnitsDisplay);
-	}
-
 	void Update() {
 		saveButton.interactable = activeUnitsDisplay.HasUnits();
-	}
-
-	private void AddMouseHandlerToPanels(ArmyDisplay armyDisplay) {
-		foreach(UnitDisplay panel in armyDisplay.unitPanels) {
-			UnitSelectionMouseHandler mouseHandler = panel.gameObject.AddComponent<UnitSelectionMouseHandler>();
-			mouseHandler.selectionPanel = this;
-		}
 	}
 
 	private void InitSaveButton() {

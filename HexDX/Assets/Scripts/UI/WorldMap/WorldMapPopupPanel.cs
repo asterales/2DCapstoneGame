@@ -3,8 +3,10 @@ using UnityEngine.UI;
 
 public abstract class WorldMapPopupPanel : MonoBehaviour {
 	private Button backButton;
+	public bool isActive;
 
 	protected virtual void Awake() {
+		isActive = true;
 		InitBackButton();
 	}
 
@@ -14,10 +16,12 @@ public abstract class WorldMapPopupPanel : MonoBehaviour {
 	}
 
 	public virtual void Hide() {
+		isActive = false;
 		gameObject.SetActive(false);
 	}
 
 	public virtual void Show() {
+		isActive = true;
 		gameObject.SetActive(true);
 	}
 }
