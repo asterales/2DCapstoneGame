@@ -3,8 +3,8 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 public class ScriptList : MonoBehaviour {
-    public static readonly Color highlightColor = new Color(1f, 0.4f, 0.4f);
-    
+    public static readonly Color highlightColor = new Color(1f, 0.84f, 0.87f);
+
     public GameDialogueManager dialogueMgr;
     public List<ScriptEvent> scriptedEvents; // to be done in order and set in UI
     private int currentEvent;
