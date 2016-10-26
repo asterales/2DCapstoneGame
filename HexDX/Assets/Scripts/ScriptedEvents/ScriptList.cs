@@ -22,7 +22,9 @@ public class ScriptList : MonoBehaviour {
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode){
-        dialogueMgr = FindObjectOfType(typeof(GameDialogueManager)) as GameDialogueManager;
+        if (!dialogueMgr) {
+            dialogueMgr = FindObjectOfType(typeof(GameDialogueManager)) as GameDialogueManager;
+        }
     }
 
     public void StartEvents() {

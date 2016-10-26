@@ -24,6 +24,9 @@ public class TutorialController : PreBattleController {
 			base.StartPreBattlePhase();
 			InitSelectionPrompt();
 			eventsList = GameObject.Find("ScriptedEvents").GetComponent<ScriptList>();
+			if(!eventsList.dialogueMgr) {
+				eventsList.dialogueMgr = FindObjectOfType(typeof(GameDialogueManager)) as GameDialogueManager;
+			}
 			eventsList.dialogueMgr.SetSpeaker(info.tutorialAdvisor, info.advisorPortraitIndex);
 			eventsList.StartEvents();
 		} else {

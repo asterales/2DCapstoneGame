@@ -60,7 +60,7 @@ public class LevelManager : MonoBehaviour {
 		MapLoader mapLoader = FindObjectOfType(typeof(MapLoader)) as MapLoader;
 		if (mapLoader) {
 			mapLoader.csvMapFile = mapFileName;
-			if (tutorialObjs) {
+			if (tutorialObjs) {				
 				tutorialObjs.SetActive(true);
 			}
 		} else if (returnedToWorldMap) {
