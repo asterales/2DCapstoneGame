@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditorInternal;
 using MovementEffects;
 
 public class MapLoader : MonoBehaviour {

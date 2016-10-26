@@ -13,6 +13,7 @@ public class ScriptedEndTurn : ScriptEvent {
 
     public override void DoPlayerEvent() {
         SelectionController.mode = SelectionMode.ScriptedPlayerEndTurn;
+        Camera.main.transform.GetChild(0).FindChild("EndTurnButton").gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
     }
 
     public override void DoEvent() {
@@ -21,6 +22,7 @@ public class ScriptedEndTurn : ScriptEvent {
 
     public override void FinishEvent(){
         if(isPlayerEvent){
+            Camera.main.transform.GetChild(0).Find("EndTurnButton").gameObject.GetComponent<SpriteRenderer>().color = Color.white;
             player.EndTurn();
             scriptedAI.StartTurn();
         } else {
