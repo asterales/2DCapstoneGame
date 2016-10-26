@@ -24,7 +24,7 @@ public class WorldMapTutorial : MonoBehaviour {
 			eventsList.dialogueMgr.SetSpeaker(info.tutorialAdvisor, info.advisorPortraitIndex);
 			eventsList.StartEvents();
 		} else {
-			enabled = false;
+			gameObject.SetActive(false);
 		}
 	}
 
@@ -43,6 +43,7 @@ public class WorldMapTutorial : MonoBehaviour {
 				disabledButtons.ForEach(b => b.enabled = true);
 				worldMap.territories.ForEach(t => t.clickDisabled = false);
 				info.RegisterCompleted();
+				gameObject.SetActive(false);
 			}
 		}
 	}
