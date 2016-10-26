@@ -56,8 +56,8 @@ public class RecruitingPanel : WorldMapPopupPanel {
 			selectedListing = listing;
 			if (selectedListing) {
 				statDisplay.DisplayUnit(selectedListing.unitPanel.unit);
-				descriptionText.text = selectedListing.unitPanel.unit.unitStats.className + "\nCost: " + selectedListing.cost;
-				recruitButtonText.text = "Recruit (Cost: " + selectedListing.cost + ")";
+				descriptionText.text = selectedListing.unitPanel.unit.unitStats.className + "\nCost: " + selectedListing.cost + " gold";
+				recruitButtonText.text = "Recruit\n(Cost: " + selectedListing.cost + ")";
 			} else {
 				statDisplay.ClearDisplay();
 				descriptionText.text = "";
@@ -73,7 +73,7 @@ public class RecruitingPanel : WorldMapPopupPanel {
 
 	protected virtual void Update() {
 		recruitButton.interactable = CanPurchase();
-		fundsText.text = "Current Funds: " + GameManager.instance.funds;
+		fundsText.text = GameManager.instance.funds + " gold";
 	}
 
 }
