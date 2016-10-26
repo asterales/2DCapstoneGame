@@ -8,7 +8,7 @@ public class EndTurn : MonoBehaviour {
     void Start()
     {
         battleController = BattleControllerManager.instance.battleController; //hack until figure out if static or manually attach
-        spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void OnMouseDown()

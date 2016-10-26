@@ -14,7 +14,7 @@ public class TileStats : MonoBehaviour {
 	public string DisplayString { get; private set; }
 
 	void Awake() {
-		if (!gameObject.GetComponent<Tile>().pathable) {
+		if (!GetComponent<Tile>().pathable) {
 			mvtDifficulty = MovementDifficulty.Unpathable;
 		}
 

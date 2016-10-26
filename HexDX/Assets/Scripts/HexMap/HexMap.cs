@@ -15,7 +15,7 @@ public class HexMap : MonoBehaviour {
         };
 
     void Awake() {
-        hexDimension = this.gameObject.GetComponent<HexDimension>();
+        hexDimension = GetComponent<HexDimension>();
         mapArray = new List<List<Tile>>();
         showingAttackTiles = new Stack<Tile>();
         showingMovementTiles = new Stack<Tile>();

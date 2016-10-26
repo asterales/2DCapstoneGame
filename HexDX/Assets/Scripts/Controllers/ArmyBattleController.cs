@@ -9,7 +9,7 @@ public abstract class ArmyBattleController : MonoBehaviour {
 	public abstract void InitUnitList();
 
 	protected virtual void Awake() {
-		battleController = gameObject.GetComponent<BattleController>();
+		battleController = GetComponent<BattleController>();
 	}
 
 	protected virtual void Start() {

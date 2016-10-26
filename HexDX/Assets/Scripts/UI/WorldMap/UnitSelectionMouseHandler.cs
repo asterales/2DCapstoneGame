@@ -7,7 +7,7 @@ public class UnitSelectionMouseHandler : MonoBehaviour, IPointerClickHandler, IP
 	public UnitDisplay displayPanel;
 
 	void Awake() {
-		displayPanel = gameObject.GetComponent<UnitDisplay>();
+		displayPanel = GetComponent<UnitDisplay>();
 	}
 
 	public void OnPointerClick(PointerEventData eventData) {

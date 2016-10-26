@@ -13,8 +13,8 @@ public class Tile : MonoBehaviour {
     private GameObject attackTile;
 
     public void Awake() {
-        tileStats = this.gameObject.GetComponent<TileStats>();
-        position = this.gameObject.GetComponent<TileLocation>();
+        tileStats = GetComponent<TileStats>();
+        position = GetComponent<TileLocation>();
         InitMovementTile();
         InitAttackTile();
         //InitOutline();

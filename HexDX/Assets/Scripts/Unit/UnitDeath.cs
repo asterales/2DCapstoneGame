@@ -8,8 +8,8 @@ public class UnitDeath : MonoBehaviour {
     private float fadeOut = .8333f;
 	// Use this for initialization
 	void Start () {
-        spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
-        GameObject.Destroy(this.gameObject.GetComponent<Unit>());
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        GameObject.Destroy(GetComponent<Unit>());
 	}
 	
 	// Update is called once per frame

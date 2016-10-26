@@ -14,7 +14,7 @@ public class RecruitListing : MonoBehaviour, IPointerClickHandler {
 	public OnClick onClickCallback;
 
 	void Awake() {
-		unitPanel = gameObject.GetComponent<UnitDisplay>();
+		unitPanel = GetComponent<UnitDisplay>();
 		unitClass = unitClass.Trim();
 		unitObj = InstantiateRecruit();
 		if (unitObj != null) {

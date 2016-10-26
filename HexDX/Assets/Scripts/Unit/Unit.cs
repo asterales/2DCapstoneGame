@@ -56,11 +56,11 @@ public class Unit : MonoBehaviour {
     public int Resistance { get { return unitStats.resistance + (currentTile ? currentTile.tileStats.resistanceModifier : 0); } }
 
     void Awake() {
-        unitStats = this.gameObject.GetComponent<UnitStats>();
-        facingBonus = this.gameObject.GetComponent<UnitFacing>();
-        sprites = this.gameObject.GetComponent<UnitSprites>();
-        sounds = this.gameObject.GetComponent<UnitSounds>();
-        audioSource = this.gameObject.GetComponent<AudioSource>();
+        unitStats = GetComponent<UnitStats>();
+        facingBonus = GetComponent<UnitFacing>();
+        sprites = GetComponent<UnitSprites>();
+        sounds = GetComponent<UnitSounds>();
+        audioSource = GetComponent<AudioSource>();
         path = new Queue<Tile>();
 
         //veterancy images
@@ -79,8 +79,8 @@ public class Unit : MonoBehaviour {
 
         facing = 0;
 
-        spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
-        animator = this.gameObject.GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
 
         scriptedMove = null;
 
@@ -255,11 +255,11 @@ public class Unit : MonoBehaviour {
     public void DrawVeterancy()
     {
         SpriteRenderer b1, b2, b3, b4, b5;
-        b1 = v1.gameObject.GetComponent<SpriteRenderer>();
-        b2 = v2.gameObject.GetComponent<SpriteRenderer>();
-        b3 = v3.gameObject.GetComponent<SpriteRenderer>();
-        b4 = v4.gameObject.GetComponent<SpriteRenderer>();
-        b5 = v5.gameObject.GetComponent<SpriteRenderer>();
+        b1 = v1.GetComponent<SpriteRenderer>();
+        b2 = v2.GetComponent<SpriteRenderer>();
+        b3 = v3.GetComponent<SpriteRenderer>();
+        b4 = v4.GetComponent<SpriteRenderer>();
+        b5 = v5.GetComponent<SpriteRenderer>();
         if (IsPlayerUnit())
         {
             switch (Veterancy)
@@ -633,7 +633,7 @@ public class Unit : MonoBehaviour {
     }
 
     public bool IsPlayerUnit() {
-        return gameObject.GetComponent<UnitAI>() == null;
+        return GetComponent<UnitAI>() == null;
     }
 
     public static void SaveAllStates()

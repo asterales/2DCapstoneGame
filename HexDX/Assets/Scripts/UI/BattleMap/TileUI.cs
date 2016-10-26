@@ -16,7 +16,7 @@ public class TileUI : MonoBehaviour {
 	void Update () {
 	    if (SelectionController.selectedTile != null) {
             tileImage.enabled = true;
-            tileImage.sprite = SelectionController.selectedTile.gameObject.GetComponent<SpriteRenderer>().sprite;
+            tileImage.sprite = SelectionController.selectedTile.GetComponent<SpriteRenderer>().sprite;
             tileInfo.text = SelectionController.selectedTile.tileStats.DisplayString;
         }
     }

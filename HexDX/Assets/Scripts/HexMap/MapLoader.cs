@@ -13,8 +13,8 @@ public class MapLoader : MonoBehaviour {
     private HexDimension hexDimension;
 
     void Awake() {
-        battleMap = this.gameObject.GetComponent<HexMap>();
-        hexDimension = this.gameObject.GetComponent<HexDimension>();
+        battleMap = GetComponent<HexMap>();
+        hexDimension = GetComponent<HexDimension>();
 
         ////// DEBUG CODE //////
         if (battleMap == null) {
@@ -59,7 +59,7 @@ public class MapLoader : MonoBehaviour {
             }
         }
 
-        if (scriptedAI) {
+        if (scriptedAI) { //hard coded, change latter
             AddUnitToTile(5, 5, scriptedAI.aiUnits[0], false, new Vector3(1, 0, 0));
             AddUnitToTile(10, 4, scriptedAI.aiUnits[1], false, new Vector3(0, 1, 0));
             AddUnitToTile(6, 6, scriptedAI.aiUnits[2], false, new Vector3(0, 1, 0));
@@ -135,9 +135,9 @@ public class MapLoader : MonoBehaviour {
     private IEnumerator<float> OffsetTile(Tile tile, float t)
     {
         yield return Timing.WaitForSeconds(t);
-         RuntimeAnimatorController controller =tile.gameObject.GetComponent<Animator>().runtimeAnimatorController;
-        tile.gameObject.GetComponent<Animator>().runtimeAnimatorController = tile.animations[(tile.animations.IndexOf(controller)+1)%tile.animations.Count];
-        tile.gameObject.GetComponent<Animator>().runtimeAnimatorController = controller;
+        RuntimeAnimatorController controller =tile.GetComponent<Animator>().runtimeAnimatorController;
+        tile.GetComponent<Animator>().runtimeAnimatorController = tile.animations[(tile.animations.IndexOf(controller)+1)%tile.animations.Count];
+        tile.GetComponent<Animator>().runtimeAnimatorController = controller;
     }
 
     private void LoadEnemyUnits(string[] mapCvsLines, int startLineIndex, int numUnits) {

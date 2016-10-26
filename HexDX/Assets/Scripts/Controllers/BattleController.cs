@@ -22,9 +22,9 @@ public class BattleController : MonoBehaviour {
     void Awake () {
         PlayerBattleController.menuItem = actionMenuItem;
         PlayerBattleController.menuItemHovered = actionMenuItemHover;
-        ai = this.gameObject.GetComponent<AIBattleController>();
-        player = this.gameObject.GetComponent<PlayerBattleController>();
-        victoryCondition = this.gameObject.GetComponent<VictoryCondition>();
+        ai = GetComponent<AIBattleController>();
+        player = GetComponent<PlayerBattleController>();
+        victoryCondition = GetComponent<VictoryCondition>();
         ////// DEBUG CODE //////
         if (ai == null) {
             Debug.Log("Error :: AI Battle Controller not defined -> BattleController.cs");

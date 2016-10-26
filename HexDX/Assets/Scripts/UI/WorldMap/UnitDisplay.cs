@@ -9,7 +9,7 @@ public class UnitDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
 	void Awake() {
 		spriteColor = Color.white;
-		unitPanel = gameObject.GetComponent<Image>();
+		unitPanel = GetComponent<Image>();
 	}
 
 	void Update() {

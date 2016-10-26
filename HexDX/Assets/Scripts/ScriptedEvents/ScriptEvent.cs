@@ -8,7 +8,7 @@ public abstract class ScriptEvent : MonoBehaviour {
     public List<string> instructions;
 
 	void Awake () {
-        list = this.gameObject.GetComponentInParent<ScriptList>();
+        list = GetComponentInParent<ScriptList>();
         ////// DEBUG CODE //////
         if (list == null)
         {
