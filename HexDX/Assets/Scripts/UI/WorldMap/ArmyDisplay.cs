@@ -30,10 +30,6 @@ public abstract class ArmyDisplay : MonoBehaviour {
 		return unitPanels.FirstOrDefault(u => u.unit == null);
 	}
 
-	public bool HasUnits() {
-		return unitPanels.Where(p => p.unit != null).ToList().Count > 0;
-	}
-
 	public List<Unit> GetUnits() {
 		return unitPanels.Where(p => p.unit != null).Select(p => p.unit).ToList();
 	}

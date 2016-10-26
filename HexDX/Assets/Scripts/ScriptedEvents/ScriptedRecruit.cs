@@ -25,6 +25,7 @@ public class ScriptedRecruit : ScriptEvent {
 	}
 
 	private void OnClick() {
+		recruitButton.onClick.RemoveListener(OnClick);
 		changeArmyPanelButton.interactable = true;
 		recruitButton.GetComponent<Image>().color = Color.white;
 		recruitPanelButton.GetComponent<Image>().color = Color.white;

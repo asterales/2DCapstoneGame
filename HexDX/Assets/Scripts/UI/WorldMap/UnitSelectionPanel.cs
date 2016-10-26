@@ -9,6 +9,7 @@ public class UnitSelectionPanel : WorldMapPopupPanel {
 	public InactiveArmyDisplay inactiveUnitsDisplay;
 	public ActiveArmyDisplay worldMapActiveArmyDisplay;
 	public UnitStatDisplay statDisplay;
+	public int minArmySize;
 	private Button saveButton;
 
 	protected override void Awake() {
@@ -17,10 +18,11 @@ public class UnitSelectionPanel : WorldMapPopupPanel {
 		statDisplay = transform.Find("Stats Panel").GetComponent<UnitStatDisplay>();
 		activeUnitsDisplay = transform.Find("Active Units").GetComponent<ActiveArmyDisplay>();
 		inactiveUnitsDisplay = transform.Find("Inactive Units").GetComponent<InactiveArmyDisplay>();
+		minArmySize = GameManager.MIN_ARMY_SIZE;
 	}
 
 	void Update() {
-		saveButton.interactable = activeUnitsDisplay.HasUnits();
+		saveButton.interactable = activeUnitsDisplay.GetUnits().Count >= minArmySize;
 	}
 
 	private void InitSaveButton() {
