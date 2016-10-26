@@ -3,11 +3,8 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ScriptedArmySelection : ScriptEvent {
+public class ScriptedArmySelection : ScriptedButtonPress {
 	// set up to make player move one unit over from inactive panel
-	public Button changeArmyPanelButton;
-	public Button recruitPanelButton;
-	public Button saveButton;
 	public UnitSelectionPanel panel;
 	public int minNumActiveUnits;
 
@@ -15,18 +12,12 @@ public class ScriptedArmySelection : ScriptEvent {
     	if (minNumActiveUnits > GameManager.instance.playerAllUnits.Count) {
     		Debug.Log("Target number of units is greater than number of available units! - ScriptedArmySelection.cs");
     	}
-    	recruitPanelButton.interactable = false;
-    	changeArmyPanelButton.GetComponent<Image>().color = ScriptList.highlightColor;
-    	saveButton.onClick.AddListener(OnSave);
+        base.DoPlayerEvent();
     }
 
-    private void OnSave() {
-    	saveButton.onClick.RemoveListener(OnSave);
-    	saveButton.GetComponent<Image>().color = Color.white;
-    	recruitPanelButton.interactable = true;
-    	panel.minArmySize = GameManager.MIN_ARMY_SIZE;
-    	changeArmyPanelButton.GetComponent<Image>().color = Color.white;
-    	FinishEvent();
+    protected override void OnClick() {
+        panel.minArmySize = GameManager.MIN_ARMY_SIZE;
+        base.OnClick();
     }
 
     void Update() {
@@ -35,15 +26,15 @@ public class ScriptedArmySelection : ScriptEvent {
     			panel.minArmySize = minNumActiveUnits;
     		} else {
     			if(panel.activeUnitsDisplay.GetUnits().Count >= minNumActiveUnits) {
-		    		saveButton.GetComponent<Image>().color = ScriptList.highlightColor;
+		    		mainButton.GetComponent<Image>().color = ScriptList.highlightColor;
 		    	} else {
-		    		saveButton.GetComponent<Image>().color = Color.white;
+		    		mainButton.GetComponent<Image>().color = Color.white;
 		    	}
     		}
     	}
     }
 
     public override void DoEvent() {
-    	FinishEvent();
+        FinishEvent();
     }
 }	
