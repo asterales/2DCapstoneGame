@@ -11,14 +11,25 @@ public class PlayerUIDrawer : MonoBehaviour {
     public static Image defensebar;
     public static Image powerbar;
     public static Image resistbar;
-	// Use this for initialization
-	void Start () {
+    public static Text hp;
+    public static Text attack;
+    public static Text defense;
+    public static Text power;
+    public static Text resist;
+    // Use this for initialization
+    void Start () {
         healthbar = transform.Find("HealthBar").GetComponent<Image>();
         portrait = transform.Find("Portrait").GetComponent<Image>();
         attackbar = transform.Find("AttackBar").GetComponent<Image>();
         defensebar = transform.Find("DefenseBar").GetComponent<Image>();
         powerbar = transform.Find("PowerBar").GetComponent<Image>();
         resistbar = transform.Find("ResistBar").GetComponent<Image>();
+        portrait = transform.Find("Portrait").GetComponent<Image>();
+        hp = transform.Find("HP").GetComponent<Text>();
+        attack = transform.Find("Attack").GetComponent<Text>();
+        defense = transform.Find("Defense").GetComponent<Text>();
+        power = transform.Find("Power").GetComponent<Text>();
+        resist = transform.Find("Resist").GetComponent<Text>();
     }
 	
 	// Update is called once per frame
@@ -46,6 +57,11 @@ public class PlayerUIDrawer : MonoBehaviour {
             defensebar.fillAmount = (float)unit.Defense / (float)UnitStats.maxDefense;
             powerbar.fillAmount = (float)unit.Power / (float)UnitStats.maxPower;
             resistbar.fillAmount = (float)unit.Resistance / (float)UnitStats.maxResistance;
+            hp.text = unit.Health + "/" + unit.MaxHealth;
+            attack.text = ""+unit.Attack;
+            defense.text = "" + unit.Defense;
+            power.text = "" + unit.Power;
+            resist.text = "" + unit.Resistance;
         }
         else
         {
@@ -55,6 +71,11 @@ public class PlayerUIDrawer : MonoBehaviour {
             defensebar.fillAmount = 0;
             powerbar.fillAmount = 0;
             resistbar.fillAmount = 0;
+            hp.text = "";
+            attack.text = "";
+            defense.text = "";
+            power.text = "";
+            resist.text = "";
         }
     }
 
