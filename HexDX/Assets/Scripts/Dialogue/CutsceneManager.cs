@@ -43,7 +43,11 @@ public class CutsceneManager : DialogueManager {
 	protected override void Update() {
 		if (dialogues.Count == 0 && SpeakerLinesFinished() && Input.GetMouseButtonDown(0) && !nextSceneLoaded) {
 			nextSceneLoaded = true; // prevents spam clicks from skipping scenes
-			LevelManager.LoadNextScene();
+			if (LevelManager.activeInstance) {
+				LevelManager.activeInstance.NextScene();
+			} else {
+				Debug.Log("No active evel manager set");
+			}
 		} else {
 			base.Update();
 		}

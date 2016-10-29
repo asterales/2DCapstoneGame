@@ -19,7 +19,7 @@ public class EndBattleBanner : MonoBehaviour {
 
 	public void ShowWin() {
 		Debug.Log("Player Wins!");
-		LevelManager lm = FindObjectOfType(typeof(LevelManager)) as LevelManager;
+		LevelManager lm = LevelManager.activeInstance;
 		if (lm) {
 			winningsBox.GetComponentInChildren<Text>().text = "You won " + lm.moneyRewarded + " gold!";
 		} else {

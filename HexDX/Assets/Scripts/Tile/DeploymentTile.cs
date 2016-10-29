@@ -16,6 +16,9 @@ public class DeploymentTile : MonoBehaviour {
 
 	private void SelectUnit() {
 		if (tile.currentUnit) {
+			if (SelectionController.selectedUnit) {
+				SelectionController.selectedUnit.MakeOpen();
+			}
 			SelectionController.selectedUnit = tile.currentUnit;
 		}
 	}
@@ -26,7 +29,8 @@ public class DeploymentTile : MonoBehaviour {
 			if (tile.currentUnit != SelectionController.selectedUnit) {
 				DeploymentController.SetSelectedUnitDestination(tile);
 			} else {
-				SelectionController.selectedUnit.MakeFacing();
+				SelectionController.selectedUnit.MakeOpen();
+				SelectionController.selectedUnit = null;
 			}
 		}
 	}

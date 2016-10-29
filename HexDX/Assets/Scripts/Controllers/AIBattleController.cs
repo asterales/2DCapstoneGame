@@ -68,6 +68,7 @@ public class AIBattleController : ArmyBattleController {
 
     public override void StartTurn() {
         //Debug.Log("number of units" + units.Count);
+        Debug.Log("Starting AI Turn");
         currentUnitIndex = 0;
         SelectionController.mode = SelectionMode.AITurn;
         base.StartTurn();

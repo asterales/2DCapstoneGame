@@ -28,6 +28,10 @@ public class MapLoader : MonoBehaviour {
 
     void Start() {
         if (battleMap != null && hexDimension != null) {
+            LevelManager lm = LevelManager.activeInstance;
+            if (lm) {
+                csvMapFile = lm.mapFileName;
+            }
             LoadHexMap(csvMapFile);
             Debug.Log("Finished Loading Map");
         }
@@ -180,14 +184,35 @@ public class MapLoader : MonoBehaviour {
 
     private void LoadDeploymentZone(string[] mapCvsLines, int startLineIndex, int numDep) {
         //Debug.Log("Number Of Deployment Zones :: " + numDep);
-        DeploymentController deployController = BattleControllerManager.instance.deploymentController;
-        if (deployController != null && deployController.enabled) {
-            for (int i = 0; i < numDep; i++) {
-                string[] data = mapCvsLines[startLineIndex + i].Split(',');
-                int depRow = Convert.ToInt32(data[0]);
-                int depCol = Convert.ToInt32(data[1]);
-                deployController.AddDeploymentTile(depRow, depCol);
+        // Read deployment tiles
+        List<Tile> deployZone = new List<Tile>();
+        for (int i = 0; i < numDep; i++) {
+            string[] data = mapCvsLines[startLineIndex + i].Split(',');
+            int depRow = Convert.ToInt32(data[0]);
+            int depCol = Convert.ToInt32(data[1]);
+            deployZone.Add(HexMap.mapArray[depRow][depCol]);
+        }
+
+        List<Unit> activeUnits = GameManager.instance.activeUnits;
+        if (activeUnits != null && deployZone.Count > 0) {
+            int limit = activeUnits.Count;
+            if (limit > deployZone.Count) {
+                Debug.Log("Warning: Fewer deployent tiles then active units. Loading fewer units than in active army.");
+                limit = deployZone.Count;
             }
+
+            // Add units to deployment tiles
+            for(int i = 0; i < limit; i++) {
+                activeUnits[i].SetTile(deployZone[i]);
+            }
+
+            // Pass tiles to deployment controller
+            DeploymentController deployController = BattleControllerManager.instance.deploymentController;
+            if (deployController) {
+                deployController.LoadDeploymentTiles(deployZone);
+            }
+        } else {
+            Debug.Log("Either no active units or deployment tiles registered.");
         }
     }
 }

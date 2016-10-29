@@ -4,6 +4,7 @@ using System.Collections;
 using System.Linq;
 
 public class WorldMap : MonoBehaviour {
+	public Territory rootTerritory;
 	public List<Territory> territories;
 
 	void Start() {
@@ -11,6 +12,7 @@ public class WorldMap : MonoBehaviour {
 	}
 
 	private void InitTerritoryActivity() {
+		rootTerritory.active = true;
 		territories = GetComponentsInChildren<Territory>().ToList();
 		GameManager gm = GameManager.instance;
 		foreach(Territory t in territories) {

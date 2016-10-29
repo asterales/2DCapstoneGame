@@ -13,15 +13,16 @@ public class LevelManager : MonoBehaviour {
 	private static readonly string battleSceneName = "TestScene";
 	private static readonly string worldMapSceneName = "WorldMap";
 
+	public static LevelManager activeInstance;
+
 	// Level scene management
 	public int levelId;
 	public string mapFileName;
 	public int moneyRewarded;
-	private GameObject tutorialObjs; // for levels with tutorial stuff
+	public GameObject tutorialObjs; // for levels with tutorial stuff
 
 	private bool levelStarted;
 	private bool returnedToWorldMap;
-	private static LevelManager activeInstance;
 
 	// For fading transition effect
 	public Texture2D loadingGraphic;
@@ -59,7 +60,6 @@ public class LevelManager : MonoBehaviour {
 		BeginFade(FadeDirection.In);
 		MapLoader mapLoader = FindObjectOfType(typeof(MapLoader)) as MapLoader;
 		if (mapLoader) {
-			mapLoader.csvMapFile = mapFileName;
 			if (tutorialObjs) {				
 				tutorialObjs.SetActive(true);
 			}
@@ -68,16 +68,7 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	// Load next scene of active level
-	public static void LoadNextScene() {
-        if (activeInstance != null) {
-            activeInstance.NextScene();
-        } else {
-            Debug.Log("No active level loader set");	
-        } 
-	}
-
-	public static void RegisterVictory(bool victory) {
+	public void RegisterVictory(bool victory) {
 		if (activeInstance != null && victory) {
 			GameManager gm = GameManager.instance;
 			if (!gm.defeatedLevelIds.Contains(activeInstance.levelId)) {
@@ -116,7 +107,7 @@ public class LevelManager : MonoBehaviour {
 		DontDestroyOnLoad(gameObject);
 	}
 
-	private void NextScene() {
+	public void NextScene() {
 		if (!levelStarted) {
 			StartLevel();
 		} else {

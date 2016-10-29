@@ -101,6 +101,7 @@ public class PlayerBattleController : ArmyBattleController {
     }
 
     public override void StartTurn() {
+        Debug.Log("Starting Player Turn");
         SelectionController.mode = SelectionMode.Open;
         base.StartTurn();
     }

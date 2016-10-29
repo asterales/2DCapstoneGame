@@ -71,12 +71,10 @@ public class BattleController : MonoBehaviour {
             player.EndTurn();
             IsPlayerTurn = false;
             ai.StartTurn();
-            Debug.Log("BattleController - Starting AI Turn");
         } else {
             ai.EndTurn();
             player.StartTurn();
             IsPlayerTurn = true;
-            Debug.Log("BattleController - Starting Player Turn");
         }
     }
     
@@ -87,11 +85,14 @@ public class BattleController : MonoBehaviour {
     }
 
     private void LoadNextScene() {
-        LevelManager.RegisterVictory(victoryCondition.Achieved());
-        if (victoryCondition.Achieved()) {
-            LevelManager.LoadNextScene();
-        } else if (player.IsAnnihilated()) {
-            LevelManager.ReturnToWorldMap();
+        LevelManager lm = LevelManager.activeInstance;
+        if (lm) {
+            lm.RegisterVictory(victoryCondition.Achieved());
+            if (victoryCondition.Achieved()) {
+                lm.NextScene();
+            } else if (player.IsAnnihilated()) {
+                LevelManager.ReturnToWorldMap();
+            }
         }
     }
 }

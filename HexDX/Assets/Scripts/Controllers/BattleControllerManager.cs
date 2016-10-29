@@ -21,14 +21,21 @@ public class BattleControllerManager : MonoBehaviour {
 	public AIBattleController ai;
 	public ScriptedAIBattleController scriptedAI;
 
-
 	void Awake() {
 		if (instance == null) {
 			instance = this;
+			GetDefaultControllers();
 			SceneManager.sceneLoaded += OnBattleSceneLoaded;
 		} else if (instance != this) {
 			Destroy(gameObject);
 		}
+	}
+
+	private void GetDefaultControllers() {
+		battleController = battleController != null ? battleController : FindObjectOfType(typeof(BattleController)) as BattleController;
+		player = player != null ? player : FindObjectOfType(typeof(PlayerBattleController)) as PlayerBattleController;
+		ai = ai != null ? ai : FindObjectOfType(typeof(AIBattleController)) as AIBattleController;
+		deploymentController = deploymentController != null ? deploymentController : FindObjectOfType(typeof(DeploymentController)) as DeploymentController;
 	}
 
 	void OnDestroy() {
@@ -36,14 +43,12 @@ public class BattleControllerManager : MonoBehaviour {
 	}
 
 	private void OnBattleSceneLoaded(Scene scene, LoadSceneMode mode) {
-		InitPreBattleControllers();
-		InitMainControllers();
+		GetImportedControllers();
 	}
 
-	private void InitPreBattleControllers() {
+	private void GetImportedControllers() {
 		prebattlePhases = new List<PreBattleController>();
 		tutorialController = tutorialController != null ? tutorialController : FindObjectOfType(typeof(TutorialController)) as TutorialController;
-		deploymentController = deploymentController != null ? deploymentController : FindObjectOfType(typeof(DeploymentController)) as DeploymentController;
 		scriptedAI = scriptedAI != null ? scriptedAI : FindObjectOfType(typeof(ScriptedAIBattleController)) as ScriptedAIBattleController;
 		if (deploymentController) {
 			prebattlePhases.Add(deploymentController);
@@ -58,19 +63,12 @@ public class BattleControllerManager : MonoBehaviour {
 		preBattlePhaseIndex = 0;
 	}
 
-	private void InitMainControllers() {
-		battleController = battleController != null ? battleController : FindObjectOfType(typeof(BattleController)) as BattleController;
-		player = player != null ? player : FindObjectOfType(typeof(PlayerBattleController)) as PlayerBattleController;
-		ai = ai != null ? ai : FindObjectOfType(typeof(AIBattleController)) as AIBattleController;
-	}
-
 	void Start() {
-		Debug.Log(GetType());
 		StartBattlePhases();
 	}
 
 	private void StartBattlePhases() {
-		Debug.Log("Starting phases");
+		Debug.Log("Starting battle map phases");
 		if (prebattlePhases.Count > 0) {
 			DisableGameControllers();
 			prebattlePhases[0].StartPreBattlePhase();
@@ -87,6 +85,7 @@ public class BattleControllerManager : MonoBehaviour {
 				prebattlePhases[preBattlePhaseIndex].StartPreBattlePhase();
 			} else {
 				EnableGameControllers();
+				player.StartTurn();
 			}
 		}
 	}

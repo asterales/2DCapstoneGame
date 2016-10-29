@@ -13,6 +13,8 @@ public class DeploymentController : PreBattleController {
 	private List<GameObject> disabledHudElements;
 	private GameObject deploymentUI;
 	private List<DeploymentTile> deploymentTiles;
+
+	private int prevFacing;
 	
 	private static Tile selectedUnitDest;
 	private static Unit displacedUnit;
@@ -30,8 +32,21 @@ public class DeploymentController : PreBattleController {
 	protected override void Start() {
 		base.Start();
 		if (deploymentTiles.Count > 0) {
-			LoadActiveUnits();
 			disabledHudElements.ForEach(d => d.SetActive(false));
+		}
+	}
+
+	// Used by MapLoader
+	public void LoadDeploymentTiles(List<Tile> tiles) {
+		if (tiles != null) {
+			foreach(Tile tile in tiles) {
+				GameObject deployTileObj = Instantiate(Resources.Load("Tiles/DeploymentTile")) as GameObject;
+		        deployTileObj.transform.parent = tile.transform;
+		        deployTileObj.transform.localPosition = GameResources.visibilityOffset;
+		        DeploymentTile deployTile = deployTileObj.GetComponent<DeploymentTile>();
+		        deployTile.tile = tile;
+		        deploymentTiles.Add(deployTile);
+			}
 		}
 	}
 
@@ -49,15 +64,6 @@ public class DeploymentController : PreBattleController {
 		selectedUnitDest = null;
 		displacedUnit = null;
 		displacedUnitDest = null;
-	}
-
-	private void LoadActiveUnits() {
-		List<Unit> activeUnits = GameManager.instance.activeUnits;
-		if (activeUnits != null && deploymentTiles.Count > 0) {
-			for(int i = 0; i < activeUnits.Count; i++) {
-				activeUnits[i].SetTile(deploymentTiles[i].tile);
-			}
-		}
 	}
 
 	protected override void PhaseUpdateAction() {
@@ -126,6 +132,7 @@ public class DeploymentController : PreBattleController {
                 SelectionController.selectedUnit.MakeMoving();
             }
             if (GUI.Button(new Rect(pos.x, pos.y+ itemHeight, itemWidth, itemHeight), " Face", player.GetGUIStyle(true))) {
+            	prevFacing = SelectionController.selectedUnit.facing;
                 SelectionController.selectedUnit.MakeFacing();
             }
         }
@@ -140,21 +147,25 @@ public class DeploymentController : PreBattleController {
 		SelectionController.mode = SelectionMode.DeploymentMove;
 	}
 
-	// Used with MapLoader
-	public void AddDeploymentTile(int row, int col) {
-		Tile tile = HexMap.mapArray[row][col];
-        GameObject deployTileObj = Instantiate(Resources.Load("Tiles/DeploymentTile")) as GameObject;
-        deployTileObj.transform.parent = tile.transform;
-        deployTileObj.transform.localPosition = GameResources.visibilityOffset;
-        DeploymentTile deployTile = deployTileObj.GetComponent<DeploymentTile>();
-        deployTile.tile = tile;
-        deploymentTiles.Add(deployTile);
-	}
-
 	public override void EndPreBattlePhase() {
-		deploymentTiles.ForEach(d => Destroy(d.gameObject));
+		// If deployment mode is ended during facing phase, set to prev facing
+		if (SelectionController.selectedUnit && SelectionController.selectedUnit.phase == UnitTurn.Facing) {
+			SelectionController.selectedUnit.facing = prevFacing;
+		}
+
+		// Make all units open and destroy deployment tiles
+		foreach(DeploymentTile deployTile in deploymentTiles) {
+			if(deployTile.tile.currentUnit) {
+				deployTile.tile.currentUnit.MakeOpen();
+			}
+			Destroy(deployTile.gameObject);
+		}
+		HexMap.ClearAllTiles();
+
+		// Reset HUD
 		deploymentUI.SetActive(false);
 		disabledHudElements.ForEach(h => h.SetActive(true));
+
 		base.EndPreBattlePhase();
 	}
 }
