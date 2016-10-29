@@ -13,8 +13,6 @@ public class DeploymentController : PreBattleController {
 	private List<GameObject> disabledHudElements;
 	private GameObject deploymentUI;
 	private List<DeploymentTile> deploymentTiles;
-
-	private int prevFacing;
 	
 	private static Tile selectedUnitDest;
 	private static Unit displacedUnit;
@@ -132,7 +130,6 @@ public class DeploymentController : PreBattleController {
                 SelectionController.selectedUnit.MakeMoving();
             }
             if (GUI.Button(new Rect(pos.x, pos.y+ itemHeight, itemWidth, itemHeight), " Face", player.GetGUIStyle(true))) {
-            	prevFacing = SelectionController.selectedUnit.facing;
                 SelectionController.selectedUnit.MakeFacing();
             }
         }
@@ -148,11 +145,6 @@ public class DeploymentController : PreBattleController {
 	}
 
 	public override void EndPreBattlePhase() {
-		// If deployment mode is ended during facing phase, set to prev facing
-		if (SelectionController.selectedUnit && SelectionController.selectedUnit.phase == UnitTurn.Facing) {
-			SelectionController.selectedUnit.facing = prevFacing;
-		}
-
 		// Make all units open and destroy deployment tiles
 		foreach(DeploymentTile deployTile in deploymentTiles) {
 			if(deployTile.tile.currentUnit) {
