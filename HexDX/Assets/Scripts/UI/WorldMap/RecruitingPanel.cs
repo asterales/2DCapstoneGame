@@ -7,7 +7,6 @@ public class RecruitingPanel : WorldMapPopupPanel {
 	public List<RecruitListing> unitChoices;
 	private UnitStatDisplay statDisplay;
 	public Button recruitButton;
-	private Text recruitButtonText;
 	private Text fundsText;
 	private Text descriptionText;
 	private RecruitListing selectedListing;
@@ -24,7 +23,6 @@ public class RecruitingPanel : WorldMapPopupPanel {
 	private void InitRecruitButton() {
 		recruitButton = transform.Find("Recruit Button").GetComponent<Button>();
 		recruitButton.onClick.AddListener(RecruitUnit);
-		recruitButtonText = recruitButton.transform.Find("Text").GetComponent<Text>();
 	}
 
 	void Start() {
@@ -57,11 +55,9 @@ public class RecruitingPanel : WorldMapPopupPanel {
 			if (selectedListing) {
 				statDisplay.DisplayUnit(selectedListing.unitPanel.unit);
 				descriptionText.text = selectedListing.unitPanel.unit.unitStats.className + "\nCost: " + selectedListing.cost + " gold";
-				recruitButtonText.text = "Recruit\n(Cost: " + selectedListing.cost + ")";
 			} else {
 				statDisplay.ClearDisplay();
 				descriptionText.text = "";
-				recruitButtonText.text = "Recruit";
 			}
 		}
 	}
