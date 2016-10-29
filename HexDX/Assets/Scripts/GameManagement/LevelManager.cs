@@ -59,10 +59,8 @@ public class LevelManager : MonoBehaviour {
 	private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
 		BeginFade(FadeDirection.In);
 		MapLoader mapLoader = FindObjectOfType(typeof(MapLoader)) as MapLoader;
-		if (mapLoader) {
-			if (tutorialObjs) {				
-				tutorialObjs.SetActive(true);
-			}
+		if (mapLoader && tutorialObjs) {			
+			tutorialObjs.SetActive(true);
 		} else if (returnedToWorldMap) {
 			Destroy(gameObject);
 		}
