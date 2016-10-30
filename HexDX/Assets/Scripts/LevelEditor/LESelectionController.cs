@@ -12,7 +12,7 @@ public class LESelectionController : MonoBehaviour {
     // cache for depZones
     public LEDeploymentCache depCache;
     // cache for levels
-    public LELevelCache levelCache;
+    public LEMapCache mapCache;
     // currently selected unit info
     public LEUnitSettings selectedSettings;
     public LEUnitInstance selectedUnit;
@@ -40,7 +40,6 @@ public class LESelectionController : MonoBehaviour {
         // for now this works, but eventually there will be 3 separate sprite caches
         tileSpriteCache = this.gameObject.GetComponent<LESpriteCache>();
         depCache = this.gameObject.GetComponent<LEDeploymentCache>();
-        levelCache = this.gameObject.GetComponent<LELevelCache>();
         ////// DEBUG CODE //////
         if (tileSpriteCache == null)
         {
@@ -54,7 +53,7 @@ public class LESelectionController : MonoBehaviour {
         {
             Debug.Log("ERROR :: Deployment Cache Needs to be defined -> LESelectionController.cs");
         }
-        if (levelCache == null)
+        if (mapCache == null)
         {
             Debug.Log("ERROR :: Level Cache Needs to be defined -> LESelectionController.cs");
         }
