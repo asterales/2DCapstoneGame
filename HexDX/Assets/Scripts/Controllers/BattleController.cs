@@ -82,6 +82,7 @@ public class BattleController : MonoBehaviour {
         player.EndTurn();
         ai.EndTurn();
         BattleIsDone = true;
+        SelectionController.ClearAllSelections();
     }
 
     private void LoadNextScene() {

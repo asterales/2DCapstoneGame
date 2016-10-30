@@ -27,34 +27,26 @@ public class DeploymentController : PreBattleController {
 		disabledHudElements = disabledHudElementNames.Select(n => GameObject.Find(n)).ToList();
 	}
 
-	protected override void Start() {
-		base.Start();
+	public override void StartPreBattlePhase() {
+		base.StartPreBattlePhase();
 		if (deploymentTiles.Count > 0) {
 			disabledHudElements.ForEach(d => d.SetActive(false));
+			ClearSelections();
+			SelectionController.mode = SelectionMode.DeploymentOpen;
+		} else {
+			EndPreBattlePhase();
 		}
 	}
 
 	// Used by MapLoader
 	public void LoadDeploymentTiles(List<Tile> tiles) {
-		if (tiles != null) {
-			foreach(Tile tile in tiles) {
-				GameObject deployTileObj = Instantiate(Resources.Load("Tiles/DeploymentTile")) as GameObject;
-		        deployTileObj.transform.parent = tile.transform;
-		        deployTileObj.transform.localPosition = GameResources.visibilityOffset;
-		        DeploymentTile deployTile = deployTileObj.GetComponent<DeploymentTile>();
-		        deployTile.tile = tile;
-		        deploymentTiles.Add(deployTile);
-			}
-		}
-	}
-
-	public override void StartPreBattlePhase() {
-		base.StartPreBattlePhase();
-		if (deploymentTiles.Count > 0) {
-			ClearSelections();
-			SelectionController.mode = SelectionMode.DeploymentOpen;
-		} else {
-			EndPreBattlePhase();
+		foreach(Tile tile in tiles) {
+			GameObject deployTileObj = Instantiate(Resources.Load("Tiles/DeploymentTile")) as GameObject;
+	        deployTileObj.transform.parent = tile.transform;
+	        deployTileObj.transform.localPosition = GameResources.visibilityOffset;
+	        DeploymentTile deployTile = deployTileObj.GetComponent<DeploymentTile>();
+	        deployTile.tile = tile;
+	        deploymentTiles.Add(deployTile);
 		}
 	}
 

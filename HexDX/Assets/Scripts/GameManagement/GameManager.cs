@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour {
 	void Update() {
 		// For debugging
 		if (Input.GetKeyDown(KeyCode.Escape)) {
+			SelectionController.ClearAllSelections();
             GameManager.instance.UpdateArmyAfterBattle();
             LevelManager.ReturnToWorldMap();
         }

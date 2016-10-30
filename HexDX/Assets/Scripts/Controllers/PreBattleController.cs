@@ -9,10 +9,6 @@ public abstract class PreBattleController : MonoBehaviour {
 		isActive = false;
 	}
 
-	protected virtual void Start() {
-		player = BattleControllerManager.instance.player;
-	}
-
 	private void Update() {
 		if (isActive) {
 			PhaseUpdateAction();
@@ -23,6 +19,7 @@ public abstract class PreBattleController : MonoBehaviour {
 
 	public virtual void StartPreBattlePhase() {
 		Debug.Log("Starting phase for " + GetType());
+		player = BattleControllerManager.instance.player;
 		SelectionController.ClearAllSelections();
 		isActive = true;
 	}

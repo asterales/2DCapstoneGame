@@ -19,8 +19,7 @@ public class LevelManager : MonoBehaviour {
 	public int levelId;
 	public string mapFileName;
 	public int moneyRewarded;
-	public GameObject tutorialObjs; // for levels with tutorial stuff
-
+	
 	private bool levelStarted;
 	private bool returnedToWorldMap;
 
@@ -34,21 +33,20 @@ public class LevelManager : MonoBehaviour {
 	private AudioSource fadeOutMusic;
 
 	void Awake() {
-		GetTutorialObjs();
 		SceneManager.sceneLoaded += OnSceneLoaded;
 	}
 
-	private void GetTutorialObjs() {
-		Transform tutorialTransform = transform.Find("TutorialObjects");
-		if (tutorialTransform) {
-			tutorialObjs = tutorialTransform.gameObject;
-			tutorialObjs.SetActive(false);
-		}
-	}
-
 	void Start() {
+		HideTutorialObjects();
 		returnedToWorldMap = false;
 		levelStarted = false;
+	}
+
+	private void HideTutorialObjects() {
+		Transform tutorialTransform = transform.Find("TutorialObjects");
+		if (tutorialTransform) {
+			tutorialTransform.gameObject.transform.position = GameResources.hidingPosition;
+		}
 	}
 
 	void OnDestroy() {
@@ -58,10 +56,7 @@ public class LevelManager : MonoBehaviour {
 	// delegate/event to be called when new scene is loaded
 	private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
 		BeginFade(FadeDirection.In);
-		MapLoader mapLoader = FindObjectOfType(typeof(MapLoader)) as MapLoader;
-		if (mapLoader && tutorialObjs) {			
-			tutorialObjs.SetActive(true);
-		} else if (returnedToWorldMap) {
+		if (returnedToWorldMap) {
 			Destroy(gameObject);
 		}
 	}
