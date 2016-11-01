@@ -24,8 +24,6 @@ public class LELevelCache {
         string[] lines = data.Split('\n');
         string[] mapDim = lines[row++].Split(',');
 
-        if (mapDim.Length != 2) Debug.Log("LEVEL FORMAT ERROR :: NO DIMENSIONS FOUND");
-
         int hei = Convert.ToInt32(mapDim[0]);
         int wid = Convert.ToInt32(mapDim[1]);
 
@@ -62,7 +60,15 @@ public class LELevelCache {
 
     public void WriteLevel()
     {
-        // to be implemented
+        string level = "";
+        level += baseTileData.ToString();
+        level += baseUnitData.Count + "\n";
+        for (int i = 0; i < baseUnitData.Count; i++)
+        {
+            level += baseUnitData[i].ToString();
+        }
+        level += baseDepData.ToString();
+        File.WriteAllText(id, level);
     }
 
     public void InitializeLevel()

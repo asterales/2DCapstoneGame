@@ -75,6 +75,8 @@ public class AIBattleController : ArmyBattleController {
     }
 
     private UnitAI GetAI(int index) {
+        if (units[index] == null) Debug.Log("ERROR :: UNIT IS NULL");
+        if (units[index].GetComponent<UnitAI>() == null) Debug.Log("ERROR :: AI COMPONENT IS NULL");
         return units[index] != null ? units[index].GetComponent<UnitAI>() : null;
     }
 }

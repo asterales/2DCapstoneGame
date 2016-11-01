@@ -23,4 +23,9 @@
         if (attackChoice != null) heuristic += attackChoice.weight;
         return heuristic;
     }
+
+    public bool IsNull()
+    {
+        return tileChoice == null && faceChoice == null && attackChoice == null;
+    }
 }

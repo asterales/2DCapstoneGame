@@ -38,6 +38,10 @@ public class FaceOption : AIOption
     public override void EvaluateOptionData(AIWeights weights)
     {
         weight = heuristic.CalculateHeuristic(weights);
+        for (int i = 0; i < attackOptions.Count; i++)
+        {
+            attackOptions[i].EvaluateOptionData(weights);
+        }
     }
 }
 

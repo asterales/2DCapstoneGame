@@ -46,4 +46,9 @@ public class LEBaseUnitData {
         direction = Convert.ToInt32(lines[12]);
         id = lines[13];
     }
+
+    public override string ToString()
+    {
+        return base.ToString();
+    }
 }

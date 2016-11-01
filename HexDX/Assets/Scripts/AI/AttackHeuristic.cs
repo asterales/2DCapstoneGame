@@ -79,6 +79,7 @@ public class AttackHeuristic : Heuristic {
         if (attackKills) heuristic += weights.unitKillAdvantage;
         heuristic += stateComparison * weights.unitStateComparison;
         heuristic *= weights.unitGlobal;
+        //Debug.Log("ATTACK HEURISTIC: " + heuristic);
         return heuristic;
     }
 }

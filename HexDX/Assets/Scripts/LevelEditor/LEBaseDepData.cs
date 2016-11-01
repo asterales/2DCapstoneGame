@@ -10,9 +10,14 @@ public class LEBaseDepData {
         yPositions = new List<int>();
     }
 
-    public void AddDep(int x, int y)
+    public void AddDep(int y, int x)
     {
-        xPositions.Add(x);
-        yPositions.Add(y);
+        xPositions.Add(y);
+        yPositions.Add(x);
+    }
+
+    public override string ToString()
+    {
+        return base.ToString();
     }
 }

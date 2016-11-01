@@ -2,6 +2,7 @@
 // Contains Heuristic for deciding face and attacking unit
 
 using System.Collections.Generic;
+using UnityEngine;
 
 public class TileHeuristic : Heuristic
 {
@@ -53,6 +54,11 @@ public class TileHeuristic : Heuristic
     private void CalculateObjectiveDist()
     {
         // calculate distance to nearest objective (1.0 if right next to ai 1.0 / dist otherwise)
+        if (objectives == null)
+        {
+            distToObjective = 0.0f;
+            return;
+        }
         float minDistance = 0.0f;
         for (int i=0;i<objectives.Count;i++)
         {
@@ -75,13 +81,13 @@ public class TileHeuristic : Heuristic
 
     private int IdaStarDistance(Unit playerUnit)
     {
-        List<Tile> shortestPath = unit.GetShortestPath(playerUnit.currentTile);
-        return shortestPath.Count > 0 ? shortestPath.Count : int.MaxValue;  // empty list returned for impossible path
+        int shortestPathLength = unit.GetShortestPathLength(playerUnit.currentTile, tile);
+        return shortestPathLength;
     }
 
     private int IdaStarDistance(Objective objective)
     {
-        List<Tile> shortestPath = unit.GetShortestPath(objective.location);
-        return shortestPath.Count > 0 ? shortestPath.Count : int.MaxValue;  // empty list returned for impossible path
+        int shortestPathLength = unit.GetShortestPathLength(objective.location, tile);
+        return shortestPathLength;
     }
 }

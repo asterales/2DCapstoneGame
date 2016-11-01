@@ -6,4 +6,9 @@ public class LEBaseTileData {
 	public LEBaseTileData() {
         tileData = new List<List<int>>();
 	}
+
+    public override string ToString()
+    {
+        return base.ToString();
+    }
 }

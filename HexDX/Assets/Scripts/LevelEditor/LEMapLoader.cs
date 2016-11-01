@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 
 public class LEMapLoader : MonoBehaviour {
+    public LELevelCache mapToLoad;
     public LEHexMap hexMap;
     public LEUnitCache unitCache;
     public string fileName;

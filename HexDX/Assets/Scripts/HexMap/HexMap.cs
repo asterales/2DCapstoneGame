@@ -161,7 +161,7 @@ public class HexMap : MonoBehaviour {
         {
             try
             {
-                output.Add(mapArray[unit.currentTile.position.row + (int)Vector2.Dot(pos, rowDot)][unit.currentTile.position.col + (int)Vector2.Dot(pos, colDot)]);
+                output.Add(mapArray[tile.position.row + (int)Vector2.Dot(pos, rowDot)][tile.position.col + (int)Vector2.Dot(pos, colDot)]);
             }
             catch { }
         }

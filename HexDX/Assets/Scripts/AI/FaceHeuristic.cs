@@ -80,6 +80,7 @@ public class FaceHeuristic : Heuristic {
         heuristic -= sneakAmount * weights.faceSneakDisadvantage;
         if (getsKilled) heuristic -= weights.faceDeathDisadvantage;
         heuristic *= weights.faceGlobal;
+        //Debug.Log("FaceHeur: " + heuristic);
         return heuristic;
     }
 }

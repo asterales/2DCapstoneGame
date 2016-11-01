@@ -177,7 +177,10 @@ public class MapLoader : MonoBehaviour {
             ///////////////////////
             unit.SetTile(HexMap.mapArray[unitRow][unitCol]);
             unit.facing = direction;
-            unitObject.AddComponent<BasicUnitAI>();
+            // HEURISTIC AI TEST //
+            unitObject.AddComponent<HeuristicAI>();
+
+            //unitObject.AddComponent<BasicUnitAI>();
         }
         //Debug.Log("LoadedEnemies");
     }

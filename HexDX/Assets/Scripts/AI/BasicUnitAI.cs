@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using MovementEffects;
 using System.Linq;
+using System;
 
 public class BasicUnitAI : UnitAI {
 	private Unit currentEnemy;
@@ -51,6 +52,11 @@ public class BasicUnitAI : UnitAI {
     	base.Reset();
     	currentEnemy = null;
     	attackStarted = false;
+    }
+
+    public override void Initialize()
+    {
+        // does nothing
     }
 
     private Tile GetNextDestination(out Unit nextEnemy) {

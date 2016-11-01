@@ -46,6 +46,7 @@ public class AIWeights {
         unitStateComparison = 0.0f;
         unitGlobal = 0.0f;
         fileName = "";
+        initializeAttackEasy();
     }
 
     public void ReadFromFile(string name)
@@ -92,5 +93,48 @@ public class AIWeights {
         data += (double)unitStateComparison + "\n";
         data += (double)unitGlobal + "\n";
         return data;
+    }
+
+    // TODO :: IMPLEMENT THIS IN A FILE SOMEWHERE
+    public void initializeAttackEasy()
+    {
+        tileStatBoost = 0.0f;
+        tileEnemyCloseness = 1.0f;
+        tileEnemyDistance = 0.0f;
+        tileClosenessObjective = 0.0f;
+        tileGlobal = 1.0f;
+        faceFlankDisadvantage = 0.0f;
+        faceSneakDisadvantage = 0.0f;
+        faceAttackDisadvantage = 0.0f;
+        faceStateComparison = 0.0f;
+        faceDeathDisadvantage = 0.0f;
+        faceGlobal = 0.0f;
+        unitFlankAdvantage = 0.0f;
+        unitSneakAdvangage = 0.0f;
+        unitAttackAdvantage = 1.0f;
+        unitKillAdvantage = 0.0f;
+        unitStateComparison = 0.0f;
+        unitGlobal = 1.0f;
+    }
+
+    public void initializeDefenseEasy()
+    {
+        tileStatBoost = 0.0f;
+        tileEnemyCloseness = 0.0f;
+        tileEnemyDistance = 0.0f;
+        tileClosenessObjective = 0.0f;
+        tileGlobal = 0.0f;
+        faceFlankDisadvantage = 0.0f;
+        faceSneakDisadvantage = 0.0f;
+        faceAttackDisadvantage = 0.0f;
+        faceStateComparison = 0.0f;
+        faceDeathDisadvantage = 0.0f;
+        faceGlobal = 0.0f;
+        unitFlankAdvantage = 1.0f;
+        unitSneakAdvangage = 0.0f;
+        unitAttackAdvantage = 1.0f;
+        unitKillAdvantage = 0.0f;
+        unitStateComparison = 0.0f;
+        unitGlobal = 1.0f;
     }
 }

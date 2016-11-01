@@ -15,7 +15,6 @@ public class LEMapWriter : MonoBehaviour {
         {
             string data = unitCache.unitSettings[i].WriteToText();
             string file = unitCache.unitSettings[i].fileName;
-            //Debug.Log("Writing to " + file);
             File.WriteAllText(file, data);
         }
     }

@@ -11,12 +11,14 @@ public abstract class UnitAI : MonoBehaviour {
 
     public void Start() {
     	unit = GetComponent<Unit>();
+        Initialize();
     }
 
     public static void SetPlayerUnits(List<Unit> playerUnitList) {
         playerUnits = playerUnitList;
     }
 
+    public abstract void Initialize();
     public abstract void SetMovement();
     public abstract void SetFacing();
     public abstract void SetAction();

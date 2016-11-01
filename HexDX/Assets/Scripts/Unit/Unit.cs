@@ -591,8 +591,8 @@ public class Unit : MonoBehaviour {
                 shortestPath.Add(dest);
                 break;
             }
-            if (t == int.MaxValue) { // wat
-                Debug.Log("Impossible to reach");
+            if (t == int.MaxValue) {
+                //Debug.Log("Impossible to reach"); commenting out, because its flooding the logger
                 return new List<Tile>();
             }
             bound = t;
@@ -601,6 +601,32 @@ public class Unit : MonoBehaviour {
         if (shortestPath.Count == 0)
             shortestPath.Add(currentTile);
         return shortestPath;
+    }
+
+    public int GetShortestPathLength(Tile dest, Tile current)
+    {
+        int bound = HexMap.Cost(dest, current);
+        List<Tile> shortestPath = new List<Tile>();
+        while (true)
+        {
+            List<Tile> exploredNodes = new List<Tile>();
+            int t = Search(dest, current, 0, bound, ref shortestPath, ref exploredNodes);
+            if (t == -1)
+            {
+                shortestPath.Add(dest);
+                break;
+            }
+            if (t == int.MaxValue)
+            {
+                //Debug.Log("Impossible to reach"); commenting out, because its flooding the logger
+                return int.MaxValue;
+            }
+            bound = t;
+            shortestPath = new List<Tile>();
+        }
+        if (shortestPath.Count == 0)
+            shortestPath.Add(current);
+        return shortestPath.Count;
     }
 
     private int Search(Tile node, Tile dest, int g, int bound, ref List<Tile> currentPath, ref List<Tile> exploredNodes) {
