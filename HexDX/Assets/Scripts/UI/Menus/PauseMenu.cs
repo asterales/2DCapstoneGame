@@ -8,11 +8,11 @@ public class PauseMenu : MonoBehaviour
 
     void Update() {
 
-
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             paused = true;
             GetComponent<CameraController>().enabled = false;
+            Pause();
         }
          
     }
@@ -42,9 +42,30 @@ public class PauseMenu : MonoBehaviour
             {
                 GetComponent<CameraController>().enabled = true;
                 paused = false;
-            
+                UnPause();
             }
         }
     }
 
+    void Pause()
+    {
+        Unit[] allUnits = FindObjectsOfType(typeof(Unit)) as Unit[];
+        foreach (Unit unit in allUnits)
+        {
+            unit.enabled = false;
+            unit.gameObject.GetComponent<Animator>().enabled = false;
+            unit.gameObject.GetComponent<AudioSource>().enabled = false;
+        }
+    }
+
+    void UnPause()
+    {
+        Unit[] allUnits = FindObjectsOfType(typeof(Unit)) as Unit[];
+        foreach (Unit unit in allUnits)
+        {
+            unit.enabled = true;
+            unit.gameObject.GetComponent<Animator>().enabled = true;
+            unit.gameObject.GetComponent<AudioSource>().enabled = true;
+        }
+    }
 }
