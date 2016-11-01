@@ -9,6 +9,7 @@ using System.Collections;
 */
 
 public class LevelManager : MonoBehaviour {
+    private static readonly string mainMenuSceneName = "MainMenu";
 	private static readonly string battleSceneName = "TestScene";
 	private static readonly string worldMapSceneName = "WorldMap";
 
@@ -74,6 +75,21 @@ public class LevelManager : MonoBehaviour {
 			SceneManager.LoadScene(worldMapSceneName);
         } 
 	}
+
+    public static void ReturnToMainMenu()
+    {
+        if (activeInstance != null)
+        {
+            //with fade effects
+            activeInstance.returnedToWorldMap = true;
+            Timing.RunCoroutine(activeInstance.LoadScene(mainMenuSceneName));
+        }
+        else
+        {
+            // no fade effect b/c no fade texture associate with an levelmanager object
+            SceneManager.LoadScene(mainMenuSceneName);
+        }
+    }
 
 	private IEnumerator<float> LoadScene(string sceneName) {
 		yield return Timing.WaitForSeconds(sceneFade.BeginFade(FadeDirection.Out));

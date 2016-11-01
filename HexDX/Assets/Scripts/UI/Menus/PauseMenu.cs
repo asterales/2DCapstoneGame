@@ -30,7 +30,7 @@ public class PauseMenu : MonoBehaviour
             //Make Main Menu button
             if (GUI.Button(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 50, 250, 50), "Main Menu"))
             {
-                Application.LoadLevel(null);
+                LevelManager.ReturnToMainMenu();
             }
             if (GUI.Button(new Rect(Screen.width / 2 - 100, Screen.height / 2, 250, 50), "Return To WorldMap"))
             {
