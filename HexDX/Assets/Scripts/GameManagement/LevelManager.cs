@@ -6,8 +6,7 @@ using System.Collections;
 
 /* 	Loads scenes that belongs to a level.
 	Usage: attach to empty object in scene that can persist across scenes of the same level 
-
-	Fading transition reference: https://unity3d.com/learn/tutorials/topics/graphics/fading-between-scenes */
+*/
 
 public class LevelManager : MonoBehaviour {
 	private static readonly string battleSceneName = "TestScene";
@@ -23,17 +22,11 @@ public class LevelManager : MonoBehaviour {
 	private bool levelStarted;
 	private bool returnedToWorldMap;
 
-	// For fading transition effect
-	public Texture2D loadingGraphic;
-	public float fadeSpeed = 0.8f;
-	private int drawDepth = -1000;
-	private float alpha = 1.0f;
-	private FadeDirection fadeDir = FadeDirection.In;
-
-	private AudioSource fadeOutMusic;
+	private FadeTransition sceneFade;
 
 	void Awake() {
 		SceneManager.sceneLoaded += OnSceneLoaded;
+		sceneFade = GetComponent<FadeTransition>();
 	}
 
 	void Start() {
@@ -55,7 +48,7 @@ public class LevelManager : MonoBehaviour {
 
 	// delegate/event to be called when new scene is loaded
 	private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-		BeginFade(FadeDirection.In);
+		sceneFade.BeginFade(FadeDirection.In);
 		if (returnedToWorldMap) {
 			Destroy(gameObject);
 		}
@@ -83,7 +76,7 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	private IEnumerator<float> LoadScene(string sceneName) {
-		yield return Timing.WaitForSeconds(BeginFade(FadeDirection.Out));
+		yield return Timing.WaitForSeconds(sceneFade.BeginFade(FadeDirection.Out));
 		SceneManager.LoadScene(sceneName);
 		Debug.Log("Loaded scene");
 	}
@@ -108,31 +101,4 @@ public class LevelManager : MonoBehaviour {
 			ReturnToWorldMap();
 		}
 	}
-
-	void Update() {
-		if (fadeOutMusic != null && fadeDir == FadeDirection.Out) {
-			fadeOutMusic.volume = Mathf.Clamp01(fadeOutMusic.volume - (int)fadeDir * 1.5f * fadeSpeed * Time.deltaTime);
-		}
-	}
-
-	void OnGUI() {
-		alpha = Mathf.Clamp01(alpha + ((int)fadeDir * fadeSpeed * Time.deltaTime));
-		GUI.color = new Color (GUI.color.r, GUI.color.g, GUI.color.b, alpha);
-		GUI.depth = drawDepth;
-		GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), loadingGraphic);
-	}
-
-	private float BeginFade(FadeDirection direction) {
-		fadeDir = direction;
-		if (fadeDir == FadeDirection.Out) {
-			fadeOutMusic = FindObjectOfType(typeof(AudioSource)) as AudioSource;
-		}
-		return fadeSpeed;
-	}
-
-}
-
-public enum FadeDirection {
-	In = -1, 
-	Out = 1
 }
