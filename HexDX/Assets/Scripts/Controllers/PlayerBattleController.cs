@@ -23,11 +23,14 @@ public class PlayerBattleController : ArmyBattleController {
     }
 
     void Update(){
-        if (!SelectionController.TakingAIInput() && selectedUnit == null)
-        {
+        if (!SelectionController.TakingAIInput() 
+            && SelectionController.mode != SelectionMode.TurnTransition 
+            && selectedUnit == null) {
             SelectionController.mode = SelectionMode.Open;
         }
-        if (!SelectionController.TakingAIInput() && selectedUnit) {
+        if (!SelectionController.TakingAIInput() 
+            && SelectionController.mode != SelectionMode.TurnTransition 
+            && selectedUnit) {
             switch (selectedUnit.phase) {
                 case UnitTurn.Facing:
                     SelectionController.selectedTile = selectedUnit.currentTile;

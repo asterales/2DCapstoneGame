@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 public class CanvasView : MonoBehaviour {
-    private List<Canvas> canvases; // set in ui
+    public List<Canvas> canvases; // set in ui
     private bool enabled;
 
     void Start()

@@ -15,6 +15,7 @@ public class BattleController : MonoBehaviour {
     public Texture2D actionMenuItemHover;
     
     public EndBattleBanner endBanner;
+    public TurnTransition turnTransition;
 
     public static bool IsPlayerTurn { get; private set; }
     public bool BattleIsDone { get; private set; }
@@ -67,6 +68,12 @@ public class BattleController : MonoBehaviour {
     }
 
     public void EndCurrentTurn() {
+        if (!turnTransition.IsRunning) {
+            turnTransition.PlayTransition(IsPlayerTurn, SwitchTurns);
+        }
+    }
+
+    private void SwitchTurns() {
         if (IsPlayerTurn) {
             player.EndTurn();
             IsPlayerTurn = false;

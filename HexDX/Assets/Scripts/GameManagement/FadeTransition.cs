@@ -1,11 +1,15 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 /* 	Fading transition reference: https://unity3d.com/learn/tutorials/topics/graphics/fading-between-scenes */
 
 public class FadeTransition : MonoBehaviour {
 
-	// For fading transition effect
+	// Fade either applied to existing image or will draw a texture
+	public Image fadeImage;
 	public Texture2D loadingGraphic;
+
+	// Paramenters
 	public float fadeSpeed = 0.8f;
 	private int drawDepth = -1000;
 	private float alpha = 1.0f;
@@ -21,9 +25,14 @@ public class FadeTransition : MonoBehaviour {
 
 	void OnGUI() {
 		alpha = Mathf.Clamp01(alpha + ((int)fadeDir * fadeSpeed * Time.deltaTime));
-		GUI.color = new Color (GUI.color.r, GUI.color.g, GUI.color.b, alpha);
-		GUI.depth = drawDepth;
-		GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), loadingGraphic);
+		if (loadingGraphic) {
+			GUI.color = new Color (GUI.color.r, GUI.color.g, GUI.color.b, alpha);
+			GUI.depth = drawDepth;
+			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), loadingGraphic);
+		} else if (fadeImage) {
+			Color fadeImageColor = fadeImage.color;
+			fadeImage.color = new Color(fadeImageColor.r, fadeImageColor.g, fadeImageColor.b, alpha);
+		}
 	}
 
 	public float BeginFade(FadeDirection direction) {

@@ -10,6 +10,8 @@
 	Attacking,
 	AITurn,
 
+    TurnTransition,
+
     ScriptedPlayerSelection,
     ScriptedPlayerMove,
     ScriptedPlayerAttack,
