@@ -577,8 +577,7 @@ public class Unit : MonoBehaviour {
     // Pathing Methods //
     public bool CanPathThrough(Tile tile) {
         return tile != null && tile.pathable 
-                && (!tile.currentUnit || IsPlayerUnit() == tile.currentUnit.IsPlayerUnit())
-                && unitStats.mvtLevel >= tile.tileStats.mvtDifficulty;
+                && (!tile.currentUnit || IsPlayerUnit() == tile.currentUnit.IsPlayerUnit());
     }
 
     public List<Tile> GetShortestPath(Tile dest) {

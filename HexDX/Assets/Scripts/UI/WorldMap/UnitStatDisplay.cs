@@ -70,7 +70,6 @@ public class UnitStatDisplay : MonoBehaviour {
         sb.Append(string.Format("Power: {0}\n", unit.unitStats.power));
         sb.Append(string.Format("Resistance: {0}\n", unit.unitStats.resistance));
         sb.Append(string.Format("Move Range: {0}\n", unit.unitStats.mvtRange));
-        sb.Append(string.Format("Move Ability: {0}\n", unit.unitStats.mvtLevel));
         return sb.ToString();
     }
 }
