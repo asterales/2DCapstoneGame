@@ -56,7 +56,7 @@ public class HexMap : MonoBehaviour {
         while (toCheck.Count > 0) {
             Tile t = toCheck.Dequeue();
             distance = dist.Dequeue();
-            if (unit.CanPathThrough(t) && distance>0) {
+            if (unit.CanPathThrough(t) && distance>=0) {
                 if (t.currentUnit == null || t.currentUnit.IsPlayerUnit() == unit.IsPlayerUnit()) {
                     mvtTiles.Add(t);
                         neighbors = GetNeighbors(t);
@@ -207,6 +207,7 @@ public class HexMap : MonoBehaviour {
         foreach (Vector2 dir in directions) {
             try {
                 Tile neighbor = mapArray[position.row + (int)(dir.x)][position.col + (int)(dir.y)];
+                neighbors.Add(neighbor);
             } catch {
                 neighbors.Add(null);
             }
@@ -219,8 +220,6 @@ public class HexMap : MonoBehaviour {
     }
 
     public static int Cost(Tile a, Tile b) {
-        if (a!=null && b!=null)
-            return (System.Math.Abs(-b.position.row+a.position.row-b.position.col+a.position.col)+System.Math.Abs(a.position.row- b.position.row)+System.Math.Abs(a.position.col - b.position.col))/2;
-        return int.MaxValue;
+        return (System.Math.Abs(-b.position.row+a.position.row-b.position.col+a.position.col)+System.Math.Abs(a.position.row- b.position.row)+System.Math.Abs(a.position.col - b.position.col))/2;
     }
 }
