@@ -12,6 +12,7 @@ public class HeuristicAI : UnitAI
     public List<TileOption> tileOptions;
     public AIWeights weightFunction;
     public AIChoice choice;
+    private bool attackStarted;
 
     // this is inefficient just making it fast for now
     // not sure if list of ignore is needed, only will be
@@ -73,6 +74,8 @@ public class HeuristicAI : UnitAI
         //    Debug.Log("AttackChoice Null");
         //}
     }
+
+
 
     // run every turn to give the AI the info it needs
     public void CreateDataForAI()
@@ -139,20 +142,24 @@ public class HeuristicAI : UnitAI
 
     public override void SetAction()
     {
+        attackStarted = false;
         unit.MakeAttacking();
     }
 
     public override void SetAttack()
     {
-        Debug.Log("WHWHWHWHW");
-        if (choice.attackChoice != null)
+        if (!attackStarted)
         {
-            Timing.RunCoroutine(unit.PerformAttack(choice.attackChoice.chosenUnit));
-            SelectionController.ShowTarget(choice.attackChoice.chosenUnit);
-        }
-        else
-        {
-            unit.MakeDone();
+            if (choice.attackChoice != null)
+            {
+                Timing.RunCoroutine(unit.PerformAttack(choice.attackChoice.chosenUnit));
+                SelectionController.ShowTarget(choice.attackChoice.chosenUnit);
+                attackStarted = true;
+            }
+            else
+            {
+                unit.MakeDone();
+            }
         }
     }
 
@@ -183,6 +190,13 @@ public class HeuristicAI : UnitAI
             unit.MakeFacing();
         }
     }
+
+    public override void Reset()
+    {
+        base.Reset();
+        attackStarted = false;
+    }
+
 
     public override void Initialize()
     {

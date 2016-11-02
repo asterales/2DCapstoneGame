@@ -40,7 +40,6 @@ public class TurnTransition : MonoBehaviour {
 	private void GetAnimationLengths() {
 		animationLengths = new Dictionary<string, float>();
 		foreach(AnimationClip clip in anim.runtimeAnimatorController.animationClips) {
-			Debug.Log(clip.name);
 			animationLengths[clip.name] = clip.length;
 		}
 	}

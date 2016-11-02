@@ -44,27 +44,30 @@ public class HexMap : MonoBehaviour {
         mapArray = new List<List<Tile>>();
     }
 
+
     public static List<Tile> GetMovementTiles(Unit unit) {
         Queue<Tile> toCheck = new Queue<Tile>();
         Queue<int> dist = new Queue<int>();
         toCheck.Enqueue(unit.currentTile);
-        int distance = unit.MvtRange + 1;
+        int distance = unit.MvtRange;
         dist.Enqueue(distance);
         List<Tile> neighbors;
         List<Tile> mvtTiles = new List<Tile>();
         while (toCheck.Count > 0) {
             Tile t = toCheck.Dequeue();
             distance = dist.Dequeue();
-            if (distance > 0 && unit.CanPathThrough(t)) {
+            if (unit.CanPathThrough(t) && distance>=0) {
                 if (t.currentUnit == null || t.currentUnit.IsPlayerUnit() == unit.IsPlayerUnit()) {
                     mvtTiles.Add(t);
-                    neighbors = GetNeighbors(t);
-                    foreach (Tile neighbor in neighbors) {
-                        if (neighbor && !mvtTiles.Contains(neighbor)) {
-                            toCheck.Enqueue(neighbor);
-                            dist.Enqueue(distance - 1);
+                        neighbors = GetNeighbors(t);
+                        foreach (Tile neighbor in neighbors)
+                        {
+                            if (neighbor && !mvtTiles.Contains(neighbor))
+                            {
+                                toCheck.Enqueue(neighbor);
+                                dist.Enqueue(distance - (int)neighbor.tileStats.mvtDifficulty);
+                            }
                         }
-                    }
                 }
             }
         }
@@ -205,7 +208,7 @@ public class HexMap : MonoBehaviour {
             try {
                 Tile neighbor = mapArray[position.row + (int)(dir.x)][position.col + (int)(dir.y)];
                 neighbors.Add(neighbor);
-            } catch { 
+            } catch {
                 neighbors.Add(null);
             }
         }

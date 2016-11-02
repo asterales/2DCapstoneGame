@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour {
 			gameObject.transform.position = GameResources.hidingPosition;
 			DontDestroyOnLoad(this.gameObject);
 		} else if (instance != this) {
+			GetComponentsInChildren<Unit>().ToList().ForEach(u => u.gameObject.SetActive(false));
 			Destroy(gameObject);
 		}
 	}
