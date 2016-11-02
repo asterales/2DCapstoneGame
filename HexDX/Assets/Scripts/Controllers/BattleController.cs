@@ -19,6 +19,7 @@ public class BattleController : MonoBehaviour {
 
     public static bool IsPlayerTurn { get; private set; }
     public bool BattleIsDone { get; private set; }
+    public static bool PlayerWon { get; private set; }
 
     void Awake () {
         PlayerBattleController.menuItem = actionMenuItem;
@@ -43,11 +44,13 @@ public class BattleController : MonoBehaviour {
         IsPlayerTurn = true;
         BattleIsDone = false;
         nextSceneLoaded = false;
+        PlayerWon = false;
     }
 
     void Update() {
         if(!BattleIsDone){
             if (victoryCondition.Achieved()) {
+                PlayerWon = true;
                 endBanner.ShowWin();
                 EndBattle();
             } else if (player.IsAnnihilated()) {
