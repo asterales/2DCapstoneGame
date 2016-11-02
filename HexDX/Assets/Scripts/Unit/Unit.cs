@@ -635,18 +635,19 @@ public class Unit : MonoBehaviour {
             return -1;
         }
         int min = int.MaxValue;
-        foreach (Tile neighbor in HexMap.GetNeighbors(node)) {
-            if (neighbor == dest || CanPathThrough(neighbor)) { // hack to allow bfs to terminate even if dest tile is not pathable
-                int t = Search(neighbor, dest, g + (int)neighbor.tileStats.mvtDifficulty, bound, ref currentPath);
-                if (t == -1) {
-                    currentPath.Add(neighbor);
-                    return -1;
-                }
-                if (t < min) {
-                    min = t;
+        if (g<HexMap.mapArray.Count+HexMap.mapArray[0].Count+5)
+            foreach (Tile neighbor in HexMap.GetNeighbors(node)) {
+                if (neighbor == dest || CanPathThrough(neighbor)) { // hack to allow bfs to terminate even if dest tile is not pathable
+                    int t = Search(neighbor, dest, g + (int)neighbor.tileStats.mvtDifficulty, bound, ref currentPath);
+                    if (t == -1) {
+                        currentPath.Add(neighbor);
+                        return -1;
+                    }
+                    if (t < min) {
+                        min = t;
+                    }
                 }
             }
-        }
         return min;
     }
 
