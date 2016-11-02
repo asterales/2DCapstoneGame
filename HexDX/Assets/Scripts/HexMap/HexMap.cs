@@ -44,6 +44,7 @@ public class HexMap : MonoBehaviour {
         mapArray = new List<List<Tile>>();
     }
 
+
     public static List<Tile> GetMovementTiles(Unit unit) {
         Queue<Tile> toCheck = new Queue<Tile>();
         Queue<int> dist = new Queue<int>();
@@ -55,11 +56,9 @@ public class HexMap : MonoBehaviour {
         while (toCheck.Count > 0) {
             Tile t = toCheck.Dequeue();
             distance = dist.Dequeue();
-            if (unit.CanPathThrough(t)) {
+            if (unit.CanPathThrough(t) && distance>0) {
                 if (t.currentUnit == null || t.currentUnit.IsPlayerUnit() == unit.IsPlayerUnit()) {
                     mvtTiles.Add(t);
-                    if (distance > 0)
-                    {
                         neighbors = GetNeighbors(t);
                         foreach (Tile neighbor in neighbors)
                         {
@@ -69,7 +68,6 @@ public class HexMap : MonoBehaviour {
                                 dist.Enqueue(distance - (int)neighbor.tileStats.mvtDifficulty);
                             }
                         }
-                    }
                 }
             }
         }
