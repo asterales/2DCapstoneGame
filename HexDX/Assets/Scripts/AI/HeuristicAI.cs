@@ -148,15 +148,18 @@ public class HeuristicAI : UnitAI
 
     public override void SetAttack()
     {
-        if (!attackStarted && choice.attackChoice != null)
+        if (!attackStarted)
         {
-            Timing.RunCoroutine(unit.PerformAttack(choice.attackChoice.chosenUnit));
-            SelectionController.ShowTarget(choice.attackChoice.chosenUnit);
-            attackStarted = true;
-        }
-        else
-        {
-            unit.MakeDone();
+            if (choice.attackChoice != null)
+            {
+                Timing.RunCoroutine(unit.PerformAttack(choice.attackChoice.chosenUnit));
+                SelectionController.ShowTarget(choice.attackChoice.chosenUnit);
+                attackStarted = true;
+            }
+            else
+            {
+                unit.MakeDone();
+            }
         }
     }
 
