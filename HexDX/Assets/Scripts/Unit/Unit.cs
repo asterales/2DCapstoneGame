@@ -455,7 +455,6 @@ public class Unit : MonoBehaviour {
         if (this != null && gameObject)
         {
             phase = UnitTurn.Done;
-            HexMap.ClearAttackTiles();
             spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
             SetFacingSprites();
         }
@@ -512,7 +511,8 @@ public class Unit : MonoBehaviour {
         int healthStart = target.Health;
         int basedamage = (int)(Attack * (50.0f / (50.0f + (float)target.Defense)));
         int damage = basedamage;
-        string indicatorText = "-" + (int)(basedamage * modifier); ;
+        string indicatorText = "-" + (int)(basedamage * modifier);
+        HexMap.ClearAttackTiles();
         if (target.phase != UnitTurn.Moving)
         {
             if (target.facing == facing)
