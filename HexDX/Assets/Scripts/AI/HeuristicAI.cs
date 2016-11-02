@@ -83,6 +83,10 @@ public class HeuristicAI : UnitAI
 
         for (int i = 0; i < tilesWithinRange.Count; i++)
         {
+            if (tilesWithinRange[i].currentUnit != null && tilesWithinRange[i].currentUnit != unit)
+            {
+                continue;
+            }
             // create tile option
             TileOption tileOption = new TileOption(tilesWithinRange[i]);
             // create tile heuristic
