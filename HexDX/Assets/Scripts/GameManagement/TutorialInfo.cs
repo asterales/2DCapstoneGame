@@ -6,7 +6,8 @@ public class TutorialInfo : MonoBehaviour {
 	
 	public string tutorialFocus;
 
-	void Awake() {
+
+    void Awake() {
 		tutorialAdvisor = Character.characters[2];
 		advisorPortraitIndex = 7;
 	}

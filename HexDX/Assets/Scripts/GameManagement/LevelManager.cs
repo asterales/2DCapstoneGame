@@ -13,6 +13,9 @@ public class LevelManager : MonoBehaviour {
 	private static readonly string battleSceneName = "TestScene";
 	private static readonly string worldMapSceneName = "WorldMap";
 
+    //public bool hasTutorial;
+    //public bool doneTutorial;
+
 	public static LevelManager activeInstance;
 
 	// Level scene management
