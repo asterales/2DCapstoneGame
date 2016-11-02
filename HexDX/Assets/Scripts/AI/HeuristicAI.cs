@@ -144,6 +144,7 @@ public class HeuristicAI : UnitAI
 
     public override void SetAttack()
     {
+        Debug.Log("WHWHWHWHW");
         if (choice.attackChoice != null)
         {
             Timing.RunCoroutine(unit.PerformAttack(choice.attackChoice.chosenUnit));
