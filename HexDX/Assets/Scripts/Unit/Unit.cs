@@ -12,6 +12,7 @@ public class Unit : MonoBehaviour {
     public UnitStats unitStats;
     public UnitSprites sprites;
     public List<Vector2> attackablePositions;
+    public float moveSpeed = 0.13f;
 
     private Queue<Tile> path;
     public UnitTurn phase;
@@ -24,7 +25,6 @@ public class Unit : MonoBehaviour {
     private Animator animator;
     private Tile lastTile;
     private int type; // we may want to represent types by something else
-    private readonly float maxMovement = 0.13f;
     private UnitFacing facingBonus;
     private UnitSounds sounds;
     private static bool attackLock = false;
@@ -134,7 +134,7 @@ public class Unit : MonoBehaviour {
             lastTile = path.Peek();
             Vector3 destination = lastTile.transform.position;
             if (transform.position != destination) {
-                transform.position = Vector3.MoveTowards(transform.position, destination, maxMovement);
+                transform.position = Vector3.MoveTowards(transform.position, destination, moveSpeed);
             } else {
                 if (lastTile!=currentTile)
                     CheckZonesOfControl();
