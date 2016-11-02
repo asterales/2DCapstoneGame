@@ -66,6 +66,9 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public static void ReturnToWorldMap() {
+		if (GameManager.instance) {
+			GameManager.instance.UpdateArmyAfterBattle();
+		}
 		if (activeInstance != null) {
 			//with fade effects
 			activeInstance.returnedToWorldMap = true;
