@@ -38,6 +38,11 @@ public class ScriptList : MonoBehaviour {
 	public void NextEvent() {
         currentEvent++;
         if (scriptedEvents.Count > currentEvent) {
+            if (scriptedEvents[currentEvent] == null)
+            {
+                NextEvent();
+                return;
+            }
             Debug.Log("NEXT " + scriptedEvents[currentEvent].GetType());
             StartInstuctions(scriptedEvents[currentEvent]);
         } else {
