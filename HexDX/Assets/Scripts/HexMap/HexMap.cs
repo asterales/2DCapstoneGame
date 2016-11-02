@@ -207,8 +207,7 @@ public class HexMap : MonoBehaviour {
         foreach (Vector2 dir in directions) {
             try {
                 Tile neighbor = mapArray[position.row + (int)(dir.x)][position.col + (int)(dir.y)];
-                neighbors.Add(neighbor);
-            } catch { 
+            } catch {
                 neighbors.Add(null);
             }
         }
@@ -220,6 +219,8 @@ public class HexMap : MonoBehaviour {
     }
 
     public static int Cost(Tile a, Tile b) {
-        return (System.Math.Abs(-b.position.row+a.position.row-b.position.col+a.position.col)+System.Math.Abs(a.position.row- b.position.row)+System.Math.Abs(a.position.col - b.position.col))/2;
+        if (a!=null && b!=null)
+            return (System.Math.Abs(-b.position.row+a.position.row-b.position.col+a.position.col)+System.Math.Abs(a.position.row- b.position.row)+System.Math.Abs(a.position.col - b.position.col))/2;
+        return int.MaxValue;
     }
 }
