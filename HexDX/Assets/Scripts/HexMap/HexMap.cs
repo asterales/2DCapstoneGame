@@ -48,21 +48,26 @@ public class HexMap : MonoBehaviour {
         Queue<Tile> toCheck = new Queue<Tile>();
         Queue<int> dist = new Queue<int>();
         toCheck.Enqueue(unit.currentTile);
-        int distance = unit.MvtRange + 1;
+        int distance = unit.MvtRange;
         dist.Enqueue(distance);
         List<Tile> neighbors;
         List<Tile> mvtTiles = new List<Tile>();
         while (toCheck.Count > 0) {
             Tile t = toCheck.Dequeue();
             distance = dist.Dequeue();
-            if (distance > 0 && unit.CanPathThrough(t)) {
+            if (unit.CanPathThrough(t)) {
                 if (t.currentUnit == null || t.currentUnit.IsPlayerUnit() == unit.IsPlayerUnit()) {
                     mvtTiles.Add(t);
-                    neighbors = GetNeighbors(t);
-                    foreach (Tile neighbor in neighbors) {
-                        if (neighbor && !mvtTiles.Contains(neighbor)) {
-                            toCheck.Enqueue(neighbor);
-                            dist.Enqueue(distance - 1);
+                    if (distance > 0)
+                    {
+                        neighbors = GetNeighbors(t);
+                        foreach (Tile neighbor in neighbors)
+                        {
+                            if (neighbor && !mvtTiles.Contains(neighbor))
+                            {
+                                toCheck.Enqueue(neighbor);
+                                dist.Enqueue(distance - (int)neighbor.tileStats.mvtDifficulty);
+                            }
                         }
                     }
                 }

@@ -29,6 +29,7 @@ public class TileStats : MonoBehaviour {
 }
 
 public enum MovementDifficulty {
+    Free,
 	Easy,
 	Medium,
 	Hard,
