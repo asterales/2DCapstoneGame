@@ -50,6 +50,13 @@ public class Unit : MonoBehaviour {
         get { return unitStats.veterancy; }
         set { unitStats.veterancy = value; }
     }
+
+    public float ZOCModifer
+    {
+        get { return unitStats.zocmodifier; }
+        set { unitStats.zocmodifier = value; }
+    }
+
     public int Attack { get { return unitStats.attack + (currentTile ? currentTile.tileStats.attackModifier : 0); } }
     public int Defense { get { return unitStats.defense + (currentTile ? currentTile.tileStats.defenseModifier : 0); } }
     public int Power { get { return unitStats.power + (currentTile ? currentTile.tileStats.powerModifier : 0); } }
@@ -168,7 +175,7 @@ public class Unit : MonoBehaviour {
                 if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health>0 && unit.Health>0)
                 {
                     unit.MakeAttacking();
-                    Timing.RunCoroutine(unit.DoAttack(this, 0.8f));
+                    Timing.RunCoroutine(unit.DoAttack(this, unit.ZOCModifer));
                 }
             }
         }
@@ -179,7 +186,7 @@ public class Unit : MonoBehaviour {
                 if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health>0 && unit.Health>0)
                 {
                     unit.MakeAttacking();
-                    Timing.RunCoroutine(unit.DoAttack(this, 0.8f));
+                    Timing.RunCoroutine(unit.DoAttack(this, unit.ZOCModifer));
                 }
             }
         }
@@ -509,7 +516,7 @@ public class Unit : MonoBehaviour {
     {
         SetFacingSprites();
         int healthStart = target.Health;
-        int basedamage = (int)(Attack * (50.0f / (50.0f + (float)target.Defense)));
+        int basedamage = (int)(Attack * (50.0f / (50.0f + (float)target.Defense)))+ (int)(Power * (50.0f / (50.0f + (float)target.Resistance)));
         int damage = basedamage;
         string indicatorText = "-" + (int)(basedamage * modifier);
         HexMap.ClearAttackTiles();

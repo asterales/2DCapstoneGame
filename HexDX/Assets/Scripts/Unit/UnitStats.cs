@@ -12,6 +12,7 @@ public class UnitStats : MonoBehaviour {
     public int mvtRange;
     public int experience;
     public int veterancy;
+    public float zocmodifier;
 
     public static int maxAttack = 100; //rename to strength? or attack will be calculated based on power also?
     public static int maxDefense = 100;
