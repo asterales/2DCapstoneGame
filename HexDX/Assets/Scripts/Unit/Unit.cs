@@ -587,6 +587,30 @@ public class Unit : MonoBehaviour {
                 && (!tile.currentUnit || IsPlayerUnit() == tile.currentUnit.IsPlayerUnit());
     }
 
+    public List<Tile> GetAccessibleTiles()
+    {
+        Queue<Tile> toCheck = new Queue<Tile>();
+        Queue<int> dist = new Queue<int>();
+        toCheck.Enqueue(currentTile);
+        List<Tile> neighbors;
+        List<Tile> tiles = new List<Tile>();
+        while (toCheck.Count > 0)
+        {
+            Tile t = toCheck.Dequeue();
+            if (CanPathThrough(t))
+                if (t.currentUnit == null || t.currentUnit.IsPlayerUnit() == IsPlayerUnit())
+                {
+                    if (!t.currentUnit)
+                        tiles.Add(t);
+                    neighbors = HexMap.GetNeighbors(t);
+                    foreach (Tile neighbor in neighbors)
+                        if (neighbor && !tiles.Contains(neighbor))
+                            toCheck.Enqueue(neighbor);
+                }
+        }
+        return tiles;
+    }
+
     public List<Tile> GetShortestPath(Tile dest) {
         int bound = HexMap.Cost(dest, currentTile);
         List<Tile> shortestPath = new List<Tile>();
@@ -610,6 +634,8 @@ public class Unit : MonoBehaviour {
 
     public int GetShortestPathLength(Tile dest, Tile current)
     {
+        if (!GetAccessibleTiles().Contains(dest))
+            return int.MaxValue;
         int bound = HexMap.Cost(dest, current);
         List<Tile> shortestPath = new List<Tile>();
         while (true)
@@ -635,6 +661,8 @@ public class Unit : MonoBehaviour {
 
     private int Search(Tile node, Tile dest, int g, int bound, ref List<Tile> currentPath) {
         int f = g + HexMap.Cost(node, dest);
+        if (f > 9)
+            return int.MaxValue;
         if (f > bound) {
             return f;
         }
@@ -642,21 +670,22 @@ public class Unit : MonoBehaviour {
             return -1;
         }
         int min = int.MaxValue;
-        if (g<HexMap.mapArray.Count+HexMap.mapArray[0].Count+5)
-            foreach (Tile neighbor in HexMap.GetNeighbors(node)) {
-                if (neighbor == dest || CanPathThrough(neighbor)) { // hack to allow bfs to terminate even if dest tile is not pathable
-                    int t = Search(neighbor, dest, g + (int)neighbor.tileStats.mvtDifficulty, bound, ref currentPath);
-                    if (t == -1) {
-                        currentPath.Add(neighbor);
-                        return -1;
-                    }
-                    if (t < min) {
-                        min = t;
-                    }
+        foreach (Tile neighbor in HexMap.GetNeighbors(node)) {
+            if (neighbor == dest || CanPathThrough(neighbor)) { // hack to allow bfs to terminate even if dest tile is not pathable
+                int t = Search(neighbor, dest, g + (int)neighbor.tileStats.mvtDifficulty, bound, ref currentPath);
+                if (t == -1) {
+                    currentPath.Add(neighbor);
+                    return -1;
+                }
+                if (t < min) {
+                    min = t;
                 }
             }
+        }
         return min;
     }
+
+
 
     public bool HasInAttackRange(Unit other){
         return HexMap.GetAttackTiles(this).Contains(other.currentTile);
