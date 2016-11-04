@@ -77,6 +77,7 @@ public class BattleController : MonoBehaviour {
     }
 
     private void SwitchTurns() {
+        HexMap.ClearAttackTiles();
         if (IsPlayerTurn) {
             player.EndTurn();
             IsPlayerTurn = false;
