@@ -8,42 +8,42 @@ public class BattleControllerManager : MonoBehaviour {
 	// singleton
 	public static BattleControllerManager instance;
 
-	public BattleController battleController;
-
-	// Prebattle Controllers
-	public TutorialController tutorialController;
+	// Default controllers set in editor
+	public MapLoader mapLoader;
+	public CameraController cameraController;
 	public DeploymentController deploymentController;
+	public BattleController battleController;
+	public PlayerBattleController player;
+	public AIBattleController ai;
+
+	// Imported Controllers
+	public TutorialController tutorialController;
+	public ScriptedAIBattleController scriptedAI;
+	
+	// Prebattle phase management
 	public List<PreBattleController> prebattlePhases;
 	private int preBattlePhaseIndex;
 	
-	// Army Battle Controllers
-	public PlayerBattleController player;
-	public AIBattleController ai;
-	public ScriptedAIBattleController scriptedAI;
 
 	void Awake() {
 		if (instance == null) {
 			instance = this;
-			GetDefaultControllers();
-			SceneManager.sceneLoaded += OnBattleSceneLoaded;
 		} else if (instance != this) {
 			Destroy(gameObject);
 		}
 	}
 
-	private void GetDefaultControllers() {
-		battleController = battleController != null ? battleController : FindObjectOfType(typeof(BattleController)) as BattleController;
-		player = player != null ? player : FindObjectOfType(typeof(PlayerBattleController)) as PlayerBattleController;
-		ai = ai != null ? ai : FindObjectOfType(typeof(AIBattleController)) as AIBattleController;
-		deploymentController = deploymentController != null ? deploymentController : FindObjectOfType(typeof(DeploymentController)) as DeploymentController;
+	void Start() {
+		InitBattleScene();
+		StartBattlePhases();
 	}
 
-	void OnDestroy() {
-		SceneManager.sceneLoaded -= OnBattleSceneLoaded;
-	}
-
-	private void OnBattleSceneLoaded(Scene scene, LoadSceneMode mode) {
+	private void InitBattleScene() {
 		GetImportedControllers();
+		mapLoader.LoadMap();
+		cameraController.InitCamera();
+		InitArmies();
+		DisableGameControllers();
 	}
 
 	private void GetImportedControllers() {
@@ -63,14 +63,17 @@ public class BattleControllerManager : MonoBehaviour {
 		preBattlePhaseIndex = 0;
 	}
 
-	void Start() {
-		StartBattlePhases();
+	private void InitArmies() {
+		player.InitUnits();
+		ai.InitUnits();
+		if(scriptedAI) {
+			scriptedAI.InitUnits(); // must come after player and ai controllers, overwrites list of player controlled units 
+		}
 	}
 
 	private void StartBattlePhases() {
 		Debug.Log("Starting battle map phases");
 		if (prebattlePhases.Count > 0) {
-			DisableGameControllers();
 			prebattlePhases[0].StartPreBattlePhase();
 		} else {
 			EnableGameControllers();

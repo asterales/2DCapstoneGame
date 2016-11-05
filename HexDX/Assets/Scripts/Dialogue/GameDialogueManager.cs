@@ -15,9 +15,6 @@ public class GameDialogueManager : DialogueManager {
 	
 	void Awake(){
 		activeSpeaker = new SpeakerUI("Dialogue Portrait", "Dialogue Name Card", "Dialogue Box");
-	}
-
-	void Start() {
 		HideGUI();
 	}
 

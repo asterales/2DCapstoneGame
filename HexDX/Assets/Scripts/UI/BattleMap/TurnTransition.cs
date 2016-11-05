@@ -72,7 +72,9 @@ public class TurnTransition : MonoBehaviour {
 		yield return Timing.WaitForSeconds(fade.BeginFade(FadeDirection.In));
 		anim.enabled = false;
 		overlayBG.enabled = false;
-		transitionEndCallback();
+		if (transitionEndCallback != null) {
+			transitionEndCallback();
+		}
 		IsRunning = false;
 	}
 

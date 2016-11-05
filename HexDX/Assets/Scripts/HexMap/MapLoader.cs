@@ -26,7 +26,7 @@ public class MapLoader : MonoBehaviour {
         ////////////////////////
     }
 
-    void Start() {
+    public void LoadMap() {
         if (battleMap != null && hexDimension != null) {
             LevelManager lm = LevelManager.activeInstance;
             if (lm) {
@@ -37,7 +37,7 @@ public class MapLoader : MonoBehaviour {
         }
     }
 
-    void LoadHexMap(string hexMapFile) {
+    private void LoadHexMap(string hexMapFile) {
         string[] mapCsvRows = GameResources.GetFileLines(mapsDir + hexMapFile);
         battleMap.ClearMap();
         int currentLine = 0;

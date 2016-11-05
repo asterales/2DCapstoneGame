@@ -27,6 +27,7 @@ public class BattleController : MonoBehaviour {
         ai = GetComponent<AIBattleController>();
         player = GetComponent<PlayerBattleController>();
         victoryCondition = GetComponent<VictoryCondition>();
+        InitFlags();
         ////// DEBUG CODE //////
         if (ai == null) {
             Debug.Log("Error :: AI Battle Controller not defined -> BattleController.cs");
@@ -40,7 +41,7 @@ public class BattleController : MonoBehaviour {
         ////////////////////////
     }
 
-    void Start() {
+    private void InitFlags() {
         IsPlayerTurn = true;
         BattleIsDone = false;
         nextSceneLoaded = false;

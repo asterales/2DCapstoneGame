@@ -5,7 +5,7 @@ public class CameraController : MonoBehaviour {
     private float originalSize, xmin, xmax, ymin, ymax;
     private Vector3 prev;
     // Use this for initialization
-    void Start () {
+    public void InitCamera () {
         originalSize = Camera.main.orthographicSize;
         int hexmapH = HexMap.mapArray.Count;
         int hexmapW = HexMap.mapArray[0].Count;
@@ -43,9 +43,9 @@ public class CameraController : MonoBehaviour {
         }
         else
         {
-            if (Unit.ai.GetUnit())
-            {
-                Vector3 destination = new Vector3(Unit.ai.GetUnit().transform.position.x, Unit.ai.GetUnit().transform.position.y, transform.position.z);
+            Unit aiUnit = BattleControllerManager.instance.ai.GetUnit();
+            if (aiUnit) {
+                Vector3 destination = new Vector3(aiUnit.transform.position.x, aiUnit.transform.position.y, transform.position.z);
                 transform.position = Vector3.MoveTowards(transform.position, destination, transform.localScale.x);
             }
         }

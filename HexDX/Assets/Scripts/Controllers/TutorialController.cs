@@ -88,11 +88,6 @@ public class TutorialController : PreBattleController {
 		eventsList.dialogueMgr.HideGUI();
 		HideSelectionPrompt();
 		targetTile = null;
-		ScriptedAIBattleController scriptedAI = BattleControllerManager.instance.scriptedAI;
-		if (scriptedAI) {
-			player.units = scriptedAI.aiUnits.Where(p => p != null && p.IsPlayerUnit()).ToList();
-			UnitAI.playerUnits = player.units;
-		}
 		info.RegisterCompleted();
 		base.EndPreBattlePhase();
 	}

@@ -12,7 +12,7 @@ public abstract class ArmyBattleController : MonoBehaviour {
 		battleController = GetComponent<BattleController>();
 	}
 
-	protected virtual void Start() {
+	public virtual void InitUnits() {
 		InitUnitList();
 		units.ForEach(u => u.InitForBattle());
 	}
