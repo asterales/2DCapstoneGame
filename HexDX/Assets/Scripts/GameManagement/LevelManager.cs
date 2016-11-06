@@ -13,9 +13,6 @@ public class LevelManager : MonoBehaviour {
 	private static readonly string battleSceneName = "TestScene";
 	private static readonly string worldMapSceneName = "WorldMap";
 
-    //public bool hasTutorial;
-    //public bool doneTutorial;
-
 	public static LevelManager activeInstance;
 
 	// Level scene management
@@ -24,7 +21,7 @@ public class LevelManager : MonoBehaviour {
 	public int moneyRewarded;
 	
 	private bool levelStarted;
-	private bool returnedToWorldMap;
+	private bool destroyOnLoad;
 
 	private FadeTransition sceneFade;
 
@@ -35,7 +32,7 @@ public class LevelManager : MonoBehaviour {
 
 	void Start() {
 		HideTutorialObjects();
-		returnedToWorldMap = false;
+		destroyOnLoad = false;
 		levelStarted = false;
 	}
 
@@ -53,7 +50,7 @@ public class LevelManager : MonoBehaviour {
 	// delegate/event to be called when new scene is loaded
 	private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
 		sceneFade.BeginFade(FadeDirection.In);
-		if (returnedToWorldMap) {
+		if (destroyOnLoad) {
 			Destroy(gameObject);
 		}
 	}
@@ -74,7 +71,7 @@ public class LevelManager : MonoBehaviour {
 		}
 		if (activeInstance != null) {
 			//with fade effects
-			activeInstance.returnedToWorldMap = true;
+			activeInstance.destroyOnLoad = true;
             Timing.RunCoroutine(activeInstance.LoadScene(worldMapSceneName));
         } else {
         	// no fade effect b/c no fade texture associate with an levelmanager object
@@ -82,16 +79,13 @@ public class LevelManager : MonoBehaviour {
         } 
 	}
 
-    public static void ReturnToMainMenu()
-    {
-        if (activeInstance != null)
-        {
+    public static void ReturnToMainMenu() {
+        if (activeInstance != null) {
             //with fade effects
-            activeInstance.returnedToWorldMap = true;
+            activeInstance.destroyOnLoad = true;
+            GameManager.DestroyCurrentInstance(); // delete saved state to start new game
             Timing.RunCoroutine(activeInstance.LoadScene(mainMenuSceneName));
-        }
-        else
-        {
+        } else {
             // no fade effect b/c no fade texture associate with an levelmanager object
             SceneManager.LoadScene(mainMenuSceneName);
         }

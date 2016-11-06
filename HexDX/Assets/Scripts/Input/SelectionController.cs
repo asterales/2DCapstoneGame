@@ -20,6 +20,10 @@ public class SelectionController : MonoBehaviour {
         ClearAllSelections();
     }
 
+    void OnDestroy() {
+        ClearAllSelections();
+    }
+
     private void InitSelectSpaceObj() {
         selectedSpaceObj = new GameObject(string.Format("Selected Space"));
         SpriteRenderer sr = selectedSpaceObj.AddComponent<SpriteRenderer>();

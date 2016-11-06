@@ -27,6 +27,10 @@ public class DeploymentController : PreBattleController {
 		disabledHudElements = disabledHudElementNames.Select(n => GameObject.Find(n)).ToList();
 	}
 
+	void OnDestroy() {
+		ClearSelections();
+	}
+
 	public override void StartPreBattlePhase() {
 		base.StartPreBattlePhase();
 		if (deploymentTiles.Count > 0) {

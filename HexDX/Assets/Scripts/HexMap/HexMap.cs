@@ -29,6 +29,10 @@ public class HexMap : MonoBehaviour {
         ////////////////////////
     }
 
+    void OnDestroy() {
+        ClearAllTiles();
+    }
+
     public void ClearMap() {
         // remove and delete all current tiles
         for (int i = 0; i < mapArray.Count; i++) {

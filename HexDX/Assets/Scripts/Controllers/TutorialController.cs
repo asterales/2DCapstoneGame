@@ -19,9 +19,14 @@ public class TutorialController : PreBattleController {
 		info = GetComponent<TutorialInfo>();
 	}
 
+	void OnDestroy() {
+		targetTile = null;
+	}
+
 	public override void StartPreBattlePhase() {
 		if (!info.HasBeenCompleted()) {
 			base.StartPreBattlePhase();
+			targetTile = null;
 			InitSelectionPrompt();
 			eventsList = GameObject.Find("ScriptedEvents").GetComponent<ScriptList>();
 			if(!eventsList.dialogueMgr) {

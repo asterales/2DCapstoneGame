@@ -73,12 +73,9 @@ public class GameManager : MonoBehaviour {
 		unit.gameObject.SetActive(false);
 	}
 
-	void Update() {
-		// For debugging
-		//if (Input.GetKeyDown(KeyCode.Escape)) {
-		//	SelectionController.ClearAllSelections();
-  //          GameManager.instance.UpdateArmyAfterBattle();
-  //          LevelManager.ReturnToWorldMap();
-  //      }
+	public static void DestroyCurrentInstance() {
+		GameManager oldInstance = instance;
+		instance = null;
+		Destroy(oldInstance.gameObject);
 	}
 }
