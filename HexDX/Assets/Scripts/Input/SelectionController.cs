@@ -21,7 +21,9 @@ public class SelectionController : MonoBehaviour {
     }
 
     void OnDestroy() {
-        ClearAllSelections();
+        selectedTile = null;
+        selectedUnit = null;
+        target = null;
     }
 
     private void InitSelectSpaceObj() {
