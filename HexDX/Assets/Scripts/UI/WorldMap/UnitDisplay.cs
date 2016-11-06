@@ -7,8 +7,11 @@ public class UnitDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	public Unit unit;
 	private Color spriteColor;
 
+	private static readonly Color hoverColor = Color.white;
+	private static readonly Color defaultColor = new Color(0.78f, 0.78f, 0.78f);
+
 	void Awake() {
-		spriteColor = Color.white;
+		spriteColor = defaultColor;
 		unitPanel = GetComponent<Image>();
 	}
 
@@ -23,10 +26,10 @@ public class UnitDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	}
 
 	public void OnPointerEnter(PointerEventData eventData) {
-		spriteColor = Color.gray;
+		spriteColor = hoverColor;
 	}
 
 	public void OnPointerExit(PointerEventData eventData) {
-		spriteColor = Color.white;
+		spriteColor = defaultColor;
 	}
 }

@@ -7,21 +7,19 @@ public class SelectionController : MonoBehaviour {
     public static Unit selectedUnit;
     public static Tile selectedTile;
     public static Unit target;
-    public static Dictionary<Unit, Tile> lastTiles = new Dictionary<Unit, Tile>();
+    public static Dictionary<Unit, Tile> lastTiles;
     public static SelectionMode mode;
     private static GameObject selectedSpaceObj; // object for selected space
     private static GameObject targetSpaceObj; // object for target space
 
     void Awake() {
         mode = SelectionMode.Open;
-    }
-
-	void Start () {
+        lastTiles = new Dictionary<Unit, Tile>();
         InitSelectSpaceObj();
         InitTargetSpaceObj();
         ClearAllSelections();
     }
-	
+
     private void InitSelectSpaceObj() {
         selectedSpaceObj = new GameObject(string.Format("Selected Space"));
         SpriteRenderer sr = selectedSpaceObj.AddComponent<SpriteRenderer>();
