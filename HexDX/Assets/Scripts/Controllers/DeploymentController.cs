@@ -77,7 +77,7 @@ public class DeploymentController : PreBattleController {
 			if (selectedUnitDest) {
 				SelectionController.ShowSelection(selectedUnitDest);
 				MoveUnit(SelectionController.selectedUnit, selectedUnitDest);
-			} else {
+			} else if (!displacedUnit) {
 				SelectionController.ShowSelection(SelectionController.selectedUnit);
 				FaceSelectedUnit();
 			}
