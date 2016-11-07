@@ -3,14 +3,15 @@ using System.Collections;
 
 public class LEIncrementButton : MonoBehaviour {
     public SpriteRenderer spriteRenderer;
-    public LEStatEditor parent;
+    public LEStatEditor statEditorParent;
+    public LEAIStatEditor aiEditorParent;
     public int modifier;
     public bool isOn;
 
 	void Awake () {
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
 	    ////// DEBUG CODE //////
-        if (parent == null)
+        if (statEditorParent == null || aiEditorParent == null)
         {
             Debug.Log("ERROR :: Reference to StatEditor needs to be defined -> LEIncrementButton.cs");
         }
@@ -42,7 +43,8 @@ public class LEIncrementButton : MonoBehaviour {
     void OnMouseDown()
     {
         spriteRenderer.color = new Color(0.3f, 0.3f, 0.3f);
-        parent.ChangeState(modifier);
+        if (statEditorParent) statEditorParent.ChangeState(modifier);
+        if (aiEditorParent) aiEditorParent.ChangeState(modifier);
     }
 
     void OnMouseHover()

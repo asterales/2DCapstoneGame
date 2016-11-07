@@ -28,32 +28,32 @@ public class LEStatEditor : MonoBehaviour {
         ////////////////////////
         if (singleIncrement != null)
         {
-            singleIncrement.parent = this;
+            singleIncrement.statEditorParent = this;
             singleIncrement.modifier = singleValue;
         }
         if (doubleIncrement != null)
         {
-            doubleIncrement.parent = this;
+            doubleIncrement.statEditorParent = this;
             doubleIncrement.modifier = doubleValue;
         }
         if (tripleIncrement != null)
         {
-            tripleIncrement.parent = this;
+            tripleIncrement.statEditorParent = this;
             tripleIncrement.modifier = tripleValue;
         }
         if (singleDecrement != null)
         {
-            singleDecrement.parent = this;
+            singleDecrement.statEditorParent = this;
             singleDecrement.modifier = -singleValue;
         }
         if (doubleDecrement != null)
         {
-            doubleDecrement.parent = this;
+            doubleDecrement.statEditorParent = this;
             doubleDecrement.modifier = -doubleValue;
         }
         if (tripleDecrement != null)
         {
-            tripleDecrement.parent = this;
+            tripleDecrement.statEditorParent = this;
             tripleDecrement.modifier = -tripleValue;
         }
         text.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
