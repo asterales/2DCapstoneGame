@@ -1,11 +1,19 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class CameraController : MonoBehaviour {
     private float originalSize, xmin, xmax, ymin, ymax;
     private Vector3 prev;
     // Use this for initialization
-    public void InitCamera () {
+    public void InitCamera (List<Vector3> positions = null) {
+        SetBounds();
+        if (positions != null && positions.Count > 0) {
+            CenterCamera(positions);
+        }
+    }
+
+    private void SetBounds() {
         originalSize = Camera.main.orthographicSize;
         int hexmapH = HexMap.mapArray.Count;
         int hexmapW = HexMap.mapArray[0].Count;
@@ -13,7 +21,13 @@ public class CameraController : MonoBehaviour {
         ymax = HexMap.mapArray[0][0].transform.position.y;
         xmax = HexMap.mapArray[hexmapH-1][hexmapW-1].transform.position.x;
         ymin = HexMap.mapArray[hexmapH-1][hexmapW-1].transform.position.y;
+    }
 
+    private void CenterCamera(List<Vector3> positions) {
+        Vector2 avgPos = new Vector2(positions.Average(p => p.x), positions.Average(p => p.y));
+        float x = Mathf.Min(Mathf.Max(xmin, avgPos.x), xmax);
+        float y = Mathf.Min(Mathf.Max(ymin, avgPos.y), ymax);
+        transform.position = new Vector3(x, y, transform.position.z);
     }
     
     // Update is called once per frame

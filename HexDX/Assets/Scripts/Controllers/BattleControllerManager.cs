@@ -41,8 +41,9 @@ public class BattleControllerManager : MonoBehaviour {
 	private void InitBattleScene() {
 		GetImportedControllers();
 		mapLoader.LoadMap();
-		cameraController.InitCamera();
 		InitArmies();
+		List<Vector3> playerPositions = player.units.Where(p => p != null).Select(p => p.transform.position).ToList();
+		cameraController.InitCamera(playerPositions);
 		DisableGameControllers();
 	}
 
