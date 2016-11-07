@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using MovementEffects;
-using System;
 
 // base class for heuristic based AIs
 // heuristic based AIs assign a weight to every possible tile that they can move to
@@ -16,73 +15,11 @@ public class HeuristicAI : UnitAI
     public Objective closestObjective;
     private bool attackStarted;
 
-    // this is inefficient just making it fast for now
     // not sure if list of ignore is needed, only will be
     // if we make all AI decisions at the same time instead
     // of when they have to move
-    /*public void MakeChoiceOld(List<Tile> ignore)
-    {
-        Debug.Log("Making Choice");
-        choice = new AIChoice(null, null, null);
-        for (int i = 0; i < tileOptions.Count; i++)
-        {
-            if (ignore.Contains(tileOptions[i].chosenTile)) continue;
-            TileOption tileChoice = tileOptions[i];
-            FaceOption faceChoice = null;
-            AttackOption attackChoice = null;
-            for (int j = 0; j < tileOptions[i].faceOptions.Count; j++)
-            {
-                faceChoice = tileOptions[i].faceOptions[j];
-                attackChoice = null;
-                AIChoice newChoice = null;
-
-                if (tileOptions[i].faceOptions[j].attackOptions.Count > 0)
-                {
-                    //Debug.Log("FOUND ATTACK OPTION");
-                    for (int k = 0; k < tileOptions[i].faceOptions[j].attackOptions.Count; k++)
-                    {
-                        attackChoice = tileOptions[i].faceOptions[j].attackOptions[k];
-                        newChoice = new AIChoice(tileChoice, faceChoice, attackChoice);
-                        //if (newChoice.attackChoice != null)
-                        //{
-                        //    Debug.Log("FOUND ATTACK OPTION");
-                        //}
-                        //Debug.Log("Evaluating Choice");
-                        //if (choice == null) Debug.Log("CHOICE IS NULL");
-                        //if (newChoice == null) Debug.Log("New CHOICE IS NULL");
-                        if (choice.IsNull() || newChoice.Heuristic() > choice.Heuristic())
-                        {
-                            choice = newChoice;
-                        }
-                    }
-                }
-                else
-                {
-                    newChoice = new AIChoice(tileChoice, faceChoice, null);
-                    if (choice.IsNull() || newChoice.Heuristic() > choice.Heuristic())
-                    {
-                        choice = newChoice;
-                    }
-                }
-
-                // Write Heuristic for Debugging Purposes
-            }
-
-            //Debug.Log("Position: " + tileChoice.chosenTile.position.row + "," + tileChoice.chosenTile.position.col + " Heur: " + choice.Heuristic());
-        }
-        Debug.Log("HEURISTIC CHOICE :: " + choice.Heuristic());
-        Debug.Log("FACE CHOICE :: " + choice.faceChoice.weight);
-        if (choice.faceChoice.heuristic.closestEnemyUnit == null) Debug.Log("NO CLOSEST ENEMY");
-        if (!choice.tileChoice.heuristic.hasMoved) Debug.Log("REFRAINED FROM MOVING");
-        //if (choice.attackChoice == null)
-        //{
-        //    Debug.Log("AttackChoice Null");
-        //}
-    }*/
-
     public void MakeChoice(List<Tile> ignore)
     {
-        //TileOption option = tileOptions[0];
         float maxHeuristic = 0.0f;
         for (int i = 0; i < tileOptions.Count; i++)
         {
@@ -112,22 +49,12 @@ public class HeuristicAI : UnitAI
         if (!choice.tileChoice.heuristic.hasMoved) Debug.Log("REFRAINED FROM MOVING");
     }
 
-
-
     // run every turn to give the AI the info it needs
     public void CreateDataForAI()
     {
         Debug.Log("Creating Data");
         tileOptions.Clear();
         List<Tile> tilesWithinRange = HexMap.GetMovementTiles(unit);
-        Debug.Log("TILES WITHIN RANGE :: " + tilesWithinRange.Count);
-        //for (int i = 1; i < tilesWithinRange.Count; i++)
-        //{
-        //    if (tilesWithinRange[i] == tilesWithinRange[0])
-        //    {
-        //        Debug.Log("REPEATED TILE");
-        //    }
-        //}
 
         for (int i = 0; i < tilesWithinRange.Count; i++)
         {
@@ -220,11 +147,6 @@ public class HeuristicAI : UnitAI
         LoadDataForAI();
         EvaluateDataForAI();
         MakeChoice(new List<Tile>());
-        // DEBUG CODE //
-        //if (choice == null) Debug.Log("CHOICE IS NULL");
-        //if (choice.tileChoice == null) Debug.Log("TILE CHOICE IS NULL");
-        //if (choice.tileChoice.chosenTile == null) Debug.Log("CHOSEN TILE IS NULL");
-        ////////////////
         if (choice.tileChoice.chosenTile != unit.currentTile)
         {
             unit.SetPath(unit.GetShortestPath(choice.tileChoice.chosenTile));
@@ -257,15 +179,11 @@ public class HeuristicAI : UnitAI
     {
         List<Unit> units = new List<Unit>();
         List<Tile> attackableTiles = HexMap.GetAttackTiles(tile, unit, direction);
-        //if (attackableTiles.Count > 0) Debug.Log("HAS ATTACKABLE TILES");
 
         for (int i = 0; i < attackableTiles.Count; i++)
         {
-            //if (attackableTiles[i].currentUnit != null) Debug.Log("FOUND OTHER UNIT");
-            //if (attackableTiles[i].currentUnit != null && attackableTiles[i].currentUnit.IsPlayerUnit()) Debug.Log("FOUND PLAYER UBIT");
             if (attackableTiles[i].currentUnit != null && attackableTiles[i].currentUnit.IsPlayerUnit())
             {
-                //Debug.Log("IS PLAYER UNIT");
                 units.Add(attackableTiles[i].currentUnit);
             }
         }
