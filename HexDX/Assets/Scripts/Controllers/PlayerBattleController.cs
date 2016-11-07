@@ -56,22 +56,18 @@ public class PlayerBattleController : ArmyBattleController {
 
     void OnGUI() {
         if (InUnitPhase(UnitTurn.ChoosingAction)) {
-            int itemHeight = 20;
-            int itemWidth = 60;
-            int offset = 60;
             Vector3 pos = Camera.main.WorldToScreenPoint(selectedUnit.transform.position);
-            pos = new Vector3(pos.x, Screen.height - pos.y-offset);
             Tile tile = HexMap.GetAttackTiles(selectedUnit).FirstOrDefault(t => t.currentUnit && !t.currentUnit.IsPlayerUnit());
             bool canAttack = tile;
 
-            if (GUI.Button(new Rect(pos.x, pos.y, itemWidth, itemHeight), " Attack", GetGUIStyle(canAttack))) {
+            if (GetSubmenuButton(pos, 1, "Attack", canAttack)) {
                 SelectionController.target = tile.currentUnit;
                 selectedUnit.MakeAttacking();
             }
-            if (GUI.Button(new Rect(pos.x, pos.y+ itemHeight, itemWidth, itemHeight), " Wait", GetGUIStyle(true))) {
+            if (GetSubmenuButton(pos, 2, "Wait", true)) {
                 selectedUnit.MakeDone();
             }
-            if (GUI.Button(new Rect(pos.x, pos.y + 2*itemHeight, itemWidth, itemHeight), " Undo", GetGUIStyle(true))) {
+            if (GetSubmenuButton(pos, 3, "Undo", true)) {
                 UnitState.RestoreStates();
                 SelectionController.selectedTile = selectedUnit.currentTile;
                 SelectionController.mode = SelectionMode.Open;
@@ -83,10 +79,23 @@ public class PlayerBattleController : ArmyBattleController {
         }
     }
 
-    public GUIStyle GetGUIStyle(bool active) {
+    public bool GetSubmenuButton(Vector3 basePosition, int menuButtonNumber, string text, bool active) {
+        float itemHeight = Screen.width * (0.15f / Camera.main.orthographicSize);
+        float itemWidth = itemHeight * 3;
+        float yOffset = itemHeight * 4f;
+        float xOffset = itemWidth / 4;
+        Vector3 pos = new Vector3(basePosition.x + xOffset, Screen.height - basePosition.y - yOffset);
+        menuButtonNumber = menuButtonNumber >= 1 ? menuButtonNumber : 1;
+        float menuButtonOffset = itemHeight * (menuButtonNumber - 1);
+        string buttonText = " " + text;
+        return GUI.Button(new Rect(pos.x, pos.y + menuButtonOffset, itemWidth, itemHeight), buttonText, GetGUIStyle(active, itemHeight));
+    }
+
+    private GUIStyle GetGUIStyle(bool active, float itemHeight) {
         GUIStyle style = new GUIStyle();
         style.normal.background = menuItem;
         style.alignment = TextAnchor.MiddleLeft;
+        style.fontSize = (int) (itemHeight * 0.6);
         if (active) {
             GUI.enabled = true;
             GUI.color = Color.white;

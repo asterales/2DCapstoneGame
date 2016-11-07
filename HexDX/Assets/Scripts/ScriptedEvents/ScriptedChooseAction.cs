@@ -12,21 +12,17 @@ public class ScriptedChooseAction : ScriptEvent {
 
     void OnGUI() {
         if (isActive && isPlayerEvent) {
-            int itemHeight = 20;
-            int itemWidth = 60;
-            int offset = 60;
             Vector3 pos = Camera.main.WorldToScreenPoint(unit.transform.position);
-            pos = new Vector3(pos.x, Screen.height - pos.y-offset);
 
-            if (GUI.Button(new Rect(pos.x, pos.y, itemWidth, itemHeight), " Attack", player.GetGUIStyle(actionEnabled[(int)Action.Attack]))) {
+            if (player.GetSubmenuButton(pos, 1, "Attack", actionEnabled[(int)Action.Attack])) {
                 FinishEvent();
             }
-            if (GUI.Button(new Rect(pos.x, pos.y+ itemHeight, itemWidth, itemHeight), " Wait", player.GetGUIStyle(actionEnabled[(int)Action.Wait]))) {
+            if (player.GetSubmenuButton(pos, 2, "Wait", actionEnabled[(int)Action.Wait])) {
                 Debug.Log("Waiting");
                 SelectionController.selectedUnit = null;
                 FinishEvent();
             }
-            if (GUI.Button(new Rect(pos.x, pos.y + 2*itemHeight, itemWidth, itemHeight), " Undo", player.GetGUIStyle(actionEnabled[(int)Action.Undo]))) {
+            if (player.GetSubmenuButton(pos, 3, "Undo", actionEnabled[(int)Action.Undo])) {
                 SelectionController.ResetLastTile(unit);
                 FinishEvent();
             }

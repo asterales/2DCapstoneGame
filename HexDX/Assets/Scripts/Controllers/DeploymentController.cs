@@ -116,16 +116,11 @@ public class DeploymentController : PreBattleController {
 
 	void OnGUI() {
         if (SelectionController.selectedUnit && SelectionController.selectedUnit.phase == UnitTurn.Open) {
-            int itemHeight = 20;
-            int itemWidth = 60;
-            int offset = 60;
             Vector3 pos = Camera.main.WorldToScreenPoint(SelectionController.selectedUnit.transform.position);
-            pos = new Vector3(pos.x, Screen.height - pos.y-offset);
-
-            if (GUI.Button(new Rect(pos.x, pos.y, itemWidth, itemHeight), " Move", player.GetGUIStyle(true))) {
+            if (player.GetSubmenuButton(pos, 1, "Move", true)) {
                 SelectionController.selectedUnit.MakeMoving();
             }
-            if (GUI.Button(new Rect(pos.x, pos.y+ itemHeight, itemWidth, itemHeight), " Face", player.GetGUIStyle(true))) {
+            if (player.GetSubmenuButton(pos, 2, "Face", true)) {
                 SelectionController.selectedUnit.MakeFacing();
             }
         }
