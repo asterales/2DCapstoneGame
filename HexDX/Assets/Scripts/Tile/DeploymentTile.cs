@@ -2,36 +2,78 @@
 using System.Collections.Generic;
 
 public class DeploymentTile : MonoBehaviour {
+	private static Unit draggedUnit;
+	private static Tile hoveredTile;
+
 	public Tile tile;
 
-	public void OnMouseOver() {
-		if (SelectionController.mode == SelectionMode.DeploymentOpen) {
-			if (Input.GetMouseButtonDown(0)) {
-				SelectUnit();
-			} else if (Input.GetMouseButtonDown(1)) {
-				SelectMoveDestination();
-			}
+	void Awake() {
+		ClearDragVariables();
+	}
+
+	void OnDestroy() {
+		ClearDragVariables();
+	}
+
+	void OnMouseDown() {
+		if (tile.currentUnit && SelectionController.mode == SelectionMode.DeploymentOpen) {
+			draggedUnit = tile.currentUnit;
 		}
 	}
 
-	private void SelectUnit() {
-		if (tile.currentUnit) {
-			if (SelectionController.selectedUnit) {
-				SelectionController.selectedUnit.MakeOpen();
-			}
-			SelectionController.selectedUnit = tile.currentUnit;
+	void OnMouseOver() {
+		if (draggedUnit) {
+			hoveredTile = tile;
 		}
 	}
 
-	private void SelectMoveDestination() {
-		if (SelectionController.selectedUnit 
-				&& SelectionController.selectedUnit.phase == UnitTurn.Moving) {
-			if (tile.currentUnit != SelectionController.selectedUnit) {
-				DeploymentController.SetSelectedUnitDestination(tile);
+	void OnMouseExit() {
+		hoveredTile = null;
+	}
+
+	void OnMouseDrag() {
+		if (draggedUnit) {
+			Vector3 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			float z;
+			if (hoveredTile) {
+				z = hoveredTile.transform.position.z;
 			} else {
-				SelectionController.selectedUnit.MakeOpen();
-				SelectionController.selectedUnit = null;
+				z = draggedUnit.transform.position.z;
 			}
+			draggedUnit.transform.position = new Vector3(cameraPos.x, cameraPos.y, z);
 		}
 	}
+
+	void OnMouseUp() {
+		if (draggedUnit) {
+			if (hoveredTile) {
+				if (hoveredTile.currentUnit) {
+					DeploymentController.SetUnitForDisplacement(hoveredTile.currentUnit, draggedUnit.currentTile);
+				}
+				draggedUnit.SetTile(hoveredTile);
+				DeploymentController.SetForDeploymentFacing(draggedUnit);
+			} else {
+				draggedUnit.SetTile(draggedUnit.currentTile);
+			}
+			draggedUnit = null;
+		}
+	}
+
+	void Update() {
+		if (draggedUnit) {
+			if (hoveredTile) {
+				SelectionController.ShowSelection(hoveredTile);
+			} else {
+				SelectionController.ShowSelection(draggedUnit.currentTile);
+			} 
+		} else {
+			SelectionController.HideSelection();
+		}
+	}
+
+	private void ClearDragVariables() {
+		draggedUnit = null;
+		hoveredTile = null;
+	}
+
 }

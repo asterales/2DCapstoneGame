@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class UnitStatDisplay : MonoBehaviour {
 
     public Unit unit;
-    public Image portrait;
-    public bool showAnimatedUnit;
 
     private Image classPanel;
     private Text classText;

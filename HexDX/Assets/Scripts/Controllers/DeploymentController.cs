@@ -14,7 +14,6 @@ public class DeploymentController : PreBattleController {
 	private GameObject deploymentUI;
 	private List<DeploymentTile> deploymentTiles;
 	
-	private static Tile selectedUnitDest;
 	private static Unit displacedUnit;
 	private static Tile displacedUnitDest;
 
@@ -54,35 +53,33 @@ public class DeploymentController : PreBattleController {
 		}
 	}
 
+	public static void SetUnitForDisplacement(Unit unit, Tile newTile) {
+		displacedUnit = unit;
+		displacedUnitDest = newTile;
+	}
+
+	public static void SetForDeploymentFacing(Unit unit) {
+		SelectionController.selectedUnit = unit;
+		unit.MakeFacing();
+	}
+
 	private static void ClearSelections() {
-		selectedUnitDest = null;
 		displacedUnit = null;
 		displacedUnitDest = null;
 	}
 
 	protected override void PhaseUpdateAction() {
-		DisplaySelectedUnit();
-		if (SelectionController.selectedUnit) {
-			if (selectedUnitDest) {
-				MoveUnit(SelectionController.selectedUnit, selectedUnitDest);
-			} else if (SelectionController.selectedUnit.phase == UnitTurn.Facing) {
-				FaceSelectedUnit();
-			}
-		}
 		if (displacedUnit) {
 			MoveUnit(displacedUnit, displacedUnitDest);
-		}
-	}
-
-	private void DisplaySelectedUnit() {
-		if(SelectionController.selectedUnit) {
-			SelectionController.ShowSelection(SelectionController.selectedUnit);
-		} else {
-			SelectionController.HideSelection();
+		} else if (SelectionController.selectedUnit) {
+			// selectedUnit is only set for facing phase
+			SelectionController.selectedUnit.MakeFacing();
+			FaceSelectedUnit();
 		}
 	}
 
 	private void MoveUnit(Unit unit, Tile destTile) {
+		SelectionController.mode = SelectionMode.DeploymentMove;
     	Vector3 destination = destTile.transform.position;
     	Vector3 unitPos = unit.transform.position;
     	if (unitPos != destination) {
@@ -90,16 +87,11 @@ public class DeploymentController : PreBattleController {
     	} else {
     		unit.SetTile(destTile);
     		unit.MakeOpen();
-    		if (destTile == selectedUnitDest) {
-    			SelectionController.selectedUnit = null;
-    			selectedUnitDest = null;
-    		} else if (unit == displacedUnit) {
+    		if (unit == displacedUnit) {
     			displacedUnit = null;
     			displacedUnitDest = null;
     		}
-    		if(selectedUnitDest == null && displacedUnitDest == null) {
-    			SelectionController.mode = SelectionMode.DeploymentOpen;
-    		}
+    		SelectionController.mode = SelectionMode.DeploymentOpen;
     	}
     }
 
@@ -112,27 +104,6 @@ public class DeploymentController : PreBattleController {
 			SelectionController.selectedUnit = null;
 			SelectionController.mode = SelectionMode.DeploymentOpen;
 		}
-	}
-
-	void OnGUI() {
-        if (SelectionController.selectedUnit && SelectionController.selectedUnit.phase == UnitTurn.Open) {
-            Vector3 pos = Camera.main.WorldToScreenPoint(SelectionController.selectedUnit.transform.position);
-            if (player.GetSubmenuButton(pos, 1, "Move", true)) {
-                SelectionController.selectedUnit.MakeMoving();
-            }
-            if (player.GetSubmenuButton(pos, 2, "Face", true)) {
-                SelectionController.selectedUnit.MakeFacing();
-            }
-        }
-    }
-
-	public static void SetSelectedUnitDestination(Tile destTile) {
-		selectedUnitDest = destTile;
-		if (destTile.currentUnit) {
-			displacedUnit = destTile.currentUnit;
-			displacedUnitDest = SelectionController.selectedUnit.currentTile;
-		}
-		SelectionController.mode = SelectionMode.DeploymentMove;
 	}
 
 	public override void EndPreBattlePhase() {
