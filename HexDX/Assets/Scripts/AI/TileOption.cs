@@ -9,6 +9,7 @@ public class TileOption : AIOption
 {
     public Tile chosenTile;
     public List<FaceOption> faceOptions;
+    public FaceOption bestFaceOption;
     public TileHeuristic heuristic;
     public float weight;
 
@@ -17,6 +18,7 @@ public class TileOption : AIOption
         chosenTile = null;
         faceOptions = new List<FaceOption>();
         heuristic = null;
+        bestFaceOption = null;
     }
 
     public TileOption(Tile tile)
@@ -24,6 +26,7 @@ public class TileOption : AIOption
         chosenTile = tile;
         faceOptions = new List<FaceOption>();
         heuristic = null;
+        bestFaceOption = null;
     }
 
     public override void LoadOptionData()
@@ -31,6 +34,8 @@ public class TileOption : AIOption
         heuristic.EvaluateData();
         for (int i = 0; i < faceOptions.Count; i++)
         {
+            faceOptions[i].heuristic.closestEnemyUnit = heuristic.closestEnemyUnit;
+            faceOptions[i].heuristic.closestObjective = heuristic.closestObjective;
             faceOptions[i].LoadOptionData();
         }
     }
@@ -41,6 +46,10 @@ public class TileOption : AIOption
         for (int i = 0; i < faceOptions.Count; i++)
         {
             faceOptions[i].EvaluateOptionData(weights);
+            if (bestFaceOption == null || bestFaceOption.weight < faceOptions[i].weight)
+            {
+                bestFaceOption = faceOptions[i];
+            }
         }
     }
 }

@@ -16,6 +16,8 @@ public class TileHeuristic : Heuristic
     {
         tile = null;
         unit = null;
+        closestEnemyUnit = null;
+        closestObjective = null;
     }
 
     public TileHeuristic(Tile t, Unit u, List<Unit> enemies, List<Objective> obj)
@@ -46,7 +48,11 @@ public class TileHeuristic : Heuristic
         for (int i = 0; i < enemyUnits.Count; i++)
         {
             float dist = (float)IdaStarDistance(enemyUnits[i]);
-            minDistance = dist < minDistance ? dist : minDistance;
+            if (dist < minDistance)
+            {
+                minDistance = dist;
+                closestEnemyUnit = enemyUnits[i];
+            }
         }
         distToClosestEnemy = 1.0f / minDistance;
     }
@@ -63,7 +69,11 @@ public class TileHeuristic : Heuristic
         for (int i=0;i<objectives.Count;i++)
         {
             float dist = (float)IdaStarDistance(objectives[i]);
-            minDistance = dist < minDistance ? dist : minDistance;
+            if (dist < minDistance)
+            {
+                minDistance = dist;
+                closestObjective = objectives[i];
+            }
         }
         distToObjective = minDistance;
     }

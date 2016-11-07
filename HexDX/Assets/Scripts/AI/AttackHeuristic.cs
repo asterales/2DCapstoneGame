@@ -7,6 +7,7 @@ public class AttackHeuristic : Heuristic {
     public bool attackingDirect;          // if attacking directly
     public bool attackingSneak;           // if attacking sneak
     public bool attackKills;              // if the attack will kill
+    public float facingAttack;            // if directly facing the unit being attacked
     public float stateComparison;         // comparing the unit stats (0.0 <= v <= 1.0)
 
     public AttackHeuristic(Tile t, Unit u)
@@ -48,6 +49,15 @@ public class AttackHeuristic : Heuristic {
         damage *= modifier;
         if (damage > unitToBeAttacked.Health) attackKills = true;
 
+        // Calculate Direction
+        facingAttack = 0.0f;
+        if (closestEnemyUnit != null)
+        {
+            Vector3 directionOfDirectAttack = unitToBeAttacked.currentTile.transform.position - tile.transform.position;
+            int directFace = Facing(new Vector2(directionOfDirectAttack.x, directionOfDirectAttack.y));
+            facingAttack = 1.0f - FaceComparison(direction, directFace);
+        }
+
         // Calculate State Comparison ::
         // 0.5 = health comparison
         // 0.5 = damage comparison assuming direct * 0.8
@@ -77,9 +87,9 @@ public class AttackHeuristic : Heuristic {
         if (attackingFlank) heuristic += weights.unitFlankAdvantage;
         if (attackingSneak) heuristic += weights.unitSneakAdvangage;
         if (attackKills) heuristic += weights.unitKillAdvantage;
+        heuristic += facingAttack * weights.unitFaceAttackingDirectly;
         heuristic += stateComparison * weights.unitStateComparison;
         heuristic *= weights.unitGlobal;
-        //Debug.Log("ATTACK HEURISTIC: " + heuristic);
         return heuristic;
     }
 }

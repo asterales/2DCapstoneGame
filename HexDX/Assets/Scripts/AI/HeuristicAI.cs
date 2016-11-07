@@ -12,6 +12,8 @@ public class HeuristicAI : UnitAI
     public List<TileOption> tileOptions;
     public AIWeights weightFunction;
     public AIChoice choice;
+    public Unit closestEnemy;
+    public Objective closestObjective;
     private bool attackStarted;
 
     // this is inefficient just making it fast for now

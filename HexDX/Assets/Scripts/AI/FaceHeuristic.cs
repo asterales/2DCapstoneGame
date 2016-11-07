@@ -11,6 +11,8 @@ public class FaceHeuristic : Heuristic {
     public float directAmount;
     public float sneakAmount;
     public float stateComparisons;
+    public float faceClosestUnit;
+    public float faceClosestObjective;
     public bool getsKilled;
 
     public FaceHeuristic()
@@ -41,6 +43,7 @@ public class FaceHeuristic : Heuristic {
             CalculateAttackForUnit(unitsInRange[i]);
             CalculateStateDifferencesForUnit(unitsInRange[i]);
         }
+        CalculateFacing();
     }
 
     private void CalculateAttackForUnit(Unit unit)
@@ -71,6 +74,25 @@ public class FaceHeuristic : Heuristic {
         }
     }
 
+    private void CalculateFacing()
+    {
+        faceClosestUnit = 0.0f;
+        if (closestEnemyUnit != null)
+        {
+            Vector3 directionOfDirectAttack = closestEnemyUnit.currentTile.transform.position - tile.transform.position;
+            int directFace = Facing(new Vector2(directionOfDirectAttack.x, directionOfDirectAttack.y));
+            faceClosestUnit = 1.0f - FaceComparison(direction, directFace);
+        }
+
+        faceClosestObjective = 0.0f;
+        if (closestObjective != null)
+        {
+            Vector3 directionOfDirectAttack = closestEnemyUnit.currentTile.transform.position - tile.transform.position;
+            int directFace = Facing(new Vector2(directionOfDirectAttack.x, directionOfDirectAttack.y));
+            faceClosestObjective = 1.0f - FaceComparison(direction, directFace);
+        }
+    }
+
     public override float CalculateHeuristic(AIWeights weights)
     {
         float heuristic = 0.0f;
@@ -80,7 +102,6 @@ public class FaceHeuristic : Heuristic {
         heuristic -= sneakAmount * weights.faceSneakDisadvantage;
         if (getsKilled) heuristic -= weights.faceDeathDisadvantage;
         heuristic *= weights.faceGlobal;
-        //Debug.Log("FaceHeur: " + heuristic);
         return heuristic;
     }
 }

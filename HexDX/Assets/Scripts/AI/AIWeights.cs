@@ -15,6 +15,8 @@ public class AIWeights {
     public float faceAttackDisadvantage;
     public float faceStateComparison;
     public float faceDeathDisadvantage;
+    public float faceClosestEnemy;
+    public float faceClosestObjective;
     public float faceGlobal;
     // attack weights
     public float unitFlankAdvantage;
@@ -22,6 +24,7 @@ public class AIWeights {
     public float unitAttackAdvantage;
     public float unitKillAdvantage;
     public float unitStateComparison;
+    public float unitFaceAttackingDirectly;
     public float unitGlobal;
     // input data
     public string fileName;
@@ -38,12 +41,15 @@ public class AIWeights {
         faceAttackDisadvantage = 0.0f;
         faceStateComparison = 0.0f;
         faceDeathDisadvantage = 0.0f;
+        faceClosestEnemy = 0.0f;
+        faceClosestObjective = 0.0f;
         faceGlobal = 0.0f;
         unitFlankAdvantage = 0.0f;
         unitSneakAdvangage = 0.0f;
         unitAttackAdvantage = 0.0f;
         unitKillAdvantage = 0.0f;
         unitStateComparison = 0.0f;
+        unitFaceAttackingDirectly = 0.0f;
         unitGlobal = 0.0f;
         fileName = "";
         initializeAttackEasy();
@@ -63,13 +69,16 @@ public class AIWeights {
         faceAttackDisadvantage = (float)Convert.ToDouble(aiRows[7].Trim());
         faceStateComparison = (float)Convert.ToDouble(aiRows[8].Trim());
         faceDeathDisadvantage = (float)Convert.ToDouble(aiRows[9].Trim());
-        faceGlobal = (float)Convert.ToDouble(aiRows[10].Trim());
-        unitFlankAdvantage = (float)Convert.ToDouble(aiRows[11].Trim());
-        unitSneakAdvangage = (float)Convert.ToDouble(aiRows[12].Trim());
-        unitAttackAdvantage = (float)Convert.ToDouble(aiRows[13].Trim());
-        unitKillAdvantage = (float)Convert.ToDouble(aiRows[14].Trim());
-        unitStateComparison = (float)Convert.ToDouble(aiRows[15].Trim());
-        unitGlobal = (float)Convert.ToDouble(aiRows[16].Trim());
+        faceClosestEnemy = (float)Convert.ToDouble(aiRows[10].Trim());
+        faceClosestObjective = (float)Convert.ToDouble(aiRows[11].Trim());
+        faceGlobal = (float)Convert.ToDouble(aiRows[12].Trim());
+        unitFlankAdvantage = (float)Convert.ToDouble(aiRows[13].Trim());
+        unitSneakAdvangage = (float)Convert.ToDouble(aiRows[14].Trim());
+        unitAttackAdvantage = (float)Convert.ToDouble(aiRows[15].Trim());
+        unitKillAdvantage = (float)Convert.ToDouble(aiRows[16].Trim());
+        unitStateComparison = (float)Convert.ToDouble(aiRows[17].Trim());
+        unitFaceAttackingDirectly = (float)Convert.ToDouble(aiRows[18].Trim());
+        unitGlobal = (float)Convert.ToDouble(aiRows[19].Trim());
     }
 
     public string WriteToString()
@@ -85,12 +94,15 @@ public class AIWeights {
         data += (double)faceAttackDisadvantage + "\n";
         data += (double)faceStateComparison + "\n";
         data += (double)faceDeathDisadvantage + "\n";
+        data += (double)faceClosestEnemy + "\n";
+        data += (double)faceClosestObjective + "\n";
         data += (double)faceGlobal + "\n";
         data += (double)unitFlankAdvantage + "\n";
         data += (double)unitSneakAdvangage + "\n";
         data += (double)unitAttackAdvantage + "\n";
         data += (double)unitKillAdvantage + "\n";
         data += (double)unitStateComparison + "\n";
+        data += (double)unitFaceAttackingDirectly + "\n";
         data += (double)unitGlobal + "\n";
         return data;
     }
@@ -108,12 +120,15 @@ public class AIWeights {
         faceAttackDisadvantage = 0.0f;
         faceStateComparison = 0.0f;
         faceDeathDisadvantage = 0.0f;
-        faceGlobal = 0.0f;
+        faceClosestEnemy = 1.0f;
+        faceClosestObjective = 0.0f;
+        faceGlobal = 1.0f;
         unitFlankAdvantage = 0.0f;
         unitSneakAdvangage = 0.0f;
         unitAttackAdvantage = 1.0f;
         unitKillAdvantage = 0.0f;
         unitStateComparison = 0.0f;
+        unitFaceAttackingDirectly = 1.0f;
         unitGlobal = 1.0f;
     }
 
@@ -129,12 +144,15 @@ public class AIWeights {
         faceAttackDisadvantage = 0.0f;
         faceStateComparison = 0.0f;
         faceDeathDisadvantage = 0.0f;
-        faceGlobal = 0.0f;
+        faceClosestEnemy = 1.0f;
+        faceClosestObjective = 0.0f;
+        faceGlobal = 1.0f;
         unitFlankAdvantage = 1.0f;
         unitSneakAdvangage = 0.0f;
         unitAttackAdvantage = 1.0f;
         unitKillAdvantage = 0.0f;
         unitStateComparison = 0.0f;
+        unitFaceAttackingDirectly = 1.0f;
         unitGlobal = 1.0f;
     }
 }
