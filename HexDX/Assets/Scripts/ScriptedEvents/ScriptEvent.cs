@@ -22,10 +22,12 @@ public abstract class ScriptEvent : MonoBehaviour {
     }
 
     protected void Complete() {
+        list.dialogueMgr.hidePromptOnFinish = false;
         list.NextEvent();
     }
 
     public virtual void StartEvent() {
+        list.dialogueMgr.hidePromptOnFinish = true;
         isActive = true;
         if (isPlayerEvent) {
             DoPlayerEvent();

@@ -15,6 +15,11 @@ public class ScriptedDialogue : ScriptEvent {
 		}
 	}
 
+	public override void StartEvent() {
+		base.StartEvent();
+		list.dialogueMgr.hidePromptOnFinish = false;
+	}
+
     public override void DoPlayerEvent() {  }
 
     public override void DoEvent() { }
