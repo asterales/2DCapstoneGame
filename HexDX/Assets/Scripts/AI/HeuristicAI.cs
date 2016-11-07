@@ -20,7 +20,7 @@ public class HeuristicAI : UnitAI
     // not sure if list of ignore is needed, only will be
     // if we make all AI decisions at the same time instead
     // of when they have to move
-    public void MakeChoice(List<Tile> ignore)
+    /*public void MakeChoiceOld(List<Tile> ignore)
     {
         Debug.Log("Making Choice");
         choice = new AIChoice(null, null, null);
@@ -78,6 +78,38 @@ public class HeuristicAI : UnitAI
         //{
         //    Debug.Log("AttackChoice Null");
         //}
+    }*/
+
+    public void MakeChoice(List<Tile> ignore)
+    {
+        //TileOption option = tileOptions[0];
+        float maxHeuristic = 0.0f;
+        for (int i = 0; i < tileOptions.Count; i++)
+        {
+            TileOption option = tileOptions[i];
+            float currentHeuristic = option.weight + option.bestFaceOption.weight;
+            if (option.bestFaceOption.bestAttackOption != null) currentHeuristic += option.bestFaceOption.bestAttackOption.weight;
+            if (currentHeuristic > maxHeuristic) maxHeuristic = currentHeuristic;
+        }
+
+        List<AIChoice> choices = new List<AIChoice>();
+        for (int i = 0; i < tileOptions.Count; i++)
+        {
+            TileOption option = tileOptions[i];
+            float currentHeuristic = option.weight + option.bestFaceOption.weight;
+            if (option.bestFaceOption.bestAttackOption != null) currentHeuristic += option.bestFaceOption.bestAttackOption.weight;
+            if (currentHeuristic == maxHeuristic) choices.Add(new AIChoice(option, option.bestFaceOption, option.bestFaceOption.bestAttackOption));
+        }
+
+        System.Random rnd = new System.Random();
+        choice = choices[rnd.Next(0, choices.Count)];
+
+        Debug.Log("HEURISTIC CHOICE :: " + choice.Heuristic());
+        Debug.Log("FACE CHOICE :: " + choice.faceChoice.weight);
+        Debug.Log("NUMBER OF OPTIMAL CHOICES :: " + choices.Count);
+        Debug.Log("NUMBER OF TILES :: " + tileOptions.Count);
+        if (choice.faceChoice.heuristic.closestEnemyUnit == null) Debug.Log("NO CLOSEST ENEMY");
+        if (!choice.tileChoice.heuristic.hasMoved) Debug.Log("REFRAINED FROM MOVING");
     }
 
 
@@ -88,6 +120,14 @@ public class HeuristicAI : UnitAI
         Debug.Log("Creating Data");
         tileOptions.Clear();
         List<Tile> tilesWithinRange = HexMap.GetMovementTiles(unit);
+        Debug.Log("TILES WITHIN RANGE :: " + tilesWithinRange.Count);
+        //for (int i = 1; i < tilesWithinRange.Count; i++)
+        //{
+        //    if (tilesWithinRange[i] == tilesWithinRange[0])
+        //    {
+        //        Debug.Log("REPEATED TILE");
+        //    }
+        //}
 
         for (int i = 0; i < tilesWithinRange.Count; i++)
         {
@@ -208,8 +248,8 @@ public class HeuristicAI : UnitAI
         tileOptions = new List<TileOption>();
         // TEST CODE //
         weightFunction = new AIWeights();
-        //weightFunction.initializeAttackEasy();
-        weightFunction.initializeDefenseEasy();
+        weightFunction.initializeAttackEasy();
+        //weightFunction.initializeDefenseEasy();
         ///////////////
     }
 

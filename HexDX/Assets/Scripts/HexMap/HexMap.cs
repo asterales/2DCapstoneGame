@@ -63,15 +63,15 @@ public class HexMap : MonoBehaviour {
             if (unit.CanPathThrough(t) && distance>=0) {
                 if (t.currentUnit == null || t.currentUnit.IsPlayerUnit() == unit.IsPlayerUnit()) {
                     mvtTiles.Add(t);
-                        neighbors = GetNeighbors(t);
-                        foreach (Tile neighbor in neighbors)
+                    neighbors = GetNeighbors(t);
+                    foreach (Tile neighbor in neighbors)
+                    {
+                        if (neighbor && !mvtTiles.Contains(neighbor) && !toCheck.Contains(neighbor))
                         {
-                            if (neighbor && !mvtTiles.Contains(neighbor))
-                            {
-                                toCheck.Enqueue(neighbor);
-                                dist.Enqueue(distance - (int)neighbor.tileStats.mvtDifficulty);
-                            }
+                            toCheck.Enqueue(neighbor);
+                            dist.Enqueue(distance - (int)neighbor.tileStats.mvtDifficulty);
                         }
+                    }
                 }
             }
         }
