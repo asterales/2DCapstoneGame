@@ -11,6 +11,7 @@ public class TileHeuristic : Heuristic
     public float statBoost;        // stat boost from tile (0.0 <= v <= 1.0)
     public float distToClosestEnemy; // distance to closest enemy (0.0 <= v <= 1.0)
     public float distToObjective;    // distance to closest objective (0.0 <= v <= 1.0)
+    public bool hasMoved;
 
     public TileHeuristic()
     {
@@ -18,6 +19,7 @@ public class TileHeuristic : Heuristic
         unit = null;
         closestEnemyUnit = null;
         closestObjective = null;
+        hasMoved = true;
     }
 
     public TileHeuristic(Tile t, Unit u, List<Unit> enemies, List<Objective> obj)
@@ -26,6 +28,7 @@ public class TileHeuristic : Heuristic
         unit = u;
         enemyUnits = enemies;
         objectives = obj;
+        hasMoved = true;
     }
 
     public override void EvaluateData()
@@ -33,6 +36,7 @@ public class TileHeuristic : Heuristic
         CalculateStatBoost();
         CalculateObjectiveDist();
         CalculateEnemyDist();
+        hasMoved = tile != unit.currentTile;
     }
 
     private void CalculateStatBoost()
@@ -85,6 +89,7 @@ public class TileHeuristic : Heuristic
         heuristic += distToClosestEnemy * weights.tileEnemyCloseness;
         heuristic += (1.0f - distToClosestEnemy) * weights.tileEnemyDistance;
         heuristic += distToObjective * weights.tileClosenessObjective;
+        if (!hasMoved) heuristic += weights.tileRefrain;
         heuristic *= weights.tileGlobal;
         return heuristic;
     }

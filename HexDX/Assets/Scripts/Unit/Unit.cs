@@ -634,8 +634,8 @@ public class Unit : MonoBehaviour {
 
     public int GetShortestPathLength(Tile dest, Tile current)
     {
-        if (!GetAccessibleTiles().Contains(dest))
-            return int.MaxValue;
+        //if (!GetAccessibleTiles().Contains(dest))
+        //    return int.MaxValue;
         int bound = HexMap.Cost(dest, current);
         List<Tile> shortestPath = new List<Tile>();
         while (true)

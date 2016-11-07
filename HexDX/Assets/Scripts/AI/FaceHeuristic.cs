@@ -101,6 +101,8 @@ public class FaceHeuristic : Heuristic {
         heuristic -= flankAmount * weights.faceFlankDisadvantage;
         heuristic -= sneakAmount * weights.faceSneakDisadvantage;
         if (getsKilled) heuristic -= weights.faceDeathDisadvantage;
+        if (closestEnemyUnit) heuristic += faceClosestUnit * weights.faceClosestEnemy;
+        if (closestObjective) heuristic += faceClosestObjective * weights.faceClosestObjective;
         heuristic *= weights.faceGlobal;
         return heuristic;
     }

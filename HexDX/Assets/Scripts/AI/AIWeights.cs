@@ -8,6 +8,7 @@ public class AIWeights {
     public float tileEnemyCloseness;
     public float tileEnemyDistance;
     public float tileClosenessObjective;
+    public float tileRefrain;
     public float tileGlobal;
     // facing weights
     public float faceFlankDisadvantage;
@@ -35,6 +36,7 @@ public class AIWeights {
         tileEnemyCloseness = 0.0f;
         tileEnemyDistance = 0.0f;
         tileClosenessObjective = 0.0f;
+        tileRefrain = 0.0f;
         tileGlobal = 0.0f;
         faceFlankDisadvantage = 0.0f;
         faceSneakDisadvantage = 0.0f;
@@ -52,7 +54,8 @@ public class AIWeights {
         unitFaceAttackingDirectly = 0.0f;
         unitGlobal = 0.0f;
         fileName = "";
-        initializeAttackEasy();
+        //initializeAttackEasy();
+        //initializeDefenseEasy();
     }
 
     public void ReadFromFile(string name)
@@ -63,22 +66,23 @@ public class AIWeights {
         tileEnemyCloseness = (float)Convert.ToDouble(aiRows[1].Trim());
         tileEnemyDistance = (float)Convert.ToDouble(aiRows[2].Trim());
         tileClosenessObjective = (float)Convert.ToDouble(aiRows[3].Trim());
-        tileGlobal = (float)Convert.ToDouble(aiRows[4].Trim());
-        faceFlankDisadvantage = (float)Convert.ToDouble(aiRows[5].Trim());
-        faceSneakDisadvantage = (float)Convert.ToDouble(aiRows[6].Trim());
-        faceAttackDisadvantage = (float)Convert.ToDouble(aiRows[7].Trim());
-        faceStateComparison = (float)Convert.ToDouble(aiRows[8].Trim());
-        faceDeathDisadvantage = (float)Convert.ToDouble(aiRows[9].Trim());
-        faceClosestEnemy = (float)Convert.ToDouble(aiRows[10].Trim());
-        faceClosestObjective = (float)Convert.ToDouble(aiRows[11].Trim());
-        faceGlobal = (float)Convert.ToDouble(aiRows[12].Trim());
-        unitFlankAdvantage = (float)Convert.ToDouble(aiRows[13].Trim());
-        unitSneakAdvangage = (float)Convert.ToDouble(aiRows[14].Trim());
-        unitAttackAdvantage = (float)Convert.ToDouble(aiRows[15].Trim());
-        unitKillAdvantage = (float)Convert.ToDouble(aiRows[16].Trim());
-        unitStateComparison = (float)Convert.ToDouble(aiRows[17].Trim());
-        unitFaceAttackingDirectly = (float)Convert.ToDouble(aiRows[18].Trim());
-        unitGlobal = (float)Convert.ToDouble(aiRows[19].Trim());
+        tileRefrain = (float)Convert.ToDouble(aiRows[4].Trim());
+        tileGlobal = (float)Convert.ToDouble(aiRows[5].Trim());
+        faceFlankDisadvantage = (float)Convert.ToDouble(aiRows[6].Trim());
+        faceSneakDisadvantage = (float)Convert.ToDouble(aiRows[7].Trim());
+        faceAttackDisadvantage = (float)Convert.ToDouble(aiRows[8].Trim());
+        faceStateComparison = (float)Convert.ToDouble(aiRows[9].Trim());
+        faceDeathDisadvantage = (float)Convert.ToDouble(aiRows[10].Trim());
+        faceClosestEnemy = (float)Convert.ToDouble(aiRows[11].Trim());
+        faceClosestObjective = (float)Convert.ToDouble(aiRows[12].Trim());
+        faceGlobal = (float)Convert.ToDouble(aiRows[13].Trim());
+        unitFlankAdvantage = (float)Convert.ToDouble(aiRows[14].Trim());
+        unitSneakAdvangage = (float)Convert.ToDouble(aiRows[15].Trim());
+        unitAttackAdvantage = (float)Convert.ToDouble(aiRows[16].Trim());
+        unitKillAdvantage = (float)Convert.ToDouble(aiRows[17].Trim());
+        unitStateComparison = (float)Convert.ToDouble(aiRows[18].Trim());
+        unitFaceAttackingDirectly = (float)Convert.ToDouble(aiRows[19].Trim());
+        unitGlobal = (float)Convert.ToDouble(aiRows[20].Trim());
     }
 
     public string WriteToString()
@@ -88,6 +92,7 @@ public class AIWeights {
         data += (double)tileEnemyCloseness + "\n";
         data += (double)tileEnemyDistance + "\n";
         data += (double)tileClosenessObjective + "\n";
+        data += (double)tileRefrain + "\n";
         data += (double)tileGlobal + "\n";
         data += (double)faceFlankDisadvantage + "\n";
         data += (double)faceSneakDisadvantage + "\n";
@@ -114,6 +119,7 @@ public class AIWeights {
         tileEnemyCloseness = 1.0f;
         tileEnemyDistance = 0.0f;
         tileClosenessObjective = 0.0f;
+        tileRefrain = 0.0f;
         tileGlobal = 1.0f;
         faceFlankDisadvantage = 0.0f;
         faceSneakDisadvantage = 0.0f;
@@ -138,7 +144,8 @@ public class AIWeights {
         tileEnemyCloseness = 0.0f;
         tileEnemyDistance = 0.0f;
         tileClosenessObjective = 0.0f;
-        tileGlobal = 0.0f;
+        tileRefrain = 0.5f;
+        tileGlobal = 1.0f;
         faceFlankDisadvantage = 0.0f;
         faceSneakDisadvantage = 0.0f;
         faceAttackDisadvantage = 0.0f;

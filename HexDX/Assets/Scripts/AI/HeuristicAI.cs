@@ -22,7 +22,7 @@ public class HeuristicAI : UnitAI
     // of when they have to move
     public void MakeChoice(List<Tile> ignore)
     {
-        //Debug.Log("Making Choice");
+        Debug.Log("Making Choice");
         choice = new AIChoice(null, null, null);
         for (int i = 0; i < tileOptions.Count; i++)
         {
@@ -71,6 +71,9 @@ public class HeuristicAI : UnitAI
             //Debug.Log("Position: " + tileChoice.chosenTile.position.row + "," + tileChoice.chosenTile.position.col + " Heur: " + choice.Heuristic());
         }
         Debug.Log("HEURISTIC CHOICE :: " + choice.Heuristic());
+        Debug.Log("FACE CHOICE :: " + choice.faceChoice.weight);
+        if (choice.faceChoice.heuristic.closestEnemyUnit == null) Debug.Log("NO CLOSEST ENEMY");
+        if (!choice.tileChoice.heuristic.hasMoved) Debug.Log("REFRAINED FROM MOVING");
         //if (choice.attackChoice == null)
         //{
         //    Debug.Log("AttackChoice Null");
@@ -205,7 +208,8 @@ public class HeuristicAI : UnitAI
         tileOptions = new List<TileOption>();
         // TEST CODE //
         weightFunction = new AIWeights();
-        weightFunction.initializeAttackEasy();
+        //weightFunction.initializeAttackEasy();
+        weightFunction.initializeDefenseEasy();
         ///////////////
     }
 
