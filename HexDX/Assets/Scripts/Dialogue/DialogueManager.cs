@@ -8,6 +8,7 @@ using UnityEngine.UI;
 /* Base class for dialogue managers */
 
 public abstract class DialogueManager : MonoBehaviour {
+	public bool hideContinueOnFinish;
 	protected SpeakerUI activeSpeaker;
 	protected string currentLine;
 	protected IEnumerator<float> currentSpeechRoutine;
@@ -16,7 +17,11 @@ public abstract class DialogueManager : MonoBehaviour {
 	protected virtual void Update() {
         counter--;
 		if(SpeakerLinesFinished()){
-			activeSpeaker.ShowContinuePrompt();
+			if (hideContinueOnFinish) {
+				activeSpeaker.HideContinuePrompt();
+			} else {
+				activeSpeaker.ShowContinuePrompt();
+			}
 		}
 		if (Input.GetMouseButtonDown(0) && counter <= 0){
 			if(SpeakerLinesFinished()){

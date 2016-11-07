@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public abstract class WorldMapPopupPanel : MonoBehaviour {
 	private Button backButton;
-	protected Image raycastBlocker;
+	private Image raycastBlocker;
 	public bool isActive;
 
 	protected virtual void Awake() {

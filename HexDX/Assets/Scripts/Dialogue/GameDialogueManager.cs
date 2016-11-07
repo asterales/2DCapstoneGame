@@ -14,8 +14,7 @@ public class GameDialogueManager : DialogueManager {
 	public bool IsVisible { get; private set; }
 	
 	void Awake(){
-		activeSpeaker = new SpeakerUI("Dialogue Portrait", "Dialogue Name Card", "Dialogue Box");
-		HideGUI();
+		activeSpeaker = GetComponent<SpeakerUI>();
 	}
 
 	protected override void Update() {

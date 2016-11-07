@@ -17,10 +17,8 @@ public class CutsceneManager : DialogueManager {
 		if (cutsceneFile != null) {
 			LoadCutscene(cutsceneFile);
 		}
-		leftSpeaker = new SpeakerUI("Left Portrait", "Left Name Card", "Left Dialogue Box");
-		rightSpeaker = new SpeakerUI("Right Portrait", "Right Name Card", "Right Dialogue Box");
-		leftSpeaker.HideGUI();
-		rightSpeaker.HideGUI();
+		leftSpeaker = GameObject.Find("Left Speaker").GetComponent<SpeakerUI>();
+		rightSpeaker = GameObject.Find("Right Speaker").GetComponent<SpeakerUI>();
 	}
 
 	private void LoadCutscene(string file) {
@@ -36,6 +34,8 @@ public class CutsceneManager : DialogueManager {
 	}
 
 	void Start() {
+		leftSpeaker.OverrideSorting = true;
+		rightSpeaker.OverrideSorting = true;
 		SetNextLine();
 		nextSceneLoaded = false;
 	}
@@ -70,10 +70,12 @@ public class CutsceneManager : DialogueManager {
 	private void SwitchToSpeaker(SpeakerUI nextSpeaker, CutsceneDialogue dialogue){
 		if(activeSpeaker != null) {
 			activeSpeaker.HideTextBoxes();
+			activeSpeaker.SortingOrder = 1;
 		}
 		nextSpeaker.SetSpeaker(dialogue.Portrait, dialogue.CharacterName);
 		nextSpeaker.ShowGUI();
 		activeSpeaker = nextSpeaker;
+		activeSpeaker.SortingOrder = 2;
 		currentLine = dialogue.Line;
 		StartSpeakerLines();
 	}

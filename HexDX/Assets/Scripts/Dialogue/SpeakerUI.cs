@@ -3,17 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-/* 	Wrapper class for character dialogue UI elements
+/* 	Wrapper for character dialogue UI elements
 	UI elements include: Portrait, namecard, dialogue textbox */
 
-public class SpeakerUI {
+public class SpeakerUI : MonoBehaviour {
 
 	private class TextPanel {
 		public Image panelBG;
 		public Text textbox;
 
-		public TextPanel(string panelObjName) {
-			panelBG = GameObject.Find(panelObjName).GetComponent<Image>();
+		public TextPanel(Transform panelTransform) {
+			panelBG = panelTransform.GetComponent<Image>();
 			textbox = panelBG.transform.Find("Text").GetComponent<Text>();
 		}
 
@@ -33,17 +33,30 @@ public class SpeakerUI {
 	private TextPanel nameCard;
 	private TextPanel dialogueBox;
 	private Text continuePrompt;
+	private Canvas canvas;
 
 	public string DialogueText {
 		get { return dialogueBox.textbox.text; }
 		set { dialogueBox.textbox.text = value; }
 	}
 
-	public SpeakerUI(string portraitObjName, string nameCardObjName, string dialogueBoxObjName) {
-		portrait = GameObject.Find(portraitObjName).GetComponent<Image>();
-		nameCard = new TextPanel(nameCardObjName);
-		dialogueBox = new TextPanel(dialogueBoxObjName);
+	public bool OverrideSorting {
+		get { return canvas.overrideSorting; }
+		set { canvas.overrideSorting = value; }
+	}
+
+	public int SortingOrder {
+		get { return canvas.sortingOrder; }
+		set { canvas.sortingOrder = value; }
+	}
+
+	void Awake() {
+		canvas = GetComponent<Canvas>();
+		portrait = transform.Find("Portrait").GetComponent<Image>();
+		nameCard = new TextPanel(transform.Find("Name Card"));
+		dialogueBox = new TextPanel(transform.Find("Dialogue Box"));
 		continuePrompt = dialogueBox.panelBG.transform.Find("Continuation Prompt").GetComponent<Text>();
+		HideGUI();
 	}
 
 	public void SetSpeaker(Sprite picture, string name) {
