@@ -6,6 +6,7 @@ using System.Linq;
 public class RecruitingPanel : WorldMapPopupPanel {
 	public List<RecruitListing> unitChoices;
 	private UnitStatDisplay statDisplay;
+	private UnitDisplay unitDisplay;
 	public Button recruitButton;
 	private Text fundsText;
 	private Text descriptionText;
@@ -17,6 +18,7 @@ public class RecruitingPanel : WorldMapPopupPanel {
 		unitChoices = GetComponentsInChildren<RecruitListing>().ToList();
 		fundsText = transform.Find("Funds").GetComponent<Text>();
 		descriptionText = transform.Find("Description").GetComponent<Text>();
+		unitDisplay = transform.Find("Unit Display").GetComponentInChildren<UnitDisplay>();
 		InitRecruitButton();
 	}
 
@@ -50,12 +52,15 @@ public class RecruitingPanel : WorldMapPopupPanel {
 	}
 
 	private void SetSelectedListing(RecruitListing listing) {
-		if (selectedListing == null || selectedListing.unitPanel.unit) {
+		if (selectedListing == null || selectedListing.unitDisplay.unit) {
 			selectedListing = listing;
 			if (selectedListing) {
-				statDisplay.DisplayUnit(selectedListing.unitPanel.unit);
-				descriptionText.text = selectedListing.unitPanel.unit.unitStats.className + "\nCost: " + selectedListing.cost + " gold";
+				Unit unit = selectedListing.unitDisplay.unit;
+				unitDisplay.unit = unit;
+				statDisplay.DisplayUnitStats(unit);
+				descriptionText.text = unit.unitStats.className + "\nCost: " + selectedListing.cost + " gold";
 			} else {
+				unitDisplay.unit = null;
 				statDisplay.ClearDisplay();
 				descriptionText.text = "";
 			}

@@ -6,30 +6,49 @@ public class UnitDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	private Image unitPanel;
 	public Unit unit;
 	private Color spriteColor;
+	public UnitDisplayType displayType;
+	public bool disableHoverEffect;
 
 	private static readonly Color hoverColor = Color.white;
 	private static readonly Color defaultColor = new Color(0.78f, 0.78f, 0.78f);
 
 	void Awake() {
-		spriteColor = defaultColor;
+		spriteColor = disableHoverEffect ? hoverColor : defaultColor;
 		unitPanel = GetComponent<Image>();
 	}
 
 	void Update() {
 		if (unit != null) {
 			unitPanel.enabled = true;
-			unitPanel.sprite = unit.spriteRenderer.sprite;
+			unitPanel.sprite = GetSprite();
 			unitPanel.color = spriteColor;
 		} else {
 			unitPanel.enabled = false;
 		}
 	}
 
+	private Sprite GetSprite() {
+		if (displayType == UnitDisplayType.UnitCard) {
+			return unit.sprites.unitCard;
+		} else {
+			return unit.spriteRenderer.sprite;
+		}
+	}
+
 	public void OnPointerEnter(PointerEventData eventData) {
-		spriteColor = hoverColor;
+		if (!disableHoverEffect) {
+			spriteColor = hoverColor;
+		}
 	}
 
 	public void OnPointerExit(PointerEventData eventData) {
-		spriteColor = defaultColor;
+		if (!disableHoverEffect) {
+			spriteColor = defaultColor;
+		}
 	}
+}
+
+public enum UnitDisplayType {
+	AnimatedUnit,
+	UnitCard
 }

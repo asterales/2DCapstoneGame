@@ -17,7 +17,7 @@ public class UnitSelectionMouseHandler : MonoBehaviour, IPointerClickHandler, IP
 	}
 
 	public void OnPointerEnter(PointerEventData eventData) {
-		selectionPanel.statDisplay.DisplayUnit(displayPanel.unit);
+		selectionPanel.statDisplay.DisplayUnitStats(displayPanel.unit);
 	}
 
 	public void OnPointerExit(PointerEventData eventData) {

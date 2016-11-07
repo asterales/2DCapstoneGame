@@ -6,7 +6,7 @@ using System.Linq;
 
 public class RecruitListing : MonoBehaviour, IPointerClickHandler {
 	private GameObject unitObj;
-	public UnitDisplay unitPanel;
+	public UnitDisplay unitDisplay;
 	public string unitClass;
 	public int cost;
 
@@ -14,7 +14,7 @@ public class RecruitListing : MonoBehaviour, IPointerClickHandler {
 	public OnClick onClickCallback;
 
 	void Awake() {
-		unitPanel = GetComponent<UnitDisplay>();
+		unitDisplay = GetComponent<UnitDisplay>();
 		unitClass = unitClass.Trim();
 		unitObj = InstantiateRecruit();
 		if (unitObj != null) {
@@ -25,8 +25,8 @@ public class RecruitListing : MonoBehaviour, IPointerClickHandler {
 
 	void Start() {
 		if (unitObj != null) {
-			unitPanel.unit = unitObj.GetComponent<Unit>();
-			GameManager.SetDefaultUnitView(unitPanel.unit);
+			unitDisplay.unit = unitObj.GetComponent<Unit>();
+			GameManager.SetDefaultUnitView(unitDisplay.unit);
 		}
 	}
 

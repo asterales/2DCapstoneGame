@@ -11,4 +11,5 @@ public class UnitSprites: MonoBehaviour
     public Sprite[] attack;
     public RuntimeAnimatorController[] attackAnim;
     public Sprite portrait;
+    public Sprite unitCard;
 }

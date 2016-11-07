@@ -7,6 +7,7 @@ public class UnitStatDisplay : MonoBehaviour {
 
     public Unit unit;
     public Image portrait;
+    public bool showAnimatedUnit;
 
     private Image classPanel;
     private Text classText;
@@ -26,23 +27,8 @@ public class UnitStatDisplay : MonoBehaviour {
         ClearDisplay();
     }
 
-    public void DisplayUnit(Unit unitToDisplay) {
+    public void DisplayUnitStats(Unit unitToDisplay) {
         unit = unitToDisplay;
-        DisplayStats();
-        DisplayPortrait();
-    }
-
-    public void ClearDisplay() {
-        if(portrait) {
-            portrait.color = Color.clear;
-        }
-        classPanel.enabled = false;
-        classText.text = "";
-        statPanel.enabled = false;
-        statText.text = "";
-    }
-
-    private void DisplayStats() {
         if (unit) {
             classPanel.enabled = true;
             classText.text = unit.unitStats.className;
@@ -51,15 +37,11 @@ public class UnitStatDisplay : MonoBehaviour {
         }
     }
 
-    private void DisplayPortrait() {
-        if(portrait) {
-            if(unit) {
-                portrait.color = Color.white;
-                portrait.sprite = unit.sprites.portrait;
-            } else {
-                portrait.color = Color.clear;
-            }
-        }
+    public void ClearDisplay() {
+        classPanel.enabled = false;
+        classText.text = "";
+        statPanel.enabled = false;
+        statText.text = "";
     }
 
     private string GetStatsString() {
