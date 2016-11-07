@@ -14,10 +14,12 @@ public class DeploymentController : PreBattleController {
 	private GameObject deploymentUI;
 	private List<DeploymentTile> deploymentTiles;
 	
+	private static Tile selectedUnitDest;
+	private static bool faceAfterMove;
 	private static Unit displacedUnit;
 	private static Tile displacedUnitDest;
 
-	private static readonly float maxMovement = 0.35f;
+	public float maxMovement;
 
 	protected override void Awake() {
 		base.Awake();
@@ -53,28 +55,35 @@ public class DeploymentController : PreBattleController {
 		}
 	}
 
-	public static void SetUnitForDisplacement(Unit unit, Tile newTile) {
-		displacedUnit = unit;
-		displacedUnitDest = newTile;
-	}
-
-	public static void SetForDeploymentFacing(Unit unit) {
-		SelectionController.selectedUnit = unit;
-		unit.MakeFacing();
+	public static void SetSelectedUnitDestination(Unit selectedUnit, Tile destTile) {
+		selectedUnitDest = destTile;
+		faceAfterMove = selectedUnitDest != selectedUnit.currentTile;
+		if (destTile.currentUnit && destTile.currentUnit != selectedUnit) {
+			displacedUnit = destTile.currentUnit;
+			displacedUnitDest = selectedUnit.currentTile;
+		}
+		SelectionController.selectedUnit = selectedUnit;
+		SelectionController.mode = SelectionMode.DeploymentMove;
 	}
 
 	private static void ClearSelections() {
+		selectedUnitDest = null;
 		displacedUnit = null;
 		displacedUnitDest = null;
 	}
 
 	protected override void PhaseUpdateAction() {
+		if (SelectionController.selectedUnit) {
+			if (selectedUnitDest) {
+				SelectionController.ShowSelection(selectedUnitDest);
+				MoveUnit(SelectionController.selectedUnit, selectedUnitDest);
+			} else {
+				SelectionController.ShowSelection(SelectionController.selectedUnit);
+				FaceSelectedUnit();
+			}
+		}
 		if (displacedUnit) {
 			MoveUnit(displacedUnit, displacedUnitDest);
-		} else if (SelectionController.selectedUnit) {
-			// selectedUnit is only set for facing phase
-			SelectionController.selectedUnit.MakeFacing();
-			FaceSelectedUnit();
 		}
 	}
 
@@ -87,11 +96,20 @@ public class DeploymentController : PreBattleController {
     	} else {
     		unit.SetTile(destTile);
     		unit.MakeOpen();
-    		if (unit == displacedUnit) {
+    		if (destTile == selectedUnitDest) {
+    			if (faceAfterMove) {
+    				SelectionController.selectedUnit.MakeFacing();
+    			} else {
+    				SelectionController.selectedUnit = null;
+    			}
+    			selectedUnitDest = null;
+    		} else if (unit == displacedUnit) {
     			displacedUnit = null;
     			displacedUnitDest = null;
     		}
-    		SelectionController.mode = SelectionMode.DeploymentOpen;
+    		if(selectedUnitDest == null && displacedUnitDest == null) {
+    			SelectionController.mode = SelectionMode.DeploymentOpen;
+    		}
     	}
     }
 
@@ -102,6 +120,7 @@ public class DeploymentController : PreBattleController {
 			HexMap.ClearAttackTiles();
 			SelectionController.selectedUnit.MakeOpen();
 			SelectionController.selectedUnit = null;
+			SelectionController.HideSelection();
 			SelectionController.mode = SelectionMode.DeploymentOpen;
 		}
 	}

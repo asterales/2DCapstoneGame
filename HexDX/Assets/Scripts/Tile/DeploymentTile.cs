@@ -47,27 +47,23 @@ public class DeploymentTile : MonoBehaviour {
 	void OnMouseUp() {
 		if (draggedUnit) {
 			if (hoveredTile) {
-				if (hoveredTile.currentUnit) {
-					DeploymentController.SetUnitForDisplacement(hoveredTile.currentUnit, draggedUnit.currentTile);
-				}
-				draggedUnit.SetTile(hoveredTile);
-				DeploymentController.SetForDeploymentFacing(draggedUnit);
+				DeploymentController.SetSelectedUnitDestination(draggedUnit, hoveredTile);
 			} else {
-				draggedUnit.SetTile(draggedUnit.currentTile);
+				DeploymentController.SetSelectedUnitDestination(draggedUnit, draggedUnit.currentTile);
 			}
-			draggedUnit = null;
+			ClearDragVariables();
 		}
 	}
 
 	void Update() {
-		if (draggedUnit) {
+		if (SelectionController.mode == SelectionMode.DeploymentOpen) {
 			if (hoveredTile) {
 				SelectionController.ShowSelection(hoveredTile);
-			} else {
+			} else if (draggedUnit) {
 				SelectionController.ShowSelection(draggedUnit.currentTile);
-			} 
-		} else {
-			SelectionController.HideSelection();
+			} else {
+				SelectionController.HideSelection();
+			}
 		}
 	}
 
