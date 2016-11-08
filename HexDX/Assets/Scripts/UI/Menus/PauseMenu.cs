@@ -44,6 +44,8 @@ public class PauseMenu : MonoBehaviour {
             unit.gameObject.GetComponent<Animator>().enabled = false;
             unit.gameObject.GetComponent<AudioSource>().enabled = false;
         }
+        lastMode = SelectionController.mode;
+        SelectionController.mode = SelectionMode.Paused;
     }
 
     void Unpause() {
@@ -55,5 +57,6 @@ public class PauseMenu : MonoBehaviour {
             unit.gameObject.GetComponent<Animator>().enabled = true;
             unit.gameObject.GetComponent<AudioSource>().enabled = true;
         }
+        SelectionController.mode = lastMode;
     }
 }

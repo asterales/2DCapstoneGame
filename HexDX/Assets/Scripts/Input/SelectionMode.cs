@@ -11,6 +11,7 @@
 	AITurn,
 
     TurnTransition,
+    Paused,
 
     ScriptedPlayerSelection,
     ScriptedPlayerMove,
