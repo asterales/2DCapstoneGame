@@ -34,6 +34,7 @@ public class SpeakerUI : MonoBehaviour {
 	private TextPanel dialogueBox;
 	private Text continuePrompt;
 	private Canvas canvas;
+	public bool enableSortingOptions;
 
 	public string DialogueText {
 		get { return dialogueBox.textbox.text; }
@@ -51,7 +52,12 @@ public class SpeakerUI : MonoBehaviour {
 	}
 
 	void Awake() {
-		canvas = GetComponent<Canvas>();
+		if (enableSortingOptions) {
+			canvas = GetComponent<Canvas>();
+			if (!canvas) {
+				canvas = gameObject.AddComponent<Canvas>();
+			}
+		}
 		portrait = transform.Find("Portrait").GetComponent<Image>();
 		nameCard = new TextPanel(transform.Find("Name Card"));
 		dialogueBox = new TextPanel(transform.Find("Dialogue Box"));
