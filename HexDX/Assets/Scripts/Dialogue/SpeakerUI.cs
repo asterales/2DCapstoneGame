@@ -9,30 +9,32 @@ using UnityEngine.UI;
 public class SpeakerUI : MonoBehaviour {
 
 	private class TextPanel {
-		public Image panelBG;
+		public GameObject obj;
 		public Text textbox;
 
-		public TextPanel(Transform panelTransform) {
-			panelBG = panelTransform.GetComponent<Image>();
-			textbox = panelBG.transform.Find("Text").GetComponent<Text>();
+		public TextPanel(GameObject panelObj) {
+			obj = panelObj;
+			textbox = panelObj.transform.Find("Text").GetComponent<Text>();
 		}
 
 		public void Hide() {
-			panelBG.enabled = false;
-			textbox.enabled = false;
+			obj.SetActive(false);
 		}
 
 		public void Show() {
-			panelBG.enabled = true;
-			textbox.enabled = true;
+			obj.SetActive(true);
 		}
 	}
 
 	/* UI Elements */
-	private Image portrait;
+	public Image portrait;
+	public GameObject portraitObj;
+	public GameObject namePanelObj;
+	public GameObject dialoguePanelObj;
+	public Text continuePrompt;
+	
 	private TextPanel nameCard;
 	private TextPanel dialogueBox;
-	private Text continuePrompt;
 	private Canvas canvas;
 
 	public string DialogueText {
@@ -52,10 +54,14 @@ public class SpeakerUI : MonoBehaviour {
 
 	void Awake() {
 		canvas = GetComponent<Canvas>();
-		portrait = transform.Find("Portrait").GetComponent<Image>();
-		nameCard = new TextPanel(transform.Find("Name Card"));
-		dialogueBox = new TextPanel(transform.Find("Dialogue Box"));
-		continuePrompt = dialogueBox.panelBG.transform.Find("Continuation Prompt").GetComponent<Text>();
+		if (!canvas) {
+			canvas = gameObject.AddComponent<Canvas>();
+		}
+		nameCard = new TextPanel(namePanelObj);
+		dialogueBox = new TextPanel(dialoguePanelObj);
+		if (!continuePrompt) {
+			continuePrompt = dialoguePanelObj.transform.Find("Continuation Prompt").GetComponent<Text>();
+		}
 		HideGUI();
 	}
 
@@ -65,11 +71,11 @@ public class SpeakerUI : MonoBehaviour {
 	}
 
 	public void ShowPortrait(){
-		portrait.enabled = true;
+		portraitObj.SetActive(true);
 	}
 
 	public void HidePortrait() {
-		portrait.enabled = false;
+		portraitObj.SetActive(false);
 	}
 
 	public void ShowTextBoxes() {

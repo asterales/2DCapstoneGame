@@ -14,7 +14,7 @@ public class TurnTransition : MonoBehaviour {
 	public delegate void TransitionEndFunc();
 
 	private FadeTransition fade;
-	private Image overlayBG; // completely transparent and blocks raycasts during transition
+	private Image overlayBG; 
 	private Animator anim;
 	private Dictionary<string, float> animationLengths;
 
