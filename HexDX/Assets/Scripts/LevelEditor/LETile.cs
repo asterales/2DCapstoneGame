@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class LETile : MonoBehaviour {
     public LEHexMap reference;
@@ -57,7 +56,6 @@ public class LETile : MonoBehaviour {
         }
         else if (reference.selectionController.isSettingsMode)
         {
-            //Debug.Log("Placing Unit");
             Vector3 newPos = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - .001f);
             LEUnitInstance instance = unitCache.CreateNewUnitInstance(newPos, reference.selectionController.selectedSettings);
             currentInstance = instance;
@@ -97,18 +95,11 @@ public class LETile : MonoBehaviour {
 
     public void ChangeType(int newType)
     {
-        ////// DEBUG CODE //////
-        if (spriteCache == null)
-        {
-            Debug.Log("ERRRRRORORORORO");
-        }
-        ////////////////////////
         ChangeSprite(spriteCache.GetTileSprite(newType), newType);
     }
 
     public void PrepareToDestroy()
     {
-        Debug.Log("TO DO :: DESTROY UNIT");
         DestroyDeploymentTile();
         // delete unit instance
     }

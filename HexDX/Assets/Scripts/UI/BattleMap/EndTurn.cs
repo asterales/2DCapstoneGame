@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
-using System.Collections;
 
 public class EndTurn : MonoBehaviour {
     public BattleController battleController;

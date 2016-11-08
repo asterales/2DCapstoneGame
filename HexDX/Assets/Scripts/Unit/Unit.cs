@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using MovementEffects;
 using UnityEngine.UI;
@@ -25,7 +23,6 @@ public class Unit : MonoBehaviour {
     private Animator animator;
     private Tile lastTile;
     private int type; // we may want to represent types by something else
-    private UnitFacing facingBonus;
     private UnitSounds sounds;
     private static bool attackLock = false;
 
@@ -64,7 +61,6 @@ public class Unit : MonoBehaviour {
 
     void Awake() {
         unitStats = GetComponent<UnitStats>();
-        facingBonus = GetComponent<UnitFacing>();
         sprites = GetComponent<UnitSprites>();
         sounds = GetComponent<UnitSounds>();
         audioSource = GetComponent<AudioSource>();
@@ -95,10 +91,6 @@ public class Unit : MonoBehaviour {
         if (unitStats == null)
         {
             Debug.Log("Unit Needs Unit Stats to be defined -> Unit.cs");
-        }
-        if (facingBonus == null)
-        {
-            Debug.Log("Unit Needs Unit Facing to be defined -> Unit.cs");
         }
         if (spriteRenderer == null)
         {
@@ -600,11 +592,10 @@ public class Unit : MonoBehaviour {
             if (CanPathThrough(t))
                 if (t.currentUnit == null || t.currentUnit.IsPlayerUnit() == IsPlayerUnit())
                 {
-                    if (!t.currentUnit)
-                        tiles.Add(t);
+                    if (!t.currentUnit) tiles.Add(t);
                     neighbors = HexMap.GetNeighbors(t);
                     foreach (Tile neighbor in neighbors)
-                        if (neighbor && !tiles.Contains(neighbor))
+                        if (neighbor && !tiles.Contains(neighbor) && !toCheck.Contains(neighbor))
                             toCheck.Enqueue(neighbor);
                 }
         }
@@ -634,8 +625,6 @@ public class Unit : MonoBehaviour {
 
     public int GetShortestPathLength(Tile dest, Tile current)
     {
-        //if (!GetAccessibleTiles().Contains(dest))
-        //    return int.MaxValue;
         int bound = HexMap.Cost(dest, current);
         List<Tile> shortestPath = new List<Tile>();
         while (true)

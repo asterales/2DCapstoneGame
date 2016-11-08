@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class AspectRatioScaler : MonoBehaviour {
     float originalratio = 16.0f / 9.0f;

@@ -1,8 +1,6 @@
 using UnityEngine;
-using System.Collections.Generic;
 using MovementEffects;
 using System.Linq;
-using System;
 
 public class StationaryAI : UnitAI {
 	private Unit currentEnemy;

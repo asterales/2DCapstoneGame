@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class LEIncrementButton : MonoBehaviour {
     public SpriteRenderer spriteRenderer;
@@ -11,7 +10,7 @@ public class LEIncrementButton : MonoBehaviour {
 	void Awake () {
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
 	    ////// DEBUG CODE //////
-        if (statEditorParent == null || aiEditorParent == null)
+        if (statEditorParent == null && aiEditorParent == null)
         {
             Debug.Log("ERROR :: Reference to StatEditor needs to be defined -> LEIncrementButton.cs");
         }

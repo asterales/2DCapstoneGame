@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class DamageIndicator : MonoBehaviour {
     public TextMesh textmesh;

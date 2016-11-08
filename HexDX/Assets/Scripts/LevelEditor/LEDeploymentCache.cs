@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
 
 public class LEDeploymentCache : MonoBehaviour {
     public List<LEDeploymentTile> depTiles;

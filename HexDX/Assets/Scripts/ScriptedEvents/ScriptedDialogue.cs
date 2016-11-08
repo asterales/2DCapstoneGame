@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System;
 
 /* 	Class for just scripted dialogue without action. 
 	Dialogue currently handled by ScriptList class. 

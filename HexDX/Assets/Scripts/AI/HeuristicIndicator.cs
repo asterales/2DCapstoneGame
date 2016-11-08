@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class HeuristicIndicator : MonoBehaviour {
     public TextMesh textmesh;

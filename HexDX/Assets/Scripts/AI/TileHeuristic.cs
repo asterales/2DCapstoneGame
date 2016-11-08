@@ -2,7 +2,6 @@
 // Contains Heuristic for deciding face and attacking unit
 
 using System.Collections.Generic;
-using UnityEngine;
 
 public class TileHeuristic : Heuristic
 {

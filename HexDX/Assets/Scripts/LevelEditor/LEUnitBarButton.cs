@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class LEUnitBarButton : MonoBehaviour {
     public SpriteRenderer unitSpriteRenderer;
@@ -39,7 +38,6 @@ public class LEUnitBarButton : MonoBehaviour {
 
     void OnMouseOver()
     {
-        //Debug.Log("WHAT");
         if (currentUnit == null) return;
 
         if (Input.GetMouseButtonDown(0))
@@ -50,7 +48,6 @@ public class LEUnitBarButton : MonoBehaviour {
         }
         if (Input.GetMouseButtonDown(1))
         {
-            Debug.Log("Should Work");
             settingsEditor.TurnOn(currentUnit);
         }
     }
@@ -58,9 +55,6 @@ public class LEUnitBarButton : MonoBehaviour {
     public void UpdateButton()
     {
         unitSpriteRenderer.sprite = currentUnit.defaultSprite;
-        // what are these for again
-        //selectionController.selectedTileID = spriteCache.id;
-        //selectionController.selectedTileVariantID = spriteCache.currentIndex;
     }
 
     void OnMouseUp()

@@ -1,11 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using System.Collections.Generic;
 using MovementEffects;
 
 public class AttackTile : MonoBehaviour {
-    // to be implemented
     public Tile tile;
 
     public void OnMouseOver() {

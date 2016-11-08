@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using System.Collections;
 using System.Collections.Generic;
 
 // implements IPointer interfaces so will be properly inactive when UI elemnents overlap it

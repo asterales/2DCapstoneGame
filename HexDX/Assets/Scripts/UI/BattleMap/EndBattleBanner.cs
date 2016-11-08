@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 public class EndBattleBanner : MonoBehaviour {
 	public GameObject winBanner;

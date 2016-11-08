@@ -1,7 +1,5 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System;
-using System.Linq;
 
 public class ScriptedChooseAction : ScriptEvent {
     public PlayerBattleController player;
