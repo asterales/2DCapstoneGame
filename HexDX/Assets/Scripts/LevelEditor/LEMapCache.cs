@@ -12,7 +12,6 @@ public class LEMapCache : MonoBehaviour {
 
     private void ReadInAllLevels()
     {
-        // get all the directories for the units
         string path = "Assets/Resources/Maps";
         string[] files = Directory.GetFiles(path);
 

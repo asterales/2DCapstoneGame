@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 // global controller object for the level editor.
 // maybe in the future break this apart.

@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class LECameraController : MonoBehaviour
 {
     public static Camera myCamera;
 
-    // Use this for initialization
     void Start()
     {
         myCamera = gameObject.GetComponent<Camera>();
@@ -13,7 +11,6 @@ public class LECameraController : MonoBehaviour
         transform.position = hexmap.tileArray[hexmap.tileArray.Count / 2][hexmap.tileArray[0].Count / 2].transform.position - new Vector3(0, 0, 100) ;
     }
 
-    // Update is called once per frame
     void Update()
     {
         float newX, newY;

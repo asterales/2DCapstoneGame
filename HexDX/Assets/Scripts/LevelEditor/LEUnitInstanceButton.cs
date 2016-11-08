@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class LEUnitInstanceButton : MonoBehaviour {
     public LESelectionController selectionController;

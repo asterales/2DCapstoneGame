@@ -1,7 +1,3 @@
-using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
-
 public class Annihilation : VictoryCondition {
 	public AIBattleController ai;
 

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections;
 
 public class LEUnitInstance : MonoBehaviour {
     public SpriteRenderer spriteRenderer;

@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 // set up to recruit any single unit
 public class ScriptedRecruit : ScriptedButtonPress {

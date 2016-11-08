@@ -6,7 +6,6 @@ public class LEUnitSettings : MonoBehaviour {
     private static int numOfVets = 4;
     public List<Sprite> facingSprites;
     public Sprite defaultSprite;
-    //public int veterancyLv; // i dont think this is needed
     public int[] baseHealth;
     public int[] baseAttack;
     public int[] basePower;
@@ -68,7 +67,6 @@ public class LEUnitSettings : MonoBehaviour {
     {
         facingSprites = new List<Sprite>();
         defaultSprite = null;
-        //veterancyLv = -1;
         baseHealth = new int[] { -1, -1, -1, -1 };
         baseAttack = new int[] { -1, -1, -1, -1 };
         basePower = new int[] { -1, -1, -1, -1 };
@@ -83,7 +81,6 @@ public class LEUnitSettings : MonoBehaviour {
 
     public void CreateFromScratch()
     {
-        //veterancyLv = 0;
         baseHealth = new int[] { 100, 200, 300, 400 };
         baseAttack = new int[] { 1, 5, 10, 20 };
         basePower = new int[] { 1, 5, 10, 20 };
@@ -119,7 +116,6 @@ public class LEUnitSettings : MonoBehaviour {
         fileName = file + ".txt";
         string[] lines = data.Split('\n');
         if (lines.Length < 9*numOfVets) Debug.Log("NOT ENOUGH LINES -> LEUnitSettings.cs");
-        //veterancyLv = Convert.ToInt32(lines[0]);
         for(int i=0;i<4;i++)
         {
             baseHealth[i] = Convert.ToInt32(lines[0 + 9*i]);

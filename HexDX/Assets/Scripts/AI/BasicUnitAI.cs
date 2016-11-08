@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using MovementEffects;
 using System.Linq;
-using System;
 
 public class BasicUnitAI : UnitAI {
 	private Unit currentEnemy;

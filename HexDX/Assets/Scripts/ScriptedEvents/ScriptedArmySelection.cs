@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using System.Linq;
 
 public class ScriptedArmySelection : ScriptedButtonPress {
 	// set up to make player move one unit over from inactive panel

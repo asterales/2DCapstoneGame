@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 public class LEStatEditor : MonoBehaviour {
     public LEUnitSettingsEditor reference; // only needed for veterancy button

@@ -1,14 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class StatDisplay : MonoBehaviour {
     public static Unit selectedPlayerUnit;
     public static Unit selectedEnemyUnit;
     public static bool dirty;
-
-	void Start () {
-	
-	}
 	
 	void Update () {
 	    // update the display for the stats if they were changed

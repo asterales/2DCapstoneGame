@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+
 public class LEHorizonBarButton : MonoBehaviour {
     public GameObject background;
     public SpriteRenderer spriteRenderer;

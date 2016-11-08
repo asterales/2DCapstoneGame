@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class LESelectionController : MonoBehaviour {
     // cache for tiles
@@ -110,7 +109,6 @@ public class LESelectionController : MonoBehaviour {
         isSettingsMode = false;
         isDepMode = false;
         isTileMode = false;
-        //tileButton.Deselect();
         depButton.Deselect();
         instanceButton.Deselect();
         settingsButton.Deselect();

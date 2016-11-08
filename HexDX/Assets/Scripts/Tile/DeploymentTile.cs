@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
 public class DeploymentTile : MonoBehaviour {
 	private static Unit draggedUnit;

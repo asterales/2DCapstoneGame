@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using MovementEffects;
-using System.Collections;
 using System.Collections.Generic;
 
 /* TODO: Clean up later */

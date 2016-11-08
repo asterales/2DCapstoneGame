@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -17,9 +16,6 @@ public class PauseMenu : MonoBehaviour
          
     }
 
-    void Start()
-    {
-    }
     void OnGUI()
     {
         if (paused)
