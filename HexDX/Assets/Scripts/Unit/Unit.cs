@@ -31,16 +31,16 @@ public class Unit : MonoBehaviour {
     ScriptedMove scriptedMove;
 
     // Properties for shorthand access to stats, includes tile modifiers
-    public int MvtRange { get { return unitStats.mvtRange + (currentTile ? currentTile.tileStats.mvtModifier : 0); } }
     public int MaxHealth { get { return unitStats.maxHealth; } }
     public int Health { get { return unitStats.health; } set { unitStats.health = value; } }
     public int Experience { get { return unitStats.experience; } set { unitStats.experience = value; } }
     public int Veterancy { get { return unitStats.veterancy; } set { unitStats.veterancy = value; } }
     public float ZOCModifer { get { return unitStats.zocmodifier; } set { unitStats.zocmodifier = value; } }
-    public int Attack { get { return unitStats.attack + (currentTile ? currentTile.tileStats.attackModifier : 0); } }
+    public int Attack {  get { return unitStats.attack + (currentTile ? currentTile.tileStats.attackModifier : 0); } }
     public int Defense { get { return unitStats.defense + (currentTile ? currentTile.tileStats.defenseModifier : 0); } }
     public int Power { get { return unitStats.power + (currentTile ? currentTile.tileStats.powerModifier : 0); } }
     public int Resistance { get { return unitStats.resistance + (currentTile ? currentTile.tileStats.resistanceModifier : 0); } }
+    public int MvtRange { get { return unitStats.mvtRange + (currentTile ? currentTile.tileStats.mvtModifier : 0); } }
     public string ClassName { get { return unitStats.className; } }
 
     void Awake() {
@@ -51,16 +51,14 @@ public class Unit : MonoBehaviour {
         path = new Queue<Tile>();
 
         //veterancy images
-        try
-        {
-            v1 = this.transform.GetChild(2).GetChild(0).GetComponent<Image>();
-            v2 = this.transform.GetChild(2).GetChild(1).GetComponent<Image>();
-            v3 = this.transform.GetChild(2).GetChild(2).GetComponent<Image>();
-            v4 = this.transform.GetChild(2).GetChild(3).GetComponent<Image>();
-            v5 = this.transform.GetChild(2).GetChild(4).GetComponent<Image>();
+        try {
+            v1 = transform.GetChild(2).GetChild(0).GetComponent<Image>();
+            v2 = transform.GetChild(2).GetChild(1).GetComponent<Image>();
+            v3 = transform.GetChild(2).GetChild(2).GetComponent<Image>();
+            v4 = transform.GetChild(2).GetChild(3).GetComponent<Image>();
+            v5 = transform.GetChild(2).GetChild(4).GetComponent<Image>();
             DrawVeterancy();
-        } catch (UnityException e)
-        {
+        } catch (UnityException e) {
             Debug.Log(e.StackTrace);
         }
 
@@ -72,18 +70,14 @@ public class Unit : MonoBehaviour {
         scriptedMove = null;
 
         ////// DEBUG CODE //////
-        if (unitStats == null)
-        {
+        if (unitStats == null) {
             Debug.Log("Unit Needs Unit Stats to be defined -> Unit.cs");
         }
-        if (spriteRenderer == null)
-        {
+        if (spriteRenderer == null) {
             Debug.Log("Unit Needs SpriteRenderer to be defined -> Unit.cs");
         }
         ////////////////////////
     }
-
-    
 
     // Use this for initialization
     void Start () {
@@ -99,7 +93,6 @@ public class Unit : MonoBehaviour {
                 Face();
                 break;
         }
-
     }
 
     public void InitForBattle() {
@@ -119,8 +112,9 @@ public class Unit : MonoBehaviour {
             if (transform.position != destination) {
                 transform.position = Vector3.MoveTowards(transform.position, destination, moveSpeed);
             } else {
-                if (lastTile!=currentTile)
+                if (lastTile!=currentTile) {
                     CheckZonesOfControl();
+                }
                 if (path.Count == 1) {
                     SetTile(path.Dequeue());
                     // re-enable the players ability to select
@@ -128,8 +122,7 @@ public class Unit : MonoBehaviour {
                         SelectionController.mode = SelectionMode.Facing;
                     }
                     MakeFacing();
-                    if (scriptedMove != null)
-                    {
+                    if (scriptedMove != null) {
                         scriptedMove.FinishEvent();
                         scriptedMove = null;
                     }
@@ -142,25 +135,17 @@ public class Unit : MonoBehaviour {
         }
     }
 
-    private void CheckZonesOfControl()
-    {
-        if (IsPlayerUnit())
-        {
-            foreach (Unit unit in ai.units)
-            {
-                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health>0 && unit.Health>0)
-                {
+    private void CheckZonesOfControl() {
+        if (IsPlayerUnit()) {
+            foreach (Unit unit in ai.units) {
+                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health > 0 && unit.Health > 0) {
                     unit.MakeAttacking();
                     Timing.RunCoroutine(unit.DoAttack(this, unit.ZOCModifer));
                 }
             }
-        }
-        else
-        {
-            foreach (Unit unit in player.units)
-            {
-                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health>0 && unit.Health>0)
-                {
+        } else {
+            foreach (Unit unit in player.units) {
+                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health > 0 && unit.Health > 0) {
                     unit.MakeAttacking();
                     Timing.RunCoroutine(unit.DoAttack(this, unit.ZOCModifer));
                 }
@@ -221,13 +206,10 @@ public class Unit : MonoBehaviour {
     }
 
 
-    public void AddExp(int exp)
-    {
-        if (Veterancy < 3)
-        {
+    public void AddExp(int exp) {
+        if (Veterancy < 3) {
             Experience += exp;
-            if (Experience > (Veterancy + 1) * 100)
-            {
+            if (Experience > (Veterancy + 1) * 100) {
                 Experience = Experience%((Veterancy+1)*100);
                 Veterancy += 1;
                 LevelUp();
@@ -235,18 +217,16 @@ public class Unit : MonoBehaviour {
         }
         DrawVeterancy();
     }
-    public void DrawVeterancy()
-    {
+
+    public void DrawVeterancy() {
         SpriteRenderer b1, b2, b3, b4, b5;
         b1 = v1.GetComponent<SpriteRenderer>();
         b2 = v2.GetComponent<SpriteRenderer>();
         b3 = v3.GetComponent<SpriteRenderer>();
         b4 = v4.GetComponent<SpriteRenderer>();
         b5 = v5.GetComponent<SpriteRenderer>();
-        if (IsPlayerUnit())
-        {
-            switch (Veterancy)
-            {
+        if (IsPlayerUnit()) {
+            switch (Veterancy) {
                 case 0:
                     v1.fillAmount = (float)Experience / 100.0f;
                     v2.fillAmount = 0;
@@ -296,11 +276,8 @@ public class Unit : MonoBehaviour {
                     b5.color = Color.clear;
                     break;
             }
-        }
-        else
-        {
-            switch (Veterancy)
-            {
+        } else {
+            switch (Veterancy) {
                 case 0:
                     v1.fillAmount = 0;
                     v2.fillAmount = 0;
@@ -383,8 +360,9 @@ public class Unit : MonoBehaviour {
     private int Angle(Vector2 from, Vector2 to) {
         Vector2 diff = to - from;
         int output = (int)(Mathf.Atan2(diff.y, diff.x)* 57.2957795131f);
-        if (output < 0)
+        if (output < 0) {
             output += 360;
+        }
         return output;
     }
 
@@ -397,8 +375,7 @@ public class Unit : MonoBehaviour {
         SetFacingSprites();
     }
 
-    public void SetPhase(UnitTurn phase)
-    {
+    public void SetPhase(UnitTurn phase) {
         switch (phase) {
             case UnitTurn.Attacking: MakeAttacking(); break;
             case UnitTurn.Moving: MakeMoving(); break;
@@ -406,8 +383,6 @@ public class Unit : MonoBehaviour {
             case UnitTurn.Done: MakeDone(); break;
             case UnitTurn.ChoosingAction: MakeChoosingAction(); break;
         }
-
-
     }
 
     public void MakeMoving(ScriptedMove move = null) {
@@ -417,15 +392,13 @@ public class Unit : MonoBehaviour {
 
     public void MakeChoosingAction(ScriptEvent scriptEvent = null) {
         phase = UnitTurn.ChoosingAction;
-
     }
 
     public void MakeAttacking() {
         phase = UnitTurn.Attacking;
-        if (this.IsPlayerUnit() && !SelectionController.TakingAIInput())
+        if (IsPlayerUnit() && !SelectionController.TakingAIInput()) {
             HexMap.ShowAttackTiles(this);
-        else if (!this.IsPlayerUnit())
-        {
+        } else if (!IsPlayerUnit()) {
             HexMap.ShowAttackTiles(this);
         }
     }
@@ -435,51 +408,36 @@ public class Unit : MonoBehaviour {
     }
 
     public void MakeDone() {
-        if (this != null && gameObject)
-        {
+        if (this != null && gameObject) {
             phase = UnitTurn.Done;
             spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
             SetFacingSprites();
         }
     }
 
-    public void Die()
-    {
+    public void Die() {
         MakeDone();
         path = null;
         lastTile = null;
-        this.gameObject.AddComponent<UnitDeath>();
-
+        gameObject.AddComponent<UnitDeath>();
     }
    
-    public void LevelUp()
-    {
-        unitStats.attack = (int)(Attack * 1.3f);
-        unitStats.defense = (int)(Defense * 1.3f);
-        unitStats.power = (int)(Power * 1.3f);
-        unitStats.resistance = (int)(Resistance * 1.3f);
-        unitStats.health += (int)(MaxHealth * 0.3f);
-        unitStats.maxHealth = (int)(MaxHealth* 1.3f);
+    public void LevelUp() {
+        unitStats.LevelUp();
         DrawHealth();
     }
 
-    public void LevelDown()
-    {
-        unitStats.attack = (int)(Attack / 1.3f);
-        unitStats.defense = (int)(Defense / 1.3f);
-        unitStats.power = (int)(Power / 1.3f);
-        unitStats.resistance = (int)(Resistance / 1.3f);
-        unitStats.maxHealth = (int)(MaxHealth / 1.3f);
-        unitStats.health -= (int)(MaxHealth * 0.3f);
+    public void LevelDown() {
+        unitStats.LevelDown();
     }
 
     public IEnumerator<float> PerformAttack(Unit target) {
-        if (target && target.Health>0 && Health>0)
+        if (target && target.Health>0 && Health>0) {
             Timing.RunCoroutine(DoAttack(target, 1.0f));
+        }
         //if (target && target.gameObject && target.HasInAttackRange(this))
         yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
-        if (target && target.Health > 0 && target.HasInAttackRange(this) && target.phase==UnitTurn.Open && Health>0)
-        {
+        if (target && target.Health > 0 && target.HasInAttackRange(this) && target.phase==UnitTurn.Open && Health > 0) {
             Debug.Log(target.phase);
             spriteRenderer.color = Color.red;
             target.MakeAttacking();
@@ -488,42 +446,33 @@ public class Unit : MonoBehaviour {
 
     }
 
-    public IEnumerator<float> DoAttack(Unit target, float modifier)
-    {
+    public IEnumerator<float> DoAttack(Unit target, float modifier) {
         SetFacingSprites();
         int healthStart = target.Health;
         int basedamage = (int)(Attack * (50.0f / (50.0f + (float)target.Defense)))+ (int)(Power * (50.0f / (50.0f + (float)target.Resistance)));
         int damage = basedamage;
         string indicatorText = "-" + (int)(basedamage * modifier);
         HexMap.ClearAttackTiles();
-        if (target.phase != UnitTurn.Moving)
-        {
-            if (target.facing == facing)
-            {
+        if (target.phase != UnitTurn.Moving) {
+            if (target.facing == facing) {
                 damage = basedamage * 2;
                 indicatorText = "-" + (int)(basedamage * modifier) + "\nSneak!\n-" + (int)((damage - basedamage) * modifier);
-            }
-            else if (Mathf.Abs(target.facing - facing) == 1 || Mathf.Abs(target.facing - facing) == 5)
-            {
+            } else if (Mathf.Abs(target.facing - facing) == 1 || Mathf.Abs(target.facing - facing) == 5) {
                 damage = basedamage * 3 / 2;
                 indicatorText = "-" + (int)(basedamage * modifier) + "\nFlank!\n-" + (int)((damage - basedamage) * modifier);
             }
         }
         target.Health -= (int)(damage * modifier);
-        if (target.Health <= 0)
-        {
+        if (target.Health <= 0) {
             target.path = new Queue<Tile>();
             target.lastTile = null;
             target.MakeDone();
             target.spriteRenderer.color = Color.white;
         }
 
-        if (IsPlayerUnit())
-        {
+        if (IsPlayerUnit()) {
             AddExp((int)(damage * modifier));
-        }
-        else
-        {
+        } else {
             target.AddExp((int)(0.5f*damage * modifier));
         }
         yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
@@ -532,10 +481,8 @@ public class Unit : MonoBehaviour {
         indicator.AddComponent<DamageIndicator>().SetDamage(indicatorText);
         indicator.transform.position = target.transform.position + new Vector3(-0.5f, 3f, 0f);
         target.DrawHealth();
-        if (healthStart-(int)(damage*modifier)<=0)
-        {
-            if (target.scriptedMove != null)
-            {
+        if (healthStart-(int)(damage*modifier)<=0) {
+            if (target.scriptedMove != null) {
                 target.scriptedMove.FinishEvent();
                 target.scriptedMove = null;
             }
@@ -543,19 +490,16 @@ public class Unit : MonoBehaviour {
         }
     }
 
-    public void DrawHealth()
-    {
-        Image healthBar = this.transform.Find("HealthBar").GetComponent<Image>(); // Find() is expensive
+    public void DrawHealth() {
+        Image healthBar = transform.Find("HealthBar").GetComponent<Image>(); // Find() is expensive
         healthBar.fillAmount = (float)Health / (float)MaxHealth;
     }
 
-    public IEnumerator<float> finishAttack()
-    {
+    public IEnumerator<float> finishAttack() {
         yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
         MakeDone();
     }
 
-    private int max(int a, int b) { return a > b ? a : b; }
     ///////////////////////////
     // Pathing Methods //
     public bool CanPathThrough(Tile tile) {
@@ -563,25 +507,25 @@ public class Unit : MonoBehaviour {
                 && (!tile.currentUnit || IsPlayerUnit() == tile.currentUnit.IsPlayerUnit());
     }
 
-    public List<Tile> GetAccessibleTiles()
-    {
+    public List<Tile> GetAccessibleTiles() {
         Queue<Tile> toCheck = new Queue<Tile>();
         Queue<int> dist = new Queue<int>();
         toCheck.Enqueue(currentTile);
         List<Tile> neighbors;
         List<Tile> tiles = new List<Tile>();
-        while (toCheck.Count > 0)
-        {
+        while (toCheck.Count > 0) {
             Tile t = toCheck.Dequeue();
-            if (CanPathThrough(t))
-                if (t.currentUnit == null || t.currentUnit.IsPlayerUnit() == IsPlayerUnit())
-                {
+            if (CanPathThrough(t)) {
+                if (t.currentUnit == null || t.currentUnit.IsPlayerUnit() == IsPlayerUnit()) {
                     if (!t.currentUnit) tiles.Add(t);
                     neighbors = HexMap.GetNeighbors(t);
-                    foreach (Tile neighbor in neighbors)
-                        if (neighbor && !tiles.Contains(neighbor) && !toCheck.Contains(neighbor))
+                    foreach (Tile neighbor in neighbors) {
+                        if (neighbor && !tiles.Contains(neighbor) && !toCheck.Contains(neighbor)) {
                             toCheck.Enqueue(neighbor);
+                        }
+                    }
                 }
+            }
         }
         return tiles;
     }
@@ -607,8 +551,7 @@ public class Unit : MonoBehaviour {
         return shortestPath;
     }
 
-    public int GetShortestPathLength(Tile dest, Tile current)
-    {
+    public int GetShortestPathLength(Tile dest, Tile current) {
         int bound = HexMap.Cost(dest, current);
         List<Tile> shortestPath = new List<Tile>();
         while (true) {
@@ -655,8 +598,6 @@ public class Unit : MonoBehaviour {
         return min;
     }
 
-
-
     public bool HasInAttackRange(Unit other){
         return HexMap.GetAttackTiles(this).Contains(other.currentTile);
     }
@@ -665,67 +606,13 @@ public class Unit : MonoBehaviour {
         return GetComponent<UnitAI>() == null;
     }
 
-    public static void SaveAllStates()
-    {
+    public static void SaveAllStates() {
         UnitState.ClearStates();
-        foreach (Unit unit in ai.units)
-        {
+        foreach (Unit unit in ai.units) {
             UnitState.SaveState(unit);
         }
-        foreach (Unit unit in player.units)
-        {
+        foreach (Unit unit in player.units) {
             UnitState.SaveState(unit);
         }
-    }
-}
-
-
-public class UnitState {
-    public UnitTurn phase;
-    public Tile tile;
-    public int facing;
-    public int health;
-    public int experience;
-    public int veterancy;
-    public static Dictionary<Unit, UnitState> savedStates = new Dictionary<Unit, UnitState>();
-    public UnitState(UnitTurn phase, Tile tile, int facing, int health, int experience, int veterancy)
-    {
-        this.phase = phase;
-        this.tile = tile;
-        this.facing = facing;
-        this.health = health;
-        this.experience = experience;
-        this.veterancy = veterancy;
-    }
-
-    public static void SaveState(Unit unit)
-    {
-        savedStates[unit] = new UnitState(unit.phase, unit.currentTile, unit.facing, unit.Health, unit.Experience, unit.Veterancy);
-    }
-
-    public static void RestoreStates()
-    {
-        foreach (Unit unit in savedStates.Keys)
-        {
-            if (unit)
-            {
-                if (unit.Veterancy > savedStates[unit].veterancy)
-                    unit.LevelDown();
-                unit.SetTile(savedStates[unit].tile);
-                unit.facing = savedStates[unit].facing;
-                unit.Health = savedStates[unit].health;
-                unit.Experience = savedStates[unit].experience;
-                unit.Veterancy = savedStates[unit].veterancy;
-                unit.Health = savedStates[unit].health;
-                unit.SetPhase(savedStates[unit].phase);
-                unit.DrawHealth();
-                unit.DrawVeterancy();
-            }
-        }
-    }
-
-    public static void ClearStates()
-    {
-        savedStates = new Dictionary<Unit, UnitState>();
     }
 }
