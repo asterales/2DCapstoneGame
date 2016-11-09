@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 // this class represents a Unit and stores its data
 
-public class Unit : MonoBehaviour {    
+public class Unit : MonoBehaviour {
     public Tile currentTile;
     private UnitStats unitStats;
     public UnitSprites sprites;
@@ -36,7 +36,7 @@ public class Unit : MonoBehaviour {
     public int Experience { get { return unitStats.experience; } set { unitStats.experience = value; } }
     public int Veterancy { get { return unitStats.veterancy; } set { unitStats.veterancy = value; } }
     public float ZOCModifer { get { return unitStats.zocmodifier; } set { unitStats.zocmodifier = value; } }
-    public int Attack {  get { return unitStats.attack + (currentTile ? currentTile.tileStats.attackModifier : 0); } }
+    public int Attack { get { return unitStats.attack + (currentTile ? currentTile.tileStats.attackModifier : 0); } }
     public int Defense { get { return unitStats.defense + (currentTile ? currentTile.tileStats.defenseModifier : 0); } }
     public int Power { get { return unitStats.power + (currentTile ? currentTile.tileStats.powerModifier : 0); } }
     public int Resistance { get { return unitStats.resistance + (currentTile ? currentTile.tileStats.resistanceModifier : 0); } }
@@ -80,12 +80,12 @@ public class Unit : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         MakeOpen();
     }
 
     void Update() {
-        switch(phase){
+        switch (phase) {
             case UnitTurn.Moving:
                 Move();
                 break;
@@ -112,13 +112,13 @@ public class Unit : MonoBehaviour {
             if (transform.position != destination) {
                 transform.position = Vector3.MoveTowards(transform.position, destination, moveSpeed);
             } else {
-                if (lastTile!=currentTile) {
+                if (lastTile != currentTile) {
                     CheckZonesOfControl();
                 }
                 if (path.Count == 1) {
                     SetTile(path.Dequeue());
                     // re-enable the players ability to select
-                    if(SelectionController.mode == SelectionMode.Moving) {
+                    if (SelectionController.mode == SelectionMode.Moving) {
                         SelectionController.mode = SelectionMode.Facing;
                     }
                     MakeFacing();
@@ -154,7 +154,7 @@ public class Unit : MonoBehaviour {
     }
 
     public void SetFacingSprites() {
-        int face = (facing + 1)%6;
+        int face = (facing + 1) % 6;
         switch (phase) {
             case UnitTurn.Moving:
                 if (audioSource != null) {
@@ -164,8 +164,8 @@ public class Unit : MonoBehaviour {
                 }
                 if (face < 3) {
                     spriteRenderer.flipX = false;
-                    spriteRenderer.sprite = sprites.walking[(facing+3)%3];
-                    animator.runtimeAnimatorController = sprites.walkingAnim[(facing+3)%3];
+                    spriteRenderer.sprite = sprites.walking[(facing + 3) % 3];
+                    animator.runtimeAnimatorController = sprites.walkingAnim[(facing + 3) % 3];
                 } else {
                     spriteRenderer.flipX = true;
                     spriteRenderer.sprite = sprites.walking[(6 - facing) % 3];
@@ -176,7 +176,7 @@ public class Unit : MonoBehaviour {
                 if (audioSource != null) {
                     audioSource.Stop();
                     audioSource.clip = sounds.attacking;
-                    audioSource.Play();                    
+                    audioSource.Play();
                 }
                 if (face < 3) {
                     spriteRenderer.flipX = false;
@@ -189,7 +189,7 @@ public class Unit : MonoBehaviour {
                 }
                 break;
             default:
-                if(audioSource != null) {
+                if (audioSource != null) {
                     audioSource.Pause();
                 }
                 if (face < 3) {
@@ -198,7 +198,7 @@ public class Unit : MonoBehaviour {
                     animator.runtimeAnimatorController = sprites.idleAnim[(facing + 3) % 3];
                 } else {
                     spriteRenderer.flipX = true;
-                    spriteRenderer.sprite = sprites.walking[(6-facing)%3];
+                    spriteRenderer.sprite = sprites.walking[(6 - facing) % 3];
                     animator.runtimeAnimatorController = sprites.idleAnim[(6 - facing) % 3];
                 }
                 break;
@@ -210,7 +210,7 @@ public class Unit : MonoBehaviour {
         if (Veterancy < 3) {
             Experience += exp;
             if (Experience > (Veterancy + 1) * 100) {
-                Experience = Experience%((Veterancy+1)*100);
+                Experience = Experience % ((Veterancy + 1) * 100);
                 Veterancy += 1;
                 LevelUp();
             }
@@ -359,7 +359,7 @@ public class Unit : MonoBehaviour {
 
     private int Angle(Vector2 from, Vector2 to) {
         Vector2 diff = to - from;
-        int output = (int)(Mathf.Atan2(diff.y, diff.x)* 57.2957795131f);
+        int output = (int)(Mathf.Atan2(diff.y, diff.x) * 57.2957795131f);
         if (output < 0) {
             output += 360;
         }
@@ -391,6 +391,12 @@ public class Unit : MonoBehaviour {
     }
 
     public void MakeChoosingAction(ScriptEvent scriptEvent = null) {
+        foreach (Unit unit in ai.units)
+            if (unit.phase != UnitTurn.Open || unit.phase != UnitTurn.Done)
+                return;
+        foreach (Unit unit in player.units)
+            if (unit.phase != UnitTurn.Open || unit.phase != UnitTurn.Done)
+                return;
         phase = UnitTurn.ChoosingAction;
     }
 
