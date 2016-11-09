@@ -9,7 +9,7 @@ public class MapLoader : MonoBehaviour {
     public string csvMapFile;
     public bool isTutorial;
 
-    private HexMap battleMap;
+    public HexMap battleMap;
     private HexDimension hexDimension;
 
     void Awake() {
@@ -49,8 +49,8 @@ public class MapLoader : MonoBehaviour {
         LoadMapTiles(mapCsvRows, rows);
         currentLine += rows;
 
-        ScriptedAIBattleController scriptedAI = BattleControllerManager.instance.scriptedAI;
-        if(scriptedAI == null && currentLine < mapCsvRows.Length) {
+        CustomUnitLoader unitLoader = BattleControllerManager.instance.tutorialController.unitLoader;
+        if(unitLoader == null && currentLine < mapCsvRows.Length) {
             /* Load enemy unit if specified */
             int numUnits = Convert.ToInt32(mapCsvRows[currentLine++]);
             LoadEnemyUnits(mapCsvRows, currentLine, numUnits);
@@ -63,22 +63,8 @@ public class MapLoader : MonoBehaviour {
             }
         }
 
-        if (scriptedAI) { //hard coded, change latter
-            AddUnitToTile(5, 5, scriptedAI.aiUnits[0], false, new Vector3(1, 0, 0));
-            AddUnitToTile(10, 4, scriptedAI.aiUnits[1], false, new Vector3(0, 1, 0));
-            AddUnitToTile(6, 6, scriptedAI.aiUnits[2], false, new Vector3(0, 1, 0));
-            AddUnitToTile(4, 2, scriptedAI.aiUnits[3], true, new Vector3(2f, -1f, 0));
-            AddUnitToTile(3, 3, scriptedAI.aiUnits[4], true, new Vector3(2f, -1f, 0));
-        }
-    }
-
-    private void AddUnitToTile(int row, int col, Unit unit, bool isPlayerUnit, Vector3 facing)
-    {
-        unit.SetTile(HexMap.mapArray[row][col]);
-        unit.SetFacing(facing);
-        if (!isPlayerUnit)
-        {
-            unit.gameObject.AddComponent<BasicUnitAI>();
+        if (unitLoader) {
+            unitLoader.LoadUnits();
         }
     }
 

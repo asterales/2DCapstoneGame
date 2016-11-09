@@ -5,7 +5,9 @@ using System.Linq;
 
 public class TutorialController : PreBattleController {
 	public bool isBeforeDeployment;
-	private TutorialInfo info;
+	public TutorialInfo info;
+	public ScriptedAIBattleController scriptedAI;
+	public CustomUnitLoader unitLoader;
 	
 	public Sprite selectionSprite;
 	public RuntimeAnimatorController animation;
@@ -17,6 +19,8 @@ public class TutorialController : PreBattleController {
 	protected override void Awake() {
 		base.Awake();
 		info = GetComponent<TutorialInfo>();
+		scriptedAI = GetComponent<ScriptedAIBattleController>();
+		unitLoader = GetComponent<CustomUnitLoader>();
 	}
 
 	void OnDestroy() {

@@ -7,7 +7,7 @@ public class AIBattleController : ArmyBattleController {
     private int currentUnitIndex;
 
     public override void InitUnitList() {
-        Unit[] allUnits = FindObjectsOfType(typeof(Unit)) as Unit[];
+        Unit[] allUnits = BattleControllerManager.instance.hexMap.GetUnitsOnMap();
         units = new List<Unit>();
         List<Unit> playerUnits = new List<Unit>();
 

@@ -10,6 +10,7 @@ public class BattleControllerManager : MonoBehaviour {
 
 	// Default controllers set in editor
 	public MapLoader mapLoader;
+	public HexMap hexMap { get { return mapLoader.battleMap; } }
 	public CameraController cameraController;
 	public DeploymentController deploymentController;
 	public BattleController battleController;
@@ -19,6 +20,7 @@ public class BattleControllerManager : MonoBehaviour {
 	// Imported Controllers
 	public TutorialController tutorialController;
 	public ScriptedAIBattleController scriptedAI;
+	public TutorialInfo tutorialInfo;
 	
 	// Prebattle phase management
 	public List<PreBattleController> prebattlePhases;
@@ -51,6 +53,7 @@ public class BattleControllerManager : MonoBehaviour {
 		prebattlePhases = new List<PreBattleController>();
 		tutorialController = tutorialController != null ? tutorialController : FindObjectOfType(typeof(TutorialController)) as TutorialController;
 		scriptedAI = scriptedAI != null ? scriptedAI : FindObjectOfType(typeof(ScriptedAIBattleController)) as ScriptedAIBattleController;
+		tutorialInfo = tutorialInfo != null ? tutorialInfo : FindObjectOfType(typeof(TutorialInfo)) as TutorialInfo;
 		if (deploymentController) {
 			prebattlePhases.Add(deploymentController);
 		}

@@ -4,6 +4,11 @@ using MovementEffects;
 using UnityEngine.UI;
 
 // this class represents a Unit and stores its data
+/* facing key
+     2 1
+    3   0
+     4 5 
+*/
 
 public class Unit : MonoBehaviour {
     public Tile currentTile;

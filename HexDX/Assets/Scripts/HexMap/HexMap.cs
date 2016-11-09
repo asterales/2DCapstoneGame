@@ -48,6 +48,10 @@ public class HexMap : MonoBehaviour {
         mapArray = new List<List<Tile>>();
     }
 
+    public Unit[] GetUnitsOnMap() {
+        return GetComponentsInChildren<Unit>();
+    }
+
 
     public static List<Tile> GetMovementTiles(Unit unit) {
         Queue<Tile> toCheck = new Queue<Tile>();

@@ -18,7 +18,7 @@ public class PlayerBattleController : ArmyBattleController {
     public Sprite[] arrowSprites;
 
     public override void InitUnitList() {
-        Unit[] allUnits = FindObjectsOfType(typeof(Unit)) as Unit[];
+        Unit[] allUnits = BattleControllerManager.instance.hexMap.GetUnitsOnMap();
         units = allUnits.Where(unit => unit.IsPlayerUnit()).ToList();
     }
 
