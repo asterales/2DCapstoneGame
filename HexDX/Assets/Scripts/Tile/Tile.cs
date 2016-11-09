@@ -68,8 +68,17 @@ public class Tile : MonoBehaviour {
                 if (currentUnit.IsPlayerUnit()) {
                     StatDisplay.DisplayPlayerUnit(currentUnit);
                     if (currentUnit.phase == UnitTurn.Open) {
-                        HexMap.ShowMovementTiles(currentUnit);
-                        MovementTile.path = new List<Tile>() { this };
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            HexMap.ShowMovementTiles(currentUnit);
+                            MovementTile.path = new List<Tile>() { this };
+                        }
+                        else
+                        {
+                            HexMap.ShowAttackTiles(currentUnit);
+                            currentUnit.MakeChoosingAction();
+
+                        }
                     }
                 } else {
                     // show enemy mvt range and stats
