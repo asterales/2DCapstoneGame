@@ -67,17 +67,14 @@ public class AttackHeuristic : Heuristic {
 
         float enemyDamage = (int)(unitToBeAttacked.Attack * (50.0f / (50.0f + (float)unit.Defense))) * 0.8f;
 
-        healthComparison = (unit.Health - unitToBeAttacked.Health) / unit.Health * 0.5f;
-        if (attackingFlank || attackingSneak)
-        {
-            damageComparison = 1.0f;
-        }
-        else
-        {
-            damageComparison = (damage - enemyDamage) / damage * 0.5f;
-        }
+        healthComparison = (unit.Health - unitToBeAttacked.Health) / unit.MaxHealth * 0.5f;
+        damageComparison = (damage - enemyDamage) / damage * 0.5f;
 
         stateComparison = healthComparison + damageComparison;
+        if (stateComparison < 0)
+            stateComparison = 0;
+        if (stateComparison > 1)
+            stateComparison = 1;
     }
 
     public override float CalculateHeuristic(AIWeights weights)

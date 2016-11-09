@@ -48,20 +48,40 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void ClearNullUnits() {
-		playerAllUnits = playerAllUnits.Where(u => u != null).ToList();
-		activeUnits = activeUnits.Where(u => u != null).ToList();
+		playerAllUnits = playerAllUnits.Where(u => u.enabled).ToList();
+		activeUnits = activeUnits.Where(u => u.enabled).ToList();
 	}
 
 	public void UpdateArmyAfterBattle() {
-		ClearNullUnits();
-		foreach(Unit unit in activeUnits) {
-			unit.transform.parent = gameObject.transform;
-			unit.transform.position = GameResources.hidingPosition;
-			unit.Health = unit.MaxHealth;
-			SetDefaultUnitView(unit);
-		}
+        if (BattleController.PlayerWon)
+        {
+            ClearNullUnits();
+            foreach (Unit unit in activeUnits)
+            {
+                unit.transform.parent = gameObject.transform;
+                unit.transform.position = GameResources.hidingPosition;
+                unit.Health = unit.MaxHealth;
+                SetDefaultUnitView(unit);
+            }
+        }
+        else
+        {
+            RestoreActiveUnits();
+        }
 	}
 
+    public void RestoreActiveUnits()
+    {
+        foreach (Unit unit in activeUnits)
+        {
+            unit.gameObject.SetActive(true);
+            unit.enabled = true;
+            unit.transform.parent = gameObject.transform;
+            unit.transform.position = GameResources.hidingPosition;
+            unit.Health = unit.MaxHealth;
+            SetDefaultUnitView(unit);
+        }
+    }
 	public List<Unit> GetInactiveUnits() {
 		return playerAllUnits.Where(u => !activeUnits.Contains(u)).ToList();
 	}

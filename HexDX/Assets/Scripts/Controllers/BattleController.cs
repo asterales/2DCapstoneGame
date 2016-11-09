@@ -101,9 +101,9 @@ public class BattleController : MonoBehaviour {
         LevelManager lm = LevelManager.activeInstance;
         if (lm) {
             lm.RegisterVictory(victoryCondition.Achieved());
-            if (victoryCondition.Achieved()) {
+            if (PlayerWon) {
                 lm.NextScene();
-            } else if (player.IsAnnihilated()) {
+            } else {
                 LevelManager.ReturnToWorldMap();
             }
         }

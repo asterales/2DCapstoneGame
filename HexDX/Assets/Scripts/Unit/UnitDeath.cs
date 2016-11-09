@@ -8,7 +8,7 @@ public class UnitDeath : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        GameObject.Destroy(GetComponent<Unit>());
+        GetComponent<Unit>().enabled = false;
 	}
 	
 	// Update is called once per frame
@@ -30,7 +30,9 @@ public class UnitDeath : MonoBehaviour {
             spriteRenderer.color = new Color(1, 0, 0, fadeOut/.8333f);
             return;
         }
-        GameObject.Destroy(gameObject);
-
+        gameObject.SetActive(false);
+        GameObject.Destroy(this);
+        
     }
+
 }

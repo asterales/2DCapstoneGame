@@ -36,7 +36,7 @@ public class MovementTile : MonoBehaviour {
                 path.RemoveAt(path.Count - 1);
             } else if (HexMap.AreNeighbors(tile, path[path.Count - 1])
                         && SelectionController.selectedUnit.CanPathThrough(tile)) {
-                if (PathCost() + (int)tile.tileStats.mvtDifficulty <= SelectionController.selectedUnit.MvtRange) {
+                if (PathCost(path) + (int)tile.tileStats.mvtDifficulty <= SelectionController.selectedUnit.MvtRange) {
                     path.Add(tile);
                 } else {
                    path = SelectionController.selectedUnit.GetShortestPath(tile);
@@ -50,7 +50,7 @@ public class MovementTile : MonoBehaviour {
     }
 
 
-    public static int PathCost()
+    public static int PathCost(List<Tile> path)
     {
         int cost = 0;
         for (int i = 1; i < path.Count; i++)

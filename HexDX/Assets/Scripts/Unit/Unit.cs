@@ -432,6 +432,7 @@ public class Unit : MonoBehaviour {
         MakeDone();
         path = null;
         lastTile = null;
+        currentTile.currentUnit = null;
         gameObject.AddComponent<UnitDeath>();
     }
    
@@ -582,7 +583,7 @@ public class Unit : MonoBehaviour {
         }
         if (shortestPath.Count == 0)
             shortestPath.Add(current);
-        return shortestPath.Count;
+        return MovementTile.PathCost(shortestPath);
     }
 
     private int Search(Tile node, Tile dest, int g, int bound, ref List<Tile> currentPath) {

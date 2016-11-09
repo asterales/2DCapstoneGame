@@ -8,7 +8,7 @@ public class ActiveArmyDisplay : ArmyDisplay {
 
 	protected override List<Unit> GetUnitsToDisplay() {
 		GameManager gm = GameManager.instance;
-		gm.ClearNullUnits();
+        gm.ClearNullUnits();
 		return gm.activeUnits;
 	}
 }
