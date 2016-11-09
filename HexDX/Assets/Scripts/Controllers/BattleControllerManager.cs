@@ -20,6 +20,7 @@ public class BattleControllerManager : MonoBehaviour {
 	// Imported Controllers
 	public TutorialController tutorialController;
 	public ScriptedAIBattleController scriptedAI;
+	public CustomUnitLoader unitLoader;
 	public TutorialInfo tutorialInfo;
 	
 	// Prebattle phase management
@@ -53,6 +54,7 @@ public class BattleControllerManager : MonoBehaviour {
 		prebattlePhases = new List<PreBattleController>();
 		tutorialController = tutorialController != null ? tutorialController : FindObjectOfType(typeof(TutorialController)) as TutorialController;
 		scriptedAI = scriptedAI != null ? scriptedAI : FindObjectOfType(typeof(ScriptedAIBattleController)) as ScriptedAIBattleController;
+		unitLoader = unitLoader != null ? unitLoader : FindObjectOfType(typeof(CustomUnitLoader)) as CustomUnitLoader;
 		tutorialInfo = tutorialInfo != null ? tutorialInfo : FindObjectOfType(typeof(TutorialInfo)) as TutorialInfo;
 		if (deploymentController) {
 			prebattlePhases.Add(deploymentController);
@@ -70,9 +72,6 @@ public class BattleControllerManager : MonoBehaviour {
 	private void InitArmies() {
 		player.InitUnits();
 		ai.InitUnits();
-		if(scriptedAI) {
-			scriptedAI.InitUnits(); // must come after player and ai controllers, overwrites list of player controlled units 
-		}
 	}
 
 	private void StartBattlePhases() {

@@ -49,8 +49,10 @@ public class MapLoader : MonoBehaviour {
         LoadMapTiles(mapCsvRows, rows);
         currentLine += rows;
 
-        CustomUnitLoader unitLoader = BattleControllerManager.instance.tutorialController.unitLoader;
-        if(unitLoader == null && currentLine < mapCsvRows.Length) {
+        CustomUnitLoader unitLoader = BattleControllerManager.instance.unitLoader;
+        if (unitLoader && unitLoader.CanLoadUnits()) {
+            unitLoader.LoadUnits();
+        } else if (currentLine < mapCsvRows.Length){
             /* Load enemy unit if specified */
             int numUnits = Convert.ToInt32(mapCsvRows[currentLine++]);
             LoadEnemyUnits(mapCsvRows, currentLine, numUnits);
@@ -61,10 +63,6 @@ public class MapLoader : MonoBehaviour {
                 int numDep = Convert.ToInt32(mapCsvRows[currentLine++]);
                 LoadDeploymentZone(mapCsvRows, currentLine, numDep);
             }
-        }
-
-        if (unitLoader) {
-            unitLoader.LoadUnits();
         }
     }
 

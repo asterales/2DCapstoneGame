@@ -6,7 +6,7 @@ using System.Linq;
 public class TutorialController : PreBattleController {
 	public bool isBeforeDeployment;
 	public TutorialInfo info;
-	public ScriptedAIBattleController scriptedAI;
+	private ScriptedAIBattleController scriptedAI;
 	public CustomUnitLoader unitLoader;
 	
 	public Sprite selectionSprite;
@@ -30,6 +30,9 @@ public class TutorialController : PreBattleController {
 	public override void StartPreBattlePhase() {
 		if (!info.HasBeenCompleted()) {
 			base.StartPreBattlePhase();
+			if (scriptedAI) {
+				scriptedAI.InitUnits();
+			}
 			targetTile = null;
 			InitSelectionPrompt();
 			eventsList = GameObject.Find("ScriptedEvents").GetComponent<ScriptList>();

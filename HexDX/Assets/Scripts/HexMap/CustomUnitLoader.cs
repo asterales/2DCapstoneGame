@@ -3,6 +3,15 @@ using System.Collections.Generic;
 
 public class CustomUnitLoader : MonoBehaviour {
 	public List<CustomLoadInfo> units;
+	private TutorialInfo info;
+
+	void Awake() {
+		info = GetComponent<TutorialInfo>();
+	}
+
+	public bool CanLoadUnits() {
+		return info != null ? !info.HasBeenCompleted() : true;
+	}
 
 	public void LoadUnits() {
 		if (HexMap.mapArray != null && HexMap.mapArray.Count > 0) {
