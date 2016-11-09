@@ -80,8 +80,8 @@ public class PlayerBattleController : ArmyBattleController {
     }
 
     public bool GetSubmenuButton(Vector3 basePosition, int menuButtonNumber, string text, bool active) {
-        float itemHeight = Screen.width * (0.15f / Camera.main.orthographicSize);
-        float itemWidth = itemHeight * 3;
+        float itemHeight = Screen.height*0.026f;
+        float itemWidth = itemHeight*3;
         float yOffset = itemHeight * 4f;
         float xOffset = itemWidth / 4;
         Vector3 pos = new Vector3(basePosition.x + xOffset, Screen.height - basePosition.y - yOffset);
