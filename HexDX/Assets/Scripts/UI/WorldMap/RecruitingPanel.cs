@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 public class RecruitingPanel : WorldMapPopupPanel {
 	public List<RecruitListing> unitChoices;
@@ -58,13 +59,23 @@ public class RecruitingPanel : WorldMapPopupPanel {
 				Unit unit = selectedListing.unitDisplay.unit;
 				unitDisplay.unit = unit;
 				statDisplay.DisplayUnitStats(unit);
-				descriptionText.text = unit.ClassName + "\nCost: " + selectedListing.cost + " gold";
+				descriptionText.text = GetDescriptionText(selectedListing);
 			} else {
 				unitDisplay.unit = null;
 				statDisplay.ClearDisplay();
 				descriptionText.text = "";
 			}
 		}
+	}
+
+	private string GetDescriptionText(RecruitListing listing) {
+		if (listing && listing.unitDisplay.unit) {
+			StringBuilder sb = new StringBuilder();
+			sb.Append("<b>Cost</b>: " + listing.cost + " gold\n");
+			sb.Append(listing.description);
+			return sb.ToString();
+		}
+		return "";
 	}
 
 	public override void Show() {

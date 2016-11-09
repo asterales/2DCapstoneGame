@@ -4,7 +4,8 @@ using UnityEngine.EventSystems;
 public class RecruitListing : MonoBehaviour, IPointerClickHandler {
 	private GameObject unitObj;
 	public UnitDisplay unitDisplay;
-	public string unitClass;
+	public string unitPrefabName;
+	public string description;
 	public int cost;
 
 	public delegate void OnClick(RecruitListing listing);
@@ -12,7 +13,7 @@ public class RecruitListing : MonoBehaviour, IPointerClickHandler {
 
 	void Awake() {
 		unitDisplay = GetComponent<UnitDisplay>();
-		unitClass = unitClass.Trim();
+		unitPrefabName = unitPrefabName.Trim();
 		unitObj = InstantiateRecruit();
 		if (unitObj != null) {
 			unitObj.transform.parent = gameObject.transform;
@@ -28,8 +29,8 @@ public class RecruitListing : MonoBehaviour, IPointerClickHandler {
 	}
 
 	public GameObject InstantiateRecruit() {
-		return unitClass.Length == 0 ? null :
-				Instantiate<GameObject>(Resources.Load<GameObject>("Units/" + unitClass));
+		return unitPrefabName.Length == 0 ? null :
+				Instantiate<GameObject>(Resources.Load<GameObject>("Units/" + unitPrefabName));
 	}
 
 	public void OnPointerClick(PointerEventData eventData) {

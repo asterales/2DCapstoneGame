@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
 public class UnitStats : MonoBehaviour {
-    private static readonly float lvlStatModifier = 1.3f;
-    private static readonly float lvlHealthModifier = 0.3f;
+    private const float LVL_STAT_MODIFIER = 1.3f;
+    private const float LVL_HEALTH_MODIFIER = 0.3f;
 
     public static int maxAttack = 100; 
     public static int maxDefense = 100;
@@ -22,21 +22,21 @@ public class UnitStats : MonoBehaviour {
     public float zocmodifier;
 
     public void LevelUp() {
-        attack = (int) Mathf.Min(maxAttack, attack * lvlStatModifier);
-        defense = (int) Mathf.Min(maxDefense, defense * lvlStatModifier);
-        power = (int) Mathf.Min(maxPower, power * lvlStatModifier);
-        resistance = (int) Mathf.Min(maxResistance, resistance * lvlStatModifier);
-        health += (int)(maxHealth * lvlHealthModifier);
-        maxHealth = (int)(maxHealth * lvlStatModifier);
+        attack = (int) Mathf.Min(maxAttack, attack * LVL_STAT_MODIFIER);
+        defense = (int) Mathf.Min(maxDefense, defense * LVL_STAT_MODIFIER);
+        power = (int) Mathf.Min(maxPower, power * LVL_STAT_MODIFIER);
+        resistance = (int) Mathf.Min(maxResistance, resistance * LVL_STAT_MODIFIER);
+        health += (int)(maxHealth * LVL_HEALTH_MODIFIER);
+        maxHealth = (int)(maxHealth * LVL_STAT_MODIFIER);
         health = (int) Mathf.Min(maxHealth, health);
     }
 
     public void LevelDown() {
-        attack = (int)(attack / lvlStatModifier);
-        defense = (int)(defense / lvlStatModifier);
-        power = (int)(power / lvlStatModifier);
-        resistance = (int)(resistance / lvlStatModifier);
-        maxHealth = (int)(maxHealth / lvlStatModifier);
-        health -= (int)(maxHealth * lvlHealthModifier);
+        attack = (int)(attack / LVL_STAT_MODIFIER);
+        defense = (int)(defense / LVL_STAT_MODIFIER);
+        power = (int)(power / LVL_STAT_MODIFIER);
+        resistance = (int)(resistance / LVL_STAT_MODIFIER);
+        maxHealth = (int)(maxHealth / LVL_STAT_MODIFIER);
+        health -= (int)(maxHealth * LVL_HEALTH_MODIFIER);
     }
 }
