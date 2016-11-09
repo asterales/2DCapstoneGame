@@ -392,7 +392,7 @@ public class Unit : MonoBehaviour {
 
     public void MakeChoosingAction(ScriptEvent scriptEvent = null) {
         foreach (Unit unit in ai.units)
-            if (unit.phase != UnitTurn.Open && unit.phase != UnitTurn.Done)
+            if (unit != this && unit.phase != UnitTurn.Open && unit.phase != UnitTurn.Done)
                 return;
         foreach (Unit unit in player.units)
             if (unit!=this && unit.phase != UnitTurn.Open && unit.phase != UnitTurn.Done)
@@ -418,6 +418,8 @@ public class Unit : MonoBehaviour {
             phase = UnitTurn.Done;
             spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
             SetFacingSprites();
+            if (this == SelectionController.selectedUnit)
+                HexMap.ClearAttackTiles();
         }
     }
 
