@@ -392,10 +392,10 @@ public class Unit : MonoBehaviour {
 
     public void MakeChoosingAction(ScriptEvent scriptEvent = null) {
         foreach (Unit unit in ai.units)
-            if (unit.phase != UnitTurn.Open || unit.phase != UnitTurn.Done)
+            if (unit.phase != UnitTurn.Open && unit.phase != UnitTurn.Done)
                 return;
         foreach (Unit unit in player.units)
-            if (unit.phase != UnitTurn.Open || unit.phase != UnitTurn.Done)
+            if (unit.phase != UnitTurn.Open && unit.phase != UnitTurn.Done)
                 return;
         phase = UnitTurn.ChoosingAction;
     }
