@@ -26,7 +26,7 @@ public class AIBattleController : ArmyBattleController {
     void Update() {
         if (!battleController.BattleIsDone && SelectionController.TakingAIInput()){
             if (currentUnitIndex < units.Count) {
-                if (units[currentUnitIndex]) {
+                if (units[currentUnitIndex].enabled) {
                     UnitAI ai = GetAI(currentUnitIndex);
                     switch(ai.unit.phase) {
                         case UnitTurn.Open:
