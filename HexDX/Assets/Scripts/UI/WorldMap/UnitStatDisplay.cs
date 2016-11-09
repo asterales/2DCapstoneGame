@@ -28,7 +28,7 @@ public class UnitStatDisplay : MonoBehaviour {
         unit = unitToDisplay;
         if (unit) {
             classPanel.enabled = true;
-            classText.text = unit.unitStats.className;
+            classText.text = unit.ClassName;
             statPanel.enabled = true;
             statText.text = GetStatsString();
         }
@@ -43,12 +43,12 @@ public class UnitStatDisplay : MonoBehaviour {
 
     private string GetStatsString() {
         StringBuilder sb = new StringBuilder();
-        sb.Append(string.Format("Health: {0}\n", unit.unitStats.maxHealth));
-        sb.Append(string.Format("Attack: {0}\n", unit.unitStats.attack));
-        sb.Append(string.Format("Defense: {0}\n", unit.unitStats.defense));
-        sb.Append(string.Format("Power: {0}\n", unit.unitStats.power));
-        sb.Append(string.Format("Resistance: {0}\n", unit.unitStats.resistance));
-        sb.Append(string.Format("Move Range: {0}\n", unit.unitStats.mvtRange));
+        sb.Append(string.Format("Health: {0}\n", unit.MaxHealth));
+        sb.Append(string.Format("Attack: {0}\n", unit.Attack));
+        sb.Append(string.Format("Defense: {0}\n", unit.Defense));
+        sb.Append(string.Format("Power: {0}\n", unit.Power));
+        sb.Append(string.Format("Resistance: {0}\n", unit.Resistance));
+        sb.Append(string.Format("Move Range: {0}\n", unit.MvtRange));
         return sb.ToString();
     }
 }

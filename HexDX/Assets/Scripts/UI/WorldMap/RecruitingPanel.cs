@@ -58,7 +58,7 @@ public class RecruitingPanel : WorldMapPopupPanel {
 				Unit unit = selectedListing.unitDisplay.unit;
 				unitDisplay.unit = unit;
 				statDisplay.DisplayUnitStats(unit);
-				descriptionText.text = unit.unitStats.className + "\nCost: " + selectedListing.cost + " gold";
+				descriptionText.text = unit.ClassName + "\nCost: " + selectedListing.cost + " gold";
 			} else {
 				unitDisplay.unit = null;
 				statDisplay.ClearDisplay();

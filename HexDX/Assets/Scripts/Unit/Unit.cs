@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class Unit : MonoBehaviour {    
     public Tile currentTile;
-    public UnitStats unitStats;
+    private UnitStats unitStats;
     public UnitSprites sprites;
     public List<Vector2> attackablePositions;
     public float moveSpeed = 0.13f;
@@ -33,31 +33,15 @@ public class Unit : MonoBehaviour {
     // Properties for shorthand access to stats, includes tile modifiers
     public int MvtRange { get { return unitStats.mvtRange + (currentTile ? currentTile.tileStats.mvtModifier : 0); } }
     public int MaxHealth { get { return unitStats.maxHealth; } }
-    public int Health {
-        get { return unitStats.health; }
-        set { unitStats.health = value; }
-    }
-    public int Experience
-    {
-        get { return unitStats.experience; }
-        set { unitStats.experience = value; }
-    }
-    public int Veterancy
-    {
-        get { return unitStats.veterancy; }
-        set { unitStats.veterancy = value; }
-    }
-
-    public float ZOCModifer
-    {
-        get { return unitStats.zocmodifier; }
-        set { unitStats.zocmodifier = value; }
-    }
-
+    public int Health { get { return unitStats.health; } set { unitStats.health = value; } }
+    public int Experience { get { return unitStats.experience; } set { unitStats.experience = value; } }
+    public int Veterancy { get { return unitStats.veterancy; } set { unitStats.veterancy = value; } }
+    public float ZOCModifer { get { return unitStats.zocmodifier; } set { unitStats.zocmodifier = value; } }
     public int Attack { get { return unitStats.attack + (currentTile ? currentTile.tileStats.attackModifier : 0); } }
     public int Defense { get { return unitStats.defense + (currentTile ? currentTile.tileStats.defenseModifier : 0); } }
     public int Power { get { return unitStats.power + (currentTile ? currentTile.tileStats.powerModifier : 0); } }
     public int Resistance { get { return unitStats.resistance + (currentTile ? currentTile.tileStats.resistanceModifier : 0); } }
+    public string ClassName { get { return unitStats.className; } }
 
     void Awake() {
         unitStats = GetComponent<UnitStats>();
@@ -627,16 +611,13 @@ public class Unit : MonoBehaviour {
     {
         int bound = HexMap.Cost(dest, current);
         List<Tile> shortestPath = new List<Tile>();
-        while (true)
-        {
+        while (true) {
             int t = Search(dest, current, 0, bound, ref shortestPath);
-            if (t == -1)
-            {
+            if (t == -1) {
                 shortestPath.Add(dest);
                 break;
             }
-            if (t == int.MaxValue)
-            {
+            if (t == int.MaxValue) {
                 //Debug.Log("Impossible to reach"); commenting out, because its flooding the logger
                 return int.MaxValue;
             }
