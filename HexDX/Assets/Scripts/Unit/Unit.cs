@@ -478,6 +478,7 @@ public class Unit : MonoBehaviour {
         }
         target.Health -= (int)(damage * modifier);
         if (target.Health <= 0) {
+            target.Health = 0;
             target.path = new Queue<Tile>();
             target.lastTile = null;
             target.MakeDone();
