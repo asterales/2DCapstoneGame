@@ -395,7 +395,7 @@ public class Unit : MonoBehaviour {
             if (unit.phase != UnitTurn.Open && unit.phase != UnitTurn.Done)
                 return;
         foreach (Unit unit in player.units)
-            if (unit.phase != UnitTurn.Open && unit.phase != UnitTurn.Done)
+            if (unit!=this && unit.phase != UnitTurn.Open && unit.phase != UnitTurn.Done)
                 return;
         phase = UnitTurn.ChoosingAction;
     }
