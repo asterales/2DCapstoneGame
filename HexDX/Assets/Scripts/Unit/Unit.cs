@@ -326,14 +326,30 @@ public class Unit : MonoBehaviour {
         HexMap.ShowAttackTiles(this);
     }
 
-    public void SetTile(Tile newTile) {
-        transform.position = newTile.transform.position;
-        transform.parent = newTile.transform;
-        if (currentTile && currentTile.currentUnit == this) {
-            currentTile.currentUnit = null;
+    public void RemoveFromMap()
+    {
+        if (this.enabled)
+        {
+            if (currentTile && currentTile.currentUnit == this)
+            {
+                currentTile.currentUnit = null;
+            }
+            currentTile = null;
         }
-        newTile.currentUnit = this;
-        currentTile = newTile;
+    }
+
+    public void SetTile(Tile newTile) {
+        if (this.enabled)
+        {
+            transform.position = newTile.transform.position;
+            transform.parent = newTile.transform;
+            if (currentTile && currentTile.currentUnit == this)
+            {
+                currentTile.currentUnit = null;
+            }
+            newTile.currentUnit = this;
+            currentTile = newTile;
+        }
     }
 
     public void SetPath(List<Tile> nextPath) {
@@ -432,7 +448,7 @@ public class Unit : MonoBehaviour {
         MakeDone();
         path = null;
         lastTile = null;
-        currentTile.currentUnit = null;
+        RemoveFromMap();
         gameObject.AddComponent<UnitDeath>();
     }
    
@@ -446,12 +462,12 @@ public class Unit : MonoBehaviour {
     }
 
     public IEnumerator<float> PerformAttack(Unit target) {
-        if (target && target.Health>0 && Health>0) {
+        if (target.enabled && target.Health>0 && Health>0) {
             Timing.RunCoroutine(DoAttack(target, 1.0f));
         }
         //if (target && target.gameObject && target.HasInAttackRange(this))
         yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
-        if (target && target.Health > 0 && target.HasInAttackRange(this) && target.phase==UnitTurn.Open && Health > 0) {
+        if (target.enabled && target.Health > 0 && target.HasInAttackRange(this) && target.phase==UnitTurn.Open && Health > 0) {
             Debug.Log(target.phase);
             spriteRenderer.color = Color.red;
             target.MakeAttacking();
