@@ -34,7 +34,7 @@ public abstract class ArmyBattleController : MonoBehaviour {
     }
 
     public bool AllUnitsDone() {
-        return units.Where(u => u.enabled && u.phase != UnitTurn.Done).ToList().Count == 0;
+        return units.Where(u => u!=null && u.phase != UnitTurn.Done).ToList().Count == 0;
     }
 
     public bool IsAnnihilated() {
@@ -42,6 +42,6 @@ public abstract class ArmyBattleController : MonoBehaviour {
     }
 
     public bool NoneAttacking() {
-    	return units.Where(u => u.enabled && u.phase == UnitTurn.Attacking).ToList().Count == 0;
+    	return units.Where(u => u!=null && u.phase == UnitTurn.Attacking).ToList().Count == 0;
     }
 }
