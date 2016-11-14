@@ -30,7 +30,7 @@ public class MapLoader : MonoBehaviour {
         if (battleMap != null && hexDimension != null) {
             LevelManager lm = LevelManager.activeInstance;
             if (lm) {
-                csvMapFile = lm.mapFileName;
+                csvMapFile = lm.GetCurrentSceneFile();
             }
             LoadHexMap(csvMapFile);
             Debug.Log("Finished Loading Map");

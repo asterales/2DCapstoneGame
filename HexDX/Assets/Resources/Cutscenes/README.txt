@@ -1,5 +1,9 @@
 Items needed for a cutscenes (subject to change)
 
+Parts of a Dialogue File:
+First Line (optional): name of the background image to load without the extension. Background images should be stored in the backgrounds directory
+Rest of the file: lines representing the dialogue of the characters (see below for format)
+
 Adding Characters:
 1) 	Add desired id and character name (or portrait folder name if its not a character) to the CharacterIds.csv file
 	Format: <id>, <character name / folder name>

@@ -7,37 +7,50 @@ using UnityEngine.UI;
 
 public class CutsceneManager : DialogueManager {
 	private static readonly string cutsceneDir = "Cutscenes/";
+	private static readonly string backgroundsDir = "backgrounds/";
+
 	public string cutsceneFile;
+	public Image bgImage;
 	private Queue<CutsceneDialogue> dialogues;
 	private SpeakerUI leftSpeaker;
 	private SpeakerUI rightSpeaker;
 	private bool nextSceneLoaded;
 
 	void Awake() {
-		if (cutsceneFile != null) {
-			LoadCutscene(cutsceneFile);
-		}
 		leftSpeaker = GameObject.Find("Left Speaker").GetComponent<SpeakerUI>();
 		rightSpeaker = GameObject.Find("Right Speaker").GetComponent<SpeakerUI>();
+	}
+
+	void Start() {
+		if (LevelManager.activeInstance) {
+			cutsceneFile = LevelManager.activeInstance.GetCurrentSceneFile();
+		}
+		if (cutsceneFile != null && cutsceneFile.Length > 0) {
+			LoadCutscene(cutsceneFile);
+		}
+		leftSpeaker.OverrideSorting = true;
+		rightSpeaker.OverrideSorting = true;
+		SetNextLine();
+		nextSceneLoaded = false;
 	}
 
 	private void LoadCutscene(string file) {
 		dialogues = new Queue<CutsceneDialogue>();
 		string[] cutsceneLines = GameResources.GetFileLines(cutsceneDir + file);
 		if (cutsceneLines != null) {
-			foreach(string line in cutsceneLines) {
-				dialogues.Enqueue(new CutsceneDialogue(line));
+			int startIndex = 0;
+			string bgLine = cutsceneLines[0];
+			if (!bgLine.Contains("|")) {
+				bgImage.sprite = Resources.Load<Sprite>(backgroundsDir + bgLine.Trim());
+				bgImage.color = Color.white;
+				startIndex = 1;
+			}
+			for(int i = startIndex; i < cutsceneLines.Length; i++) {
+				dialogues.Enqueue(new CutsceneDialogue(cutsceneLines[i]));
 			}
 		} else {
 			Debug.Log("Error: cutscene file does not exist: " + cutsceneFile + " - CutsceneManager.cs");
 		}
-	}
-
-	void Start() {
-		leftSpeaker.OverrideSorting = true;
-		rightSpeaker.OverrideSorting = true;
-		SetNextLine();
-		nextSceneLoaded = false;
 	}
 
 	protected override void Update() {

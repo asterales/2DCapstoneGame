@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
 using MovementEffects;
+using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 
 /* 	Loads scenes that belongs to a level.
 	Usage: attach to empty object in scene that can persist across scenes of the same level 
@@ -20,17 +21,37 @@ public class LevelManager : MonoBehaviour {
 	public int levelId;
 	public int moneyRewarded;
 	public string mapFileName;
-	public string introCutscene;
-	public string outroCutscene;
+	public string introCutsceneFile;
+	public string outroCutsceneFile;
 	
 	private bool levelStarted;
 	private bool destroyOnLoad;
+	private int currentSceneIndex;
+	private List<SceneInfo> scenes;
 
 	private FadeTransition sceneFade;
+
+	private struct SceneInfo {
+		public string sceneName;
+		public string fileName;
+
+		public SceneInfo(string scene, string file) {
+			sceneName = scene;
+			fileName = file;
+		}
+	}
 
 	void Awake() {
 		SceneManager.sceneLoaded += OnSceneLoaded;
 		sceneFade = GetComponent<FadeTransition>();
+		InitSceneList();
+	}
+
+	private void InitSceneList() {
+		scenes = new List<SceneInfo> { new SceneInfo(cutsceneSceneName, introCutsceneFile),
+									   new SceneInfo(battleSceneName, mapFileName),
+									   new SceneInfo(cutsceneSceneName, outroCutsceneFile)};
+		scenes = scenes.Where(s => s.fileName != null && s.fileName.Length > 0).ToList();
 	}
 
 	void Start() {
@@ -103,8 +124,10 @@ public class LevelManager : MonoBehaviour {
 	// for binding to onclick() event trigger
 	public void StartLevel() {
 		SetActiveLevel();
-		levelStarted = true;
-		Timing.RunCoroutine(LoadScene(battleSceneName));
+		if (scenes.Count > 0) {
+			levelStarted = true;
+			Timing.RunCoroutine(LoadScene(scenes[0].sceneName));
+		}
 	}
 
 	private void SetActiveLevel() {
@@ -116,8 +139,16 @@ public class LevelManager : MonoBehaviour {
 		if (!levelStarted) {
 			StartLevel();
 		} else {
-			// change later to load also cutscenes
-			ReturnToWorldMap();
+			currentSceneIndex++;
+			if (currentSceneIndex < scenes.Count) {
+				Timing.RunCoroutine(LoadScene(scenes[currentSceneIndex].sceneName));
+			} else{
+				ReturnToWorldMap();
+			}
 		}
+	}
+
+	public string GetCurrentSceneFile() {
+		return scenes[currentSceneIndex].fileName;
 	}
 }

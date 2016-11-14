@@ -5,6 +5,15 @@ public class CustomUnitLoader : MonoBehaviour {
 	public List<CustomLoadInfo> units;
 	private TutorialInfo info;
 
+	[System.Serializable] // so custom data structure will show up in editor
+	public struct CustomLoadInfo {
+		public Unit unit;
+		public bool isAIUnit;
+		public int row;
+		public int col;
+		public int facing;
+	}
+
 	void Awake() {
 		info = GetComponent<TutorialInfo>();
 	}
@@ -34,13 +43,4 @@ public class CustomUnitLoader : MonoBehaviour {
 	        }
 		}
     }
-}
-
-[System.Serializable] // so custom data structure will show up in editor
-public struct CustomLoadInfo {
-	public Unit unit;
-	public bool isAIUnit;
-	public int row;
-	public int col;
-	public int facing;
 }
