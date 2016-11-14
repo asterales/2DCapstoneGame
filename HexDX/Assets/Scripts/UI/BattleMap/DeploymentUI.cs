@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class DeploymentUI : MonoBehaviour {
@@ -9,6 +10,8 @@ public class DeploymentUI : MonoBehaviour {
 	private GameObject startBattleButtonObj;
 	private Button startBattleButton;
 	private bool isActive;
+
+	private bool hoveredStartButton;
 
 	void Awake() {
 		gameDialogueMgr = FindObjectOfType(typeof(GameDialogueManager)) as GameDialogueManager;
@@ -43,6 +46,19 @@ public class DeploymentUI : MonoBehaviour {
 				HideUI();
 			}
 		}
+		if (hoveredStartButton) {
+			Camera.main.GetComponent<CameraController>().DontMove();
+		}
+	}
+
+	// attached to button as EventTrigger in inspector, hack to prevent camera from moving
+	public void OnStartButtonEnter() {
+		hoveredStartButton = true;
+	}
+
+	// attached to button as EventTrigger in inspector, hack to prevent camera from moving
+	public void OnStartButtonExit() {
+		hoveredStartButton = false;
 	}
 
 	private void HideUI() {
