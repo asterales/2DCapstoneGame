@@ -12,13 +12,16 @@ public class LevelManager : MonoBehaviour {
     private static readonly string mainMenuSceneName = "MainMenu";
 	private static readonly string battleSceneName = "TestScene";
 	private static readonly string worldMapSceneName = "WorldMap";
+	private static readonly string cutsceneSceneName = "TestCutscene";
 
 	public static LevelManager activeInstance;
 
 	// Level scene management
 	public int levelId;
-	public string mapFileName;
 	public int moneyRewarded;
+	public string mapFileName;
+	public string introCutscene;
+	public string outroCutscene;
 	
 	private bool levelStarted;
 	private bool destroyOnLoad;
