@@ -32,55 +32,55 @@ public class CameraController : MonoBehaviour {
     
     // Update is called once per frame
     void Update () {
-        if (BattleController.IsPlayerTurn)
-        {
+        if (BattleController.IsPlayerTurn) {
             prev = transform.position;
             float newX, newY;
             newX = newY = 0;
-            if (Input.GetKey(KeyCode.W) || Input.mousePosition.y > Screen.height * .9f)
+            if (Input.GetKey(KeyCode.W) || Input.mousePosition.y > Screen.height * .9f) {
                 newY += .2f * transform.localScale.y;
-            if (Input.GetKey(KeyCode.S) || Input.mousePosition.y < Screen.height * .1f)
+            }
+            if (Input.GetKey(KeyCode.S) || Input.mousePosition.y < Screen.height * .1f) {
                 newY -= .2f * transform.localScale.y;
-            if (Input.GetKey(KeyCode.A) || Input.mousePosition.x < Screen.width * .1f)
+            }
+            if (Input.GetKey(KeyCode.A) || Input.mousePosition.x < Screen.width * .1f) {
                 newX -= .2f * transform.localScale.x;
-            if (Input.GetKey(KeyCode.D) || Input.mousePosition.x > Screen.width * .9f)
+            }
+            if (Input.GetKey(KeyCode.D) || Input.mousePosition.x > Screen.width * .9f) {
                 newX += .2f * transform.localScale.x;
+            }
             transform.position += new Vector3(newX, newY, 0) * 2.0f;
-            if (transform.position.x < xmin)
+            if (transform.position.x < xmin) {
                 transform.position = new Vector3(xmin, transform.position.y, transform.position.z);
-            else if (transform.position.x > xmax)
+            } else if (transform.position.x > xmax) {
                 transform.position = new Vector3(xmax, transform.position.y, transform.position.z);
-            if (transform.position.y < ymin)
+            }
+            if (transform.position.y < ymin) {
                 transform.position = new Vector3(transform.position.x, ymin, transform.position.z);
-            else if (transform.position.y > ymax)
+            } else if (transform.position.y > ymax) {
                 transform.position = new Vector3(transform.position.x, ymax, transform.position.z);
-        }
-        else
-        {
+            }
+        } else {
             Unit aiUnit = BattleControllerManager.instance.ai.GetUnit();
             if (aiUnit) {
                 Vector3 destination = new Vector3(aiUnit.transform.position.x, aiUnit.transform.position.y, transform.position.z);
                 transform.position = Vector3.MoveTowards(transform.position, destination, transform.localScale.x);
             }
         }
-        if (Input.GetAxis("Mouse ScrollWheel") > 0) // back
-        {
+        if (Input.GetAxis("Mouse ScrollWheel") > 0) { // back
             Camera.main.orthographicSize *= .9f;
             Camera.main.orthographicSize = Mathf.Max(Camera.main.orthographicSize, 2.0f);
             transform.localScale = new Vector3(1.0f, 1.0f, 1.0f) * (Camera.main.orthographicSize / originalSize);
         }
-        if (Input.GetAxis("Mouse ScrollWheel") < 0) // forward
-        {
+        if (Input.GetAxis("Mouse ScrollWheel") < 0) { //forward
             Camera.main.orthographicSize *= 1.1f;
             Camera.main.orthographicSize = Mathf.Min(Camera.main.orthographicSize, 20.0f);
             transform.localScale = new Vector3(1.0f, 1.0f, 1.0f) * (Camera.main.orthographicSize / originalSize);
-
         }
     }
 
-    public void DontMove()
-    {
-        if (BattleController.IsPlayerTurn)
+    public void DontMove() {
+        if (BattleController.IsPlayerTurn) {
             transform.position = prev;
+        }
     }
 }

@@ -15,7 +15,6 @@ public class DeploymentController : PreBattleController {
 	private List<DeploymentTile> deploymentTiles;
 	
 	private static Tile selectedUnitDest;
-	private static bool faceAfterMove;
 	private static Unit displacedUnit;
 	private static Tile displacedUnitDest;
 
@@ -57,7 +56,6 @@ public class DeploymentController : PreBattleController {
 
 	public static void SetSelectedUnitDestination(Unit selectedUnit, Tile destTile) {
 		selectedUnitDest = destTile;
-		faceAfterMove = selectedUnitDest != selectedUnit.currentTile;
 		if (destTile.currentUnit && destTile.currentUnit != selectedUnit) {
 			displacedUnit = destTile.currentUnit;
 			displacedUnitDest = selectedUnit.currentTile;
@@ -74,13 +72,8 @@ public class DeploymentController : PreBattleController {
 
 	protected override void PhaseUpdateAction() {
 		if (SelectionController.selectedUnit) {
-			if (selectedUnitDest) {
-				SelectionController.ShowSelection(selectedUnitDest);
-				MoveUnit(SelectionController.selectedUnit, selectedUnitDest);
-			} else if (!displacedUnit) {
-				SelectionController.ShowSelection(SelectionController.selectedUnit);
-				FaceSelectedUnit();
-			}
+			SelectionController.ShowSelection(selectedUnitDest);
+			MoveUnit(SelectionController.selectedUnit, selectedUnitDest);
 		}
 		if (displacedUnit) {
 			MoveUnit(displacedUnit, displacedUnitDest);
@@ -97,11 +90,9 @@ public class DeploymentController : PreBattleController {
     		unit.SetTile(destTile);
     		unit.MakeOpen();
     		if (destTile == selectedUnitDest) {
-    			if (faceAfterMove) {
-    				SelectionController.selectedUnit.MakeFacing();
-    			} else {
-    				SelectionController.selectedUnit = null;
-    			}
+    			SelectionController.selectedUnit.MakeOpen();
+				SelectionController.selectedUnit = null;
+				SelectionController.HideSelection();
     			selectedUnitDest = null;
     		} else if (unit == displacedUnit) {
     			displacedUnit = null;
@@ -112,18 +103,6 @@ public class DeploymentController : PreBattleController {
     		}
     	}
     }
-
-	private void FaceSelectedUnit() {
-		SelectionController.mode = SelectionMode.DeploymentFace;
-		SelectionController.RegisterFacing();
-		if(Input.GetMouseButtonDown(1)) {
-			HexMap.ClearAttackTiles();
-			SelectionController.selectedUnit.MakeOpen();
-			SelectionController.selectedUnit = null;
-			SelectionController.HideSelection();
-			SelectionController.mode = SelectionMode.DeploymentOpen;
-		}
-	}
 
 	public override void EndPreBattlePhase() {
 		// Make all units open and destroy deployment tiles
