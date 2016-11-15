@@ -86,15 +86,17 @@ public class HexMap : MonoBehaviour {
         ClearMovementTiles();
         List<Tile> mvtTiles = GetMovementTiles(unit);
         List<Tile> atkTiles = GetAttackTiles(unit);
-        foreach (Tile atkTile in atkTiles)
-        {
-            GameObject g = Instantiate(Resources.Load("Tiles/AttackableOutline")) as GameObject;
-            g.transform.parent = atkTile.transform;
-            g.transform.localPosition = new Vector3(0, 0, .0001f);
-            showingAttackOutlines.Push(g);
+        if (!unit.IsPlayerUnit()) {
+            foreach (Tile atkTile in atkTiles) {
+                GameObject g = Instantiate(Resources.Load("Tiles/AttackableOutline")) as GameObject;
+                g.transform.parent = atkTile.transform;
+                g.transform.localPosition = new Vector3(0, 0, .0001f);
+                showingAttackOutlines.Push(g);
+            } 
         }
-        foreach (Tile mvtTile in mvtTiles)
+        foreach (Tile mvtTile in mvtTiles) {
            mvtTile.ShowMovementTile();
+        }
     }
 
     public static List<Tile> GetAttackTiles(Unit unit) {
