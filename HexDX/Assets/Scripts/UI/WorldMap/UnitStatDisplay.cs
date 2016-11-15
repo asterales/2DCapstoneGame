@@ -10,14 +10,32 @@ public class UnitStatDisplay : MonoBehaviour {
     private Text classText;
     private Image statPanel;
     private Text statText;
+    private Image unitCard;
+    private VeterancyDisplay veterancy;
 
     void Awake() {
+        InitTextPanels();
+        InitImages();   
+    }
+
+    private void InitTextPanels() {
         Transform classPanelTransform = transform.Find("Class Name");
         classPanel = classPanelTransform.GetComponent<Image>();
         classText = classPanelTransform.Find("Text").GetComponent<Text>();
         Transform statsPanelTransform = transform.Find("Stats");
         statPanel = statsPanelTransform.GetComponent<Image>();
         statText = statsPanelTransform.Find("Text").GetComponent<Text>();
+    }
+
+    private void InitImages() {
+        Transform unitCardTransform = transform.Find("UnitCard");
+        if (unitCardTransform) {
+            unitCard = unitCardTransform.GetComponent<Image>();
+        }
+        Transform vetTransform = transform.Find("Veterancy");
+        if (vetTransform) {
+            veterancy = vetTransform.GetComponent<VeterancyDisplay>();
+        }
     }
 
     void Start() {
@@ -31,6 +49,14 @@ public class UnitStatDisplay : MonoBehaviour {
             classText.text = unit.ClassName;
             statPanel.enabled = true;
             statText.text = GetStatsString();
+            if (unitCard) {
+                unitCard.sprite = unit.sprites.unitCard;
+                unitCard.enabled = true;
+            }
+            if (veterancy) {
+                veterancy.gameObject.SetActive(true);
+                veterancy.DisplayVeterancy(unit);
+            }
         }
     }
 
@@ -39,6 +65,12 @@ public class UnitStatDisplay : MonoBehaviour {
         classText.text = "";
         statPanel.enabled = false;
         statText.text = "";
+        if (unitCard) {
+            unitCard.enabled = false;
+        }
+        if (veterancy) {
+            veterancy.gameObject.SetActive(false);
+        }
     }
 
     private string GetStatsString() {

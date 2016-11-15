@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour {
 		if (instance == null) {
 			instance = this;
 			InitUnitList();
-			gameObject.transform.position = GameResources.hidingPosition;
+			transform.position = GameResources.hidingPosition;
 			DontDestroyOnLoad(this.gameObject);
 		} else if (instance != this) {
 			GetComponentsInChildren<Unit>().ToList().ForEach(u => u.gameObject.SetActive(false));
@@ -39,58 +39,48 @@ public class GameManager : MonoBehaviour {
 		foreach(Unit childUnit in GetComponentsInChildren<Unit>()) {
 			AddNewPlayerUnit(childUnit);
 		}
-		if (playerAllUnits.Count > ACTIVE_UNIT_LIMIT) {
-			activeUnits = playerAllUnits.GetRange(0, ACTIVE_UNIT_LIMIT);
-		} else {
-			activeUnits = playerAllUnits;
-		}
+		activeUnits = playerAllUnits.GetRange(0, (int)Mathf.Min(playerAllUnits.Count, ACTIVE_UNIT_LIMIT));
 		activeUnits.ForEach(u => u.gameObject.SetActive(true));
-	}
-
-	public void ClearNullUnits() {
-		playerAllUnits = playerAllUnits.Where(u => u.enabled).ToList();
-		activeUnits = activeUnits.Where(u => u.enabled).ToList();
-	}
-
-	public void UpdateArmyAfterBattle() {
-        if (BattleController.PlayerWon)
-        {
-            ClearNullUnits();
-            foreach (Unit unit in activeUnits)
-            {
-                unit.transform.parent = gameObject.transform;
-                unit.transform.position = GameResources.hidingPosition;
-                unit.Health = unit.MaxHealth;
-                SetDefaultUnitView(unit);
-            }
-        }
-        else
-        {
-            RestoreActiveUnits();
-        }
-	}
-
-    public void RestoreActiveUnits()
-    {
-        foreach (Unit unit in activeUnits)
-        {
-            unit.gameObject.SetActive(true);
-            unit.enabled = true;
-            unit.transform.parent = gameObject.transform;
-            unit.transform.position = GameResources.hidingPosition;
-            unit.Health = unit.MaxHealth;
-            SetDefaultUnitView(unit);
-        }
-    }
-	public List<Unit> GetInactiveUnits() {
-		return playerAllUnits.Where(u => !activeUnits.Contains(u)).ToList();
 	}
 
 	public void AddNewPlayerUnit(Unit unit) {
 		playerAllUnits.Add(unit);
 		unit.transform.parent = transform;
-		unit.transform.position = GameResources.hidingPosition;
+        unit.transform.position = GameResources.hidingPosition;
 		unit.gameObject.SetActive(false);
+	}
+
+	private void ResetUnit(Unit unit) {
+		unit.transform.parent = transform;
+        unit.transform.position = GameResources.hidingPosition;
+        unit.Health = unit.MaxHealth;
+        SetDefaultUnitView(unit);
+	}
+
+	public void UpdateArmyAfterBattle() {
+        if (BattleController.PlayerWon) {
+            ClearDeadUnits();
+            activeUnits.ForEach(u => ResetUnit(u));
+        } else {
+            RestoreActiveUnits();
+        }
+	}
+
+	public void ClearDeadUnits() {
+		playerAllUnits = playerAllUnits.Where(u => u.enabled).ToList();
+		activeUnits = activeUnits.Where(u => u.enabled).ToList();
+	}
+
+    public void RestoreActiveUnits() {
+        foreach (Unit unit in activeUnits) {
+            unit.gameObject.SetActive(true);
+            unit.enabled = true;
+            ResetUnit(unit);
+        }
+    }
+
+	public List<Unit> GetInactiveUnits() {
+		return playerAllUnits.Where(u => !activeUnits.Contains(u)).ToList();
 	}
 
 	public static void DestroyCurrentInstance() {

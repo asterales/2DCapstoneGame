@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class CustomUnitLoader : MonoBehaviour {
+	public bool replacePlayerArmy;
 	public List<CustomLoadInfo> units;
 	private TutorialInfo info;
 
