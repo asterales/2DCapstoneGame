@@ -5,9 +5,9 @@ using System.Linq;
 
 public class TutorialController : PreBattleController {
 	public bool isBeforeDeployment;
-	public TutorialInfo info;
+	private TutorialInfo info;
 	private ScriptedAIBattleController scriptedAI;
-	public CustomUnitLoader unitLoader;
+	private CustomUnitLoader unitLoader;
 	
 	public Sprite selectionSprite;
 	public RuntimeAnimatorController animation;
