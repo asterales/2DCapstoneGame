@@ -59,11 +59,20 @@ public class BattleController : MonoBehaviour {
                 EndBattle();
             }
         } else if (!nextSceneLoaded && Input.GetMouseButtonDown(0)) {
-            if (GameManager.instance) {
-                GameManager.instance.UpdateArmyAfterBattle();
-            }
+            UpdateArmyAfterBattle();
             nextSceneLoaded = true; // prevent skipping scenes by spam click
             LoadNextScene();
+        }
+    }
+
+    private void UpdateArmyAfterBattle() {
+        if (GameManager.instance) {
+            CustomUnitLoader unitLoader = BattleControllerManager.instance.unitLoader;
+            if (PlayerWon && unitLoader && unitLoader.CanReplaceUnits()) {
+                unitLoader.ReplacePlayerArmy();
+            } else {
+                GameManager.instance.UpdateArmyAfterBattle();
+            }
         }
     }
 

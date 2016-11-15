@@ -79,6 +79,15 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public void ReplaceArmy(List<Unit> newArmy) {
+    	playerAllUnits.ForEach(u => Destroy(u.gameObject));
+    	playerAllUnits = newArmy.Where(u => u != null && u.Health > 0).ToList();
+    	playerAllUnits.ForEach(u => ResetUnit(u));
+    	activeUnits = playerAllUnits.GetRange(0, (int)Mathf.Min(playerAllUnits.Count, ACTIVE_UNIT_LIMIT));
+    	activeUnits.ForEach(u => u.gameObject.SetActive(true));
+    	GetInactiveUnits().ForEach(u => u.gameObject.SetActive(false));
+    }
+
 	public List<Unit> GetInactiveUnits() {
 		return playerAllUnits.Where(u => !activeUnits.Contains(u)).ToList();
 	}
