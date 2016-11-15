@@ -55,8 +55,8 @@ public class Tile : MonoBehaviour {
     }
 
     public void OnMouseOver() {
-        if ((SelectionController.TakingInput() || TutorialController.IsTargetTile(this))
-                && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))) {
+        if ((SelectionController.TakingInput() && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)))
+            || (TutorialController.IsTargetTile(this) && Input.GetMouseButtonDown(0))){
             //left click - selection
             HexMap.ClearAllTiles();
             MovementTile.path = null;
@@ -68,13 +68,10 @@ public class Tile : MonoBehaviour {
                 if (currentUnit.IsPlayerUnit()) {
                     StatDisplay.DisplayPlayerUnit(currentUnit);
                     if (currentUnit.phase == UnitTurn.Open) {
-                        if (Input.GetMouseButtonDown(0))
-                        {
+                        if (Input.GetMouseButtonDown(0)) {
                             HexMap.ShowMovementTiles(currentUnit);
                             MovementTile.path = new List<Tile>() { this };
-                        }
-                        else
-                        {
+                        } else {
                             HexMap.ShowAttackTiles(currentUnit);
                             currentUnit.MakeChoosingAction();
 
