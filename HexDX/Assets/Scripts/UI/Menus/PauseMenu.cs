@@ -23,10 +23,13 @@ public class PauseMenu : MonoBehaviour {
             if (GUI.Button(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 50, 250, 50), "Main Menu")) {
                 LevelManager.ReturnToMainMenu();
             }
+            
+            GUI.enabled = GameManager.instance && GameManager.instance.funds > 0; // prevent skip 1st tutorial 
             if (GUI.Button(new Rect(Screen.width / 2 - 100, Screen.height / 2, 250, 50), "Return To World Map")) {
                 Unpause();
                 LevelManager.ReturnToWorldMap();
             }
+            GUI.enabled = true;
 
             //Make Change Graphics Quality button
             if (GUI.Button(new Rect(Screen.width / 2 - 100, Screen.height / 2+50, 250, 50), "Unpause")) {
