@@ -112,10 +112,9 @@ public class BattleController : MonoBehaviour {
             lm.RegisterVictory(victoryCondition.Achieved());
             if (PlayerWon) {
                 lm.NextScene();
-            } else if (GameManager.instance && GameManager.instance.defeatedLevelIds.Count == 0){
+            } else if (GameManager.instance && !GameManager.instance.HasPassedFirstLevel()){
                 // failed the tutorial level...go back to main menu
                 LevelManager.ReturnToMainMenu();
-
             } else {
                 LevelManager.ReturnToWorldMap();
             }

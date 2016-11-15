@@ -43,6 +43,10 @@ public class GameManager : MonoBehaviour {
 		activeUnits.ForEach(u => u.gameObject.SetActive(true));
 	}
 
+	public bool HasPassedFirstLevel() {
+		return defeatedLevelIds.Count > 0;
+	}
+
 	public void AddNewPlayerUnit(Unit unit) {
 		playerAllUnits.Add(unit);
 		unit.transform.parent = transform;
@@ -50,7 +54,7 @@ public class GameManager : MonoBehaviour {
 		unit.gameObject.SetActive(false);
 	}
 
-	private void ResetUnit(Unit unit) {
+	public void ResetUnit(Unit unit) {
 		unit.transform.parent = transform;
         unit.transform.position = GameResources.hidingPosition;
         unit.Health = unit.MaxHealth;

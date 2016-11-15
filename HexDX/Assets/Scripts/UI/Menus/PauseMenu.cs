@@ -24,7 +24,7 @@ public class PauseMenu : MonoBehaviour {
                 LevelManager.ReturnToMainMenu();
             }
             
-            GUI.enabled = GameManager.instance && GameManager.instance.funds > 0; // prevent skip 1st tutorial 
+            GUI.enabled = GameManager.instance && GameManager.instance.HasPassedFirstLevel(); // prevent skip 1st tutorial 
             if (GUI.Button(new Rect(Screen.width / 2 - 100, Screen.height / 2, 250, 50), "Return To World Map")) {
                 Unpause();
                 LevelManager.ReturnToWorldMap();
