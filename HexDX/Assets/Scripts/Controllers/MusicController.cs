@@ -48,14 +48,14 @@ public class MusicController : MonoBehaviour {
         if (battleController.BattleIsDone) {
             if (BattleController.PlayerWon) {
                 if (audio.clip != victory) {
-                    audio.volume -= .01f;
+                    audio.volume -= .02f;
                     if (audio.volume < .1f) {
                         SetVictory();
                     }
                 }
             } else {
                 if (audio.clip != failure) {
-                    audio.volume -= .01f;
+                    audio.volume -= .02f;
                     if (audio.volume < .1f) {
                         SetFailure();
                     }
@@ -64,24 +64,24 @@ public class MusicController : MonoBehaviour {
         } else {
             if (BattleController.IsPlayerTurn) {
                 if (audio.clip == medieval) {
-                    audio.volume -= .01f;
+                    audio.volume -= .02f;
                     if (audio.volume < .1f) {
                         SetSteamPunk();
                     }
                 } else if (audio.clip == steampunk) {
                     if (audio.volume < 1.0f) {
-                        audio.volume += .01f;
+                        audio.volume += .02f;
                     }
                 }
             } else {
                 if (audio.clip == steampunk) {
-                    audio.volume -= .01f;
+                    audio.volume -= .02f;
                     if (audio.volume < .1f) {
                         SetMedieval();
                     }
                 } else if (audio.clip == medieval) {
                     if (audio.volume < 1.0f) {
-                        audio.volume += .01f;
+                        audio.volume += .02f;
                     }
                 }
             }
