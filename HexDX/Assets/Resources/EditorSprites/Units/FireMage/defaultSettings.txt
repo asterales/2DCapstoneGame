@@ -34,4 +34,4 @@
 33
 34
 2
-FireMage
+Mage

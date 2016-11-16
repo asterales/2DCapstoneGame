@@ -87,6 +87,7 @@ public class Unit : MonoBehaviour {
     // Use this for initialization
     void Start() {
         MakeOpen();
+        DrawVeterancy();
     }
 
     void Update() {

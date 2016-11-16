@@ -144,6 +144,7 @@ public class MapLoader : MonoBehaviour {
             int direction = Convert.ToInt32(data[12]);
             string type = data[data.Length - 1].Trim();
             GameObject unitObject = null;
+            Debug.Log(type);
             unitObject = Instantiate(Resources.Load("Units/" + type)) as GameObject;
             Unit unit = unitObject.GetComponent<Unit>();
             // Read in the stats //
