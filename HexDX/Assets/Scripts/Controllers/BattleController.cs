@@ -20,6 +20,7 @@ public class BattleController : MonoBehaviour {
     public static bool IsPlayerTurn { get; private set; }
     public bool BattleIsDone { get; private set; }
     public static bool PlayerWon { get; private set; }
+    public static int numTurns = 0;
 
     void Awake () {
         PlayerBattleController.menuItem = actionMenuItem;
@@ -27,6 +28,7 @@ public class BattleController : MonoBehaviour {
         ai = GetComponent<AIBattleController>();
         player = GetComponent<PlayerBattleController>();
         victoryCondition = GetComponent<VictoryCondition>();
+        numTurns = 0;
         InitFlags();
         ////// DEBUG CODE //////
         if (ai == null) {
@@ -105,6 +107,7 @@ public class BattleController : MonoBehaviour {
             ai.EndTurn();
             player.StartTurn();
             IsPlayerTurn = true;
+            numTurns++;
         }
     }
     
