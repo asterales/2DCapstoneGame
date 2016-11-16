@@ -58,7 +58,7 @@ public class BattleController : MonoBehaviour {
                 endBanner.ShowLoss();
                 EndBattle();
             }
-        } else if (!nextSceneLoaded && Input.GetMouseButtonDown(0)) {
+        } else if (endBanner.FinishedDisplay && !nextSceneLoaded && Input.GetMouseButtonDown(0)) {
             UpdateArmyAfterBattle();
             nextSceneLoaded = true; // prevent skipping scenes by spam click
             LoadNextScene();
@@ -77,7 +77,13 @@ public class BattleController : MonoBehaviour {
     }
 
     public bool CanEndTurn() {
-        return IsPlayerTurn ? (player.AllUnitsDone() && ai.NoneAttacking() && player.NoneAttacking()) : (ai.AllUnitsDone() && player.NoneAttacking() && ai.NoneAttacking());
+        if (BattleIsDone) {
+            if (IsPlayerTurn) {
+                return player.AllUnitsDone() && ai.NoneAttacking() && player.NoneAttacking();
+            }
+            return ai.AllUnitsDone() && player.NoneAttacking() && ai.NoneAttacking();
+        }
+        return false;
     }
 
     public void EndCurrentTurn() {

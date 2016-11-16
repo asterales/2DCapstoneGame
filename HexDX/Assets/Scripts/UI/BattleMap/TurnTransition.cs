@@ -14,7 +14,7 @@ public class TurnTransition : MonoBehaviour {
 	public delegate void TransitionEndFunc();
 
 	private FadeTransition fade;
-	private Image overlayBG; 
+	private Graphic overlayBG; 
 	private Animator anim;
 	private Dictionary<string, float> animationLengths;
 
@@ -31,7 +31,7 @@ public class TurnTransition : MonoBehaviour {
 	void Awake() {
 		anim = GetComponent<Animator>();
 		fade = GetComponentInParent<FadeTransition>();
-		overlayBG = fade.fadeImage;
+		overlayBG = fade.fadeGraphic;
 		bannerImage = GetComponent<Image>();
 		GetAnimationLengths();
 	}

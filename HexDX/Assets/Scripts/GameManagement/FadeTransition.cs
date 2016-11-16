@@ -6,8 +6,9 @@ using UnityEngine.UI;
 public class FadeTransition : MonoBehaviour {
 
 	// Fade either applied to existing image or will draw a texture
-	public Image fadeImage;
+	public Graphic fadeGraphic;
 	public Texture2D loadingGraphic;
+	public bool fadeBGM;
 
 	// Paramenters
 	public float fadeSpeed = 0.8f;
@@ -18,7 +19,7 @@ public class FadeTransition : MonoBehaviour {
 	private AudioSource fadeOutMusic;
 
 	void Update() {
-		if (fadeOutMusic != null && fadeDir == FadeDirection.Out) {
+		if (fadeBGM && fadeOutMusic != null && fadeDir == FadeDirection.Out) {
 			fadeOutMusic.volume = Mathf.Clamp01(fadeOutMusic.volume - (int)fadeDir * 1.5f * fadeSpeed * Time.deltaTime);
 		}
 	}
@@ -29,18 +30,23 @@ public class FadeTransition : MonoBehaviour {
 			GUI.color = new Color (GUI.color.r, GUI.color.g, GUI.color.b, alpha);
 			GUI.depth = drawDepth;
 			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), loadingGraphic);
-		} else if (fadeImage) {
-			Color fadeImageColor = fadeImage.color;
-			fadeImage.color = new Color(fadeImageColor.r, fadeImageColor.g, fadeImageColor.b, alpha);
+		} else if (fadeGraphic) {
+			Color fadeGraphicColor = fadeGraphic.color;
+			fadeGraphic.color = new Color(fadeGraphicColor.r, fadeGraphicColor.g, fadeGraphicColor.b, alpha);
 		}
 	}
 
 	public float BeginFade(FadeDirection direction) {
 		fadeDir = direction;
-		if (fadeDir == FadeDirection.Out) {
-			fadeOutMusic = FindObjectOfType(typeof(AudioSource)) as AudioSource;
+		if (fadeDir == FadeDirection.Out && fadeBGM) {
+			MusicController mc = FindObjectOfType(typeof(MusicController)) as MusicController;
+			if (mc) {
+				fadeOutMusic = mc.audio;
+			} else {
+				fadeOutMusic = Camera.main.GetComponent<AudioSource>();
+			}
 		}
-		return fadeSpeed;
+		return (float) 1.0 / fadeSpeed;
 	}
 
 }
