@@ -47,6 +47,7 @@ public class BattleControllerManager : MonoBehaviour {
 		InitArmies();
 		List<Vector3> playerPositions = player.units.Where(p => p != null).Select(p => p.transform.position).ToList();
 		cameraController.InitCamera(playerPositions);
+		InitVictoryCondition();
 		DisableGameControllers();
 	}
 
@@ -72,6 +73,13 @@ public class BattleControllerManager : MonoBehaviour {
 	private void InitArmies() {
 		player.InitUnits();
 		ai.InitUnits();
+	}
+
+	private void InitVictoryCondition() {
+		if (LevelManager.activeInstance && LevelManager.activeInstance.victoryCondition) {
+			battleController.victoryCondition = LevelManager.activeInstance.victoryCondition;
+		}
+		battleController.victoryCondition.Init();
 	}
 
 	private void StartBattlePhases() {

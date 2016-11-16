@@ -1,13 +1,13 @@
-﻿public class Capture : VictoryCondition
-{
-    public Tile goal;
+﻿public class Capture : VictoryCondition {
+    public int row;
+    public int col;
+    private Tile goal; 
 
-    void Start()
-    {
-    }
+	public override void Init() {
+		goal = HexMap.mapArray[row][col];
+	}
 
-    public override bool Achieved()
-    {
+    public override bool Achieved() {
         return goal.currentUnit != null && goal.currentUnit.IsPlayerUnit();
     }
 }
