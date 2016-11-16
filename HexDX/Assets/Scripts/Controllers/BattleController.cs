@@ -70,9 +70,10 @@ public class BattleController : MonoBehaviour {
             CustomUnitLoader unitLoader = BattleControllerManager.instance.unitLoader;
             if (PlayerWon && unitLoader && unitLoader.CanReplaceUnits()) {
                 unitLoader.ReplacePlayerArmy();
-            } else {
-                GameManager.instance.UpdateArmyAfterBattle();
+            } else if (player.IsAnnihilated()) {
+                player.RestoreInitialArmyState();
             }
+            GameManager.instance.UpdateArmyAfterBattle();
         }
     }
 

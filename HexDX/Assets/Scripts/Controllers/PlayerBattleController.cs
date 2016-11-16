@@ -17,9 +17,16 @@ public class PlayerBattleController : ArmyBattleController {
     public Sprite[] lineSprites;
     public Sprite[] arrowSprites;
 
+    private Dictionary<Unit, UnitState> initialStates;
+
+
     public override void InitUnitList() {
         Unit[] allUnits = BattleControllerManager.instance.hexMap.GetUnitsOnMap();
         units = allUnits.Where(unit => unit.IsPlayerUnit()).ToList();
+        initialStates = new Dictionary<Unit, UnitState>();
+        foreach(Unit unit in units) {
+            initialStates[unit] = new UnitState(unit.phase, null, unit.facing, unit.Health, unit.Experience, unit.Veterancy);
+        }
     }
 
     void Update(){
@@ -121,6 +128,12 @@ public class PlayerBattleController : ArmyBattleController {
     public override void EndTurn() {
         ClearSelections();
         base.EndTurn();
+    }
+
+    public void RestoreInitialArmyState() {
+        foreach(Unit unit in units) {
+            initialStates[unit].ChangeStateOf(unit);
+        }
     }
 
     private void ClearSelections() {
