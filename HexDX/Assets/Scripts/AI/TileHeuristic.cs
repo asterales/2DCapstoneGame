@@ -50,11 +50,13 @@ public class TileHeuristic : Heuristic
         float minDistance = 1110.0f;
         for (int i = 0; i < enemyUnits.Count; i++)
         {
-            float dist = (float)IdaStarDistance(enemyUnits[i]);
-            if (dist < minDistance)
-            {
-                minDistance = dist;
-                closestEnemyUnit = enemyUnits[i];
+            if (enemyUnits[i].Health > 0) {
+                float dist = (float)IdaStarDistance(enemyUnits[i]);
+                if (dist < minDistance)
+                {
+                    minDistance = dist;
+                    closestEnemyUnit = enemyUnits[i];
+                }
             }
         }
         distToClosestEnemy = 1.0f / minDistance;

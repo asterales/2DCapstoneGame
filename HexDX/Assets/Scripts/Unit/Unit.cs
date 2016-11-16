@@ -326,12 +326,9 @@ public class Unit : MonoBehaviour {
         HexMap.ShowAttackTiles(this);
     }
 
-    public void RemoveFromMap()
-    {
-        if (this.enabled)
-        {
-            if (currentTile && currentTile.currentUnit == this)
-            {
+    public void RemoveFromMap() {
+        if (enabled) {
+            if (currentTile && currentTile.currentUnit == this) {
                 currentTile.currentUnit = null;
             }
             currentTile = null;
@@ -339,12 +336,10 @@ public class Unit : MonoBehaviour {
     }
 
     public void SetTile(Tile newTile) {
-        if (this.enabled)
-        {
+        if (enabled) {
             transform.position = newTile.transform.position;
             transform.parent = newTile.transform;
-            if (currentTile && currentTile.currentUnit == this)
-            {
+            if (currentTile && currentTile.currentUnit == this) {
                 currentTile.currentUnit = null;
             }
             newTile.currentUnit = this;
