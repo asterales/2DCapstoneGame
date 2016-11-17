@@ -57,6 +57,7 @@ public class PlayerBattleController : ArmyBattleController {
     private void SelectFacing() {
         SelectionController.RegisterFacing();
         if (Input.GetMouseButtonDown(1)) {
+            SelectionController.RegisterFacing();
             selectedUnit.MakeChoosingAction();
         }
     }
