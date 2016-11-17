@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using MovementEffects;
 
 public class MovementTile : MonoBehaviour {
 
@@ -12,7 +13,7 @@ public class MovementTile : MonoBehaviour {
             if (Input.GetMouseButtonDown(0)) {
                 tile.OnMouseOver();
             } else if (Input.GetMouseButtonDown(1)) {
-                CommitPath();
+                StartCoroutine(CommitPath());
             }
         }
         if (TutorialController.IsTargetDestination(this)){
@@ -21,7 +22,7 @@ public class MovementTile : MonoBehaviour {
                 DrawPath();
             }
             if (Input.GetMouseButtonDown(1)){
-                CommitPath(TutorialController.eventsList.currentScriptEvent as ScriptedMove);
+                StartCoroutine(CommitPath(TutorialController.eventsList.currentScriptEvent as ScriptedMove));
             }
         }
 
@@ -57,12 +58,22 @@ public class MovementTile : MonoBehaviour {
             cost+=(int)path[i].tileStats.mvtDifficulty;
         return cost;
     }
-    public static void CommitPath(ScriptedMove move = null) {   
+    public static IEnumerator<WaitForEndOfFrame> CommitPath(ScriptedMove move = null) {   
         if (path != null && (path[path.Count - 1].currentUnit == null || path[path.Count - 1].currentUnit == SelectionController.selectedUnit)) {
-            SelectionController.selectedUnit.MakeMoving(move);
-            SelectionController.selectedUnit.SetPath(path);
-            if (move == null) {
-                SelectionController.mode = SelectionMode.Moving;
+            if (path.Count > 1)
+            {
+                SelectionController.selectedUnit.MakeMoving(move);
+                SelectionController.selectedUnit.SetPath(path);
+                if (move == null)
+                {
+                    SelectionController.mode = SelectionMode.Moving;
+                }
+            }
+            else
+            {
+                yield return new WaitForEndOfFrame();
+                SelectionController.mode = SelectionMode.Facing;
+                SelectionController.selectedUnit.MakeFacing();
             }
             SelectionController.SaveLastTile(SelectionController.selectedUnit);
             path = null;
@@ -74,15 +85,19 @@ public class MovementTile : MonoBehaviour {
     private void DrawPath() {
         PlayerBattleController pbc = BattleControllerManager.instance.player;
         Object.Destroy(GameObject.Find("path"));
-        if (path!=null && path.Count > 1) {
-            GameObject pathDraw = new GameObject("path");
-            Tile prev = path[0];
-            for (int i = 1; i < path.Count; i++) {
-                DrawCircle(pathDraw, prev, pbc.circleSprite);
-                DrawLine(pathDraw, prev, path[i], pbc.lineSprites);
-                prev = path[i];
+        if (path!=null) {
+            if (path.Count > 1)
+            {
+                GameObject pathDraw = new GameObject("path");
+                Tile prev = path[0];
+                for (int i = 1; i < path.Count; i++)
+                {
+                    DrawCircle(pathDraw, prev, pbc.circleSprite);
+                    DrawLine(pathDraw, prev, path[i], pbc.lineSprites);
+                    prev = path[i];
+                }
+                DrawArrow(pathDraw, path[path.Count - 2], prev, pbc.arrowSprites);
             }
-            DrawArrow(pathDraw, path[path.Count - 2], prev, pbc.arrowSprites);
             DrawZoneOfControlThreat();
         }
     }
@@ -101,7 +116,7 @@ public class MovementTile : MonoBehaviour {
                         break;
                     }
                 }
-                if (!inrange)
+                if (!inrange || path.Count==1)
                     unit.spriteRenderer.color = Color.white;
             }
         }

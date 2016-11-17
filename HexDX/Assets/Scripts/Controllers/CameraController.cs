@@ -97,7 +97,7 @@ public class CameraController : MonoBehaviour {
 
     private void MoveCameraTowards(Vector3 pos) {
         Vector3 destination = new Vector3(pos.x, pos.y, transform.position.z);
-        transform.position = Vector3.MoveTowards(transform.position, destination, transform.localScale.x);
+        transform.position = Vector3.MoveTowards(transform.position, destination, transform.localScale.x*SpeedController.speed);
     }
 
     public void DontMove() {

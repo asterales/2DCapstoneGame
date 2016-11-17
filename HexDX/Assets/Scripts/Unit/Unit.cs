@@ -92,6 +92,7 @@ public class Unit : MonoBehaviour {
     }
 
     void Update() {
+        animator.speed = SpeedController.speed;
         switch (phase) {
             case UnitTurn.Moving:
                 Move();
@@ -116,12 +117,10 @@ public class Unit : MonoBehaviour {
             }
             lastTile = path.Peek();
             Vector3 destination = lastTile.transform.position;
-            if (transform.position != destination) {
-                transform.position = Vector3.MoveTowards(transform.position, destination, moveSpeed);
+            if (Vector3.Distance(transform.position, destination)>0.01f*SpeedController.speed) {
+                transform.position = Vector3.MoveTowards(transform.position, destination, moveSpeed*SpeedController.speed);
             } else {
-                if (lastTile != currentTile) {
-                    CheckZonesOfControl();
-                }
+                CheckZonesOfControl();
                 if (path.Count == 1) {
                     SetTile(path.Dequeue());
                     // re-enable the players ability to select
@@ -464,7 +463,7 @@ public class Unit : MonoBehaviour {
             Timing.RunCoroutine(DoAttack(target, 1.0f));
         }
         //if (target && target.gameObject && target.HasInAttackRange(this))
-        yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
+        yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f/SpeedController.speed);
         if (target.enabled && target.Health > 0 && target.HasInAttackRange(this) && target.phase==UnitTurn.Open && Health > 0) {
             target.MakeAttacking();
             Timing.RunCoroutine(target.DoAttack(this, .8f));
@@ -502,7 +501,7 @@ public class Unit : MonoBehaviour {
         } else {
             target.AddExp((int)(0.5f*damage * modifier));
         }
-        yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
+        yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f/SpeedController.speed);
         Timing.RunCoroutine(finishAttack());
         GameObject indicator = new GameObject();
         indicator.AddComponent<DamageIndicator>().SetDamage(indicatorText);
@@ -523,7 +522,7 @@ public class Unit : MonoBehaviour {
     }
 
     public IEnumerator<float> finishAttack() {
-        yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
+        yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f/SpeedController.speed);
         MakeDone();
     }
 
