@@ -20,7 +20,7 @@ public class TurnBanner : MonoBehaviour {
 	void Update() {
 		if (battleController.enabled 
 				&& (gameDialogueMgr == null || !gameDialogueMgr.IsVisible)) {
-           if (BattleController.IsPlayerTurn){
+           if (BattleController.instance.IsPlayerTurn){
                ShowPlayerTurn();
            } else {
                ShowEnemyTurn();

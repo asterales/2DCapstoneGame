@@ -4,6 +4,6 @@
     public override void Init() {}
 
     public override bool Achieved() {
-        return BattleController.numTurns == numTurns;
+        return BattleController.instance.numTurns == numTurns;
     }
 }

@@ -8,6 +8,7 @@ public class BattleController : MonoBehaviour {
     public AIBattleController ai;
     public PlayerBattleController player;
     public VictoryCondition victoryCondition;
+    public static BattleController instance;
     private bool nextSceneLoaded;
 
     // set in editor
@@ -17,12 +18,13 @@ public class BattleController : MonoBehaviour {
     public EndBattleBanner endBanner;
     public TurnTransition turnTransition;
 
-    public static bool IsPlayerTurn { get; private set; }
+    public bool IsPlayerTurn { get; private set; }
     public bool BattleIsDone { get; private set; }
-    public static bool PlayerWon { get; private set; }
-    public static int numTurns = 0;
+    public bool PlayerWon { get; private set; }
+    public int numTurns = 0;
 
     void Awake () {
+        instance = this;
         PlayerBattleController.menuItem = actionMenuItem;
         PlayerBattleController.menuItemHovered = actionMenuItemHover;
         ai = GetComponent<AIBattleController>();
@@ -42,6 +44,8 @@ public class BattleController : MonoBehaviour {
         }
         ////////////////////////
     }
+
+
 
     private void InitFlags() {
         IsPlayerTurn = true;

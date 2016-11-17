@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void UpdateArmyAfterBattle() {
-        if (BattleController.PlayerWon) {
+        if (BattleController.instance.PlayerWon) {
             ClearDeadUnits();
             activeUnits.ForEach(u => ResetUnit(u));
         } else {

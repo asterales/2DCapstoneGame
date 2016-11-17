@@ -418,6 +418,7 @@ public class Unit : MonoBehaviour {
     }
 
     public void MakeAttacking() {
+        spriteRenderer.color = Color.white;
         phase = UnitTurn.Attacking;
         if (IsPlayerUnit() && !SelectionController.TakingAIInput()) {
             HexMap.ShowAttackTiles(this);
@@ -464,8 +465,6 @@ public class Unit : MonoBehaviour {
         //if (target && target.gameObject && target.HasInAttackRange(this))
         yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f);
         if (target.enabled && target.Health > 0 && target.HasInAttackRange(this) && target.phase==UnitTurn.Open && Health > 0) {
-            Debug.Log(target.phase);
-            spriteRenderer.color = Color.red;
             target.MakeAttacking();
             Timing.RunCoroutine(target.DoAttack(this, .8f));
         }

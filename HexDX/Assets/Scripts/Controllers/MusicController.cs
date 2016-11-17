@@ -46,7 +46,7 @@ public class MusicController : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         if (battleController.BattleIsDone) {
-            if (BattleController.PlayerWon) {
+            if (BattleController.instance.PlayerWon) {
                 if (audio.clip != victory) {
                     audio.volume -= .02f;
                     if (audio.volume < .1f) {
@@ -62,7 +62,7 @@ public class MusicController : MonoBehaviour {
                 } 
             }
         } else {
-            if (BattleController.IsPlayerTurn) {
+            if (BattleController.instance.IsPlayerTurn) {
                 if (audio.clip == medieval) {
                     audio.volume -= .02f;
                     if (audio.volume < .1f) {

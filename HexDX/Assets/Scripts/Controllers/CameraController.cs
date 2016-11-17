@@ -42,7 +42,7 @@ public class CameraController : MonoBehaviour {
     
     // Update is called once per frame
     void Update () {
-        if (BattleController.IsPlayerTurn) {
+        if (BattleController.instance.IsPlayerTurn) {
             // If player turn just started and need to pan back to original position
             if (aiMovedCamera) {
                 MoveCameraTowards(prev);
@@ -101,7 +101,7 @@ public class CameraController : MonoBehaviour {
     }
 
     public void DontMove() {
-        if (BattleController.IsPlayerTurn) {
+        if (BattleController.instance.IsPlayerTurn) {
             transform.position = prev;
         }
     }
