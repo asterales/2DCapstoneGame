@@ -83,6 +83,27 @@ public class MovementTile : MonoBehaviour {
                 prev = path[i];
             }
             DrawArrow(pathDraw, path[path.Count - 2], prev, pbc.arrowSprites);
+            DrawZoneOfControlThreat();
+        }
+    }
+
+    private void DrawZoneOfControlThreat()
+    {
+        foreach (Unit unit in BattleController.instance.ai.units){
+            if (unit.phase == UnitTurn.Open){
+                bool inrange = false;
+                foreach (Tile tile in path)
+                {
+                    if (HexMap.GetAttackTiles(unit).Contains(tile))
+                    {
+                        inrange = true;
+                        unit.spriteRenderer.color = Color.red;
+                        break;
+                    }
+                }
+                if (!inrange)
+                    unit.spriteRenderer.color = Color.white;
+            }
         }
     }
 
