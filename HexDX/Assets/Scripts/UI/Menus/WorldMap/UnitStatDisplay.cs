@@ -7,7 +7,7 @@ public class UnitStatDisplay : MonoBehaviour {
     public Unit unit;
 
     private Image classPanel;
-    private Text classText;
+    private InputField classText;
     private Image statPanel;
     private Text statText;
     private Image unitCard;
@@ -21,7 +21,8 @@ public class UnitStatDisplay : MonoBehaviour {
     private void InitTextPanels() {
         Transform classPanelTransform = transform.Find("Class Name");
         classPanel = classPanelTransform.GetComponent<Image>();
-        classText = classPanelTransform.Find("Text").GetComponent<Text>();
+        classText = classPanelTransform.Find("Text").GetComponent<InputField>();
+        classText.onEndEdit.AddListener(delegate { unit.ClassName = classText.text; });
         Transform statsPanelTransform = transform.Find("Stats");
         statPanel = statsPanelTransform.GetComponent<Image>();
         statText = statsPanelTransform.Find("Text").GetComponent<Text>();
@@ -41,7 +42,6 @@ public class UnitStatDisplay : MonoBehaviour {
     void Start() {
         ClearDisplay();
     }
-
     public void DisplayUnitStats(Unit unitToDisplay) {
         unit = unitToDisplay;
         if (unit) {

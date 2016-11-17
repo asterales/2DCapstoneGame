@@ -10,16 +10,17 @@ public class UnitSelectionMouseHandler : MonoBehaviour, IPointerClickHandler, IP
 	}
 
 	public void OnPointerClick(PointerEventData eventData) {
-		if (eventData.clickCount == 2) {
+        selectionPanel.statDisplay.DisplayUnitStats(displayPanel.unit);
+        if (eventData.clickCount == 2) {
 			selectionPanel.SwitchUnitToOtherArmy(displayPanel);
 		}
 	}
 
 	public void OnPointerEnter(PointerEventData eventData) {
-		selectionPanel.statDisplay.DisplayUnitStats(displayPanel.unit);
+		//selectionPanel.statDisplay.DisplayUnitStats(displayPanel.unit);
 	}
 
 	public void OnPointerExit(PointerEventData eventData) {
-		selectionPanel.statDisplay.ClearDisplay();
+		//selectionPanel.statDisplay.ClearDisplay();
 	}
 }
