@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 
 public class RecruitingPanel : WorldMapPopupPanel {
-	public List<RecruitListing> unitChoices;
+	public RecruitListing defaultListing;
+	private List<RecruitListing> unitChoices;
 	private UnitStatDisplay statDisplay;
 	private UnitDisplay unitDisplay;
-	public Button recruitButton;
+	private Button recruitButton;
 	private Text fundsText;
 	private Text descriptionText;
 	private RecruitListing selectedListing;
@@ -54,8 +55,12 @@ public class RecruitingPanel : WorldMapPopupPanel {
 
 	private void SetSelectedListing(RecruitListing listing) {
 		if (selectedListing == null || selectedListing.unitDisplay.unit) {
+			if (selectedListing) {
+				selectedListing.unitDisplay.UnhighlightSelected();
+			}
 			selectedListing = listing;
 			if (selectedListing) {
+				selectedListing.unitDisplay.HighlightSelected();
 				Unit unit = selectedListing.unitDisplay.unit;
 				unitDisplay.unit = unit;
 				statDisplay.DisplayUnitStats(unit);
@@ -80,7 +85,7 @@ public class RecruitingPanel : WorldMapPopupPanel {
 
 	public override void Show() {
 		base.Show();
-		SetSelectedListing(null);
+		SetSelectedListing(defaultListing);
 	}
 
 	protected virtual void Update() {

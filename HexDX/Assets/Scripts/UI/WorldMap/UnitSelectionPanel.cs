@@ -54,7 +54,7 @@ public class UnitSelectionPanel : WorldMapPopupPanel {
 		inactiveUnits.ForEach(u => u.gameObject.SetActive(false));
 	}
 
-	public void SwitchUnitToOtherArmy(UnitDisplay unitPanel) {
+	public UnitDisplay SwitchUnitToOtherArmy(UnitDisplay unitPanel) {
 		UnitDisplay nextDisplayPanel;
 		if(activeUnitsDisplay.unitPanels.Contains(unitPanel)) {
 			nextDisplayPanel = inactiveUnitsDisplay.GetFirstEmptySlot();
@@ -65,5 +65,6 @@ public class UnitSelectionPanel : WorldMapPopupPanel {
 			nextDisplayPanel.unit = unitPanel.unit;
 			unitPanel.unit = null;
 		}
+		return nextDisplayPanel;
 	}
 }
