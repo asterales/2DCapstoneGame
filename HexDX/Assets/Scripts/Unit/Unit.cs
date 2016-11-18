@@ -524,7 +524,8 @@ public class Unit : MonoBehaviour {
 
     public IEnumerator<float> finishAttack() {
         yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f/SpeedController.speed);
-        MakeDone();
+        if (phase == UnitTurn.Attacking)
+            MakeDone();
     }
 
     ///////////////////////////
