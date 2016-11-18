@@ -27,6 +27,10 @@ public class PauseMenu : MonoBehaviour {
             GUI.enabled = GameManager.instance && GameManager.instance.HasPassedFirstLevel(); // prevent skip 1st tutorial 
             if (GUI.Button(new Rect(Screen.width / 2 - 100, Screen.height / 2, 250, 50), "Return To World Map")) {
                 Unpause();
+                BattleController bc = BattleController.instance;
+                if (!bc.BattleIsDone) {
+                    bc.player.RestoreInitialArmyState();
+                }
                 LevelManager.ReturnToWorldMap();
             }
             GUI.enabled = true;
