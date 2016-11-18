@@ -443,6 +443,7 @@ public class Unit : MonoBehaviour {
 
     public void Die() {
         MakeDone();
+        BattleController.instance.ResetColors();
         path = null;
         lastTile = null;
         RemoveFromMap();
