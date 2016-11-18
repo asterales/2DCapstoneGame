@@ -55,35 +55,55 @@ public class Tile : MonoBehaviour {
     }
 
     public void OnMouseOver() {
-        if ((SelectionController.TakingInput() && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)))
-            || (TutorialController.IsTargetTile(this) && Input.GetMouseButtonDown(0))){
-            //left click - selection
-            HexMap.ClearAllTiles();
-            MovementTile.path = null;
-            SelectionController.selectedTile = this;
-            SelectionController.selectedUnit = currentUnit ? currentUnit : SelectionController.selectedUnit;
-            if (currentUnit) {
-                //TO ADD: display stats
-                Unit.SaveAllStates();
-                if (currentUnit.IsPlayerUnit()) {
-                    StatDisplay.DisplayPlayerUnit(currentUnit);
-                    if (currentUnit.phase == UnitTurn.Open) {
-                        if (Input.GetMouseButtonDown(0)) {
+        SelectionController.HideTarget();
+        if (SelectionController.TakingInput() || (TutorialController.IsTargetTile(this)&& Input.GetMouseButtonDown(0))){
+            if (currentUnit && !currentUnit.IsPlayerUnit()){
+                if (SelectionController.selectedUnit && SelectionController.selectedUnit.IsPlayerUnit() && SelectionController.selectedUnit.HasInAttackRange(currentUnit))
+                {
+                    SelectionController.ShowTarget(currentUnit);
+                    MovementTile.path = new List<Tile>();
+                    MovementTile.path.Add(SelectionController.selectedUnit.currentTile);
+                    MovementTile.DrawPath();
+                    if (Input.GetMouseButtonDown(1))
+                    {
+                        SelectionController.selectedUnit.phase = UnitTurn.Attacking;
+                        attackTile.GetComponent<AttackTile>().OnMouseOver();
+                        return;
+                    }
+                }
+            }
+            if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+            {
+                //left click - selection
+                HexMap.ClearAllTiles();
+                BattleController.instance.ResetColors();
+                MovementTile.path = null;
+                SelectionController.selectedTile = this;
+                SelectionController.selectedUnit = currentUnit ? currentUnit : SelectionController.selectedUnit;
+                if (currentUnit)
+                {
+                    //TO ADD: display stats
+                    Unit.SaveAllStates();
+                    if (currentUnit.IsPlayerUnit())
+                    {
+                        StatDisplay.DisplayPlayerUnit(currentUnit);
+                        if (currentUnit.phase == UnitTurn.Open)
+                        {
                             HexMap.ShowMovementTiles(currentUnit);
                             MovementTile.path = new List<Tile>() { this };
-                        } else {
-                            HexMap.ShowAttackTiles(currentUnit);
-                            currentUnit.MakeChoosingAction();
-
                         }
+
                     }
-                } else {
-                    // show enemy mvt range and stats
-                    StatDisplay.DisplayEnemyUnit(currentUnit);
-                    HexMap.ShowMovementTiles(currentUnit);
+                    else
+                    {
+                        // show enemy mvt range and stats
+                        StatDisplay.DisplayEnemyUnit(currentUnit);
+                        HexMap.ShowMovementTiles(currentUnit);
+                    }
                 }
             }
         }
+        
     }
 
     public void ShowMovementTile() {

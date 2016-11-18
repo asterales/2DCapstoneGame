@@ -13,7 +13,12 @@ public class MovementTile : MonoBehaviour {
             if (Input.GetMouseButtonDown(0)) {
                 tile.OnMouseOver();
             } else if (Input.GetMouseButtonDown(1)) {
-                StartCoroutine(CommitPath());
+                if (path != null && tile.currentUnit == null)
+                    StartCoroutine(CommitPath());
+                else
+                {
+                    tile.OnMouseOver();
+                }
             }
         }
         if (TutorialController.IsTargetDestination(this)){
@@ -82,7 +87,7 @@ public class MovementTile : MonoBehaviour {
         }
     }
 
-    private void DrawPath() {
+    public static void DrawPath() {
         PlayerBattleController pbc = BattleControllerManager.instance.player;
         Object.Destroy(GameObject.Find("path"));
         if (path!=null) {
@@ -102,7 +107,7 @@ public class MovementTile : MonoBehaviour {
         }
     }
 
-    private void DrawZoneOfControlThreat()
+    private static void DrawZoneOfControlThreat()
     {
         foreach (Unit unit in BattleController.instance.ai.units){
             if (unit.phase == UnitTurn.Open){
@@ -118,11 +123,13 @@ public class MovementTile : MonoBehaviour {
                 }
                 if (!inrange || path.Count==1)
                     unit.spriteRenderer.color = Color.white;
+                if (unit == SelectionController.target && unit.HasInAttackRange(SelectionController.selectedUnit))
+                    unit.spriteRenderer.color = Color.red;
             }
         }
     }
 
-    private void DrawCircle(GameObject pathObj, Tile tile, Sprite circleSprite) {
+    private static void DrawCircle(GameObject pathObj, Tile tile, Sprite circleSprite) {
         GameObject circleObj = new GameObject();
         circleObj.transform.parent = pathObj.transform;
         SpriteRenderer circle = circleObj.AddComponent<SpriteRenderer>();
@@ -132,7 +139,7 @@ public class MovementTile : MonoBehaviour {
         circle.transform.position = tile.transform.position;
     }
 
-    private void DrawLine(GameObject pathObj, Tile startTile, Tile endTile, Sprite[] lineSprites) {
+    private static void DrawLine(GameObject pathObj, Tile startTile, Tile endTile, Sprite[] lineSprites) {
         GameObject lineObj = new GameObject();
         lineObj.transform.parent = pathObj.transform;
         SpriteRenderer line = lineObj.AddComponent<SpriteRenderer>();
@@ -142,7 +149,7 @@ public class MovementTile : MonoBehaviour {
         line.transform.position = startTile.transform.position;
     }
 
-    private void DrawArrow(GameObject pathObj, Tile startTile, Tile endTile, Sprite[] arrowSprites){
+    private static void DrawArrow(GameObject pathObj, Tile startTile, Tile endTile, Sprite[] arrowSprites){
         GameObject arrowObj = new GameObject();
         arrowObj.transform.parent = pathObj.transform;
         SpriteRenderer arrow = arrowObj.AddComponent<SpriteRenderer>();
@@ -152,7 +159,7 @@ public class MovementTile : MonoBehaviour {
         arrow.transform.position = endTile.transform.position;
     }
 
-    private int GetDirection(Tile startTile, Tile endTile) {
+    private static int GetDirection(Tile startTile, Tile endTile) {
         return HexMap.GetNeighbors(startTile).IndexOf(endTile);
     }
 }

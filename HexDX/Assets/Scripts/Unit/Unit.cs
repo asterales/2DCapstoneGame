@@ -477,7 +477,7 @@ public class Unit : MonoBehaviour {
         int basedamage = (int)(Attack * (50.0f / (50.0f + (float)target.Defense)))+ (int)(Power * (50.0f / (50.0f + (float)target.Resistance)));
         int damage = basedamage;
         string indicatorText = "-" + (int)(basedamage * modifier);
-        HexMap.ClearAttackTiles();
+        HexMap.ClearAllTiles();
         if (target.phase != UnitTurn.Moving) {
             if (target.facing == facing) {
                 damage = basedamage * 2;

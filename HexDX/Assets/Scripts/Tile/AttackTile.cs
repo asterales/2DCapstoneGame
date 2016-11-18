@@ -18,14 +18,6 @@ public class AttackTile : MonoBehaviour {
                 if (tile.currentUnit != SelectionController.target) {
                     SelectionController.target = tile.currentUnit;
                 }
-                if (tile.currentUnit.phase == UnitTurn.Open && HexMap.GetAttackTiles(tile.currentUnit).Contains(SelectionController.selectedUnit.currentTile))
-                {
-                    SelectionController.selectedUnit.GetComponent<SpriteRenderer>().color = Color.red;
-                }
-                else
-                {
-                    SelectionController.selectedUnit.GetComponent<SpriteRenderer>().color = Color.white;
-                }
                 if (Input.GetMouseButtonDown(1)){
                     SelectionController.target = null;
                     Timing.RunCoroutine(SelectionController.selectedUnit.PerformAttack(tile.currentUnit));

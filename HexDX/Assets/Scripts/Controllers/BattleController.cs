@@ -101,6 +101,20 @@ public class BattleController : MonoBehaviour {
         }
     }
 
+    public void ResetColors()
+    {
+        foreach (Unit unit in ai.units)
+        {
+            if (unit.phase == UnitTurn.Open)
+                unit.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+        foreach (Unit unit in player.units)
+        {
+            if (unit.phase == UnitTurn.Open)
+                unit.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+    }
+
     private void SwitchTurns() {
         HexMap.ClearAttackTiles();
         if (IsPlayerTurn) {

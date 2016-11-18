@@ -86,6 +86,10 @@ public class SelectionController : MonoBehaviour {
         if (unit)
         {
             target = unit;
+            if (target.phase == UnitTurn.Open && target.HasInAttackRange(selectedUnit))
+            {
+                target.GetComponent<SpriteRenderer>().color = Color.red;
+            }
             targetSpaceObj.transform.position = unit.currentTile.transform.position + GameResources.visibilityOffset+new Vector3(0, 0, 0.1f);
         }
     }
@@ -95,6 +99,8 @@ public class SelectionController : MonoBehaviour {
     }
 
     public static void HideTarget() {
+        if (target)
+            target.GetComponent<SpriteRenderer>().color = Color.white;
         target = null;
         targetSpaceObj.transform.position = GameResources.hidingPosition;
     }
