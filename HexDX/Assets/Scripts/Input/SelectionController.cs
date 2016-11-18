@@ -99,7 +99,7 @@ public class SelectionController : MonoBehaviour {
     }
 
     public static void HideTarget() {
-        if (target)
+        if (target && target.phase == UnitTurn.Open)
             target.GetComponent<SpriteRenderer>().color = Color.white;
         target = null;
         targetSpaceObj.transform.position = GameResources.hidingPosition;
