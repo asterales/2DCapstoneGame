@@ -9,6 +9,7 @@ public class MovementTile : MonoBehaviour {
     private static Color pathColor = new Color(1.0f, 1.0f, 1.0f, 0.6f);
    
     public void OnMouseOver() {
+        SelectionController.HideTarget();
         if (SelectionController.TakingInput()) {
             if (Input.GetMouseButtonDown(0)) {
                 tile.OnMouseOver();
