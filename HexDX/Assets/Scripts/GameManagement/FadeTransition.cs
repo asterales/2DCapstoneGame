@@ -17,15 +17,20 @@ public class FadeTransition : MonoBehaviour {
 	private FadeDirection fadeDir = FadeDirection.In;
 
 	private AudioSource fadeOutMusic;
+	private SpeedController speedControl;
+
+	void Awake() {
+		speedControl = FindObjectOfType(typeof(SpeedController)) as SpeedController;
+	}
 
 	void Update() {
 		if (fadeBGM && fadeOutMusic != null && fadeDir == FadeDirection.Out) {
-			fadeOutMusic.volume = Mathf.Clamp01(fadeOutMusic.volume - (int)fadeDir * 1.5f * fadeSpeed * Time.deltaTime);
+			fadeOutMusic.volume = Mathf.Clamp01(fadeOutMusic.volume - (int)fadeDir * 1.5f * GetSpeed() * Time.deltaTime);
 		}
 	}
 
 	void OnGUI() {
-		alpha = Mathf.Clamp01(alpha + ((int)fadeDir * fadeSpeed * Time.deltaTime));
+		alpha = Mathf.Clamp01(alpha + ((int)fadeDir * GetSpeed() * Time.deltaTime));
 		if (loadingGraphic) {
 			GUI.color = new Color (GUI.color.r, GUI.color.g, GUI.color.b, alpha);
 			GUI.depth = drawDepth;
@@ -46,7 +51,11 @@ public class FadeTransition : MonoBehaviour {
 				fadeOutMusic = Camera.main.GetComponent<AudioSource>();
 			}
 		}
-		return (float) 1.0 / fadeSpeed;
+		return (float) 1.0 / GetSpeed();
+	}
+
+	private float GetSpeed() {
+		return speedControl ? fadeSpeed * SpeedController.speed : fadeSpeed;
 	}
 
 }

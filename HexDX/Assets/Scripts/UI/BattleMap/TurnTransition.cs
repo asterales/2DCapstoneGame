@@ -49,6 +49,10 @@ public class TurnTransition : MonoBehaviour {
 		IsRunning = false;
 	}
 
+	void Update() {
+		anim.speed = SpeedController.speed;
+	}
+
 	public void PlayTransition(bool toEnemyTurn, TransitionEndFunc endCallback = null) {
 		if (!IsRunning) {
             IsRunning = true;
