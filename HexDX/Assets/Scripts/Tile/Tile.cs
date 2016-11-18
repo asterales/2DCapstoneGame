@@ -80,20 +80,6 @@ public class Tile : MonoBehaviour {
                 } else {
                     // show enemy mvt range and stats
                     StatDisplay.DisplayEnemyUnit(currentUnit);
-                    List<Tile> movementTiles = HexMap.GetMovementTiles(currentUnit);
-                    int facing = currentUnit.facing;
-                    foreach (Tile t in movementTiles)
-                    {
-                        currentUnit.currentTile = t;
-                        for (int i = 0; i < 6; i++)
-                        {
-                            currentUnit.facing = i;
-                            foreach (Tile tile in HexMap.GetAttackTiles(currentUnit))
-                                tile.ShowAttackTile();
-                        }
-                    }
-                    currentUnit.facing = facing;
-                    currentUnit.currentTile = this;
                     HexMap.ShowMovementTiles(currentUnit);
                 }
             }
@@ -120,8 +106,19 @@ public class Tile : MonoBehaviour {
             HideMovementTile();
         }
     }
+    public void ShowAttackSprite()
+    {
+        if (attackTile)
+        {
+            attackTile.transform.localPosition = GameResources.visibilityOffset;
+            HexMap.showingAttackTiles.Push(this);
+            attackTile.gameObject.GetComponent<PolygonCollider2D>().enabled = false;
+            HideMovementTile();
+        }
+    }
     public void HideAttackTile() {
         if (attackTile) {
+            attackTile.gameObject.GetComponent<PolygonCollider2D>().enabled = true;
             attackTile.transform.localPosition = -GameResources.visibilityOffset;
         }
     }

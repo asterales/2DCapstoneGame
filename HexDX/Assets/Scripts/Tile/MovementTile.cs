@@ -77,7 +77,7 @@ public class MovementTile : MonoBehaviour {
             }
             SelectionController.SaveLastTile(SelectionController.selectedUnit);
             path = null;
-            HexMap.ClearMovementTiles();
+            HexMap.ClearAllTiles();
             SelectionController.ClearSelection();
         }
     }
@@ -127,7 +127,7 @@ public class MovementTile : MonoBehaviour {
         circleObj.transform.parent = pathObj.transform;
         SpriteRenderer circle = circleObj.AddComponent<SpriteRenderer>();
         circle.color = pathColor;
-        circle.sortingOrder = 1;
+        circle.sortingOrder = 2;
         circle.sprite = circleSprite;
         circle.transform.position = tile.transform.position;
     }
@@ -137,7 +137,7 @@ public class MovementTile : MonoBehaviour {
         lineObj.transform.parent = pathObj.transform;
         SpriteRenderer line = lineObj.AddComponent<SpriteRenderer>();
         line.color = pathColor;
-        line.sortingOrder = 1;
+        line.sortingOrder = 2;
         line.sprite = lineSprites[GetDirection(startTile, endTile)];
         line.transform.position = startTile.transform.position;
     }
@@ -147,7 +147,7 @@ public class MovementTile : MonoBehaviour {
         arrowObj.transform.parent = pathObj.transform;
         SpriteRenderer arrow = arrowObj.AddComponent<SpriteRenderer>();
         arrow.color = pathColor;
-        arrow.sortingOrder = 1;
+        arrow.sortingOrder = 2;
         arrow.sprite = arrowSprites[GetDirection(startTile, endTile)];
         arrow.transform.position = endTile.transform.position;
     }
