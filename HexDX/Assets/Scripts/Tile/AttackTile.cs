@@ -16,7 +16,7 @@ public class AttackTile : MonoBehaviour {
             } else if (SelectionController.selectedUnit.IsPlayerUnit() && HasEnemyUnit() && SelectionController.target != null) {
                 SelectionController.mode = SelectionMode.Attacking;
                 if (tile.currentUnit != SelectionController.target) {
-                    SelectionController.target = tile.currentUnit;
+                    SelectionController.ShowTarget(tile.currentUnit);
                 }
                 if (Input.GetMouseButtonDown(1)){
                     SelectionController.target = null;
@@ -25,7 +25,7 @@ public class AttackTile : MonoBehaviour {
                 }
             }
         } else if (TutorialController.IsAttackTarget(this) && Input.GetMouseButtonDown(1)){
-            SelectionController.target = tile.currentUnit;
+            SelectionController.ShowTarget(tile.currentUnit);
         } else {
             tile.OnMouseOver();
         }

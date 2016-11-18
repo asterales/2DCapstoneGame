@@ -55,7 +55,8 @@ public class Tile : MonoBehaviour {
     }
 
     public void OnMouseOver() {
-        SelectionController.HideTarget();
+        if (SelectionController.selectedUnit && SelectionController.selectedUnit.phase !=UnitTurn.Attacking)
+            SelectionController.HideTarget();
         if (SelectionController.TakingInput() || (TutorialController.IsTargetTile(this)&& Input.GetMouseButtonDown(0))){
             if (currentUnit && !currentUnit.IsPlayerUnit()){
                 if (SelectionController.selectedUnit && SelectionController.selectedUnit.IsPlayerUnit() && SelectionController.selectedUnit.HasInAttackRange(currentUnit))

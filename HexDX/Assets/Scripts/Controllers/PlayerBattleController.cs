@@ -29,16 +29,23 @@ public class PlayerBattleController : ArmyBattleController {
         }
     }
 
-    void Update(){
-        if (!SelectionController.TakingAIInput() 
-            && SelectionController.mode != SelectionMode.TurnTransition 
+    void Update() {
+        if (!SelectionController.TakingAIInput()
+            && SelectionController.mode != SelectionMode.TurnTransition
             && selectedUnit == null) {
             SelectionController.mode = SelectionMode.Open;
         }
-        if (!SelectionController.TakingAIInput() 
-            && SelectionController.mode != SelectionMode.TurnTransition 
+        if (!SelectionController.TakingAIInput()
+            && SelectionController.mode != SelectionMode.TurnTransition
             && selectedUnit) {
+            if (selectedUnit.phase == UnitTurn.Moving || selectedUnit.phase == UnitTurn.Facing || selectedUnit.phase == UnitTurn.ChoosingAction)
+                if (Input.GetKeyDown(KeyCode.LeftShift)||Input.GetMouseButtonDown(2))
+                {
+                    Undo();
+                }
             switch (selectedUnit.phase) {
+                case UnitTurn.Attacking:
+                    break;
                 case UnitTurn.Facing:
                     SelectionController.selectedTile = selectedUnit.currentTile;
                     SelectFacing();
@@ -76,17 +83,21 @@ public class PlayerBattleController : ArmyBattleController {
                 selectedUnit.MakeDone();
             }
             if (GetSubmenuButton(pos, 3, "Undo", true)) {
-                UnitState.RestoreStates();
-                SelectionController.selectedTile = selectedUnit.currentTile;
-                SelectionController.mode = SelectionMode.Open;
-                selectedUnit.MakeOpen();
-                HexMap.ClearAllTiles();
-                HexMap.ShowMovementTiles(selectedUnit);
-                MovementTile.path = new List<Tile>() { selectedUnit.currentTile };
+                Undo();
             }
         }
     }
 
+    public void Undo()
+    {
+        UnitState.RestoreStates();
+        SelectionController.selectedTile = selectedUnit.currentTile;
+        SelectionController.mode = SelectionMode.Open;
+        selectedUnit.MakeOpen();
+        HexMap.ClearAllTiles();
+        HexMap.ShowMovementTiles(selectedUnit);
+        MovementTile.path = new List<Tile>() { selectedUnit.currentTile };
+    }
     public bool GetSubmenuButton(Vector3 basePosition, int menuButtonNumber, string text, bool active) {
         float itemHeight = Screen.height*0.026f;
         float itemWidth = itemHeight*3;
