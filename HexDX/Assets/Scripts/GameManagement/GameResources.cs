@@ -30,7 +30,6 @@ public static class GameResources {
     }
 
     public static Sprite GetTileSprite(int type, int variant) {
-        Debug.Log(variant);
         return tileSprites[type][variant];
     }
 

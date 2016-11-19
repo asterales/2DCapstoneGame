@@ -13,7 +13,7 @@ public class MovementTile : MonoBehaviour {
             if (Input.GetMouseButtonDown(0)) {
                 tile.OnMouseOver();
             } else if (Input.GetMouseButtonDown(1)) {
-                if (path != null && tile.currentUnit == null)
+                if (path != null && (tile.currentUnit == SelectionController.selectedUnit || tile.currentUnit == null))
                     StartCoroutine(CommitPath());
                 else
                 {
@@ -64,8 +64,8 @@ public class MovementTile : MonoBehaviour {
             cost+=(int)path[i].tileStats.mvtDifficulty;
         return cost;
     }
-    public static IEnumerator<WaitForEndOfFrame> CommitPath(ScriptedMove move = null) {   
-        if (path != null && (path[path.Count - 1].currentUnit == null || path[path.Count - 1].currentUnit == SelectionController.selectedUnit)) {
+    public static IEnumerator<WaitForEndOfFrame> CommitPath(ScriptedMove move = null) {
+       if (path != null && (path[path.Count - 1].currentUnit == null || path[path.Count - 1].currentUnit == SelectionController.selectedUnit)) {
             if (path.Count > 1)
             {
                 SelectionController.selectedUnit.MakeMoving(move);
