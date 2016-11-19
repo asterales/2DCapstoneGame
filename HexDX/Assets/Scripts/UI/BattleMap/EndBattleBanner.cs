@@ -46,9 +46,7 @@ public class EndBattleBanner : MonoBehaviour {
 		Image grayOverlay = lossItems.transform.Find("GrayOverlay").GetComponent<Image>();
 		yield return Timing.WaitForSeconds(grayOverlay.GetComponent<FadeTransition>().BeginFade(FadeDirection.Out));
 		Image lossBanner = lossItems.transform.Find("LossBanner").GetComponent<Image>();
-		Text defeatText = lossBanner.transform.Find("Text").GetComponent<Text>();
-		lossBanner.GetComponent<FadeTransition>().BeginFade(FadeDirection.Out);
-		yield return Timing.WaitForSeconds(defeatText.GetComponent<FadeTransition>().BeginFade(FadeDirection.Out));
+		yield return Timing.WaitForSeconds(lossBanner.GetComponent<FadeTransition>().BeginFade(FadeDirection.Out));
 		Text continuePrompt = lossItems.transform.Find("ContinueText").GetComponent<Text>();
 		yield return Timing.WaitForSeconds(continuePrompt.GetComponent<FadeTransition>().BeginFade(FadeDirection.Out));
 		FinishedDisplay = true;
