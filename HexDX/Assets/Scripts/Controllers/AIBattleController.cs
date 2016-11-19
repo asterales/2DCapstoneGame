@@ -28,25 +28,33 @@ public class AIBattleController : ArmyBattleController {
             if (currentUnitIndex < units.Count) {
                 if (units[currentUnitIndex].enabled) {
                     UnitAI ai = GetAI(currentUnitIndex);
-                    switch(ai.unit.phase) {
-                        case UnitTurn.Open:
-                            ai.SetMovement();
-                            break;
-                        case UnitTurn.Facing:
-                            ai.SetFacing();
-                            break;
-                        case UnitTurn.ChoosingAction:
-                            ai.SetAction();
-                            break;
-                        case UnitTurn.Attacking:
-                            ai.SetAttack();
-                            break;
-                        case UnitTurn.Done:
-                            ai.Reset();
-                            currentUnitIndex++;
-                            break;
-                        default:
-                            break;
+                    if (!ai.mob || ai.mob.triggered())
+                    {
+                        switch (ai.unit.phase)
+                        {
+                            case UnitTurn.Open:
+                                ai.SetMovement();
+                                break;
+                            case UnitTurn.Facing:
+                                ai.SetFacing();
+                                break;
+                            case UnitTurn.ChoosingAction:
+                                ai.SetAction();
+                                break;
+                            case UnitTurn.Attacking:
+                                ai.SetAttack();
+                                break;
+                            case UnitTurn.Done:
+                                ai.Reset();
+                                currentUnitIndex++;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        currentUnitIndex++;
                     }
                 } else {
                     currentUnitIndex++;

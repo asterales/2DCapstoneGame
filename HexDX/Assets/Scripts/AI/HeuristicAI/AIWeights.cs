@@ -134,7 +134,7 @@ public class AIWeights {
         unitAttackAdvantage = 1.0f;
         unitKillAdvantage = 0.0f;
         unitStateComparison = 0.0f;
-        unitFaceAttackingDirectly = 1.0f;
+        unitFaceAttackingDirectly = 0.2f;
         unitGlobal = 1.0f;
     }
 
