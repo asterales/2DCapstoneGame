@@ -68,10 +68,10 @@ public class TurnTransition : MonoBehaviour {
 		anim.enabled = true;
 		yield return Timing.WaitForSeconds(fade.BeginFade(FadeDirection.Out));
 		anim.Play(enterAnimName);
-		yield return Timing.WaitForSeconds(animationLengths[enterMotion]);
-		yield return Timing.WaitForSeconds(pauseSeconds);
+		yield return Timing.WaitForSeconds(animationLengths[enterMotion] / SpeedController.speed);
+		yield return Timing.WaitForSeconds(pauseSeconds / SpeedController.speed);
 		anim.Play(exitAnimName);
-		yield return Timing.WaitForSeconds(animationLengths[exitMotion]);
+		yield return Timing.WaitForSeconds(animationLengths[exitMotion] / SpeedController.speed);
 		yield return Timing.WaitForSeconds(fade.BeginFade(FadeDirection.In));
 		anim.enabled = false;
 		overlayBG.enabled = false;
