@@ -8,7 +8,7 @@
     DEFENSE,
     RESISTANCE,
     MOVE,
-    LOWRANGE,
-    HIGHRANGE,
+    MOBID,
+    MOBTYPE,
     MANUVERABILITY
 };

@@ -20,7 +20,7 @@ public class Mob : MonoBehaviour {
         members.Add(unit);
     }
 
-    public bool triggered()
+    public virtual bool triggered()
     {
         return true;
     }

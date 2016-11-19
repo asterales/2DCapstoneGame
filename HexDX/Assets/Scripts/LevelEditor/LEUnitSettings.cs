@@ -12,8 +12,8 @@ public class LEUnitSettings : MonoBehaviour {
     public int[] baseDefense;
     public int[] baseResistance;
     public int[] baseMove;
-    public int[] baseLowRange;
-    public int[] baseHighRange;
+    public int[] mobID;
+    public int[] mobType;
     public int[] baseManuverability; // what terrain it can bypass
     public string id;
     public string fileName;
@@ -48,14 +48,14 @@ public class LEUnitSettings : MonoBehaviour {
         return baseMove[vet];
     }
 
-    public int BaseLowRange(int vet)
+    public int BaseMobID(int vet)
     {
-        return baseLowRange[vet];
+        return mobID[vet];
     }
 
-    public int BaseHighRange(int vet)
+    public int BaseMobType(int vet)
     {
-        return baseHighRange[vet];
+        return mobType[vet];
     }
 
     public int BaseManuverability(int vet)
@@ -73,8 +73,8 @@ public class LEUnitSettings : MonoBehaviour {
         baseDefense = new int[] { -1, -1, -1, -1 };
         baseResistance = new int[] { -1, -1, -1, -1 };
         baseMove = new int[] { -1, -1, -1, -1 };
-        baseLowRange = new int[] { -1, -1, -1, -1 };
-        baseHighRange = new int[] { -1, -1, -1, -1 };
+        mobID = new int[] { -1, -1, -1, -1 };
+        mobType = new int[] { -1, -1, -1, -1 };
         baseManuverability = new int[] { -1, -1, -1, -1 };
         id = "";
     }
@@ -87,8 +87,8 @@ public class LEUnitSettings : MonoBehaviour {
         baseDefense = new int[] { 1, 5, 10, 20 };
         baseResistance = new int[] { 1, 5, 10, 20 };
         baseMove = new int[] { 5, 5, 5, 5 };
-        baseLowRange = new int[] { 1, 1, 1, 1 };
-        baseHighRange = new int[] { 1, 1, 1, 1 };
+        mobID = new int[] { 1, 1, 1, 1 };
+        mobType = new int[] { 1, 1, 1, 1 };
         baseManuverability = new int[] { 1, 1, 1, 1 };
         id = ""; // do we needs ids ???
     }
@@ -106,8 +106,8 @@ public class LEUnitSettings : MonoBehaviour {
     //   baseDefense
     //   baseResistance
     //   baseMove
-    //   baseLowRange
-    //   baseHighRange
+    //   mobID
+    //   mobType
     //   baseManuverability
     // id
 
@@ -124,8 +124,8 @@ public class LEUnitSettings : MonoBehaviour {
             baseDefense[i] = Convert.ToInt32(lines[3 + 9*i]);
             baseResistance[i] = Convert.ToInt32(lines[4 + 9*i]);
             baseMove[i] = Convert.ToInt32(lines[5 + 9*i]);
-            baseLowRange[i] = Convert.ToInt32(lines[6 + 9*i]);
-            baseHighRange[i] = Convert.ToInt32(lines[7 + 9*i]);
+            mobID[i] = Convert.ToInt32(lines[6 + 9*i]);
+            mobType[i] = Convert.ToInt32(lines[7 + 9*i]);
             baseManuverability[i] = Convert.ToInt32(lines[8 + 9*i]);
         }
         id = lines[numOfVets * 9].Trim();
@@ -142,8 +142,8 @@ public class LEUnitSettings : MonoBehaviour {
             data += baseDefense[i] + "\n";
             data += baseResistance[i] + "\n";
             data += baseMove[i] + "\n";
-            data += baseLowRange[i] + "\n";
-            data += baseHighRange[i] + "\n";
+            data += mobID[i] + "\n";
+            data += mobType[i] + "\n";
             data += baseManuverability[i] + "\n";
         }
         return data + id + "\n";

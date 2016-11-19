@@ -195,6 +195,33 @@ public class HexMap : MonoBehaviour {
         return output;
     }
 
+    public static List<Tile> GetTotalRange(Unit unit)
+    {
+        List<Tile> mvtTiles = GetMovementTiles(unit);
+        List<Tile> attackable = new List<Tile>();
+        List<Tile> atkTiles;
+        List<Tile> movementTiles = HexMap.GetMovementTiles(unit);
+        int facing = unit.facing;
+        Tile initial = unit.currentTile;
+        foreach (Tile t in mvtTiles)
+        {
+            unit.currentTile = t;
+            atkTiles = GetAttackTiles(unit);
+            for (int i = 0; i < 6; i++)
+            {
+                unit.facing = i;
+                atkTiles = HexMap.GetAttackTiles(unit);
+                foreach (Tile tile in atkTiles)
+                {
+                    attackable.Add(tile);
+                }
+            }
+        }
+        unit.facing = facing;
+        unit.currentTile = initial;
+        return attackable;
+    }
+
     public static void ShowAttackTiles(Unit unit)
     {
         ClearAttackTiles();

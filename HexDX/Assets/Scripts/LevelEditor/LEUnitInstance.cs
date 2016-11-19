@@ -71,14 +71,14 @@ public class LEUnitInstance : MonoBehaviour {
         return baseSettings.baseMove[instanceVeterancy];
     }
 
-    public int GetLowRange()
+    public int GetMobID()
     {
-        return baseSettings.baseLowRange[instanceVeterancy];
+        return baseSettings.mobID[instanceVeterancy];
     }
 
-    public int GetHighRange()
+    public int GetMobType()
     {
-        return baseSettings.baseHighRange[instanceVeterancy];
+        return baseSettings.mobType[instanceVeterancy];
     }
 
     public int GetManuverability()
@@ -142,8 +142,8 @@ public class LEUnitInstance : MonoBehaviour {
             GetDefense() + "," +
             GetResistence() + "," +
             GetMove() + "," +
-            GetLowRange() + "," +
-            GetHighRange() + "," +
+            GetMobID() + "," +
+            GetMobType() + "," +
             GetManuverability() + "," +
             GetDirection() + "," +
             GetId() + "\n";

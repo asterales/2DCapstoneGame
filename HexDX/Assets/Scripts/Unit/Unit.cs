@@ -630,6 +630,11 @@ public class Unit : MonoBehaviour {
         return HexMap.GetAttackTiles(this).Contains(other.currentTile);
     }
 
+    public bool HasInTotalRange(Unit other)
+    {
+        return HexMap.GetTotalRange(this).Contains(other.currentTile);
+    }
+
     public bool IsPlayerUnit() {
         return GetComponent<UnitAI>() == null;
     }
