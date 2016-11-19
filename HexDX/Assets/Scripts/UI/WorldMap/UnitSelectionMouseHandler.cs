@@ -1,37 +1,51 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UnitSelectionMouseHandler : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler{
+public class UnitSelectionMouseHandler : MonoBehaviour, IPointerClickHandler,
+										 IBeginDragHandler, IDragHandler, IEndDragHandler {
 	public UnitSelectionPanel selectionPanel;
 	public UnitDisplay displayPanel;
-	private static UnitDisplay selectedDisplay;
+
+	// Drag/Drop variables
+	private static RectTransform draggedRect;
+	private static Image draggedImage;
+	private static Vector2 formerPosition;
 
 	void Awake() {
 		displayPanel = GetComponent<UnitDisplay>();
 	}
 
 	public void OnPointerClick(PointerEventData eventData) {
-		SwitchHighlightedUnit(displayPanel);
-        selectionPanel.statDisplay.DisplayUnitStats(displayPanel.unit);
-        if (eventData.clickCount == 2) {
-			UnitDisplay nextDisplay = selectionPanel.SwitchUnitToOtherArmy(displayPanel);
-			SwitchHighlightedUnit(nextDisplay);
+		if (displayPanel.unit) {
+			selectionPanel.SwitchHighlightedUnit(displayPanel);
+	        selectionPanel.statDisplay.DisplayUnitStats(displayPanel.unit);
 		}
 	}
 
-	private void SwitchHighlightedUnit(UnitDisplay display) {
-		if (selectedDisplay) {
-			selectedDisplay.UnhighlightSelected();
+	public void OnBeginDrag(PointerEventData eventData) {
+		if (displayPanel.unit) {
+			OnPointerClick(eventData);
+			draggedRect = transform.parent.GetComponent<RectTransform>(); // image is child of UIMask
+			draggedImage = GetComponent<Image>();
+			draggedImage.raycastTarget = false;
+			formerPosition = draggedRect.anchoredPosition;
 		}
-		selectedDisplay = display;
-		display.HighlightSelected();
 	}
 
-	public void OnPointerEnter(PointerEventData eventData) {
-		//selectionPanel.statDisplay.DisplayUnitStats(displayPanel.unit);
+	public void OnDrag(PointerEventData eventData) {
+		if (draggedRect) {
+			Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			draggedRect.position = new Vector3(mousePos.x, mousePos.y, draggedRect.position.z);
+		}
 	}
 
-	public void OnPointerExit(PointerEventData eventData) {
-		//selectionPanel.statDisplay.ClearDisplay();
+	public void OnEndDrag(PointerEventData eventData) {
+		if (draggedRect) {
+			draggedRect.anchoredPosition = formerPosition;
+			draggedImage.raycastTarget = true;
+			draggedRect = null;
+		}
+		
 	}
 }

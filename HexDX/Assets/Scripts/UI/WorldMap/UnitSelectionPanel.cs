@@ -9,6 +9,8 @@ public class UnitSelectionPanel : WorldMapPopupPanel {
 	public int minArmySize;
 	private Button saveButton;
 
+	private UnitDisplay highlightedDisplay;
+
 	protected override void Awake() {
 		base.Awake();
 		InitSaveButton();
@@ -35,6 +37,8 @@ public class UnitSelectionPanel : WorldMapPopupPanel {
 
 	public override void Show() {
 		base.Show();
+		ClearHighlightedUnit();
+		statDisplay.ClearDisplay();
 		RefreshDisplays();
 	}
 
@@ -54,17 +58,15 @@ public class UnitSelectionPanel : WorldMapPopupPanel {
 		inactiveUnits.ForEach(u => u.gameObject.SetActive(false));
 	}
 
-	public UnitDisplay SwitchUnitToOtherArmy(UnitDisplay unitPanel) {
-		UnitDisplay nextDisplayPanel;
-		if(activeUnitsDisplay.unitPanels.Contains(unitPanel)) {
-			nextDisplayPanel = inactiveUnitsDisplay.GetFirstEmptySlot();
-		} else {
-			nextDisplayPanel = activeUnitsDisplay.GetFirstEmptySlot();
+	public void SwitchHighlightedUnit(UnitDisplay display) {
+		ClearHighlightedUnit();
+		highlightedDisplay = display;
+		display.HighlightSelected();
+	}
+
+	private void ClearHighlightedUnit() {
+		if (highlightedDisplay) {
+			highlightedDisplay.UnhighlightSelected();
 		}
-		if(nextDisplayPanel != null) {
-			nextDisplayPanel.unit = unitPanel.unit;
-			unitPanel.unit = null;
-		}
-		return nextDisplayPanel;
 	}
 }

@@ -34,7 +34,7 @@ public class RecruitListing : MonoBehaviour, IPointerClickHandler {
 	}
 
 	public void OnPointerClick(PointerEventData eventData) {
-		if(eventData.clickCount == 1 && onClickCallback != null) {
+		if(unitObj && eventData.clickCount == 1 && onClickCallback != null) {
 			onClickCallback(this);
 		}
 	} 
