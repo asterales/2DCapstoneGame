@@ -11,29 +11,25 @@ using UnityEngine.UI;
 */
 
 public class Unit : MonoBehaviour {
-    public Tile currentTile;
-    private UnitStats unitStats;
-    public UnitSprites sprites;
-    public List<Vector2> attackablePositions;
-    public float moveSpeed = 0.13f;
 
-    private Queue<Tile> path;
+    public Tile currentTile;
     public UnitTurn phase;
     public int facing;
-
-    public static PlayerBattleController player;
-    public static AIBattleController ai;
+    public List<Vector2> attackablePositions;
+    public UnitSprites sprites;
+    public float moveSpeed = 0.13f;
+    public PlayerBattleController player;
+    public AIBattleController ai;
     public SpriteRenderer spriteRenderer;
+
     private AudioSource audioSource;
     private Animator animator;
     private Tile lastTile;
-    private int type; // we may want to represent types by something else
+    private UnitStats unitStats;
     private UnitSounds sounds;
-    private static bool attackLock = false;
-
     private Image v1, v2, v3, v4, v5;
-    // temporary storage for scripted stuff
-    ScriptedMove scriptedMove;
+    private Queue<Tile> path;
+    private ScriptedMove scriptedMove;    // temporary storage for scripted stuff
 
     // Properties for shorthand access to stats, includes tile modifiers
     public int MaxHealth { get { return unitStats.maxHealth; } }
@@ -641,10 +637,10 @@ public class Unit : MonoBehaviour {
 
     public static void SaveAllStates() {
         UnitState.ClearStates();
-        foreach (Unit unit in ai.units) {
+        foreach (Unit unit in BattleControllerManager.instance.ai.units) {
             UnitState.SaveState(unit);
         }
-        foreach (Unit unit in player.units) {
+        foreach (Unit unit in BattleControllerManager.instance.player.units) {
             UnitState.SaveState(unit);
         }
     }

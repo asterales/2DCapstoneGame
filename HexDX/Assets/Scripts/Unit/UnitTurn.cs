@@ -1,5 +1,4 @@
-﻿public enum UnitTurn
-{
+﻿public enum UnitTurn {
     Open,
     Moving,
     Facing,
