@@ -26,14 +26,12 @@ public class LEDeploymentCache : MonoBehaviour {
         }
     }
 
-    public string WriteData()
+    public void ClearCache()
     {
-        // to be implemented
-        return "";
-    }
-
-    public void ReadData(LEHexMap map)
-    {
-        // to be implmeented
+        for (int i = 0; i < depTiles.Count; i++)
+        {
+            Destroy(depTiles[i]);
+        }
+        depTiles.Clear();
     }
 }

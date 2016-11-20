@@ -131,4 +131,13 @@ public class LEUnitCache : MonoBehaviour
         Debug.Log("INPUT ERROR :: Could Not Find UnitSettings :: " + id);
         return null;
     }
+
+    public void ClearCache()
+    {
+        for (int i = 0; i < unitInstances.Count; i++)
+        {
+            Destroy(unitInstances[i]);
+        }
+        unitInstances.Clear();
+    }
 }

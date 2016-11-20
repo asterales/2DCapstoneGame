@@ -11,4 +11,9 @@ public class LEBaseTileData {
     {
         return base.ToString();
     }
+
+    public void ClearData()
+    {
+        tileData.Clear();
+    }
 }

@@ -1,8 +1,8 @@
 ﻿using System;
 
 public class LEBaseUnitData {
-    public int xpos;
-    public int ypos;
+    public int row;
+    public int col;
     public int veterancy;
     public int health;
     public int attack;
@@ -16,8 +16,8 @@ public class LEBaseUnitData {
 
     public LEBaseUnitData()
     {
-        xpos = -1;
-        ypos = -1;
+        row = -1;
+        col = -1;
         veterancy = -1;
         health = -1;
         attack = -1;
@@ -30,11 +30,16 @@ public class LEBaseUnitData {
         id = "Cat";
     }
 
+    public LEBaseUnitData(LEUnitInstance instance)
+    {
+        InitializeFromInstance(instance);
+    }
+
     public void Parse(string data)
     {
         string[] lines = data.Split(',');
-        xpos = Convert.ToInt32(lines[0]);
-        ypos = Convert.ToInt32(lines[1]);
+        row = Convert.ToInt32(lines[0]);
+        col = Convert.ToInt32(lines[1]);
         veterancy = Convert.ToInt32(lines[2]);
         health = Convert.ToInt32(lines[3]);
         attack = Convert.ToInt32(lines[4]);
@@ -45,6 +50,22 @@ public class LEBaseUnitData {
         mobType = Convert.ToInt32(lines[9]);
         direction = Convert.ToInt32(lines[10]);
         id = lines[11];
+    }
+
+    private void InitializeFromInstance(LEUnitInstance instance)
+    {
+        row = instance.location.row;
+        col = instance.location.col;
+        veterancy = instance.GetVeterancy();
+        health = instance.GetHealth();
+        attack = instance.GetAttack();
+        power = instance.GetPower();
+        defense = instance.GetDefense();
+        resistance = instance.GetResistence();
+        mobID = instance.GetMobID();
+        mobType = instance.GetMobType();
+        direction = instance.GetDirection();
+        id = instance.GetId();
     }
 
     public override string ToString()

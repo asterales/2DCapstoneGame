@@ -1,19 +1,29 @@
 ﻿using System.Collections.Generic;
 
 public class LEBaseDepData {
-    public List<int> xPositions;
-    public List<int> yPositions;
+    public List<int> rowPositions;
+    public List<int> colPositions;
+    public int count;
 
 	public LEBaseDepData()
     {
-        xPositions = new List<int>();
-        yPositions = new List<int>();
+        rowPositions = new List<int>();
+        colPositions = new List<int>();
+        count = 0;
     }
 
-    public void AddDep(int y, int x)
+    public void AddDep(int row, int col)
     {
-        xPositions.Add(y);
-        yPositions.Add(x);
+        rowPositions.Add(row);
+        colPositions.Add(col);
+        count++;
+    }
+
+    public void ClearData()
+    {
+        rowPositions.Clear();
+        colPositions.Clear();
+        count = 0;
     }
 
     public override string ToString()
