@@ -3,14 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class PlayerBattleController : ArmyBattleController {
-    public static Texture2D menuItem;
-    public static Texture2D menuItemHovered;
-    
-    // for ease of use
-    private Unit selectedUnit { 
-        get { return sc.selectedUnit; } 
-        set { sc.selectedUnit = value; }
-    }
+    public Texture2D menuItem;
+    public Texture2D menuItemHovered;
     
     // path sprites
     public Sprite circleSprite;
@@ -19,6 +13,11 @@ public class PlayerBattleController : ArmyBattleController {
 
     private Dictionary<Unit, UnitState> initialStates;
 
+    // for ease of use
+    private Unit selectedUnit { 
+        get { return sc.selectedUnit; } 
+        set { sc.selectedUnit = value; }
+    }
 
     public override void InitUnitList() {
         Unit[] allUnits = BattleControllerManager.instance.hexMap.GetUnitsOnMap();

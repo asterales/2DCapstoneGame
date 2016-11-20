@@ -21,11 +21,10 @@ public class HexMap : MonoBehaviour {
         showingMovementTiles = new Stack<Tile>();
         showingAttackOutlines = new Stack<GameObject>();
         ////// DEBUG CODE //////
-        if (hexDimension == null)
-        {
+        if (hexDimension == null) {
             Debug.Log("Error :: No Defined Hex Dimension for Hex Map - HexMap.cs");
         }
-        this.gameObject.transform.position = new Vector3(hexDimension.globalTopLeftX, hexDimension.globalTopLeftY, 0); // temp
+        transform.position = new Vector3(hexDimension.globalTopLeftX, hexDimension.globalTopLeftY, 0); // temp
         ////////////////////////
     }
 

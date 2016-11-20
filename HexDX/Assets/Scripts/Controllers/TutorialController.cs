@@ -21,6 +21,7 @@ public class TutorialController : PreBattleController {
 		info = GetComponent<TutorialInfo>();
 		scriptedAI = GetComponent<ScriptedAIBattleController>();
 		unitLoader = GetComponent<CustomUnitLoader>();
+		eventsList = GetComponent<ScriptList>();
 	}
 
 	public override void StartPreBattlePhase() {
@@ -31,7 +32,6 @@ public class TutorialController : PreBattleController {
 			}
 			targetTile = null;
 			InitSelectionPrompt();
-			eventsList = GameObject.Find("ScriptedEvents").GetComponent<ScriptList>();
 			if(!eventsList.dialogueMgr) {
 				eventsList.dialogueMgr = FindObjectOfType(typeof(GameDialogueManager)) as GameDialogueManager;
 			}

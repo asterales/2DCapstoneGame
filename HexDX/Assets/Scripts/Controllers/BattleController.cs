@@ -5,28 +5,24 @@ using System.Collections.Generic;
 // This class will be responsible for handling Game Loop States
 
 public class BattleController : MonoBehaviour {
+
+    public static BattleController instance;
+
     public AIBattleController ai;
     public PlayerBattleController player;
     public VictoryCondition victoryCondition;
-    public static BattleController instance;
-    private bool nextSceneLoaded;
-
-    // set in editor
-    public Texture2D actionMenuItem;
-    public Texture2D actionMenuItemHover;
-    
     public EndBattleBanner endBanner;
     public TurnTransition turnTransition;
+    public int numTurns = 0;
+    
+    private bool nextSceneLoaded;
 
     public bool IsPlayerTurn { get; private set; }
     public bool BattleIsDone { get; private set; }
     public bool PlayerWon { get; private set; }
-    public int numTurns = 0;
 
     void Awake () {
         instance = this;
-        PlayerBattleController.menuItem = actionMenuItem;
-        PlayerBattleController.menuItemHovered = actionMenuItemHover;
         ai = GetComponent<AIBattleController>();
         player = GetComponent<PlayerBattleController>();
         victoryCondition = GetComponent<VictoryCondition>();
@@ -44,8 +40,6 @@ public class BattleController : MonoBehaviour {
         }
         ////////////////////////
     }
-
-
 
     private void InitFlags() {
         IsPlayerTurn = true;

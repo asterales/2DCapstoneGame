@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour {
 			instance = this;
 			InitUnitList();
 			transform.position = GameResources.hidingPosition;
-			DontDestroyOnLoad(this.gameObject);
+			DontDestroyOnLoad(gameObject);
 		} else if (instance != this) {
 			GetComponentsInChildren<Unit>().ToList().ForEach(u => u.gameObject.SetActive(false));
 			Destroy(gameObject);

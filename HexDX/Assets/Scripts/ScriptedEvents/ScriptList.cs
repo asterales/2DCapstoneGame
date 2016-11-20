@@ -17,6 +17,7 @@ public class ScriptList : MonoBehaviour {
     void Awake() {
         SceneManager.sceneLoaded += OnSceneLoaded;
         EventsCompleted = false;
+        tutorial = GetComponent<TutorialController>();
     }
 
     void OnDestroy() {
@@ -32,7 +33,6 @@ public class ScriptList : MonoBehaviour {
     public void StartEvents() {
         if (scriptedEvents.Count > 0) {
             sc = SelectionController.instance;
-            tutorial = BattleControllerManager.instance.tutorial;
             EventsCompleted = false;
             currentEvent = 0;
             StartInstuctions(scriptedEvents[0]);
