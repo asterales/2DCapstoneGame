@@ -5,6 +5,7 @@ public class UnitUIDrawer : MonoBehaviour {
 	protected Unit unit;
 	private Image portrait;
     private Image healthbar;
+    private Image previewbar;
     private Image attackbar;
     private Image defensebar;
     private Image powerbar;
@@ -14,10 +15,12 @@ public class UnitUIDrawer : MonoBehaviour {
     private Text defense;
     private Text power;
     private Text resist;
+    public int damagePreview;
     protected SelectionController sc;
 
     void Awake() {
         healthbar = transform.Find("HealthBar").GetComponent<Image>();
+        previewbar = transform.Find("PreviewBar").GetComponent<Image>();
         portrait = transform.Find("Portrait").GetComponent<Image>();
         attackbar = transform.Find("AttackBar").GetComponent<Image>();
         defensebar = transform.Find("DefenseBar").GetComponent<Image>();
@@ -29,17 +32,31 @@ public class UnitUIDrawer : MonoBehaviour {
         defense = transform.Find("Defense").GetComponent<Text>();
         power = transform.Find("Power").GetComponent<Text>();
         resist = transform.Find("Resist").GetComponent<Text>();
+        damagePreview = 0;
+        initInstance();
     }
 
     void Start() {
         sc = SelectionController.instance;
     }
 
+    public virtual void initInstance()
+    {
+
+    }
+    public void SetPreview(int preview)
+    {
+        damagePreview = preview;
+    }
+
     protected void DrawUI() {
         if (unit) {
             portrait.color = Color.white;
             portrait.sprite = unit.sprites.portrait;
-            healthbar.fillAmount = (float)unit.Health / (float)unit.MaxHealth;
+            if (damagePreview < 0)
+                damagePreview = 0;
+            healthbar.fillAmount = (float)(unit.Health-damagePreview) / (float)unit.MaxHealth;
+            previewbar.fillAmount = (float)unit.Health/ (float)unit.MaxHealth;
             attackbar.fillAmount = (float)unit.Attack / (float)UnitStats.MAX_ATTACK;
             defensebar.fillAmount = (float)unit.Defense / (float)UnitStats.MAX_DEFENSE;
             powerbar.fillAmount = (float)unit.Power / (float)UnitStats.MAX_POWER;
@@ -52,6 +69,7 @@ public class UnitUIDrawer : MonoBehaviour {
         } else {
             portrait.color = Color.clear;
             healthbar.fillAmount = 0;
+            previewbar.fillAmount = 0;
             attackbar.fillAmount = 0;
             defensebar.fillAmount = 0;
             powerbar.fillAmount = 0;

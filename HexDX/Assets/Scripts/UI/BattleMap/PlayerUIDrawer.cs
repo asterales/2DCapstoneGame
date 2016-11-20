@@ -2,8 +2,13 @@
 using UnityEngine.UI;
 
 public class PlayerUIDrawer : UnitUIDrawer {
+    public static PlayerUIDrawer instance;
+    public override void initInstance()
+    {
+        instance = this;
+    }
 
-	void Update () {
+    void Update () {
 	    if (sc.selectedUnit != null && sc.selectedUnit.IsPlayerUnit()) {
             unit = sc.selectedUnit;
         }

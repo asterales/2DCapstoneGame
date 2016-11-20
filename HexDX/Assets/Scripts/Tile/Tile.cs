@@ -79,6 +79,8 @@ public class Tile : MonoBehaviour {
                 }
             }
             if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
+                EnemyUIDrawer.instance.SetPreview(0);
+                PlayerUIDrawer.instance.SetPreview(0);
                 //left click - selection
                 HexMap.ClearAllTiles();
                 BattleController.instance.ResetColors();
