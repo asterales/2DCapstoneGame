@@ -51,7 +51,12 @@ public class GameManager : MonoBehaviour {
 		playerAllUnits.Add(unit);
 		unit.transform.parent = transform;
         unit.transform.position = GameResources.hidingPosition;
-		unit.gameObject.SetActive(false);
+        if (activeUnits.Count < ACTIVE_UNIT_LIMIT) {
+        	activeUnits.Add(unit);
+        	unit.gameObject.SetActive(true);
+        } else {
+        	unit.gameObject.SetActive(false);
+        }
 	}
 
 	public void ResetUnit(Unit unit) {

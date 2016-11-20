@@ -26,6 +26,7 @@ public class ArmyDisplayDropHandler : MonoBehaviour, IDropHandler {
 		if (nextDisplay) {
 			nextDisplay.unit = droppedDisplay.unit;
 			droppedDisplay.unit = null;
+			selectionPanel.SaveArmySelection();
 			selectionPanel.SwitchHighlightedUnit(nextDisplay);
 		}
 	}

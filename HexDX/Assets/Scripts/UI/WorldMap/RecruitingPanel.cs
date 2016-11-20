@@ -6,6 +6,8 @@ using System.Text;
 
 public class RecruitingPanel : WorldMapPopupPanel {
 	public RecruitListing defaultListing;
+	public ActiveArmyDisplay worldMapActiveArmyDisplay;
+
 	private List<RecruitListing> unitChoices;
 	private UnitStatDisplay statDisplay;
 	private UnitDisplay unitDisplay;
@@ -45,6 +47,7 @@ public class RecruitingPanel : WorldMapPopupPanel {
 			gm.funds -= selectedListing.cost;
 			GameObject newUnitObj = selectedListing.InstantiateRecruit();
 			gm.AddNewPlayerUnit(newUnitObj.GetComponent<Unit>());
+			worldMapActiveArmyDisplay.RefreshDisplay();
 			SetSelectedListing(null);
 		}
 	}
