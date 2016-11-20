@@ -36,11 +36,10 @@ public class GameManager : MonoBehaviour {
 
 	private void InitUnitList() {
 		playerAllUnits = new List<Unit>();
+		activeUnits = new List<Unit>();
 		foreach(Unit childUnit in GetComponentsInChildren<Unit>()) {
 			AddNewPlayerUnit(childUnit);
 		}
-		activeUnits = playerAllUnits.GetRange(0, (int)Mathf.Min(playerAllUnits.Count, ACTIVE_UNIT_LIMIT));
-		activeUnits.ForEach(u => u.gameObject.SetActive(true));
 	}
 
 	public bool HasPassedFirstLevel() {
