@@ -14,9 +14,9 @@ public class DeploymentController : PreBattleController {
 	private GameObject deploymentUI;
 	private List<DeploymentTile> deploymentTiles;
 	
-	private static Tile selectedUnitDest;
-	private static Unit displacedUnit;
-	private static Tile displacedUnitDest;
+	private Tile selectedUnitDest;
+	private Unit displacedUnit;
+	private Tile displacedUnitDest;
 
 	public float maxMovement;
 
@@ -27,16 +27,12 @@ public class DeploymentController : PreBattleController {
 		disabledHudElements = disabledHudElementNames.Select(n => GameObject.Find(n)).ToList();
 	}
 
-	void OnDestroy() {
-		ClearSelections();
-	}
-
 	public override void StartPreBattlePhase() {
 		base.StartPreBattlePhase();
 		if (deploymentTiles.Count > 0) {
 			disabledHudElements.ForEach(d => d.SetActive(false));
 			ClearSelections();
-			SelectionController.mode = SelectionMode.DeploymentOpen;
+			sc.mode = SelectionMode.DeploymentOpen;
 		} else {
 			EndPreBattlePhase();
 		}
@@ -54,26 +50,26 @@ public class DeploymentController : PreBattleController {
 		}
 	}
 
-	public static void SetSelectedUnitDestination(Unit selectedUnit, Tile destTile) {
+	public void SetSelectedUnitDestination(Unit selectedUnit, Tile destTile) {
 		selectedUnitDest = destTile;
 		if (destTile.currentUnit && destTile.currentUnit != selectedUnit) {
 			displacedUnit = destTile.currentUnit;
 			displacedUnitDest = selectedUnit.currentTile;
 		}
-		SelectionController.selectedUnit = selectedUnit;
-		SelectionController.mode = SelectionMode.DeploymentMove;
+		sc.selectedUnit = selectedUnit;
+		sc.mode = SelectionMode.DeploymentMove;
 	}
 
-	private static void ClearSelections() {
+	private void ClearSelections() {
 		selectedUnitDest = null;
 		displacedUnit = null;
 		displacedUnitDest = null;
 	}
 
 	protected override void PhaseUpdateAction() {
-		if (SelectionController.selectedUnit) {
-			SelectionController.ShowSelection(selectedUnitDest);
-			MoveUnit(SelectionController.selectedUnit, selectedUnitDest);
+		if (sc.selectedUnit) {
+			sc.ShowSelection(selectedUnitDest);
+			MoveUnit(sc.selectedUnit, selectedUnitDest);
 		}
 		if (displacedUnit) {
 			MoveUnit(displacedUnit, displacedUnitDest);
@@ -81,7 +77,7 @@ public class DeploymentController : PreBattleController {
 	}
 
 	private void MoveUnit(Unit unit, Tile destTile) {
-		SelectionController.mode = SelectionMode.DeploymentMove;
+		sc.mode = SelectionMode.DeploymentMove;
     	Vector3 destination = destTile.transform.position;
     	Vector3 unitPos = unit.transform.position;
     	if (unitPos != destination) {
@@ -90,16 +86,16 @@ public class DeploymentController : PreBattleController {
     		unit.SetTile(destTile);
     		unit.MakeOpen();
     		if (destTile == selectedUnitDest) {
-    			SelectionController.selectedUnit.MakeOpen();
-				SelectionController.selectedUnit = null;
-				SelectionController.HideSelection();
+    			sc.selectedUnit.MakeOpen();
+				sc.selectedUnit = null;
+				sc.HideSelection();
     			selectedUnitDest = null;
     		} else if (unit == displacedUnit) {
     			displacedUnit = null;
     			displacedUnitDest = null;
     		}
     		if(selectedUnitDest == null && displacedUnitDest == null) {
-    			SelectionController.mode = SelectionMode.DeploymentOpen;
+    			sc.mode = SelectionMode.DeploymentOpen;
     		}
     	}
     }

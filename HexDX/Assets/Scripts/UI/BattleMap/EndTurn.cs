@@ -4,42 +4,36 @@ public class EndTurn : MonoBehaviour {
     public BattleController battleController;
     private SpriteRenderer spriteRenderer;
 
-    void Start()
-    {
+    void Start() {
         battleController = BattleControllerManager.instance.battleController; //hack until figure out if static or manually attach
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    void OnMouseDown()
-    {
-        if (SelectionController.TakingInput()) {
+    void OnMouseDown() {
+        if (SelectionController.instance.TakingInput()) {
             spriteRenderer.color = new Color(0.3f, 0.3f, 0.3f);
             battleController.EndCurrentTurn();
         }
 
-        if (SelectionController.mode == SelectionMode.ScriptedPlayerEndTurn) {
+        if (SelectionController.instance.mode == SelectionMode.ScriptedPlayerEndTurn) {
             spriteRenderer.color = new Color(0.3f, 0.3f, 0.3f);
-            TutorialController.EndCurrentTurn();
+            BattleControllerManager.instance.tutorial.EndCurrentTurn();
         }
     }
 
-    void OnMouseOver()
-    {
+    void OnMouseOver() {
         Camera.main.GetComponent<CameraController>().DontMove();
     }
 
-    void OnMouseEnter()
-    {
+    void OnMouseEnter() {
         spriteRenderer.color = new Color(0.7f, 0.7f, 0.7f);
     }
 
-    void OnMouseUp()
-    {
+    void OnMouseUp() {
         spriteRenderer.color = new Color(0.7f, 0.7f, 0.7f);
     }
 
-    void OnMouseExit()
-    {
+    void OnMouseExit() {
         spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f);
     }
 }

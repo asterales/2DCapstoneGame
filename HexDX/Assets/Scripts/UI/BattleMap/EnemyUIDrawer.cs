@@ -4,11 +4,11 @@ using UnityEngine.UI;
 public class EnemyUIDrawer : UnitUIDrawer {
 
     void Update() {
-        if (SelectionController.selectedUnit != null && !SelectionController.selectedUnit.IsPlayerUnit()) {
-            unit = SelectionController.selectedUnit;
+        if (sc.selectedUnit != null && !sc.selectedUnit.IsPlayerUnit()) {
+            unit = sc.selectedUnit;
         }
-        if (SelectionController.target && !SelectionController.target.IsPlayerUnit()) {
-            unit = SelectionController.target;
+        if (sc.target && !sc.target.IsPlayerUnit()) {
+            unit = sc.target;
         }
         DrawUI();
     }

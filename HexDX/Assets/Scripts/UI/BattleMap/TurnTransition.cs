@@ -56,7 +56,7 @@ public class TurnTransition : MonoBehaviour {
 	public void PlayTransition(bool toEnemyTurn, TransitionEndFunc endCallback = null) {
 		if (!IsRunning) {
             IsRunning = true;
-            SelectionController.mode = SelectionMode.TurnTransition;
+            SelectionController.instance.mode = SelectionMode.TurnTransition;
             transitionEndCallback = endCallback;
             Timing.RunCoroutine(AnimateTransition(toEnemyTurn));
         }

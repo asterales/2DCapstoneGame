@@ -3,7 +3,7 @@
 public class ScriptedEndTurn : ScriptEvent {
     
     public override void DoPlayerEvent() {
-        SelectionController.mode = SelectionMode.ScriptedPlayerEndTurn;
+        list.sc.mode = SelectionMode.ScriptedPlayerEndTurn;
         Camera.main.transform.GetChild(0).FindChild("EndTurnButton").GetComponent<SpriteRenderer>().color = Color.yellow;
     }
 

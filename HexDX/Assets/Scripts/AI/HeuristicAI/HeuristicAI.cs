@@ -125,7 +125,7 @@ public class HeuristicAI : UnitAI
             if (choice.attackChoice != null)
             {
                 Timing.RunCoroutine(unit.PerformAttack(choice.attackChoice.chosenUnit));
-                SelectionController.ShowTarget(choice.attackChoice.chosenUnit);
+                SelectionController.instance.ShowTarget(choice.attackChoice.chosenUnit);
                 attackStarted = true;
             }
             else

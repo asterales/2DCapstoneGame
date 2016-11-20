@@ -16,21 +16,21 @@ public class ScriptedFace : ScriptEvent {
 
     void Update() {
         if (isActive && isPlayerEvent) {
-            SelectionController.RegisterFacing();
-            if (Input.GetMouseButtonDown(1) && SelectionController.selectedUnit.facing == direction) {
-                SelectionController.selectedUnit = null;
+            list.sc.RegisterFacing();
+            if (Input.GetMouseButtonDown(1) && list.sc.selectedUnit.facing == direction) {
+                list.sc.selectedUnit = null;
                 FinishEvent();
             }
         }
     }
 
     public override void DoPlayerEvent() {
-        SelectionController.mode = SelectionMode.ScriptedPlayerFace;
-        SelectionController.selectedUnit = unit;
+        list.sc.mode = SelectionMode.ScriptedPlayerFace;
+        list.sc.selectedUnit = unit;
     }
 
     public override void DoEvent() {
-        SelectionController.mode = SelectionMode.ScriptedAI;
+        list.sc.mode = SelectionMode.ScriptedAI;
         unit.facing = direction;
         FinishEvent();
     }

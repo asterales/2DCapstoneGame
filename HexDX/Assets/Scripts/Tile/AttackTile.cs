@@ -5,16 +5,18 @@ public class AttackTile : MonoBehaviour {
     public Tile tile;
 
     public void OnMouseOver() {
-        if (SelectionController.selectedUnit && SelectionController.selectedUnit.phase == UnitTurn.Attacking) {
-            if (SelectionController.selectedUnit.IsPlayerUnit() && HasEnemyUnit() && SelectionController.target != null) {
-                SelectionController.mode = SelectionMode.Attacking;
-                if (tile.currentUnit != SelectionController.target) {
-                    SelectionController.ShowTarget(tile.currentUnit);
+        SelectionController sc = SelectionController.instance;
+        TutorialController tutorial = BattleControllerManager.instance.tutorial;
+        if (sc.selectedUnit && sc.selectedUnit.phase == UnitTurn.Attacking) {
+            if (sc.selectedUnit.IsPlayerUnit() && HasEnemyUnit() && sc.target != null) {
+                sc.mode = SelectionMode.Attacking;
+                if (tile.currentUnit != sc.target) {
+                    sc.ShowTarget(tile.currentUnit);
                 }
                 if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0)){
-                    SelectionController.target = null;
-                    Timing.RunCoroutine(SelectionController.selectedUnit.PerformAttack(tile.currentUnit));
-                    SelectionController.HideTarget();
+                    sc.target = null;
+                    Timing.RunCoroutine(sc.selectedUnit.PerformAttack(tile.currentUnit));
+                    sc.HideTarget();
                 }
             }
             else if (Input.GetMouseButtonDown(0))
@@ -29,8 +31,8 @@ public class AttackTile : MonoBehaviour {
                     tile.OnMouseOver();
                 }
             }
-        } else if (TutorialController.IsAttackTarget(this) && Input.GetMouseButtonDown(1)){
-            SelectionController.ShowTarget(tile.currentUnit);
+        } else if (tutorial && tutorial.IsAttackTarget(this) && Input.GetMouseButtonDown(1)){
+            sc.ShowTarget(tile.currentUnit);
         } else {
             tile.OnMouseOver();
         }

@@ -40,7 +40,7 @@ public class BasicUnitAI : UnitAI {
             if (enemy) {
                 attackStarted = true;
                 Timing.RunCoroutine(unit.PerformAttack(enemy));
-                SelectionController.ShowTarget(enemy); 
+                SelectionController.instance.ShowTarget(enemy); 
             } else {
                 unit.MakeDone();
             }

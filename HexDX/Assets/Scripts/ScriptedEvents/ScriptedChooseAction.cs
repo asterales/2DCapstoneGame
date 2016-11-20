@@ -17,11 +17,11 @@ public class ScriptedChooseAction : ScriptEvent {
             }
             if (player.GetSubmenuButton(pos, 2, "Wait", actionEnabled[(int)Action.Wait])) {
                 Debug.Log("Waiting");
-                SelectionController.selectedUnit = null;
+                list.sc.selectedUnit = null;
                 FinishEvent();
             }
             if (player.GetSubmenuButton(pos, 3, "Undo", actionEnabled[(int)Action.Undo])) {
-                SelectionController.ResetLastTile(unit);
+                list.sc.ResetLastTile(unit);
                 FinishEvent();
             }
         }
@@ -29,7 +29,7 @@ public class ScriptedChooseAction : ScriptEvent {
 
     public override void DoPlayerEvent() {
         player = BattleControllerManager.instance.player;
-        SelectionController.mode = SelectionMode.ScriptedPlayerChooseAction;
+        list.sc.mode = SelectionMode.ScriptedPlayerChooseAction;
         actionEnabled[(int)action] = true;
     }
 

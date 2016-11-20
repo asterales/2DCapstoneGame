@@ -18,7 +18,7 @@ public class GameDialogueManager : DialogueManager {
 	}
 
 	protected override void Update() {
-		if (IsVisible && SelectionController.mode != SelectionMode.Paused) {
+		if (IsVisible && SelectionController.instance.mode != SelectionMode.Paused) {
 			if(HasFinishedAllLines() && finishedCallback != null){
 				finishedCallback();
 				finishedCallback = null;

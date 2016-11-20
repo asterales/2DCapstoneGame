@@ -7,9 +7,9 @@ public class PlayerBattleController : ArmyBattleController {
     public static Texture2D menuItemHovered;
     
     // for ease of use
-    private static Unit selectedUnit { 
-        get { return SelectionController.selectedUnit; } 
-        set { SelectionController.selectedUnit = value; }
+    private Unit selectedUnit { 
+        get { return sc.selectedUnit; } 
+        set { sc.selectedUnit = value; }
     }
     
     // path sprites
@@ -30,13 +30,13 @@ public class PlayerBattleController : ArmyBattleController {
     }
 
     void Update() {
-        if (!SelectionController.TakingAIInput()
-            && SelectionController.mode != SelectionMode.TurnTransition
+        if (!sc.TakingAIInput()
+            && sc.mode != SelectionMode.TurnTransition
             && selectedUnit == null) {
-            SelectionController.mode = SelectionMode.Open;
+            sc.mode = SelectionMode.Open;
         }
-        if (!SelectionController.TakingAIInput()
-            && SelectionController.mode != SelectionMode.TurnTransition
+        if (!sc.TakingAIInput()
+            && sc.mode != SelectionMode.TurnTransition
             && selectedUnit) {
             if (selectedUnit.phase == UnitTurn.Moving || selectedUnit.phase == UnitTurn.Facing || selectedUnit.phase == UnitTurn.ChoosingAction)
                 if (Input.GetKeyDown(KeyCode.LeftShift)||Input.GetMouseButtonDown(2))
@@ -47,12 +47,12 @@ public class PlayerBattleController : ArmyBattleController {
                 case UnitTurn.Attacking:
                     break;
                 case UnitTurn.Facing:
-                    SelectionController.selectedTile = selectedUnit.currentTile;
+                    sc.selectedTile = selectedUnit.currentTile;
                     SelectFacing();
                     break;
                 case UnitTurn.Done:
                     selectedUnit = null;
-                    SelectionController.mode = SelectionMode.Open;
+                    sc.mode = SelectionMode.Open;
                     break;
             }
         }
@@ -62,9 +62,9 @@ public class PlayerBattleController : ArmyBattleController {
     }
 
     private void SelectFacing() {
-        SelectionController.RegisterFacing();
+        sc.RegisterFacing();
         if (Input.GetMouseButtonDown(1)) {
-            SelectionController.RegisterFacing();
+            sc.RegisterFacing();
             selectedUnit.MakeChoosingAction();
         }
     }
@@ -76,7 +76,7 @@ public class PlayerBattleController : ArmyBattleController {
             bool canAttack = tile;
 
             if (GetSubmenuButton(pos, 1, "Attack", canAttack)) {
-                SelectionController.target = tile.currentUnit;
+                sc.target = tile.currentUnit;
                 selectedUnit.MakeAttacking();
             }
             if (GetSubmenuButton(pos, 2, "Wait", true)) {
@@ -91,8 +91,8 @@ public class PlayerBattleController : ArmyBattleController {
     public void Undo()
     {
         UnitState.RestoreStates();
-        SelectionController.selectedTile = selectedUnit.currentTile;
-        SelectionController.mode = SelectionMode.Open;
+        sc.selectedTile = selectedUnit.currentTile;
+        sc.mode = SelectionMode.Open;
         selectedUnit.MakeOpen();
         HexMap.ClearAllTiles();
         HexMap.ShowMovementTiles(selectedUnit);
@@ -133,7 +133,7 @@ public class PlayerBattleController : ArmyBattleController {
 
     public override void StartTurn() {
         Debug.Log("Starting Player Turn");
-        SelectionController.mode = SelectionMode.Open;
+        sc.mode = SelectionMode.Open;
         base.StartTurn();
     }
 
@@ -154,11 +154,11 @@ public class PlayerBattleController : ArmyBattleController {
             selectedUnit = null;
         }
         HexMap.ClearAllTiles();
-        SelectionController.ClearSelection();
+        sc.ClearSelection();
         MovementTile.path = null;
     }
 
-    public static bool InUnitPhase(UnitTurn phase) {
-        return !SelectionController.TakingAIInput() && selectedUnit && selectedUnit.phase == phase;
+    public bool InUnitPhase(UnitTurn phase) {
+        return !sc.TakingAIInput() && selectedUnit && selectedUnit.phase == phase;
     }
 }

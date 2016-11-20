@@ -26,7 +26,7 @@ public abstract class UnitAI : MonoBehaviour {
     public abstract void SetAttack();
     
     public virtual void Reset() {
-        SelectionController.HideTarget();
+        SelectionController.instance.HideTarget();
     }
 
     protected Unit GetEnemyInRange() {

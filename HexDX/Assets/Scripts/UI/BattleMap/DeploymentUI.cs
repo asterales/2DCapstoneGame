@@ -36,7 +36,7 @@ public class DeploymentUI : MonoBehaviour {
 			}
 			if (gameDialogueMgr == null || !gameDialogueMgr.IsVisible) {
 				phasePanelObj.SetActive(true);
-				startBattleButton.enabled = SelectionController.mode == SelectionMode.DeploymentOpen;
+				startBattleButton.enabled = SelectionController.instance.mode == SelectionMode.DeploymentOpen;
 			} else {
 				phasePanelObj.SetActive(false);
 				startBattleButton.enabled = false;

@@ -22,23 +22,23 @@ public class ScriptedMove : ScriptEvent {
     }
 
     public override void DoPlayerEvent() {
-        SelectionController.mode = SelectionMode.ScriptedPlayerMove;
-        TutorialController.targetTile = tile;
-        SelectionController.selectedTile = unit.currentTile;
-        SelectionController.selectedUnit = unit;
+        list.sc.mode = SelectionMode.ScriptedPlayerMove;
+        list.tutorial.targetTile = tile;
+        list.sc.selectedTile = unit.currentTile;
+        list.sc.selectedUnit = unit;
         // let movement tile selection take care of itself
     }
 
     public override void DoEvent() {
-        SelectionController.mode = SelectionMode.ScriptedAI;
+        list.sc.mode = SelectionMode.ScriptedAI;
         unit.SetPath(unit.GetShortestPath(tile));
         unit.MakeMoving(this);
     }
 
     public override void FinishEvent(){
-        TutorialController.targetTile = null;
-        SelectionController.selectedTile = null;
-        SelectionController.selectedUnit = null;
+        list.tutorial.targetTile = null;
+        list.sc.selectedTile = null;
+        list.sc.selectedUnit = null;
         base.FinishEvent();
     }
 }

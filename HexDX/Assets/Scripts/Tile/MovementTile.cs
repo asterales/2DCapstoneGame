@@ -5,15 +5,20 @@ using MovementEffects;
 public class MovementTile : MonoBehaviour {
 
     public Tile tile;
+    private SelectionController sc;
     public static List<Tile> path;
     private static Color pathColor = new Color(1.0f, 1.0f, 1.0f, 0.6f);
+
+    void Start() {
+        sc = SelectionController.instance;
+    }
    
     public void OnMouseOver() {
-        if (SelectionController.TakingInput()) {
+        if (sc.TakingInput()) {
             if (Input.GetMouseButtonDown(0)) {
                 tile.OnMouseOver();
             } else if (Input.GetMouseButtonDown(1)) {
-                if (path != null && (tile.currentUnit == SelectionController.selectedUnit || tile.currentUnit == null))
+                if (path != null && (tile.currentUnit == sc.selectedUnit || tile.currentUnit == null))
                     StartCoroutine(CommitPath());
                 else
                 {
@@ -21,70 +26,72 @@ public class MovementTile : MonoBehaviour {
                 }
             }
         }
-        if (TutorialController.IsTargetDestination(this)){
+        TutorialController tutorial = BattleControllerManager.instance.tutorial;
+        if (tutorial && tutorial.IsTargetDestination(this)){
             if (path != null && path[path.Count - 1] != tile && !HexMap.AreNeighbors(tile, path[path.Count - 1]) ){
-                path = SelectionController.selectedUnit.GetShortestPath(tile);
+                path = sc.selectedUnit.GetShortestPath(tile);
                 DrawPath();
             }
             if (Input.GetMouseButtonDown(1)){
-                StartCoroutine(CommitPath(TutorialController.eventsList.currentScriptEvent as ScriptedMove));
+                StartCoroutine(CommitPath(tutorial.eventsList.currentScriptEvent as ScriptedMove));
             }
         }
 
     }
     
     public void OnMouseEnter() {
-        SelectionController.HideTarget();
-        if ((SelectionController.TakingInput() 
-                || SelectionController.mode == SelectionMode.ScriptedPlayerMove) 
+        sc.HideTarget();
+        if ((sc.TakingInput() 
+                || sc.mode == SelectionMode.ScriptedPlayerMove) 
                 && path != null) {
             if (path.Count > 1 && tile == path[path.Count - 2]) {
                 // Backtracking - remove last tile
                 path.RemoveAt(path.Count - 1);
             } else if (HexMap.AreNeighbors(tile, path[path.Count - 1])
-                        && SelectionController.selectedUnit.CanPathThrough(tile)) {
-                if (PathCost(path) + (int)tile.tileStats.mvtDifficulty <= SelectionController.selectedUnit.MvtRange) {
+                        && sc.selectedUnit.CanPathThrough(tile)) {
+                if (PathCost(path) + (int)tile.tileStats.mvtDifficulty <= sc.selectedUnit.MvtRange) {
                     path.Add(tile);
                 } else {
-                   path = SelectionController.selectedUnit.GetShortestPath(tile);
+                   path = sc.selectedUnit.GetShortestPath(tile);
                 }
             }
             else {
-                path = SelectionController.selectedUnit.GetShortestPath(tile);
+                path = sc.selectedUnit.GetShortestPath(tile);
             }
             DrawPath();
         }
     }
 
 
-    public static int PathCost(List<Tile> path)
-    {
+    public static int PathCost(List<Tile> path) {
         int cost = 0;
         for (int i = 1; i < path.Count; i++)
             cost+=(int)path[i].tileStats.mvtDifficulty;
         return cost;
     }
+
     public static IEnumerator<WaitForEndOfFrame> CommitPath(ScriptedMove move = null) {
-       if (path != null && (path[path.Count - 1].currentUnit == null || path[path.Count - 1].currentUnit == SelectionController.selectedUnit)) {
+        SelectionController sc = SelectionController.instance;
+       if (path != null && (path[path.Count - 1].currentUnit == null || path[path.Count - 1].currentUnit == sc.selectedUnit)) {
             if (path.Count > 1)
             {
-                SelectionController.selectedUnit.MakeMoving(move);
-                SelectionController.selectedUnit.SetPath(path);
+                sc.selectedUnit.MakeMoving(move);
+                sc.selectedUnit.SetPath(path);
                 if (move == null)
                 {
-                    SelectionController.mode = SelectionMode.Moving;
+                    sc.mode = SelectionMode.Moving;
                 }
             }
             else
             {
                 yield return new WaitForEndOfFrame();
-                SelectionController.mode = SelectionMode.Facing;
-                SelectionController.selectedUnit.MakeFacing();
+                sc.mode = SelectionMode.Facing;
+                sc.selectedUnit.MakeFacing();
             }
-            SelectionController.SaveLastTile(SelectionController.selectedUnit);
+            sc.SaveLastTile(sc.selectedUnit);
             path = null;
             HexMap.ClearAllTiles();
-            SelectionController.ClearSelection();
+            sc.ClearSelection();
         }
     }
 
@@ -108,8 +115,8 @@ public class MovementTile : MonoBehaviour {
         }
     }
 
-    private static void DrawZoneOfControlThreat()
-    {
+    private static void DrawZoneOfControlThreat() {
+        SelectionController sc = SelectionController.instance;
         foreach (Unit unit in BattleController.instance.ai.units){
             if (unit.phase == UnitTurn.Open){
                 bool inrange = false;
@@ -124,7 +131,7 @@ public class MovementTile : MonoBehaviour {
                 }
                 if (!inrange || path.Count==1)
                     unit.spriteRenderer.color = Color.white;
-                if (unit == SelectionController.target && unit.HasInAttackRange(SelectionController.selectedUnit))
+                if (unit == sc.target && unit.HasInAttackRange(sc.selectedUnit))
                     unit.spriteRenderer.color = Color.red;
             }
         }

@@ -22,6 +22,7 @@ public class Unit : MonoBehaviour {
     public AIBattleController ai;
     public SpriteRenderer spriteRenderer;
 
+    private SelectionController sc;
     private AudioSource audioSource;
     private Animator animator;
     private Tile lastTile;
@@ -46,6 +47,10 @@ public class Unit : MonoBehaviour {
 
 
     void Awake() {
+        facing = 0;
+        scriptedMove = null;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
         unitStats = GetComponent<UnitStats>();
         sprites = GetComponent<UnitSprites>();
         sounds = GetComponent<UnitSounds>();
@@ -64,13 +69,6 @@ public class Unit : MonoBehaviour {
             Debug.Log(e.StackTrace);
         }
 
-        facing = 0;
-
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
-
-        scriptedMove = null;
-
         ////// DEBUG CODE //////
         if (unitStats == null) {
             Debug.Log("Unit Needs Unit Stats to be defined -> Unit.cs");
@@ -85,6 +83,7 @@ public class Unit : MonoBehaviour {
     void Start() {
         MakeOpen();
         DrawVeterancy();
+        DrawHealth();
     }
 
     void Update() {
@@ -100,35 +99,36 @@ public class Unit : MonoBehaviour {
     }
 
     public void InitForBattle() {
-        DrawHealth();
         player = BattleControllerManager.instance.player;
         ai = BattleControllerManager.instance.ai;
+        sc = SelectionController.instance;
     }
 
     private void Move() {
         if (path.Count > 0) {
-            // disable the players ability to select
-            if (SelectionController.TakingInput()) {
-                SelectionController.mode = SelectionMode.Moving;
+            // if player turn, disable the players ability to select
+            if (sc.TakingInput()) {
+                sc.mode = SelectionMode.Moving;
             }
             lastTile = path.Peek();
             Vector3 destination = lastTile.transform.position;
-            if (Vector3.Distance(transform.position, destination)>0.01f*SpeedController.speed) {
+            // if not at tile, move to tiles
+            if (Vector3.Distance(transform.position, destination) > 0.01f*SpeedController.speed) {
                 transform.position = Vector3.MoveTowards(transform.position, destination, moveSpeed*SpeedController.speed);
-            } else {
+            } else { // if at a new tile...
                 CheckZonesOfControl();
-                if (path.Count == 1) {
+                if (path.Count == 1) { // if this is the last tile, set the new tile and move to facing phase
                     SetTile(path.Dequeue());
-                    // re-enable the players ability to select
-                    if (SelectionController.mode == SelectionMode.Moving) {
-                        SelectionController.mode = SelectionMode.Facing;
+                    // re-enable the players ability to select for facing
+                    if (sc.mode == SelectionMode.Moving) {
+                        sc.mode = SelectionMode.Facing;
                     }
                     MakeFacing();
                     if (scriptedMove != null) {
                         scriptedMove.FinishEvent();
                         scriptedMove = null;
                     }
-                } else {
+                } else { // if its not the last tile, set the unit to face the next tile
                     path.Dequeue();
                     facing = HexMap.GetNeighbors(lastTile).IndexOf(path.Peek());
                     SetFacingSprites();
@@ -218,6 +218,16 @@ public class Unit : MonoBehaviour {
             }
         }
         DrawVeterancy();
+    }
+
+    public void LevelUp() {
+        unitStats.LevelUp();
+        DrawHealth();
+    }
+
+    public void LevelDown() {
+        unitStats.LevelDown();
+        DrawHealth();
     }
 
     public void DrawVeterancy() {
@@ -314,7 +324,6 @@ public class Unit : MonoBehaviour {
             b3.color = Color.clear;
             b4.color = Color.clear;
             b5.color = Color.clear;
-
         }
     }
 
@@ -403,20 +412,24 @@ public class Unit : MonoBehaviour {
         scriptedMove = move;
     }
 
-    public void MakeChoosingAction(ScriptEvent scriptEvent = null) {
-        foreach (Unit unit in ai.units)
-            if (unit != this && unit.phase != UnitTurn.Open && unit.phase != UnitTurn.Done)
+    public void MakeChoosingAction() {
+        foreach (Unit unit in ai.units) {
+            if (unit != this && unit.phase != UnitTurn.Open && unit.phase != UnitTurn.Done) {
                 return;
-        foreach (Unit unit in player.units)
-            if (unit!=this && unit.phase != UnitTurn.Open && unit.phase != UnitTurn.Done)
+            }
+        }
+        foreach (Unit unit in player.units) {
+            if (unit!=this && unit.phase != UnitTurn.Open && unit.phase != UnitTurn.Done) {
                 return;
+            }
+        }
         phase = UnitTurn.ChoosingAction;
     }
 
     public void MakeAttacking() {
         spriteRenderer.color = Color.white;
         phase = UnitTurn.Attacking;
-        if (IsPlayerUnit() && !SelectionController.TakingAIInput()) {
+        if (IsPlayerUnit() && !sc.TakingAIInput()) {
             HexMap.ShowAttackTiles(this);
         } else if (!IsPlayerUnit()) {
             HexMap.ShowAttackTiles(this);
@@ -432,8 +445,9 @@ public class Unit : MonoBehaviour {
             phase = UnitTurn.Done;
             spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
             SetFacingSprites();
-            if (this == SelectionController.selectedUnit)
+            if (this == sc.selectedUnit) {
                 HexMap.ClearAttackTiles();
+            }
         }
     }
 
@@ -444,15 +458,6 @@ public class Unit : MonoBehaviour {
         lastTile = null;
         RemoveFromMap();
         gameObject.AddComponent<UnitDeath>();
-    }
-   
-    public void LevelUp() {
-        unitStats.LevelUp();
-        DrawHealth();
-    }
-
-    public void LevelDown() {
-        unitStats.LevelDown();
     }
 
     public IEnumerator<float> PerformAttack(Unit target) {
@@ -499,7 +504,7 @@ public class Unit : MonoBehaviour {
             target.AddExp((int)(0.5f*damage * modifier));
         }
         yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f/SpeedController.speed);
-        Timing.RunCoroutine(finishAttack());
+        Timing.RunCoroutine(FinishAttack());
         GameObject indicator = new GameObject();
         indicator.AddComponent<DamageIndicator>().SetDamage(indicatorText);
         indicator.transform.position = target.transform.position + new Vector3(-0.5f, 3f, 0f);
@@ -518,10 +523,11 @@ public class Unit : MonoBehaviour {
         healthBar.fillAmount = (float)Health / (float)MaxHealth;
     }
 
-    public IEnumerator<float> finishAttack() {
+    private IEnumerator<float> FinishAttack() {
         yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f/SpeedController.speed);
-        if (phase == UnitTurn.Attacking)
+        if (phase == UnitTurn.Attacking) {
             MakeDone();
+        }
     }
 
     ///////////////////////////
@@ -626,8 +632,7 @@ public class Unit : MonoBehaviour {
         return HexMap.GetAttackTiles(this).Contains(other.currentTile);
     }
 
-    public bool HasInTotalRange(Unit other)
-    {
+    public bool HasInTotalRange(Unit other) {
         return HexMap.GetTotalRange(this).Contains(other.currentTile);
     }
 

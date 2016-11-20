@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using MovementEffects;
 
-public class ScriptedDelay : ScriptEvent
-{
+public class ScriptedDelay : ScriptEvent {
     public float seconds;
 
     public override void DoPlayerEvent() {
@@ -13,9 +12,8 @@ public class ScriptedDelay : ScriptEvent
         Timing.RunCoroutine(Delay());
     }
 
-    public IEnumerator<float> Delay()
-    {
-        SelectionController.mode = SelectionMode.ScriptedDelay;
+    public IEnumerator<float> Delay() {
+        list.sc.mode = SelectionMode.ScriptedDelay;
         yield return Timing.WaitForSeconds(seconds);
         FinishEvent();
     }

@@ -35,7 +35,7 @@ public class StationaryAI : UnitAI {
     	} else if (!attackStarted) {
             attackStarted = true;
             Timing.RunCoroutine(unit.PerformAttack(currentEnemy));
-            SelectionController.ShowTarget(currentEnemy); 
+            SelectionController.instance.ShowTarget(currentEnemy); 
         }
     }
 

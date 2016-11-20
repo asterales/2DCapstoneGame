@@ -18,7 +18,7 @@ public class BattleControllerManager : MonoBehaviour {
 	public AIBattleController ai;
 
 	// Imported Controllers
-	public TutorialController tutorialController;
+	public TutorialController tutorial;
 	public ScriptedAIBattleController scriptedAI;
 	public CustomUnitLoader unitLoader;
 	public TutorialInfo tutorialInfo;
@@ -32,7 +32,7 @@ public class BattleControllerManager : MonoBehaviour {
 		if (instance == null) {
 			instance = this;
 		} else if (instance != this) {
-			Destroy(gameObject);
+			Destroy(this);
 		}
 	}
 
@@ -53,18 +53,18 @@ public class BattleControllerManager : MonoBehaviour {
 
 	private void GetImportedControllers() {
 		prebattlePhases = new List<PreBattleController>();
-		tutorialController = tutorialController != null ? tutorialController : FindObjectOfType(typeof(TutorialController)) as TutorialController;
+		tutorial = tutorial != null ? tutorial : FindObjectOfType(typeof(TutorialController)) as TutorialController;
 		scriptedAI = scriptedAI != null ? scriptedAI : FindObjectOfType(typeof(ScriptedAIBattleController)) as ScriptedAIBattleController;
 		unitLoader = unitLoader != null ? unitLoader : FindObjectOfType(typeof(CustomUnitLoader)) as CustomUnitLoader;
 		tutorialInfo = tutorialInfo != null ? tutorialInfo : FindObjectOfType(typeof(TutorialInfo)) as TutorialInfo;
 		if (deploymentController) {
 			prebattlePhases.Add(deploymentController);
 		}
-		if (tutorialController) {
-			if (tutorialController.isBeforeDeployment) {
-				prebattlePhases.Insert(0, tutorialController);
+		if (tutorial) {
+			if (tutorial.isBeforeDeployment) {
+				prebattlePhases.Insert(0, tutorial);
 			} else {
-				prebattlePhases.Add(tutorialController);
+				prebattlePhases.Add(tutorial);
 			}
 		}
 		preBattlePhaseIndex = 0;

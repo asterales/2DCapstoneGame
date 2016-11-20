@@ -14,6 +14,7 @@ public class UnitUIDrawer : MonoBehaviour {
     private Text defense;
     private Text power;
     private Text resist;
+    protected SelectionController sc;
 
     void Awake() {
         healthbar = transform.Find("HealthBar").GetComponent<Image>();
@@ -28,6 +29,10 @@ public class UnitUIDrawer : MonoBehaviour {
         defense = transform.Find("Defense").GetComponent<Text>();
         power = transform.Find("Power").GetComponent<Text>();
         resist = transform.Find("Resist").GetComponent<Text>();
+    }
+
+    void Start() {
+        sc = SelectionController.instance;
     }
 
     protected void DrawUI() {
