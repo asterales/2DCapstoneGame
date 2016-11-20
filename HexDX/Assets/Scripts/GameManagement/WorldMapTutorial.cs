@@ -61,8 +61,6 @@ public class WorldMapTutorial : MonoBehaviour {
 		GameObject newUnitObj = Instantiate<GameObject>(Resources.Load<GameObject>("Units/Rifleman"));
 		Unit newUnit = newUnitObj.GetComponent<Unit>();
 		gm.AddNewPlayerUnit(newUnit);
-		newUnit.gameObject.SetActive(true);
-		gm.activeUnits.Add(newUnit);
 		gm.ResetUnit(newUnit);
 		ActiveArmyDisplay display = FindObjectOfType(typeof(ActiveArmyDisplay)) as ActiveArmyDisplay;
 		display.RefreshDisplay();
