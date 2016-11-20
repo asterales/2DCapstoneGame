@@ -66,13 +66,18 @@ public class LEMapLoader : MonoBehaviour {
             int row = Convert.ToInt32(data[0]);
             int col = Convert.ToInt32(data[1]);
             LEUnitSettings settings = unitCache.GetSettingsForId(data[data.Length-1]);
-            LETile tile = hexMap.tileArray[row][col];
-            Vector3 newPos = new Vector3(tile.gameObject.transform.position.x, tile.gameObject.transform.position.y, tile.gameObject.transform.position.z - .2f);
-            LEUnitInstance instance = unitCache.CreateNewUnitInstance(newPos, settings);
-            instance.Read(unitCache, str);
-            tile.SetInstance(instance);
-            instance.location = tile.position;
-            unitCache.unitInstances.Add(instance);
+            //if (settings == null) Debug.Log("WHAT");
+            //Debug.Log("HAHA");
+            if (settings != null)
+            {
+                LETile tile = hexMap.tileArray[row][col];
+                Vector3 newPos = new Vector3(tile.gameObject.transform.position.x, tile.gameObject.transform.position.y, tile.gameObject.transform.position.z - .2f);
+                LEUnitInstance instance = unitCache.CreateNewUnitInstance(newPos, settings);
+                instance.Read(unitCache, str);
+                tile.SetInstance(instance);
+                instance.location = tile.position;
+                unitCache.unitInstances.Add(instance);
+            }
         }
 
         int numDepTiles = Convert.ToInt32(reader.ReadLine());

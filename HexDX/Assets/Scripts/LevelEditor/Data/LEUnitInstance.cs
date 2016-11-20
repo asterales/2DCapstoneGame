@@ -12,6 +12,8 @@ public class LEUnitInstance : MonoBehaviour {
     public int instancePower;
     public int instanceDefense;
     public int instanceResistance;
+    public int instanceMobID;
+    public int instanceMobType;
     public int direction;
 
     void Awake () {
@@ -23,6 +25,8 @@ public class LEUnitInstance : MonoBehaviour {
         instanceDefense = 0;
         instanceResistance = 0;
         instanceVeterancy = 0;
+        instanceMobID = 0;
+        instanceMobType = 0;
         ////// DEBUG CODE //////
         if (spriteRenderer == null)
         {
@@ -66,24 +70,14 @@ public class LEUnitInstance : MonoBehaviour {
         return instanceVeterancy; // change once veterancy support is done
     }
 
-    public int GetMove()
-    {
-        return baseSettings.baseMove[instanceVeterancy];
-    }
-
     public int GetMobID()
     {
-        return baseSettings.mobID[instanceVeterancy];
+        return instanceMobID;
     }
 
     public int GetMobType()
     {
-        return baseSettings.mobType[instanceVeterancy];
-    }
-
-    public int GetManuverability()
-    {
-        return baseSettings.baseManuverability[instanceVeterancy];
+        return instanceMobType;
     }
 
     public string GetId()
@@ -141,10 +135,8 @@ public class LEUnitInstance : MonoBehaviour {
             GetPower() + "," +
             GetDefense() + "," +
             GetResistence() + "," +
-            GetMove() + "," +
             GetMobID() + "," +
             GetMobType() + "," +
-            GetManuverability() + "," +
             GetDirection() + "," +
             GetId() + "\n";
     }
@@ -158,12 +150,10 @@ public class LEUnitInstance : MonoBehaviour {
         int pow = Convert.ToInt32(data[5]);
         int def = Convert.ToInt32(data[6]);
         int res = Convert.ToInt32(data[7]);
-        int mov = Convert.ToInt32(data[8]); // can ignore
-        int low = Convert.ToInt32(data[9]); // can ignore
-        int hih = Convert.ToInt32(data[10]); // can ignore
-        int man = Convert.ToInt32(data[11]); // can ignore
-        int dir = Convert.ToInt32(data[12]);
-        string id = data[13];
+        int mid = Convert.ToInt32(data[8]);
+        int mty = Convert.ToInt32(data[9]);
+        int dir = Convert.ToInt32(data[10]);
+        string id = data[11];
 
         baseSettings = unitCache.GetSettingsForId(id);
 

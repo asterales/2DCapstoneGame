@@ -124,26 +124,6 @@ public class LEStatEditor : MonoBehaviour {
                     else currentInstance.instanceHealth += val;
                     break;
                 }
-            case LEStatID.MOBTYPE:
-                {
-                    currentSettings.mobType[reference.currentVet] += val;
-                    break;
-                }
-            case LEStatID.MOBID:
-                {
-                    currentSettings.mobID[reference.currentVet] += val;
-                    break;
-                }
-            case LEStatID.MANUVERABILITY:
-                {
-                    currentSettings.baseManuverability[reference.currentVet] += val;
-                    break;
-                }
-            case LEStatID.MOVE:
-                {
-                    currentSettings.baseMove[reference.currentVet] += val;
-                    break;
-                }
             case LEStatID.POWER:
                 {
                     if (currentInstance == null) currentSettings.basePower[reference.currentVet] += val;
@@ -178,10 +158,8 @@ public class LEStatEditor : MonoBehaviour {
             case LEStatID.ATTACK: return currentSettings.baseAttack[currentInstance.GetVeterancy()] + currentInstance.instanceAttack + "";
             case LEStatID.DEFENSE: return currentSettings.baseDefense[currentInstance.GetVeterancy()] + currentInstance.instanceDefense + "";
             case LEStatID.HEALTH: return currentSettings.baseHealth[currentInstance.GetVeterancy()] + currentInstance.instanceHealth + "";
-            case LEStatID.MOBTYPE: return currentSettings.mobType[currentInstance.GetVeterancy()] + "";
-            case LEStatID.MOBID: return currentSettings.mobID[currentInstance.GetVeterancy()] + "";
-            case LEStatID.MANUVERABILITY: return currentSettings.baseManuverability[currentInstance.GetVeterancy()] + "";
-            case LEStatID.MOVE: return currentSettings.baseMove[currentInstance.GetVeterancy()] + "";
+            case LEStatID.MOBTYPE: return currentInstance.GetMobType() + "";
+            case LEStatID.MOBID: return currentInstance.GetMobID() + "";
             case LEStatID.POWER: return currentSettings.basePower[currentInstance.GetVeterancy()] + currentInstance.instancePower + "";
             case LEStatID.RESISTANCE: return currentSettings.baseResistance[currentInstance.GetVeterancy()] + currentInstance.instanceResistance + "";
         }
@@ -197,10 +175,6 @@ public class LEStatEditor : MonoBehaviour {
             case LEStatID.ATTACK: return currentSettings.baseAttack[reference.currentVet] + "";
             case LEStatID.DEFENSE: return currentSettings.baseDefense[reference.currentVet] + "";
             case LEStatID.HEALTH: return currentSettings.baseHealth[reference.currentVet] + "";
-            case LEStatID.MOBTYPE: return currentSettings.mobType[reference.currentVet] + "";
-            case LEStatID.MOBID: return currentSettings.mobID[reference.currentVet] + "";
-            case LEStatID.MANUVERABILITY: return currentSettings.baseManuverability[reference.currentVet] + "";
-            case LEStatID.MOVE: return currentSettings.baseMove[reference.currentVet] + "";
             case LEStatID.POWER: return currentSettings.basePower[reference.currentVet] + "";
             case LEStatID.RESISTANCE: return currentSettings.baseResistance[reference.currentVet] + "";
         }

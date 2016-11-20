@@ -5,12 +5,14 @@ using System;
 
 public class LELevelCache {
     public List<LEBaseUnitData> baseUnitData;
+    public LEMobCache mobCache;
     public LEBaseDepData baseDepData;
     public LEBaseTileData baseTileData;
     public string id;
     
 	public LELevelCache() {
         baseUnitData = new List<LEBaseUnitData>();
+        mobCache = new LEMobCache();
         baseTileData = new LEBaseTileData();
         baseDepData = new LEBaseDepData();
         id = "fox.box";

@@ -128,7 +128,7 @@ public class LEUnitCache : MonoBehaviour
                 return unitSettings[i];
             }
         }
-        Debug.Log("INPUT ERROR :: Could Not Find UnitSettings");
+        Debug.Log("INPUT ERROR :: Could Not Find UnitSettings :: " + id);
         return null;
     }
 }

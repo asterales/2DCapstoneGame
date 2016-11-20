@@ -10,8 +10,8 @@ public class LEBaseUnitData {
     public int defense;
     public int resistance;
     public int direction;
-    public int move;
-    public int manuverability;
+    public int mobID;
+    public int mobType;
     public string id;
 
     public LEBaseUnitData()
@@ -25,8 +25,8 @@ public class LEBaseUnitData {
         defense = -1;
         resistance = -1;
         direction = -1;
-        move = -1;
-        manuverability = -1;
+        mobID = -1;
+        mobType = -1;
         id = "Cat";
     }
 
@@ -41,10 +41,10 @@ public class LEBaseUnitData {
         power = Convert.ToInt32(lines[5]);
         defense = Convert.ToInt32(lines[6]);
         resistance = Convert.ToInt32(lines[7]);
-        move = Convert.ToInt32(lines[8]);
-        manuverability = Convert.ToInt32(lines[11]);
-        direction = Convert.ToInt32(lines[12]);
-        id = lines[13];
+        mobID = Convert.ToInt32(lines[8]);
+        mobType = Convert.ToInt32(lines[9]);
+        direction = Convert.ToInt32(lines[10]);
+        id = lines[11];
     }
 
     public override string ToString()
