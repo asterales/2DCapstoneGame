@@ -23,6 +23,7 @@ public class LevelManager : MonoBehaviour {
 	public string mapFileName;
 	public string introCutsceneFile;
 	public string outroCutsceneFile;
+	public VictoryCondition victoryCondition;
 	
 	private bool levelStarted;
 	private bool destroyOnLoad;
@@ -44,6 +45,7 @@ public class LevelManager : MonoBehaviour {
 	void Awake() {
 		SceneManager.sceneLoaded += OnSceneLoaded;
 		sceneFade = GetComponent<FadeTransition>();
+		victoryCondition = GetComponent<VictoryCondition>();
 		InitSceneList();
 	}
 

@@ -49,7 +49,7 @@ public class WorldMapTutorial : MonoBehaviour {
 			permaDeathIntro.codeEvent = GivePlayerUnit;
 		} else {
 			permaDeathIntro.instructions = new List<string> {
-				"Good job for getting through that last battle without losing anyone. " +
+				"Good job for getting through that last battle without losing any units. " +
 				"Note that you <b>CAN'T</b> <b>GET</b> <b>LOST</b> <b>UNITS</b> <b>BACK</b>."
 			};
 		}
@@ -61,8 +61,6 @@ public class WorldMapTutorial : MonoBehaviour {
 		GameObject newUnitObj = Instantiate<GameObject>(Resources.Load<GameObject>("Units/Rifleman"));
 		Unit newUnit = newUnitObj.GetComponent<Unit>();
 		gm.AddNewPlayerUnit(newUnit);
-		newUnit.gameObject.SetActive(true);
-		gm.activeUnits.Add(newUnit);
 		gm.ResetUnit(newUnit);
 		ActiveArmyDisplay display = FindObjectOfType(typeof(ActiveArmyDisplay)) as ActiveArmyDisplay;
 		display.RefreshDisplay();

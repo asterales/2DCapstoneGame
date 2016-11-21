@@ -5,28 +5,28 @@ using System.Collections.Generic;
 // This class will be responsible for handling Game Loop States
 
 public class BattleController : MonoBehaviour {
+
+    public static BattleController instance;
+
     public AIBattleController ai;
     public PlayerBattleController player;
     public VictoryCondition victoryCondition;
-    private bool nextSceneLoaded;
-
-    // set in editor
-    public Texture2D actionMenuItem;
-    public Texture2D actionMenuItemHover;
-    
     public EndBattleBanner endBanner;
     public TurnTransition turnTransition;
+    public int numTurns = 0;
+    
+    private bool nextSceneLoaded;
 
-    public static bool IsPlayerTurn { get; private set; }
+    public bool IsPlayerTurn { get; private set; }
     public bool BattleIsDone { get; private set; }
-    public static bool PlayerWon { get; private set; }
+    public bool PlayerWon { get; private set; }
 
     void Awake () {
-        PlayerBattleController.menuItem = actionMenuItem;
-        PlayerBattleController.menuItemHovered = actionMenuItemHover;
+        instance = this;
         ai = GetComponent<AIBattleController>();
         player = GetComponent<PlayerBattleController>();
         victoryCondition = GetComponent<VictoryCondition>();
+        numTurns = 0;
         InitFlags();
         ////// DEBUG CODE //////
         if (ai == null) {
@@ -58,7 +58,7 @@ public class BattleController : MonoBehaviour {
                 endBanner.ShowLoss();
                 EndBattle();
             }
-        } else if (!nextSceneLoaded && Input.GetMouseButtonDown(0)) {
+        } else if (endBanner.FinishedDisplay && !nextSceneLoaded && Input.GetMouseButtonDown(0)) {
             UpdateArmyAfterBattle();
             nextSceneLoaded = true; // prevent skipping scenes by spam click
             LoadNextScene();
@@ -71,18 +71,41 @@ public class BattleController : MonoBehaviour {
             if (PlayerWon && unitLoader && unitLoader.CanReplaceUnits()) {
                 unitLoader.ReplacePlayerArmy();
             } else {
+                if (player.IsAnnihilated()) {
+                    player.RestoreInitialArmyState();
+                }
                 GameManager.instance.UpdateArmyAfterBattle();
             }
         }
     }
 
     public bool CanEndTurn() {
-        return IsPlayerTurn ? (player.AllUnitsDone() && ai.NoneAttacking() && player.NoneAttacking()) : (ai.AllUnitsDone() && player.NoneAttacking() && ai.NoneAttacking());
+        if (!BattleIsDone) {
+            if (IsPlayerTurn) {
+                return player.AllUnitsDone() && ai.NoneAttacking() && player.NoneAttacking();
+            }
+            return ai.AllUnitsDone() && player.NoneAttacking() && ai.NoneAttacking();
+        }
+        return false;
     }
 
     public void EndCurrentTurn() {
         if (!turnTransition.IsRunning) {
             turnTransition.PlayTransition(IsPlayerTurn, SwitchTurns);
+        }
+    }
+
+    public void ResetColors()
+    {
+        foreach (Unit unit in ai.units)
+        {
+            if (unit.phase == UnitTurn.Open)
+                unit.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+        foreach (Unit unit in player.units)
+        {
+            if (unit.phase == UnitTurn.Open)
+                unit.GetComponent<SpriteRenderer>().color = Color.white;
         }
     }
 
@@ -96,6 +119,7 @@ public class BattleController : MonoBehaviour {
             ai.EndTurn();
             player.StartTurn();
             IsPlayerTurn = true;
+            numTurns++;
         }
     }
     
@@ -103,7 +127,7 @@ public class BattleController : MonoBehaviour {
         player.EndTurn();
         ai.EndTurn();
         BattleIsDone = true;
-        SelectionController.ClearAllSelections();
+        SelectionController.instance.ClearAllSelections();
     }
 
     private void LoadNextScene() {

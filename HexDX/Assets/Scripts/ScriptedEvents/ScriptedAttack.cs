@@ -21,25 +21,27 @@ public class ScriptedAttack : ScriptEvent {
 
     void Update() {
         if(isActive && isPlayerEvent){
-            if (SelectionController.target == victim && SelectionController.target) {
+            if (list.sc.target == victim && list.sc.target) {
                 attacker.MakeAttacking();   
                 Timing.RunCoroutine(attacker.PerformAttack(victim));
-                SelectionController.target = null;
-                TutorialController.targetTile = null;
+                list.sc.target = null;
+                list.tutorial.targetTile = null;
             } else if (attacker.phase == UnitTurn.Done) {
-                SelectionController.mode = SelectionMode.ScriptedPlayerAttack;
+                list.sc.mode = SelectionMode.ScriptedPlayerAttack;
+                list.sc.selectedUnit = null;
                 FinishEvent();
             }
         }
     }
 
     public override void DoPlayerEvent() {
-        SelectionController.mode = SelectionMode.ScriptedPlayerAttack;
-        TutorialController.targetTile = victim.currentTile;
+        list.sc.mode = SelectionMode.ScriptedPlayerAttack;
+        list.sc.selectedUnit = attacker;
+        list.tutorial.targetTile = victim.currentTile;
     }
 
     public override void DoEvent() {
-        SelectionController.mode = SelectionMode.ScriptedAI;
+        list.sc.mode = SelectionMode.ScriptedAI;
         attacker.MakeAttacking();
         Timing.RunCoroutine(attacker.PerformAttack(victim));
         FinishEvent();

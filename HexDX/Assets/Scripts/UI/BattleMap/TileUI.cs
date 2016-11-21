@@ -3,20 +3,22 @@ using UnityEngine.UI;
 
 public class TileUI : MonoBehaviour {
 
-    public static Image tileImage;
-    public static Text tileInfo;
+    private Image tileImage;
+    private Text tileInfo;
+    private SelectionController sc;
 
 	void Start () {
+        sc = SelectionController.instance;
         tileImage = transform.Find("TileImage").GetComponent<Image>();
         tileInfo = transform.Find("TileInfo").GetComponent<Text>();
         tileImage.enabled = false;
     }
 	
 	void Update () {
-	    if (SelectionController.selectedTile != null) {
+	    if (sc.selectedTile != null) {
             tileImage.enabled = true;
-            tileImage.sprite = SelectionController.selectedTile.GetComponent<SpriteRenderer>().sprite;
-            tileInfo.text = SelectionController.selectedTile.tileStats.DisplayString;
+            tileImage.sprite = sc.selectedTile.GetComponent<SpriteRenderer>().sprite;
+            tileInfo.text = sc.selectedTile.tileStats.DisplayString;
         }
     }
 }

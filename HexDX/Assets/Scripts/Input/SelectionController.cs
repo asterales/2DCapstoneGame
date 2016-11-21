@@ -2,28 +2,32 @@
 using System.Collections.Generic;
 
 public class SelectionController : MonoBehaviour {
+    public static SelectionController instance;
     public Sprite selectedSprite;
     public Sprite targetSprite;
-    public static Unit selectedUnit;
-    public static Tile selectedTile;
-    public static Unit target;
-    public static Dictionary<Unit, Tile> lastTiles;
-    public static SelectionMode mode;
-    private static GameObject selectedSpaceObj; // object for selected space
-    private static GameObject targetSpaceObj; // object for target space
+    public Unit selectedUnit;
+    public Tile selectedTile;
+    public Unit target;
+    public Dictionary<Unit, Tile> lastTiles;
+    public SelectionMode mode;
+    private GameObject selectedSpaceObj; // object for selected space
+    private GameObject targetSpaceObj; // object for target space
 
     void Awake() {
+        if (instance == null) {
+            instance = this;
+            Init();
+        } else {
+            Destroy(this);
+        }
+    }
+
+    private void Init() {
         mode = SelectionMode.Open;
         lastTiles = new Dictionary<Unit, Tile>();
         InitSelectSpaceObj();
         InitTargetSpaceObj();
         ClearAllSelections();
-    }
-
-    void OnDestroy() {
-        selectedTile = null;
-        selectedUnit = null;
-        target = null;
     }
 
     private void InitSelectSpaceObj() {
@@ -43,7 +47,7 @@ public class SelectionController : MonoBehaviour {
     }
 
     protected virtual void Update () {
-        if(!SelectionController.TakingAIInput()) {
+        if(!TakingAIInput()) {
             if (mode == SelectionMode.Open) {
                 if (selectedTile != null) {
                     if (selectedTile.currentUnit) {
@@ -64,47 +68,56 @@ public class SelectionController : MonoBehaviour {
         }
     }
 
-    public static void SaveLastTile(Unit unit) {
+    public void SaveLastTile(Unit unit) {
         lastTiles[unit] = unit.currentTile;
     }
 
-    public static void ResetLastTile(Unit unit) {
+    public void ResetLastTile(Unit unit) {
         if(lastTiles[unit]) {
             unit.SetTile(lastTiles[unit]);
         }
     }
 
-    public static void ShowSelection(Tile tile) {
+    public void ShowSelection(Tile tile) {
         selectedSpaceObj.transform.position = tile.transform.position + GameResources.visibilityOffset + new Vector3(0, 0, 0.1f);
     }
 
-    public static void ShowSelection(Unit unit) {
+    public void ShowSelection(Unit unit) {
         selectedSpaceObj.transform.position = unit.transform.position + GameResources.visibilityOffset + new Vector3(0, 0, 0.1f);
     }
 
-    public static void ShowTarget(Unit unit) {
-        if (unit)
-        {
+    public void ShowTarget(Unit unit) {
+        if (unit) {
             target = unit;
-            targetSpaceObj.transform.position = unit.currentTile.transform.position + GameResources.visibilityOffset+new Vector3(0, 0, 0.1f);
+            if (selectedUnit&&selectedUnit.IsPlayerUnit())
+                EnemyUIDrawer.instance.SetPreview(selectedUnit.GetDamage(target));
+            if (target.phase == UnitTurn.Open && target.HasInAttackRange(selectedUnit)) {
+                target.GetComponent<SpriteRenderer>().color = Color.red;
+                if (selectedUnit&& selectedUnit.IsPlayerUnit())
+                    PlayerUIDrawer.instance.SetPreview(target.GetDamage(selectedUnit, target.ZOCModifer));
+            }
+            targetSpaceObj.transform.position = unit.currentTile.transform.position + GameResources.visibilityOffset + new Vector3(0, 0, 0.1f);
         }
     }
 
-    public static void HideSelection() {
+    public void HideSelection() {
         selectedSpaceObj.transform.position = GameResources.hidingPosition;
     }
 
-    public static void HideTarget() {
+    public void HideTarget() {
+        if (target && target.phase == UnitTurn.Open) {
+            target.GetComponent<SpriteRenderer>().color = Color.white;
+        }
         target = null;
         targetSpaceObj.transform.position = GameResources.hidingPosition;
     }
 
-    public static void ClearSelection() {
+    public void ClearSelection() {
         selectedTile = null;
         HideSelection();
     }
 
-    public static void ClearAllSelections() {
+    public void ClearAllSelections() {
         selectedTile = null;
         selectedUnit = null;
         target = null;
@@ -112,16 +125,16 @@ public class SelectionController : MonoBehaviour {
         HideSelection();
     }
 
-    public static bool TakingInput() {
+    public bool TakingInput() {
         return mode == SelectionMode.Open;
     }
 
-    public static bool TakingAIInput() {
+    public bool TakingAIInput() {
         return mode == SelectionMode.AITurn;
     }
 
-    public static void RegisterFacing() {
-        if (SelectionController.selectedUnit) {
+    public void RegisterFacing() {
+        if (selectedUnit) {
             Vector2 directionVec = Input.mousePosition - Camera.main.WorldToScreenPoint(selectedUnit.transform.position);
             selectedUnit.SetFacing(directionVec);
         }

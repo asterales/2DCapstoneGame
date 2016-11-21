@@ -5,6 +5,7 @@ using System.Linq;
 // Base class for AI scripts
 public abstract class UnitAI : MonoBehaviour {
     public static List<Unit> playerUnits;
+    public Mob mob;
 	public Unit unit;
 	public int unitNum; // index of unit in AIBattleController units list - for debugging purposes
     // to add - reference to deployment area
@@ -25,7 +26,7 @@ public abstract class UnitAI : MonoBehaviour {
     public abstract void SetAttack();
     
     public virtual void Reset() {
-        SelectionController.HideTarget();
+        SelectionController.instance.HideTarget();
     }
 
     protected Unit GetEnemyInRange() {

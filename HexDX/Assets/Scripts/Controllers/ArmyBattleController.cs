@@ -5,6 +5,7 @@ using System.Linq;
 public abstract class ArmyBattleController : MonoBehaviour {
     public List<Unit> units;
     protected BattleController battleController;
+    protected SelectionController sc;
 
     public abstract void InitUnitList();
 
@@ -15,6 +16,7 @@ public abstract class ArmyBattleController : MonoBehaviour {
     public virtual void InitUnits() {
         InitUnitList();
         units.ForEach(u => u.InitForBattle());
+        sc = SelectionController.instance;
     }
 
     public virtual void StartTurn() {

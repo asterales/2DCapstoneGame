@@ -5,35 +5,34 @@ public class AttackTile : MonoBehaviour {
     public Tile tile;
 
     public void OnMouseOver() {
-        if (SelectionController.selectedUnit && SelectionController.selectedUnit.phase == UnitTurn.Attacking) {
-            if (Input.GetMouseButtonDown(0)) {
-                if (tile.currentUnit) {
-                    //display tile stats
-                } else {
-                    // do regular tile selection
-                    tile.OnMouseOver();
+        SelectionController sc = SelectionController.instance;
+        TutorialController tutorial = BattleControllerManager.instance.tutorial;
+        if (sc.selectedUnit && sc.selectedUnit.phase == UnitTurn.Attacking) {
+            if (sc.selectedUnit.IsPlayerUnit() && HasEnemyUnit() && sc.target != null) {
+                sc.mode = SelectionMode.Attacking;
+                if (tile.currentUnit != sc.target) {
+                    sc.ShowTarget(tile.currentUnit);
                 }
-            } else if (SelectionController.selectedUnit.IsPlayerUnit() && HasEnemyUnit() && SelectionController.target != null) {
-                SelectionController.mode = SelectionMode.Attacking;
-                if (tile.currentUnit != SelectionController.target) {
-                    SelectionController.target = tile.currentUnit;
+                if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0)){
+                    sc.target = null;
+                    Timing.RunCoroutine(sc.selectedUnit.PerformAttack(tile.currentUnit));
+                    sc.HideTarget();
                 }
-                if (tile.currentUnit.phase == UnitTurn.Open && HexMap.GetAttackTiles(tile.currentUnit).Contains(SelectionController.selectedUnit.currentTile))
+            }
+            else if (Input.GetMouseButtonDown(0))
+            {
+                if (tile.currentUnit)
                 {
-                    SelectionController.selectedUnit.GetComponent<SpriteRenderer>().color = Color.red;
+                    //display tile stats
                 }
                 else
                 {
-                    SelectionController.selectedUnit.GetComponent<SpriteRenderer>().color = Color.white;
-                }
-                if (Input.GetMouseButtonDown(1)){
-                    SelectionController.target = null;
-                    Timing.RunCoroutine(SelectionController.selectedUnit.PerformAttack(tile.currentUnit));
-                    SelectionController.HideTarget();
+                    // do regular tile selection
+                    tile.OnMouseOver();
                 }
             }
-        } else if (TutorialController.IsAttackTarget(this) && Input.GetMouseButtonDown(1)){
-            SelectionController.target = tile.currentUnit;
+        } else if (tutorial && tutorial.IsAttackTarget(this) && Input.GetMouseButtonDown(1)){
+            sc.ShowTarget(tile.currentUnit);
         } else {
             tile.OnMouseOver();
         }

@@ -7,6 +7,8 @@ public class ScriptList : MonoBehaviour {
 
     public GameDialogueManager dialogueMgr;
     public List<ScriptEvent> scriptedEvents; // to be done in order and set in UI
+    public SelectionController sc;
+    public TutorialController tutorial;
     private int currentEvent;
     
     public ScriptEvent currentScriptEvent { get { return currentEvent < scriptedEvents.Count ? scriptedEvents[currentEvent] : null; }}
@@ -15,6 +17,7 @@ public class ScriptList : MonoBehaviour {
     void Awake() {
         SceneManager.sceneLoaded += OnSceneLoaded;
         EventsCompleted = false;
+        tutorial = GetComponent<TutorialController>();
     }
 
     void OnDestroy() {
@@ -29,6 +32,7 @@ public class ScriptList : MonoBehaviour {
 
     public void StartEvents() {
         if (scriptedEvents.Count > 0) {
+            sc = SelectionController.instance;
             EventsCompleted = false;
             currentEvent = 0;
             StartInstuctions(scriptedEvents[0]);
@@ -57,7 +61,7 @@ public class ScriptList : MonoBehaviour {
 
     private void StartInstuctions(ScriptEvent scriptEvent){
         if(scriptEvent.HasInstructions()){
-            SelectionController.mode = SelectionMode.ScriptedPlayerInstruction;
+            sc.mode = SelectionMode.ScriptedPlayerInstruction;
             dialogueMgr.ShowGUI();
             dialogueMgr.SetNewLines(scriptEvent.instructions, scriptedEvents[currentEvent].StartEvent);
         } else {

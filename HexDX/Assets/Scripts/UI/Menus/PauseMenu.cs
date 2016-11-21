@@ -27,6 +27,10 @@ public class PauseMenu : MonoBehaviour {
             GUI.enabled = GameManager.instance && GameManager.instance.HasPassedFirstLevel(); // prevent skip 1st tutorial 
             if (GUI.Button(new Rect(Screen.width / 2 - 100, Screen.height / 2, 250, 50), "Return To World Map")) {
                 Unpause();
+                BattleController bc = BattleController.instance;
+                if (!bc.BattleIsDone) {
+                    bc.player.RestoreInitialArmyState();
+                }
                 LevelManager.ReturnToWorldMap();
             }
             GUI.enabled = true;
@@ -47,8 +51,8 @@ public class PauseMenu : MonoBehaviour {
             unit.gameObject.GetComponent<Animator>().enabled = false;
             unit.gameObject.GetComponent<AudioSource>().enabled = false;
         }
-        lastMode = SelectionController.mode;
-        SelectionController.mode = SelectionMode.Paused;
+        lastMode = SelectionController.instance.mode;
+        SelectionController.instance.mode = SelectionMode.Paused;
     }
 
     void Unpause() {
@@ -60,6 +64,6 @@ public class PauseMenu : MonoBehaviour {
             unit.gameObject.GetComponent<Animator>().enabled = true;
             unit.gameObject.GetComponent<AudioSource>().enabled = true;
         }
-        SelectionController.mode = lastMode;
+        SelectionController.instance.mode = lastMode;
     }
 }

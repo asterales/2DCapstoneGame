@@ -3,42 +3,55 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class PlayerBattleController : ArmyBattleController {
-    public static Texture2D menuItem;
-    public static Texture2D menuItemHovered;
-    
-    // for ease of use
-    private static Unit selectedUnit { 
-        get { return SelectionController.selectedUnit; } 
-        set { SelectionController.selectedUnit = value; }
-    }
+    public Texture2D menuItem;
+    public Texture2D menuItemHovered;
     
     // path sprites
     public Sprite circleSprite;
     public Sprite[] lineSprites;
     public Sprite[] arrowSprites;
 
+    private Dictionary<Unit, UnitState> initialStates;
+
+    // for ease of use
+    private Unit selectedUnit { 
+        get { return sc.selectedUnit; } 
+        set { sc.selectedUnit = value; }
+    }
+
     public override void InitUnitList() {
         Unit[] allUnits = BattleControllerManager.instance.hexMap.GetUnitsOnMap();
         units = allUnits.Where(unit => unit.IsPlayerUnit()).ToList();
+        initialStates = new Dictionary<Unit, UnitState>();
+        foreach(Unit unit in units) {
+            initialStates[unit] = new UnitState(unit.phase, null, unit.facing, unit.Health, unit.Experience, unit.Veterancy);
+        }
     }
 
-    void Update(){
-        if (!SelectionController.TakingAIInput() 
-            && SelectionController.mode != SelectionMode.TurnTransition 
+    void Update() {
+        if (!sc.TakingAIInput()
+            && sc.mode != SelectionMode.TurnTransition
             && selectedUnit == null) {
-            SelectionController.mode = SelectionMode.Open;
+            sc.mode = SelectionMode.Open;
         }
-        if (!SelectionController.TakingAIInput() 
-            && SelectionController.mode != SelectionMode.TurnTransition 
+        if (!sc.TakingAIInput()
+            && sc.mode != SelectionMode.TurnTransition
             && selectedUnit) {
+            if (selectedUnit.phase == UnitTurn.Moving || selectedUnit.phase == UnitTurn.Facing || selectedUnit.phase == UnitTurn.ChoosingAction)
+                if (Input.GetKeyDown(KeyCode.LeftShift)||Input.GetMouseButtonDown(2))
+                {
+                    Undo();
+                }
             switch (selectedUnit.phase) {
+                case UnitTurn.Attacking:
+                    break;
                 case UnitTurn.Facing:
-                    SelectionController.selectedTile = selectedUnit.currentTile;
+                    sc.selectedTile = selectedUnit.currentTile;
                     SelectFacing();
                     break;
                 case UnitTurn.Done:
                     selectedUnit = null;
-                    SelectionController.mode = SelectionMode.Open;
+                    sc.mode = SelectionMode.Open;
                     break;
             }
         }
@@ -48,8 +61,9 @@ public class PlayerBattleController : ArmyBattleController {
     }
 
     private void SelectFacing() {
-        SelectionController.RegisterFacing();
+        sc.RegisterFacing();
         if (Input.GetMouseButtonDown(1)) {
+            sc.RegisterFacing();
             selectedUnit.MakeChoosingAction();
         }
     }
@@ -61,24 +75,28 @@ public class PlayerBattleController : ArmyBattleController {
             bool canAttack = tile;
 
             if (GetSubmenuButton(pos, 1, "Attack", canAttack)) {
-                SelectionController.target = tile.currentUnit;
+                sc.target = tile.currentUnit;
                 selectedUnit.MakeAttacking();
             }
             if (GetSubmenuButton(pos, 2, "Wait", true)) {
                 selectedUnit.MakeDone();
             }
             if (GetSubmenuButton(pos, 3, "Undo", true)) {
-                UnitState.RestoreStates();
-                SelectionController.selectedTile = selectedUnit.currentTile;
-                SelectionController.mode = SelectionMode.Open;
-                selectedUnit.MakeOpen();
-                HexMap.ClearAllTiles();
-                HexMap.ShowMovementTiles(selectedUnit);
-                MovementTile.path = new List<Tile>() { selectedUnit.currentTile };
+                Undo();
             }
         }
     }
 
+    public void Undo()
+    {
+        UnitState.RestoreStates();
+        sc.selectedTile = selectedUnit.currentTile;
+        sc.mode = SelectionMode.Open;
+        selectedUnit.MakeOpen();
+        HexMap.ClearAllTiles();
+        HexMap.ShowMovementTiles(selectedUnit);
+        MovementTile.path = new List<Tile>() { selectedUnit.currentTile };
+    }
     public bool GetSubmenuButton(Vector3 basePosition, int menuButtonNumber, string text, bool active) {
         float itemHeight = Screen.height*0.026f;
         float itemWidth = itemHeight*3;
@@ -114,7 +132,7 @@ public class PlayerBattleController : ArmyBattleController {
 
     public override void StartTurn() {
         Debug.Log("Starting Player Turn");
-        SelectionController.mode = SelectionMode.Open;
+        sc.mode = SelectionMode.Open;
         base.StartTurn();
     }
 
@@ -123,17 +141,23 @@ public class PlayerBattleController : ArmyBattleController {
         base.EndTurn();
     }
 
+    public void RestoreInitialArmyState() {
+        foreach(Unit unit in units) {
+            initialStates[unit].ChangeStateOf(unit);
+        }
+    }
+
     private void ClearSelections() {
         if (selectedUnit) {
             selectedUnit.MakeDone();
             selectedUnit = null;
         }
         HexMap.ClearAllTiles();
-        SelectionController.ClearSelection();
+        sc.ClearSelection();
         MovementTile.path = null;
     }
 
-    public static bool InUnitPhase(UnitTurn phase) {
-        return !SelectionController.TakingAIInput() && selectedUnit && selectedUnit.phase == phase;
+    public bool InUnitPhase(UnitTurn phase) {
+        return !sc.TakingAIInput() && selectedUnit && selectedUnit.phase == phase;
     }
 }

@@ -7,11 +7,13 @@ public class UnitSelectionPanel : WorldMapPopupPanel {
 	public ActiveArmyDisplay worldMapActiveArmyDisplay;
 	public UnitStatDisplay statDisplay;
 	public int minArmySize;
-	private Button saveButton;
+	
+	private Button returnButton;
+	private UnitDisplay highlightedDisplay;
 
 	protected override void Awake() {
 		base.Awake();
-		InitSaveButton();
+		returnButton = transform.Find("Return Button").GetComponent<Button>();
 		statDisplay = transform.Find("Stats Panel").GetComponent<UnitStatDisplay>();
 		activeUnitsDisplay = transform.Find("Active Units").GetComponent<ActiveArmyDisplay>();
 		inactiveUnitsDisplay = transform.Find("Inactive Units").GetComponent<InactiveArmyDisplay>();
@@ -19,15 +21,10 @@ public class UnitSelectionPanel : WorldMapPopupPanel {
 	}
 
 	void Update() {
-		saveButton.interactable = activeUnitsDisplay.GetUnits().Count >= minArmySize;
+		returnButton.interactable = activeUnitsDisplay.GetUnits().Count >= minArmySize;
 	}
 
-	private void InitSaveButton() {
-		saveButton = transform.Find("Save Button").GetComponent<Button>();
-		saveButton.onClick.AddListener(ConfirmArmySelection);
-	}
-
-	private void ConfirmArmySelection() {
+	public void SaveArmySelection() {
 		GameManager gm = GameManager.instance;
 		gm.activeUnits = activeUnitsDisplay.GetUnits();
 		RefreshDisplays();
@@ -35,6 +32,8 @@ public class UnitSelectionPanel : WorldMapPopupPanel {
 
 	public override void Show() {
 		base.Show();
+		ClearHighlightedUnit();
+		statDisplay.ClearDisplay();
 		RefreshDisplays();
 	}
 
@@ -54,16 +53,15 @@ public class UnitSelectionPanel : WorldMapPopupPanel {
 		inactiveUnits.ForEach(u => u.gameObject.SetActive(false));
 	}
 
-	public void SwitchUnitToOtherArmy(UnitDisplay unitPanel) {
-		UnitDisplay nextDisplayPanel;
-		if(activeUnitsDisplay.unitPanels.Contains(unitPanel)) {
-			nextDisplayPanel = inactiveUnitsDisplay.GetFirstEmptySlot();
-		} else {
-			nextDisplayPanel = activeUnitsDisplay.GetFirstEmptySlot();
-		}
-		if(nextDisplayPanel != null) {
-			nextDisplayPanel.unit = unitPanel.unit;
-			unitPanel.unit = null;
+	public void SwitchHighlightedUnit(UnitDisplay display) {
+		ClearHighlightedUnit();
+		highlightedDisplay = display;
+		display.HighlightSelected();
+	}
+
+	private void ClearHighlightedUnit() {
+		if (highlightedDisplay) {
+			highlightedDisplay.UnhighlightSelected();
 		}
 	}
 }

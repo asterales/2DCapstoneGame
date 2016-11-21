@@ -9,8 +9,9 @@ public class Tile : MonoBehaviour {
     public List<RuntimeAnimatorController> animations;
     private GameObject movementTile;
     private GameObject attackTile;
+    private SelectionController sc;
 
-    public void Awake() {
+    void Awake() {
         tileStats = GetComponent<TileStats>();
         position = GetComponent<TileLocation>();
         InitMovementTile();
@@ -27,6 +28,10 @@ public class Tile : MonoBehaviour {
             Debug.Log("Error :: Object Must Have TileLocation Object -> Tile.cs");
         }
         ////////////////////////
+    }
+
+    void Start() {
+        sc = SelectionController.instance;
     }
 
     private void InitMovementTile() {
@@ -55,49 +60,52 @@ public class Tile : MonoBehaviour {
     }
 
     public void OnMouseOver() {
-        if ((SelectionController.TakingInput() && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)))
-            || (TutorialController.IsTargetTile(this) && Input.GetMouseButtonDown(0))){
-            //left click - selection
-            HexMap.ClearAllTiles();
-            MovementTile.path = null;
-            SelectionController.selectedTile = this;
-            SelectionController.selectedUnit = currentUnit ? currentUnit : SelectionController.selectedUnit;
-            if (currentUnit) {
-                //TO ADD: display stats
-                Unit.SaveAllStates();
-                if (currentUnit.IsPlayerUnit()) {
-                    StatDisplay.DisplayPlayerUnit(currentUnit);
-                    if (currentUnit.phase == UnitTurn.Open) {
-                        if (Input.GetMouseButtonDown(0)) {
+        if (sc.selectedUnit && sc.selectedUnit.phase !=UnitTurn.Attacking) {
+            sc.HideTarget();
+        }
+        TutorialController tutorial = BattleControllerManager.instance.tutorial;
+        if (sc.TakingInput() || (tutorial && tutorial.IsTargetTile(this) && Input.GetMouseButtonDown(0))){
+            if (currentUnit && !currentUnit.IsPlayerUnit()){
+                if (sc.selectedUnit && sc.selectedUnit.IsPlayerUnit() && sc.selectedUnit.HasInAttackRange(currentUnit)) {
+                    sc.ShowTarget(currentUnit);
+                    MovementTile.path = new List<Tile>();
+                    MovementTile.path.Add(sc.selectedUnit.currentTile);
+                    MovementTile.DrawPath();
+                    if (Input.GetMouseButtonDown(1)) {
+                        sc.selectedUnit.phase = UnitTurn.Attacking;
+                        attackTile.GetComponent<AttackTile>().OnMouseOver();
+                        return;
+                    }
+                }
+            }
+            if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
+                EnemyUIDrawer.instance.SetPreview(0);
+                PlayerUIDrawer.instance.SetPreview(0);
+                //left click - selection
+                HexMap.ClearAllTiles();
+                BattleController.instance.ResetColors();
+                MovementTile.path = null;
+                sc.selectedTile = this;
+                sc.selectedUnit = currentUnit ? currentUnit : sc.selectedUnit;
+                if (currentUnit) {
+                    //TO ADD: display stats
+                    Unit.SaveAllStates();
+                    if (currentUnit.IsPlayerUnit()) {
+                        StatDisplay.DisplayPlayerUnit(currentUnit);
+                        if (currentUnit.phase == UnitTurn.Open) {
                             HexMap.ShowMovementTiles(currentUnit);
                             MovementTile.path = new List<Tile>() { this };
-                        } else {
-                            HexMap.ShowAttackTiles(currentUnit);
-                            currentUnit.MakeChoosingAction();
+                        }
 
-                        }
+                    } else {
+                        // show enemy mvt range and stats
+                        StatDisplay.DisplayEnemyUnit(currentUnit);
+                        HexMap.ShowMovementTiles(currentUnit);
                     }
-                } else {
-                    // show enemy mvt range and stats
-                    StatDisplay.DisplayEnemyUnit(currentUnit);
-                    List<Tile> movementTiles = HexMap.GetMovementTiles(currentUnit);
-                    int facing = currentUnit.facing;
-                    foreach (Tile t in movementTiles)
-                    {
-                        currentUnit.currentTile = t;
-                        for (int i = 0; i < 6; i++)
-                        {
-                            currentUnit.facing = i;
-                            foreach (Tile tile in HexMap.GetAttackTiles(currentUnit))
-                                tile.ShowAttackTile();
-                        }
-                    }
-                    currentUnit.facing = facing;
-                    currentUnit.currentTile = this;
-                    HexMap.ShowMovementTiles(currentUnit);
                 }
             }
         }
+        
     }
 
     public void ShowMovementTile() {
@@ -120,8 +128,19 @@ public class Tile : MonoBehaviour {
             HideMovementTile();
         }
     }
+    public void ShowAttackSprite()
+    {
+        if (attackTile)
+        {
+            attackTile.transform.localPosition = GameResources.visibilityOffset;
+            HexMap.showingAttackTiles.Push(this);
+            attackTile.gameObject.GetComponent<PolygonCollider2D>().enabled = false;
+            HideMovementTile();
+        }
+    }
     public void HideAttackTile() {
         if (attackTile) {
+            attackTile.gameObject.GetComponent<PolygonCollider2D>().enabled = true;
             attackTile.transform.localPosition = -GameResources.visibilityOffset;
         }
     }

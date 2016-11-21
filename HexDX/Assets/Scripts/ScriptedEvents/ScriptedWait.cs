@@ -13,14 +13,14 @@ public class ScriptedWait : ScriptEvent {
 	}
 
     public override void DoPlayerEvent() {
-        SelectionController.mode = SelectionMode.ScriptedPlayerWait;
-        SelectionController.selectedUnit = null;
+        list.sc.mode = SelectionMode.ScriptedPlayerWait;
+        list.sc.selectedUnit = null;
         unit.MakeDone();
         FinishEvent();
     }
 
     public override void DoEvent() {
-        SelectionController.mode = SelectionMode.ScriptedAI;
+        list.sc.mode = SelectionMode.ScriptedAI;
         unit.MakeDone();
         FinishEvent();
     }

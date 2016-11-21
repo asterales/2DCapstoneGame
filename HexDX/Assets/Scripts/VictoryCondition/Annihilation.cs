@@ -1,7 +1,7 @@
 public class Annihilation : VictoryCondition {
 	public AIBattleController ai;
 
-	void Start() {
+	public override void Init() {
 		ai = BattleControllerManager.instance.ai;
 	}
 

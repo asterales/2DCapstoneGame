@@ -21,11 +21,10 @@ public class HexMap : MonoBehaviour {
         showingMovementTiles = new Stack<Tile>();
         showingAttackOutlines = new Stack<GameObject>();
         ////// DEBUG CODE //////
-        if (hexDimension == null)
-        {
+        if (hexDimension == null) {
             Debug.Log("Error :: No Defined Hex Dimension for Hex Map - HexMap.cs");
         }
-        this.gameObject.transform.position = new Vector3(hexDimension.globalTopLeftX, hexDimension.globalTopLeftY, 0); // temp
+        transform.position = new Vector3(hexDimension.globalTopLeftX, hexDimension.globalTopLeftY, 0); // temp
         ////////////////////////
     }
 
@@ -83,17 +82,31 @@ public class HexMap : MonoBehaviour {
     }
 
     public static void ShowMovementTiles(Unit unit) {
-        ClearMovementTiles();
+        ClearAllTiles();
         List<Tile> mvtTiles = GetMovementTiles(unit);
         List<Tile> atkTiles = GetAttackTiles(unit);
-        if (!unit.IsPlayerUnit()) {
-            foreach (Tile atkTile in atkTiles) {
-                GameObject g = Instantiate(Resources.Load("Tiles/AttackableOutline")) as GameObject;
-                g.transform.parent = atkTile.transform;
-                g.transform.localPosition = new Vector3(0, 0, .0001f);
-                showingAttackOutlines.Push(g);
-            } 
+        List<Tile> movementTiles = HexMap.GetMovementTiles(unit);
+        int facing = unit.facing;
+        Tile initial = unit.currentTile;
+        foreach (Tile t in mvtTiles)
+        {
+            unit.currentTile = t;
+            for (int i = 0; i < 6; i++)
+            {
+                unit.facing = i;
+                foreach (Tile tile in HexMap.GetAttackTiles(unit))
+                    tile.ShowAttackSprite();
+            }
         }
+        unit.facing = facing;
+        unit.currentTile = initial;
+        foreach (Tile atkTile in atkTiles) {
+            GameObject g = Instantiate(Resources.Load("Tiles/AttackableOutline")) as GameObject;
+            g.transform.parent = atkTile.transform;
+            g.transform.localPosition = new Vector3(0, 0, .0001f);
+            showingAttackOutlines.Push(g);
+        } 
+        
         foreach (Tile mvtTile in mvtTiles) {
            mvtTile.ShowMovementTile();
         }
@@ -179,6 +192,33 @@ public class HexMap : MonoBehaviour {
             catch { }
         }
         return output;
+    }
+
+    public static List<Tile> GetTotalRange(Unit unit)
+    {
+        List<Tile> mvtTiles = GetMovementTiles(unit);
+        List<Tile> attackable = new List<Tile>();
+        List<Tile> atkTiles;
+        List<Tile> movementTiles = HexMap.GetMovementTiles(unit);
+        int facing = unit.facing;
+        Tile initial = unit.currentTile;
+        foreach (Tile t in mvtTiles)
+        {
+            unit.currentTile = t;
+            atkTiles = GetAttackTiles(unit);
+            for (int i = 0; i < 6; i++)
+            {
+                unit.facing = i;
+                atkTiles = HexMap.GetAttackTiles(unit);
+                foreach (Tile tile in atkTiles)
+                {
+                    attackable.Add(tile);
+                }
+            }
+        }
+        unit.facing = facing;
+        unit.currentTile = initial;
+        return attackable;
     }
 
     public static void ShowAttackTiles(Unit unit)

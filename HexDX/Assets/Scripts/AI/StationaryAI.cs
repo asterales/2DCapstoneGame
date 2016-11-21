@@ -11,7 +11,7 @@ public class StationaryAI : UnitAI {
 	}
 
     public override void SetFacing() {
-        Unit closestEnemy = playerUnits.Where(p => p != null)
+        Unit closestEnemy = playerUnits.Where(p => p != null && p.Health > 0)
                                             .OrderBy(p => HexMap.Cost(p.currentTile, unit.currentTile))
                                             .ToList()[0];
         Vector3 directionVec = closestEnemy.transform.position - unit.transform.position;
@@ -35,7 +35,7 @@ public class StationaryAI : UnitAI {
     	} else if (!attackStarted) {
             attackStarted = true;
             Timing.RunCoroutine(unit.PerformAttack(currentEnemy));
-            SelectionController.ShowTarget(currentEnemy); 
+            SelectionController.instance.ShowTarget(currentEnemy); 
         }
     }
 

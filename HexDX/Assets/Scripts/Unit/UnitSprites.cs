@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 
-public class UnitSprites: MonoBehaviour
-{
-    // this class will eventually contain the stats of a tile
+public class UnitSprites: MonoBehaviour {
+    
     public Sprite[] walking;
     public RuntimeAnimatorController[] walkingAnim;
     public Sprite[] idle;

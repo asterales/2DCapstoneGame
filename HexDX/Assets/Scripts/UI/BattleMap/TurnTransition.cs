@@ -14,7 +14,7 @@ public class TurnTransition : MonoBehaviour {
 	public delegate void TransitionEndFunc();
 
 	private FadeTransition fade;
-	private Image overlayBG; 
+	private Graphic overlayBG; 
 	private Animator anim;
 	private Dictionary<string, float> animationLengths;
 
@@ -31,7 +31,7 @@ public class TurnTransition : MonoBehaviour {
 	void Awake() {
 		anim = GetComponent<Animator>();
 		fade = GetComponentInParent<FadeTransition>();
-		overlayBG = fade.fadeImage;
+		overlayBG = fade.fadeGraphic;
 		bannerImage = GetComponent<Image>();
 		GetAnimationLengths();
 	}
@@ -49,10 +49,14 @@ public class TurnTransition : MonoBehaviour {
 		IsRunning = false;
 	}
 
+	void Update() {
+		anim.speed = SpeedController.speed;
+	}
+
 	public void PlayTransition(bool toEnemyTurn, TransitionEndFunc endCallback = null) {
 		if (!IsRunning) {
             IsRunning = true;
-            SelectionController.mode = SelectionMode.TurnTransition;
+            SelectionController.instance.mode = SelectionMode.TurnTransition;
             transitionEndCallback = endCallback;
             Timing.RunCoroutine(AnimateTransition(toEnemyTurn));
         }
@@ -64,10 +68,10 @@ public class TurnTransition : MonoBehaviour {
 		anim.enabled = true;
 		yield return Timing.WaitForSeconds(fade.BeginFade(FadeDirection.Out));
 		anim.Play(enterAnimName);
-		yield return Timing.WaitForSeconds(animationLengths[enterMotion]);
-		yield return Timing.WaitForSeconds(pauseSeconds);
+		yield return Timing.WaitForSeconds(animationLengths[enterMotion] / SpeedController.speed);
+		yield return Timing.WaitForSeconds(pauseSeconds / SpeedController.speed);
 		anim.Play(exitAnimName);
-		yield return Timing.WaitForSeconds(animationLengths[exitMotion]);
+		yield return Timing.WaitForSeconds(animationLengths[exitMotion] / SpeedController.speed);
 		yield return Timing.WaitForSeconds(fade.BeginFade(FadeDirection.In));
 		anim.enabled = false;
 		overlayBG.enabled = false;

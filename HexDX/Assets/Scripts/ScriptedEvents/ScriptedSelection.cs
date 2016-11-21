@@ -4,15 +4,15 @@ public class ScriptedSelection : ScriptEvent {
 	public int col;
 	
 	private Tile targetTile {
-		get { return TutorialController.targetTile; }
-		set { TutorialController.targetTile = value; }
+		get { return list.tutorial.targetTile; }
+		set { list.tutorial.targetTile = value; }
 	}
 
 	void Update() {
-		if(isActive && SelectionController.selectedTile == targetTile) {
+		if(isActive && list.sc.selectedTile == targetTile) {
 			ShowSelection();
 			targetTile = null;
-			SelectionController.selectedTile = null;
+			list.sc.selectedTile = null;
 			FinishEvent();
 		}
 	}
@@ -22,14 +22,14 @@ public class ScriptedSelection : ScriptEvent {
 	}
 
     public override void DoPlayerEvent() {
-    	SelectionController.mode = SelectionMode.ScriptedPlayerSelection;
+    	list.sc.mode = SelectionMode.ScriptedPlayerSelection;
     	targetTile = HexMap.mapArray[row][col];
     }
 
     private void ShowSelection() {
-    	SelectionController.ShowSelection(targetTile);
+    	list.sc.ShowSelection(targetTile);
 		if (targetTile.currentUnit){
-			SelectionController.ShowSelection(targetTile.currentUnit);
+			list.sc.ShowSelection(targetTile.currentUnit);
 		}
     }
 }

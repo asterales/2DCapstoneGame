@@ -3,17 +3,20 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class UnitDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
-	private Image unitPanel;
 	public Unit unit;
-	private Color spriteColor;
 	public UnitDisplayType displayType;
 	public bool disableHoverEffect;
 
-	private static readonly Color hoverColor = Color.white;
-	private static readonly Color defaultColor = new Color(0.78f, 0.78f, 0.78f);
+	private Color spriteColor;
+	private Image unitPanel;
+	private bool isHovered;
+
+	private static readonly Color highlightedColor = Color.white;
+	private static readonly Color hoverColor = new Color(0.8f, 0.8f, 0.8f);
+	private static readonly Color defaultColor = new Color(0.5f, 0.5f, 0.5f);
 
 	void Awake() {
-		spriteColor = disableHoverEffect ? hoverColor : defaultColor;
+		spriteColor = disableHoverEffect ? highlightedColor : defaultColor;
 		unitPanel = GetComponent<Image>();
 	}
 
@@ -36,15 +39,27 @@ public class UnitDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	}
 
 	public void OnPointerEnter(PointerEventData eventData) {
+		isHovered = true;
 		if (!disableHoverEffect) {
 			spriteColor = hoverColor;
 		}
 	}
 
 	public void OnPointerExit(PointerEventData eventData) {
+		isHovered = false;
 		if (!disableHoverEffect) {
 			spriteColor = defaultColor;
 		}
+	}
+
+	public void HighlightSelected() {
+		disableHoverEffect = true;
+		spriteColor = highlightedColor;
+	}
+
+	public void UnhighlightSelected() {
+		disableHoverEffect = false;
+		spriteColor = isHovered ? hoverColor : defaultColor;
 	}
 }
 

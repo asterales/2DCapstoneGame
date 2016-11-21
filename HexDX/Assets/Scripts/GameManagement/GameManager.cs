@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour {
 			instance = this;
 			InitUnitList();
 			transform.position = GameResources.hidingPosition;
-			DontDestroyOnLoad(this.gameObject);
+			DontDestroyOnLoad(gameObject);
 		} else if (instance != this) {
 			GetComponentsInChildren<Unit>().ToList().ForEach(u => u.gameObject.SetActive(false));
 			Destroy(gameObject);
@@ -36,11 +36,10 @@ public class GameManager : MonoBehaviour {
 
 	private void InitUnitList() {
 		playerAllUnits = new List<Unit>();
+		activeUnits = new List<Unit>();
 		foreach(Unit childUnit in GetComponentsInChildren<Unit>()) {
 			AddNewPlayerUnit(childUnit);
 		}
-		activeUnits = playerAllUnits.GetRange(0, (int)Mathf.Min(playerAllUnits.Count, ACTIVE_UNIT_LIMIT));
-		activeUnits.ForEach(u => u.gameObject.SetActive(true));
 	}
 
 	public bool HasPassedFirstLevel() {
@@ -51,7 +50,12 @@ public class GameManager : MonoBehaviour {
 		playerAllUnits.Add(unit);
 		unit.transform.parent = transform;
         unit.transform.position = GameResources.hidingPosition;
-		unit.gameObject.SetActive(false);
+        if (activeUnits.Count < ACTIVE_UNIT_LIMIT) {
+        	activeUnits.Add(unit);
+        	unit.gameObject.SetActive(true);
+        } else {
+        	unit.gameObject.SetActive(false);
+        }
 	}
 
 	public void ResetUnit(Unit unit) {
@@ -62,7 +66,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void UpdateArmyAfterBattle() {
-        if (BattleController.PlayerWon) {
+        if (BattleController.instance.PlayerWon) {
             ClearDeadUnits();
             activeUnits.ForEach(u => ResetUnit(u));
         } else {

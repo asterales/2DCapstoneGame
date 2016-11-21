@@ -12,19 +12,16 @@ public class TutorialController : PreBattleController {
 	public Sprite selectionSprite;
 	public RuntimeAnimatorController animation;
 
-	public static Tile targetTile;
-	public static ScriptList eventsList;
-	public static GameObject selectionPromptObj;
+	public Tile targetTile;
+	public ScriptList eventsList;
+	public GameObject selectionPromptObj;
 
 	protected override void Awake() {
 		base.Awake();
 		info = GetComponent<TutorialInfo>();
 		scriptedAI = GetComponent<ScriptedAIBattleController>();
 		unitLoader = GetComponent<CustomUnitLoader>();
-	}
-
-	void OnDestroy() {
-		targetTile = null;
+		eventsList = GetComponent<ScriptList>();
 	}
 
 	public override void StartPreBattlePhase() {
@@ -35,7 +32,6 @@ public class TutorialController : PreBattleController {
 			}
 			targetTile = null;
 			InitSelectionPrompt();
-			eventsList = GameObject.Find("ScriptedEvents").GetComponent<ScriptList>();
 			if(!eventsList.dialogueMgr) {
 				eventsList.dialogueMgr = FindObjectOfType(typeof(GameDialogueManager)) as GameDialogueManager;
 			}
@@ -56,27 +52,27 @@ public class TutorialController : PreBattleController {
         selectionPromptObj.transform.position = GameResources.hidingPosition;
 	}
 
-	public static void ShowSelectionPrompt(Tile tile) {
+	public void ShowSelectionPrompt(Tile tile) {
 		selectionPromptObj.transform.position = tile.transform.position + GameResources.visibilityOffset + new Vector3(0, 0, 0.1f);
 	}
 
-	public static void HideSelectionPrompt() {
+	public void HideSelectionPrompt() {
 		selectionPromptObj.transform.position = GameResources.hidingPosition;
 	}
 
-	public static bool IsTargetTile(Tile tile){
-		return SelectionController.mode == SelectionMode.ScriptedPlayerSelection && tile == targetTile;
+	public bool IsTargetTile(Tile tile){
+		return sc.mode == SelectionMode.ScriptedPlayerSelection && tile == targetTile;
 	}
 
-	public static bool IsTargetDestination(MovementTile mvtTile){
-		return SelectionController.mode == SelectionMode.ScriptedPlayerMove && mvtTile.tile == targetTile;
+	public bool IsTargetDestination(MovementTile mvtTile){
+		return sc.mode == SelectionMode.ScriptedPlayerMove && mvtTile.tile == targetTile;
 	}
 
-	public static bool IsAttackTarget(AttackTile attackTile) {
-		return SelectionController.mode == SelectionMode.ScriptedPlayerAttack && attackTile.tile == targetTile;
+	public bool IsAttackTarget(AttackTile attackTile) {
+		return sc.mode == SelectionMode.ScriptedPlayerAttack && attackTile.tile == targetTile;
 	}
 
-	public static void EndCurrentTurn(){
+	public void EndCurrentTurn(){
 		if(eventsList.currentScriptEvent.GetType() != typeof(ScriptedEndTurn)){
 			Debug.Log("Error: called EndCurrentTurn when currently not EndTurnScript");
 		}

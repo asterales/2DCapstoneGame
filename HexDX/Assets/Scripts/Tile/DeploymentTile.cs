@@ -5,9 +5,14 @@ public class DeploymentTile : MonoBehaviour {
 	private static Tile hoveredTile;
 
 	public Tile tile;
+	private SelectionController sc;
 
 	void Awake() {
 		ClearDragVariables();
+	}
+
+	void Start() {
+		sc = SelectionController.instance;
 	}
 
 	void OnDestroy() {
@@ -15,7 +20,7 @@ public class DeploymentTile : MonoBehaviour {
 	}
 
 	void OnMouseDown() {
-		if (tile.currentUnit && SelectionController.mode == SelectionMode.DeploymentOpen) {
+		if (tile.currentUnit && sc.mode == SelectionMode.DeploymentOpen) {
 			draggedUnit = tile.currentUnit;
 		}
 	}
@@ -45,23 +50,24 @@ public class DeploymentTile : MonoBehaviour {
 
 	void OnMouseUp() {
 		if (draggedUnit) {
+			DeploymentController dc = BattleControllerManager.instance.deploymentController;
 			if (hoveredTile) {
-				DeploymentController.SetSelectedUnitDestination(draggedUnit, hoveredTile);
+				dc.SetSelectedUnitDestination(draggedUnit, hoveredTile);
 			} else {
-				DeploymentController.SetSelectedUnitDestination(draggedUnit, draggedUnit.currentTile);
+				dc.SetSelectedUnitDestination(draggedUnit, draggedUnit.currentTile);
 			}
 			ClearDragVariables();
 		}
 	}
 
 	void Update() {
-		if (SelectionController.mode == SelectionMode.DeploymentOpen) {
+		if (sc.mode == SelectionMode.DeploymentOpen) {
 			if (hoveredTile) {
-				SelectionController.ShowSelection(hoveredTile);
+				sc.ShowSelection(hoveredTile);
 			} else if (draggedUnit) {
-				SelectionController.ShowSelection(draggedUnit.currentTile);
+				sc.ShowSelection(draggedUnit.currentTile);
 			} else {
-				SelectionController.HideSelection();
+				sc.HideSelection();
 			}
 		}
 	}

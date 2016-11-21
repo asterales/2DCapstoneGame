@@ -5,9 +5,10 @@ using UnityEngine.UI;
 public class UnitStatDisplay : MonoBehaviour {
 
     public Unit unit;
+    public bool editableUnitName;
 
     private Image classPanel;
-    private Text classText;
+    private InputField classText;
     private Image statPanel;
     private Text statText;
     private Image unitCard;
@@ -15,16 +16,28 @@ public class UnitStatDisplay : MonoBehaviour {
 
     void Awake() {
         InitTextPanels();
-        InitImages();   
+        InitImages();
+        ClearDisplay();   
     }
 
     private void InitTextPanels() {
         Transform classPanelTransform = transform.Find("Class Name");
         classPanel = classPanelTransform.GetComponent<Image>();
-        classText = classPanelTransform.Find("Text").GetComponent<Text>();
+        InitClassTextPanel(classPanelTransform);
         Transform statsPanelTransform = transform.Find("Stats");
         statPanel = statsPanelTransform.GetComponent<Image>();
         statText = statsPanelTransform.Find("Text").GetComponent<Text>();
+    }
+
+    private void InitClassTextPanel(Transform classPanelTransform) {
+        classText = classPanelTransform.Find("Text").GetComponent<InputField>();
+        classText.onEndEdit.AddListener(delegate { unit.ClassName = classText.text; });
+        classText.interactable = editableUnitName;
+        if (!editableUnitName) {
+            ColorBlock cb = classText.colors;
+            cb.disabledColor = cb.normalColor;
+            classText.colors = cb;
+        } 
     }
 
     private void InitImages() {
@@ -36,10 +49,6 @@ public class UnitStatDisplay : MonoBehaviour {
         if (vetTransform) {
             veterancy = vetTransform.GetComponent<VeterancyDisplay>();
         }
-    }
-
-    void Start() {
-        ClearDisplay();
     }
 
     public void DisplayUnitStats(Unit unitToDisplay) {

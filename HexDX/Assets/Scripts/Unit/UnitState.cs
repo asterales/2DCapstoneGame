@@ -9,8 +9,8 @@ public class UnitState {
     public int experience;
     public int veterancy;
     public static Dictionary<Unit, UnitState> savedStates = new Dictionary<Unit, UnitState>();
-   
-   public UnitState(UnitTurn phase, Tile tile, int facing, int health, int experience, int veterancy) {
+
+    public UnitState(UnitTurn phase, Tile tile, int facing, int health, int experience, int veterancy) {
         this.phase = phase;
         this.tile = tile;
         this.facing = facing;
@@ -26,20 +26,26 @@ public class UnitState {
     public static void RestoreStates() {
         foreach (Unit unit in savedStates.Keys) {
             if (unit) {
-                if (unit.Veterancy > savedStates[unit].veterancy) {
-                    unit.LevelDown();
-                }
-                unit.SetTile(savedStates[unit].tile);
-                unit.facing = savedStates[unit].facing;
-                unit.Health = savedStates[unit].health;
-                unit.Experience = savedStates[unit].experience;
-                unit.Veterancy = savedStates[unit].veterancy;
-                unit.Health = savedStates[unit].health;
-                unit.SetPhase(savedStates[unit].phase);
-                unit.DrawHealth();
-                unit.DrawVeterancy();
+                savedStates[unit].ChangeStateOf(unit);
             }
         }
+    }
+
+    public void ChangeStateOf(Unit unit) {
+        if (unit.Veterancy > veterancy) {
+            unit.LevelDown();
+        }
+        if (tile) {
+            unit.SetTile(tile);
+        }
+        unit.facing = facing;
+        unit.Health = health;
+        unit.Experience = experience;
+        unit.Veterancy = veterancy;
+        unit.Health = health;
+        unit.SetPhase(phase);
+        unit.DrawHealth();
+        unit.DrawVeterancy();
     }
 
     public static void ClearStates() {
