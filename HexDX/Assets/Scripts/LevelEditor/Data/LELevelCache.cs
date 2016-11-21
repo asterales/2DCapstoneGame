@@ -69,12 +69,13 @@ public class LELevelCache {
         string level = "";
         level += baseTileData.ToString();
         level += baseUnitData.Count + "\n";
+        Debug.Log("LEVEL :: " + "Resources\\" + id + ".csv");
         for (int i = 0; i < baseUnitData.Count; i++)
         {
             level += baseUnitData[i].ToString();
         }
         level += baseDepData.ToString();
-        File.WriteAllText(id, level);
+        File.WriteAllText("Assets\\Resources\\"+id+".csv", level);
     }
 
     public void CacheLevelData(LEHexMap hexMap, LEUnitCache unitCache, LEDeploymentCache depCache)

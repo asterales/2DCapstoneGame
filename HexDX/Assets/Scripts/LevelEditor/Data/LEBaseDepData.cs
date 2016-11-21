@@ -28,6 +28,11 @@ public class LEBaseDepData {
 
     public override string ToString()
     {
-        return base.ToString();
+        string data = count + "\n";
+        for (int i=0;i<count;i++)
+        {
+            data += rowPositions[i] + "," + colPositions[i] + "\n";
+        }
+        return data;
     }
 }

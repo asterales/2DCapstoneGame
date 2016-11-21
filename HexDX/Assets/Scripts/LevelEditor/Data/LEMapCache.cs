@@ -67,6 +67,7 @@ public class LEMapCache : MonoBehaviour {
     public void SaveCurrent()
     {
         levels[currentLevel].CacheLevelData(hexMap, unitCache, depCache);
+        levels[currentLevel].WriteLevel();
     }
 
     public void TransitionTo(int index)

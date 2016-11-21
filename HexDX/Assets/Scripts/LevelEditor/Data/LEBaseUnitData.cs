@@ -70,6 +70,19 @@ public class LEBaseUnitData {
 
     public override string ToString()
     {
-        return base.ToString();
+        string data = "";
+        data += row + ",";
+        data += col + ",";
+        data += veterancy + ",";
+        data += health + ",";
+        data += attack + ",";
+        data += power + ",";
+        data += defense + ",";
+        data += resistance + ",";
+        data += mobID + ",";
+        data += mobType + ",";
+        data += direction + ",";
+        data += id + "\n";
+        return data;
     }
 }

@@ -2,6 +2,7 @@
 
 public class LESaveButton : MonoBehaviour {
     public LEMapWriter mapWriter;
+    public LEMapCache mapCache;
     private SpriteRenderer spriteRenderer;
 
     void Start()
@@ -12,7 +13,8 @@ public class LESaveButton : MonoBehaviour {
     void OnMouseDown()
     {
         spriteRenderer.color = new Color(0.3f, 0.3f, 0.3f);
-        mapWriter.WriteLevel();
+        mapCache.SaveCurrent();
+        //mapWriter.WriteLevel();
     }
 
     void OnMouseHover()

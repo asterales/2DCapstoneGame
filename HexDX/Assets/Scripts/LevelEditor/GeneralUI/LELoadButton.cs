@@ -12,7 +12,8 @@ public class LELoadButton : MonoBehaviour {
     void OnMouseDown()
     {
         spriteRenderer.color = new Color(0.3f, 0.3f, 0.3f);
-        mapLoader.LoadLevel();
+        Debug.Log("Load Button Disabled");
+        //mapLoader.LoadLevel();
     }
 
     void OnMouseHover()

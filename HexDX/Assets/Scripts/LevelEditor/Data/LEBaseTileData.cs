@@ -9,7 +9,24 @@ public class LEBaseTileData {
 
     public override string ToString()
     {
-        return base.ToString();
+        string data = "";
+        data += tileData.Count + "," + tileData[0].Count + "\n";
+        for (int i=0;i<tileData.Count;i++)
+        {
+            for (int j=0;j<tileData[i].Count;j++)
+            {
+                if (j==tileData[i].Count-1)
+                {
+                    data += "" + tileData[i][j];
+                }
+                else
+                {
+                    data += tileData[i][j] + ",";
+                }
+            }
+            data += "\n";
+        }
+        return data;
     }
 
     public void ClearData()
