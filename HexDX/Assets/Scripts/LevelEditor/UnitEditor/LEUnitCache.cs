@@ -136,8 +136,9 @@ public class LEUnitCache : MonoBehaviour
     {
         for (int i = 0; i < unitInstances.Count; i++)
         {
-            Destroy(unitInstances[i]);
+            Destroy(unitInstances[i].gameObject);
         }
         unitInstances.Clear();
+        Debug.Log("NUM OF UNITS " + unitInstances.Count);
     }
 }

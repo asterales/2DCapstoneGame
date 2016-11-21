@@ -7,7 +7,7 @@ public class LEIncrementButton : MonoBehaviour {
     public int modifier;
     public bool isOn;
 
-	void Awake () {
+	void Start () {
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
 	    ////// DEBUG CODE //////
         if (statEditorParent == null && aiEditorParent == null)

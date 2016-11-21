@@ -4,9 +4,28 @@ using System.IO;
 
 public class LEMapCache : MonoBehaviour {
     public List<LELevelCache> levels;
+    public LEHexMap hexMap;
+    public LEUnitCache unitCache;
+    public LEDeploymentCache depCache;
+    public int currentLevel = 0;
 
-	void Start () {
+
+    void Awake () {
         levels = new List<LELevelCache>();
+        ////// DEBUG CODE //////
+        if (hexMap == null)
+        {
+            Debug.Log("ERROR :: Reference to HexMap not Defined -> LEMapCache.cs");
+        }
+        if (unitCache == null)
+        {
+            Debug.Log("ERROR :: Reference to UnitCache not Defined -> LEMapCache.cs");
+        }
+        if (depCache == null)
+        {
+            Debug.Log("ERROR :: Reference to DepCache not Defined -> LEMapCache.cs");
+        }
+        ////////////////////////
         ReadInAllLevels();
 	}
 
@@ -26,7 +45,7 @@ public class LEMapCache : MonoBehaviour {
         {
             if (mapFiles[i].Substring(mapFiles[i].Length - 4, 4) == ".csv")
             {
-                Debug.Log("READING MAP FILE :: " + mapFiles[i]);
+                //Debug.Log("READING MAP FILE :: " + mapFiles[i]);
                 mapFiles[i] = mapFiles[i].Remove(mapFiles[i].IndexOf('.'));
                 TextAsset mapData = Resources.Load(mapFiles[i]) as TextAsset;
                 LELevelCache newLevel = new LELevelCache();
@@ -34,6 +53,7 @@ public class LEMapCache : MonoBehaviour {
                 levels.Add(newLevel);
             }
         }
+        TransitionTo(currentLevel);
     }
 
     public void WriteAllLevels()
@@ -42,5 +62,16 @@ public class LEMapCache : MonoBehaviour {
         {
             levels[i].WriteLevel();
         }
+    }
+
+    public void SaveCurrent()
+    {
+        levels[currentLevel].CacheLevelData(hexMap, unitCache, depCache);
+    }
+
+    public void TransitionTo(int index)
+    {
+        levels[index].InitializeLevel(hexMap, unitCache, depCache);
+        currentLevel = index;
     }
 }

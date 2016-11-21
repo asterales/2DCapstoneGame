@@ -49,7 +49,7 @@ public class LEBaseUnitData {
         mobID = Convert.ToInt32(lines[8]);
         mobType = Convert.ToInt32(lines[9]);
         direction = Convert.ToInt32(lines[10]);
-        id = lines[11];
+        id = lines[11].Trim();
     }
 
     private void InitializeFromInstance(LEUnitInstance instance)

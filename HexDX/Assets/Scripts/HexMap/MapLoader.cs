@@ -140,8 +140,9 @@ public class MapLoader : MonoBehaviour {
             int power = Convert.ToInt32(data[5]);
             int defense = Convert.ToInt32(data[6]);
             int resist = Convert.ToInt32(data[7]);
-            int move = Convert.ToInt32(data[8]);
-            int direction = Convert.ToInt32(data[12]);
+            int mobID = Convert.ToInt32(data[8]);
+            int mobType = Convert.ToInt32(data[9]);
+            int direction = Convert.ToInt32(data[10]);
             string type = data[data.Length - 1].Trim();
             GameObject unitObject = null;
             Debug.Log(type);
@@ -157,7 +158,6 @@ public class MapLoader : MonoBehaviour {
             stats.power = power;
             stats.defense = defense;
             stats.resistance = resist;
-            stats.mvtRange = move;
             stats.className = type;
             ///////////////////////
             unit.SetTile(HexMap.mapArray[unitRow][unitCol]);
