@@ -651,10 +651,14 @@ public class Unit : MonoBehaviour {
     }
 
     public bool HasInAttackRange(Unit other){
+        if (!other)
+            return false;
         return HexMap.GetAttackTiles(this).Contains(other.currentTile);
     }
 
     public bool HasInTotalRange(Unit other) {
+        if (!other)
+            return false;
         return HexMap.GetTotalRange(this).Contains(other.currentTile);
     }
 
