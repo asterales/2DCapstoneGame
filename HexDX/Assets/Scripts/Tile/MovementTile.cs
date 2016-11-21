@@ -41,6 +41,8 @@ public class MovementTile : MonoBehaviour {
     
     public void OnMouseEnter() {
         sc.HideTarget();
+        PlayerUIDrawer.instance.SetPreview(0);
+        EnemyUIDrawer.instance.SetPreview(0);
         if ((sc.TakingInput() 
                 || sc.mode == SelectionMode.ScriptedPlayerMove) 
                 && path != null) {
@@ -117,6 +119,7 @@ public class MovementTile : MonoBehaviour {
 
     private static void DrawZoneOfControlThreat() {
         SelectionController sc = SelectionController.instance;
+        int preview = 0;
         foreach (Unit unit in BattleController.instance.ai.units){
             if (unit.phase == UnitTurn.Open){
                 bool inrange = false;
@@ -133,8 +136,12 @@ public class MovementTile : MonoBehaviour {
                     unit.spriteRenderer.color = Color.white;
                 if (unit == sc.target && unit.HasInAttackRange(sc.selectedUnit))
                     unit.spriteRenderer.color = Color.red;
+                if (unit.spriteRenderer.color == Color.red)
+                    preview += unit.GetDamage(sc.selectedUnit, unit.ZOCModifer);
             }
         }
+
+        PlayerUIDrawer.instance.SetPreview(preview);
     }
 
     private static void DrawCircle(GameObject pathObj, Tile tile, Sprite circleSprite) {

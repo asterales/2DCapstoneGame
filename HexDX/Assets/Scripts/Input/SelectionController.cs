@@ -89,8 +89,12 @@ public class SelectionController : MonoBehaviour {
     public void ShowTarget(Unit unit) {
         if (unit) {
             target = unit;
+            if (selectedUnit&&selectedUnit.IsPlayerUnit())
+                EnemyUIDrawer.instance.SetPreview(selectedUnit.GetDamage(target));
             if (target.phase == UnitTurn.Open && target.HasInAttackRange(selectedUnit)) {
                 target.GetComponent<SpriteRenderer>().color = Color.red;
+                if (selectedUnit&& selectedUnit.IsPlayerUnit())
+                    PlayerUIDrawer.instance.SetPreview(target.GetDamage(selectedUnit, target.ZOCModifer));
             }
             targetSpaceObj.transform.position = unit.currentTile.transform.position + GameResources.visibilityOffset + new Vector3(0, 0, 0.1f);
         }

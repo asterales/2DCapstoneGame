@@ -468,7 +468,7 @@ public class Unit : MonoBehaviour {
         yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f/SpeedController.speed);
         if (target.enabled && target.Health > 0 && target.HasInAttackRange(this) && target.phase==UnitTurn.Open && Health > 0) {
             target.MakeAttacking();
-            Timing.RunCoroutine(target.DoAttack(this, .8f));
+            Timing.RunCoroutine(target.DoAttack(this, target.ZOCModifer));
         }
 
     }
@@ -490,6 +490,10 @@ public class Unit : MonoBehaviour {
             }
         }
         target.Health -= (int)(damage * modifier);
+        if (target.IsPlayerUnit())
+            PlayerUIDrawer.instance.damagePreview -= (int)(damage * modifier);
+        else
+            EnemyUIDrawer.instance.damagePreview -= (int)(damage * modifier);
         if (target.Health <= 0) {
             target.Health = 0;
             target.path = new Queue<Tile>();
@@ -516,6 +520,24 @@ public class Unit : MonoBehaviour {
             }
             target.Die();
         }
+    }
+
+    public int GetDamage(Unit target, float modifier = 1.0f)
+    {
+        int basedamage =(int)(Attack * (50.0f / (50.0f + (float)target.Defense))) + (int)(Power * (50.0f / (50.0f + (float)target.Resistance)));
+        int damage = (int)(basedamage * modifier);
+        if (target.phase != UnitTurn.Moving)
+        {
+            if (target.facing == facing)
+            {
+                damage = (int)(basedamage * 2 * modifier);
+            }
+            else if (Mathf.Abs(target.facing - facing) == 1 || Mathf.Abs(target.facing - facing) == 5)
+            {
+                damage = (int)(basedamage * 3 * modifier) /2;
+            }
+        }
+        return damage;
     }
 
     public void DrawHealth() {
