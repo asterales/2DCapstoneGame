@@ -11,12 +11,14 @@ public abstract class ArmyBattleController : MonoBehaviour {
 
     protected virtual void Awake() {
         battleController = GetComponent<BattleController>();
+        enabled = false;
     }
 
     public virtual void InitUnits() {
         InitUnitList();
         units.ForEach(u => u.InitForBattle());
         sc = SelectionController.instance;
+        enabled = true;
     }
 
     public virtual void StartTurn() {

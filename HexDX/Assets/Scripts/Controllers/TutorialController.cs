@@ -79,7 +79,7 @@ public class TutorialController : PreBattleController {
 		eventsList.currentScriptEvent.FinishEvent();
 	}
 	
-	protected override void PhaseUpdateAction() {
+	void Update() {
 		if (targetTile != null) {
 			ShowSelectionPrompt(targetTile);
 		} else {

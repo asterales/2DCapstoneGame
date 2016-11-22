@@ -25,7 +25,7 @@ public class DeploymentUI : MonoBehaviour {
 		startBattleButton.onClick.AddListener(deploymentController.EndPreBattlePhase);
 		HideUI();
 		if (!deploymentController.enabled) {
-			gameObject.SetActive(false);
+			HideUI();
 		}
 	}
 

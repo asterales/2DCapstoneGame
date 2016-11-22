@@ -29,30 +29,27 @@ public class PlayerBattleController : ArmyBattleController {
     }
 
     void Update() {
-        if (!sc.TakingAIInput()
-            && sc.mode != SelectionMode.TurnTransition
-            && selectedUnit == null) {
+        if (!sc.TakingAIInput() && sc.mode != SelectionMode.TurnTransition && selectedUnit == null) {
             sc.mode = SelectionMode.Open;
         }
         if (!sc.TakingAIInput()
             && sc.mode != SelectionMode.TurnTransition
             && selectedUnit) {
             if (selectedUnit.phase == UnitTurn.Moving || selectedUnit.phase == UnitTurn.Facing || selectedUnit.phase == UnitTurn.ChoosingAction)
-                if (Input.GetKeyDown(KeyCode.LeftShift)||Input.GetMouseButtonDown(2))
-                {
+                if (Input.GetKeyDown(KeyCode.LeftShift)||Input.GetMouseButtonDown(2)) {
                     Undo();
                 }
-            switch (selectedUnit.phase) {
-                case UnitTurn.Attacking:
-                    break;
-                case UnitTurn.Facing:
-                    sc.selectedTile = selectedUnit.currentTile;
-                    SelectFacing();
-                    break;
-                case UnitTurn.Done:
-                    selectedUnit = null;
-                    sc.mode = SelectionMode.Open;
-                    break;
+                switch (selectedUnit.phase) {
+                    case UnitTurn.Attacking:
+                        break;
+                    case UnitTurn.Facing:
+                        sc.selectedTile = selectedUnit.currentTile;
+                        SelectFacing();
+                        break;
+                    case UnitTurn.Done:
+                        selectedUnit = null;
+                        sc.mode = SelectionMode.Open;
+                        break;
             }
         }
         if (!battleController.BattleIsDone && battleController.CanEndTurn()) {

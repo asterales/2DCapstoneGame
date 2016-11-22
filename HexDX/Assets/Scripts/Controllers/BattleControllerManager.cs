@@ -21,7 +21,6 @@ public class BattleControllerManager : MonoBehaviour {
 	public TutorialController tutorial;
 	public ScriptedAIBattleController scriptedAI;
 	public CustomUnitLoader unitLoader;
-	public TutorialInfo tutorialInfo;
 	
 	// Prebattle phase management
 	public List<PreBattleController> prebattlePhases;
@@ -56,7 +55,6 @@ public class BattleControllerManager : MonoBehaviour {
 		tutorial = tutorial != null ? tutorial : FindObjectOfType(typeof(TutorialController)) as TutorialController;
 		scriptedAI = scriptedAI != null ? scriptedAI : FindObjectOfType(typeof(ScriptedAIBattleController)) as ScriptedAIBattleController;
 		unitLoader = unitLoader != null ? unitLoader : FindObjectOfType(typeof(CustomUnitLoader)) as CustomUnitLoader;
-		tutorialInfo = tutorialInfo != null ? tutorialInfo : FindObjectOfType(typeof(TutorialInfo)) as TutorialInfo;
 		if (deploymentController) {
 			prebattlePhases.Add(deploymentController);
 		}

@@ -66,7 +66,7 @@ public class DeploymentController : PreBattleController {
 		displacedUnitDest = null;
 	}
 
-	protected override void PhaseUpdateAction() {
+	void Update() {
 		if (sc.selectedUnit) {
 			sc.ShowSelection(selectedUnitDest);
 			MoveUnit(sc.selectedUnit, selectedUnitDest);
