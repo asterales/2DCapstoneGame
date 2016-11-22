@@ -470,6 +470,10 @@ public class Unit : MonoBehaviour {
             target.MakeAttacking();
             Timing.RunCoroutine(target.DoAttack(this, target.ZOCModifer));
         }
+        else
+        {
+            PlayerUIDrawer.instance.SetPreview(0);
+        }
 
     }
 
