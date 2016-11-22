@@ -10,7 +10,8 @@ public class AttackTile : MonoBehaviour {
         if (sc.selectedUnit && sc.selectedUnit.phase == UnitTurn.Attacking) {
             if (sc.selectedUnit.IsPlayerUnit() && HasEnemyUnit() && sc.target != null) {
                 sc.mode = SelectionMode.Attacking;
-                if (tile.currentUnit != sc.target) {
+                if (tile.currentUnit != sc.target){
+                    sc.target.spriteRenderer.color = Color.white;
                     sc.ShowTarget(tile.currentUnit);
                 }
                 if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0)){
@@ -37,6 +38,9 @@ public class AttackTile : MonoBehaviour {
             tile.OnMouseOver();
         }
     }
+
+    public void OnMouseEnter() { }
+
 
     private bool HasEnemyUnit() {
         return tile.currentUnit && !tile.currentUnit.IsPlayerUnit();
