@@ -50,7 +50,7 @@ public class UnitUIDrawer : MonoBehaviour {
     }
 
     protected void DrawUI() {
-        if (unit) {
+        if (unit && unit.enabled) {
             portrait.color = Color.white;
             portrait.sprite = unit.sprites.portrait;
             if (damagePreview < 0)
