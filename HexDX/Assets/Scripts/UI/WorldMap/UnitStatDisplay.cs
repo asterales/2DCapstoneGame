@@ -87,7 +87,7 @@ public class UnitStatDisplay : MonoBehaviour {
         sb.Append(string.Format("Health: {0}\n", unit.MaxHealth));
         sb.Append(string.Format("Attack: {0}\n", unit.Attack));
         sb.Append(string.Format("Defense: {0}\n", unit.Defense));
-        sb.Append(string.Format("Power: {0}\n", unit.Power));
+        sb.Append(string.Format("Ether: {0}\n", unit.Power));
         sb.Append(string.Format("Resistance: {0}\n", unit.Resistance));
         sb.Append(string.Format("Move Range: {0}\n", unit.MvtRange));
         return sb.ToString();

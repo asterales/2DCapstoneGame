@@ -42,7 +42,7 @@ public class Unit : MonoBehaviour {
     public int Defense { get { return unitStats.defense + (currentTile ? currentTile.tileStats.defenseModifier : 0); } }
     public int Power { get { return unitStats.power + (currentTile ? currentTile.tileStats.powerModifier : 0); } }
     public int Resistance { get { return unitStats.resistance + (currentTile ? currentTile.tileStats.resistanceModifier : 0); } }
-    public int MvtRange { get { return unitStats.mvtRange + (currentTile ? currentTile.tileStats.mvtModifier : 0); } }
+    public int MvtRange { get { return unitStats.mvtRange; } }
     public string ClassName { get { return unitStats.className; } set { unitStats.className = value; } }
 
 

@@ -46,9 +46,7 @@ public class DeploymentUI : MonoBehaviour {
 				HideUI();
 			}
 		}
-		if (hoveredStartButton) {
-			Camera.main.GetComponent<CameraController>().DontMove();
-		}
+		Camera.main.GetComponent<CameraController>().enabledMousePan = !hoveredStartButton;
 	}
 
 	// attached to button as EventTrigger in inspector, hack to prevent camera from moving

@@ -3,7 +3,6 @@ using System.Text;
 
 public class TileStats : MonoBehaviour {
 	public string typeName;
-	public int mvtModifier;
 	public int attackModifier;
 	public int defenseModifier;
 	public int powerModifier;
@@ -18,12 +17,27 @@ public class TileStats : MonoBehaviour {
 		}
 
 		StringBuilder sb = new StringBuilder();
-		sb.Append(typeName + "\n");
-		sb.Append("Move Difficulty: " + mvtDifficulty + "\n");
-		if (mvtModifier != 0) {
-			sb.Append("Move Range Mod: " + mvtModifier);
+		sb.Append(typeName);
+		if (attackModifier != 0) {
+			sb.Append("\nAtk: " + GetSignedString(attackModifier));
 		}
+		if (defenseModifier != 0) {
+			sb.Append("\nDef: " + GetSignedString(defenseModifier));
+		}
+		if (powerModifier != 0) {
+			sb.Append("\nEth: " + GetSignedString(powerModifier));
+		}
+		if (resistanceModifier != 0) {
+			sb.Append("\nRes: " + GetSignedString(resistanceModifier));
+		}
+		sb.Append("\nMove Difficulty: " + mvtDifficulty);
+		sb.Append("\n");
 		DisplayString = sb.ToString();
+	}
+
+	private string GetSignedString(int modifier) {
+		string sign = modifier > 0 ? "+" : "";
+		return sign + modifier;
 	}
 }
 

@@ -9,13 +9,15 @@ public class CameraController : MonoBehaviour {
     private const float MIN_ZOOM = 2.0f;
     private const float MAX_ZOOM = 20.0f;
 
+    public bool enabledMousePan;
+
     private float originalSize, xmin, xmax, ymin, ymax;
     private Vector3 prev;
-    
     private bool aiMovedCamera;
 
     void Awake() {
         originalSize = Camera.main.orthographicSize;
+        enabledMousePan = true;
     }
 
     // Use this for initialization
@@ -66,16 +68,16 @@ public class CameraController : MonoBehaviour {
     private Vector3 GetPanVector() {
         float newX, newY;
         newX = newY = 0;
-        if (Input.GetKey(KeyCode.W) || Input.mousePosition.y > Screen.height * (1 - MOUSE_MOVE_MARGIN)) {
+        if (Input.GetKey(KeyCode.W) || (enabledMousePan && Input.mousePosition.y > Screen.height * (1 - MOUSE_MOVE_MARGIN))) {
             newY += .2f * transform.localScale.y;
         }
-        if (Input.GetKey(KeyCode.S) || Input.mousePosition.y < Screen.height * MOUSE_MOVE_MARGIN) {
+        if (Input.GetKey(KeyCode.S) || (enabledMousePan && Input.mousePosition.y < Screen.height * MOUSE_MOVE_MARGIN)) {
             newY -= .2f * transform.localScale.y;
         }
-        if (Input.GetKey(KeyCode.A) || Input.mousePosition.x < Screen.width * MOUSE_MOVE_MARGIN) {
+        if (Input.GetKey(KeyCode.A) || (enabledMousePan && Input.mousePosition.x < Screen.width * MOUSE_MOVE_MARGIN)) {
             newX -= .2f * transform.localScale.x;
         }
-        if (Input.GetKey(KeyCode.D) || Input.mousePosition.x > Screen.width * (1 - MOUSE_MOVE_MARGIN)) {
+        if (Input.GetKey(KeyCode.D) || (enabledMousePan && Input.mousePosition.x > Screen.width * (1 - MOUSE_MOVE_MARGIN))) {
             newX += .2f * transform.localScale.x;
         }
         return new Vector3(newX, newY, 0) * 2.0f;
@@ -98,11 +100,5 @@ public class CameraController : MonoBehaviour {
     private void MoveCameraTowards(Vector3 pos) {
         Vector3 destination = new Vector3(pos.x, pos.y, transform.position.z);
         transform.position = Vector3.MoveTowards(transform.position, destination, transform.localScale.x*SpeedController.speed);
-    }
-
-    public void DontMove() {
-        if (BattleController.instance.IsPlayerTurn) {
-            transform.position = prev;
-        }
     }
 }
