@@ -28,7 +28,7 @@ public class ScriptedChooseAction : ScriptEvent {
     }
 
     public override void DoPlayerEvent() {
-        player = BattleControllerManager.instance.player;
+        player = BattleManager.instance.player;
         list.sc.mode = SelectionMode.ScriptedPlayerChooseAction;
         actionEnabled[(int)action] = true;
     }

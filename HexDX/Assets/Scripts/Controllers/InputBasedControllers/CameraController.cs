@@ -56,7 +56,7 @@ public class CameraController : MonoBehaviour {
                 ClampCameraPosition(transform.position + GetPanVector());
             }
         } else {
-            Unit aiUnit = BattleControllerManager.instance.ai.GetUnit();
+            Unit aiUnit = BattleManager.instance.ai.GetUnit();
             if (aiUnit) {
                 aiMovedCamera = true;
                 MoveCameraTowards(aiUnit.transform.position);

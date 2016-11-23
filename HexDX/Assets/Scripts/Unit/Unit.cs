@@ -99,8 +99,8 @@ public class Unit : MonoBehaviour {
     }
 
     public void InitForBattle() {
-        player = BattleControllerManager.instance.player;
-        ai = BattleControllerManager.instance.ai;
+        player = BattleManager.instance.player;
+        ai = BattleManager.instance.ai;
         sc = SelectionController.instance;
     }
 
@@ -672,10 +672,10 @@ public class Unit : MonoBehaviour {
 
     public static void SaveAllStates() {
         UnitState.ClearStates();
-        foreach (Unit unit in BattleControllerManager.instance.ai.units) {
+        foreach (Unit unit in BattleManager.instance.ai.units) {
             UnitState.SaveState(unit);
         }
-        foreach (Unit unit in BattleControllerManager.instance.player.units) {
+        foreach (Unit unit in BattleManager.instance.player.units) {
             UnitState.SaveState(unit);
         }
     }

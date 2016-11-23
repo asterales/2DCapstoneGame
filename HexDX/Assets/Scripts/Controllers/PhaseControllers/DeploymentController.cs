@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class DeploymentController : PreBattleController {
+public class DeploymentController : PhaseController {
 	// For disabling specifc HUD elements
 	private static readonly List<string> disabledHudElementNames = new List<string> { 
 		//"EndTurnButton", "EndBanners", "TurnBanners", "TileUI", "EnemyUI"
@@ -21,20 +21,20 @@ public class DeploymentController : PreBattleController {
 	public float maxMovement;
 
 	protected override void Awake() {
-		base.Awake();
 		deploymentTiles = new List<DeploymentTile>();
 		deploymentUI = GameObject.Find("Deployment UI");
 		disabledHudElements = disabledHudElementNames.Select(n => GameObject.Find(n)).ToList();
+		base.Awake();
 	}
 
-	public override void StartPreBattlePhase() {
-		base.StartPreBattlePhase();
+	public override void StartBattlePhase() {
+		base.StartBattlePhase();
 		if (deploymentTiles.Count > 0) {
 			disabledHudElements.ForEach(d => d.SetActive(false));
 			ClearSelections();
 			sc.mode = SelectionMode.DeploymentOpen;
 		} else {
-			EndPreBattlePhase();
+			EndBattlePhase();
 		}
 	}
 
@@ -100,7 +100,7 @@ public class DeploymentController : PreBattleController {
     	}
     }
 
-	public override void EndPreBattlePhase() {
+	public override void EndBattlePhase() {
 		// Make all units open and destroy deployment tiles
 		foreach(DeploymentTile deployTile in deploymentTiles) {
 			if(deployTile.tile.currentUnit) {
@@ -114,7 +114,7 @@ public class DeploymentController : PreBattleController {
 		deploymentUI.SetActive(false);
 		disabledHudElements.ForEach(h => h.SetActive(true));
 
-		base.EndPreBattlePhase();
+		base.EndBattlePhase();
 	}
 }
 

@@ -12,8 +12,8 @@ public class ScriptedEndTurn : ScriptEvent {
     }
 
     public override void FinishEvent(){
-        PlayerBattleController player = BattleControllerManager.instance.player;
-        ScriptedAIBattleController scriptedAI = BattleControllerManager.instance.scriptedAI;
+        PlayerBattleController player = BattleManager.instance.player;
+        ScriptedAIBattleController scriptedAI = BattleManager.instance.scriptedAI;
         if(isPlayerEvent){
             Camera.main.transform.GetChild(0).Find("EndTurnButton").GetComponent<SpriteRenderer>().color = Color.white;
             player.EndTurn();

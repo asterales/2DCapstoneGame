@@ -9,7 +9,7 @@ public class EndTurn : MonoBehaviour {
     private SpriteRenderer spriteRenderer;
 
     void Start() {
-        battleController = BattleControllerManager.instance.battleController; //hack until figure out if static or manually attach
+        battleController = BattleManager.instance.battleController; //hack until figure out if static or manually attach
         spriteRenderer = GetComponent<SpriteRenderer>();
         InitAlpha();
     }
@@ -29,7 +29,7 @@ public class EndTurn : MonoBehaviour {
 
         if (SelectionController.instance.mode == SelectionMode.ScriptedPlayerEndTurn) {
             spriteRenderer.color = clickColor;
-            BattleControllerManager.instance.tutorial.EndCurrentTurn();
+            BattleManager.instance.tutorial.EndCurrentTurn();
         }
     }
 

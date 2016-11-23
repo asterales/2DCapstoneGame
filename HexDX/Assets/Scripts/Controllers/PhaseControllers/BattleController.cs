@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 // This class will be responsible for handling Game Loop States
 
-public class BattleController : MonoBehaviour {
+public class BattleController : PhaseController {
 
     public static BattleController instance;
 
@@ -22,12 +22,19 @@ public class BattleController : MonoBehaviour {
     public bool PlayerWon { get; private set; }
 
     void Awake () {
-        instance = this;
-        ai = GetComponent<AIBattleController>();
-        player = GetComponent<PlayerBattleController>();
+        if (instance == null) {
+            instance = this;
+            Init();
+        } else {
+            Destroy(this);
+        }
+    }
+
+    private void Init() {
+        GetArmyControllers();
+        InitFlags();
         victoryCondition = GetComponent<VictoryCondition>();
         numTurns = 0;
-        InitFlags();
         ////// DEBUG CODE //////
         if (ai == null) {
             Debug.Log("Error :: AI Battle Controller not defined -> BattleController.cs");
@@ -41,11 +48,25 @@ public class BattleController : MonoBehaviour {
         ////////////////////////
     }
 
+    private void GetArmyControllers() {
+        ai = GetComponent<AIBattleController>();
+        player = GetComponent<PlayerBattleController>();
+        ai.enabled = false;
+        player.enabled = false;
+    }
+
     private void InitFlags() {
         IsPlayerTurn = true;
         BattleIsDone = false;
         nextSceneLoaded = false;
         PlayerWon = false;
+    }
+
+    public override void StartBattlePhase() {
+        base.StartBattlePhase();
+        player.enabled = true;
+        ai.enabled = true;
+        player.StartTurn();
     }
 
     void Update() {
@@ -67,7 +88,7 @@ public class BattleController : MonoBehaviour {
 
     private void UpdateArmyAfterBattle() {
         if (GameManager.instance) {
-            CustomUnitLoader unitLoader = BattleControllerManager.instance.unitLoader;
+            CustomUnitLoader unitLoader = BattleManager.instance.unitLoader;
             if (PlayerWon && unitLoader && unitLoader.CanReplaceUnits()) {
                 unitLoader.ReplacePlayerArmy();
             } else {
@@ -95,17 +116,16 @@ public class BattleController : MonoBehaviour {
         }
     }
 
-    public void ResetColors()
-    {
-        foreach (Unit unit in ai.units)
-        {
-            if (unit.phase == UnitTurn.Open)
+    public void ResetColors() {
+        foreach (Unit unit in ai.units) {
+            if (unit.phase == UnitTurn.Open) {
                 unit.GetComponent<SpriteRenderer>().color = Color.white;
+            }
         }
-        foreach (Unit unit in player.units)
-        {
-            if (unit.phase == UnitTurn.Open)
+        foreach (Unit unit in player.units) {
+            if (unit.phase == UnitTurn.Open) {
                 unit.GetComponent<SpriteRenderer>().color = Color.white;
+            }
         }
     }
 

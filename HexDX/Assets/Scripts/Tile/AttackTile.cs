@@ -6,7 +6,7 @@ public class AttackTile : MonoBehaviour {
 
     public void OnMouseOver() {
         SelectionController sc = SelectionController.instance;
-        TutorialController tutorial = BattleControllerManager.instance.tutorial;
+        TutorialController tutorial = BattleManager.instance.tutorial;
         if (sc.selectedUnit && sc.selectedUnit.phase == UnitTurn.Attacking) {
             if (sc.selectedUnit.IsPlayerUnit() && HasEnemyUnit() && sc.target != null) {
                 sc.mode = SelectionMode.Attacking;
@@ -32,7 +32,7 @@ public class AttackTile : MonoBehaviour {
                     tile.OnMouseOver();
                 }
             }
-        } else if (tutorial && tutorial.IsAttackTarget(this) && Input.GetMouseButtonDown(1)){
+        } else if (tutorial && tutorial.enabled && tutorial.IsAttackTarget(this) && Input.GetMouseButtonDown(1)){
             sc.ShowTarget(tile.currentUnit);
         } else {
             tile.OnMouseOver();

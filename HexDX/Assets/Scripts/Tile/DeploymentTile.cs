@@ -50,7 +50,7 @@ public class DeploymentTile : MonoBehaviour {
 
 	void OnMouseUp() {
 		if (draggedUnit) {
-			DeploymentController dc = BattleControllerManager.instance.deploymentController;
+			DeploymentController dc = BattleManager.instance.deploymentController;
 			if (hoveredTile) {
 				dc.SetSelectedUnitDestination(draggedUnit, hoveredTile);
 			} else {

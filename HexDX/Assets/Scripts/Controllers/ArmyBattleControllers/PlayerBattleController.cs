@@ -20,7 +20,7 @@ public class PlayerBattleController : ArmyBattleController {
     }
 
     public override void InitUnitList() {
-        Unit[] allUnits = BattleControllerManager.instance.hexMap.GetUnitsOnMap();
+        Unit[] allUnits = BattleManager.instance.hexMap.GetUnitsOnMap();
         units = allUnits.Where(unit => unit.IsPlayerUnit()).ToList();
         initialStates = new Dictionary<Unit, UnitState>();
         foreach(Unit unit in units) {

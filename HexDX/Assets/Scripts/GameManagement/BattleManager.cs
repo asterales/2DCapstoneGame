@@ -4,9 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class BattleControllerManager : MonoBehaviour {
+public class BattleManager : MonoBehaviour {
 	// singleton
-	public static BattleControllerManager instance;
+	public static BattleManager instance;
 
 	// Default controllers set in editor
 	public MapLoader mapLoader;
@@ -22,9 +22,9 @@ public class BattleControllerManager : MonoBehaviour {
 	public ScriptedAIBattleController scriptedAI;
 	public CustomUnitLoader unitLoader;
 	
-	// Prebattle phase management
-	public List<PreBattleController> prebattlePhases;
-	private int preBattlePhaseIndex;
+	// Battle phase management
+	public List<PhaseController> battlePhases;
+	private int phaseIndex;
 	
 
 	void Awake() {
@@ -47,25 +47,12 @@ public class BattleControllerManager : MonoBehaviour {
 		List<Vector3> playerPositions = player.units.Where(p => p != null).Select(p => p.transform.position).ToList();
 		cameraController.InitCamera(playerPositions);
 		InitVictoryCondition();
-		DisableGameControllers();
 	}
 
 	private void GetImportedControllers() {
-		prebattlePhases = new List<PreBattleController>();
 		tutorial = tutorial != null ? tutorial : FindObjectOfType(typeof(TutorialController)) as TutorialController;
 		scriptedAI = scriptedAI != null ? scriptedAI : FindObjectOfType(typeof(ScriptedAIBattleController)) as ScriptedAIBattleController;
 		unitLoader = unitLoader != null ? unitLoader : FindObjectOfType(typeof(CustomUnitLoader)) as CustomUnitLoader;
-		if (deploymentController) {
-			prebattlePhases.Add(deploymentController);
-		}
-		if (tutorial) {
-			if (tutorial.isBeforeDeployment) {
-				prebattlePhases.Insert(0, tutorial);
-			} else {
-				prebattlePhases.Add(tutorial);
-			}
-		}
-		preBattlePhaseIndex = 0;
 	}
 
 	private void InitArmies() {
@@ -81,36 +68,36 @@ public class BattleControllerManager : MonoBehaviour {
 	}
 
 	private void StartBattlePhases() {
+		InitPhases();
 		Debug.Log("Starting battle map phases");
-		if (prebattlePhases.Count > 0) {
-			prebattlePhases[0].StartPreBattlePhase();
-		} else {
-			EnableGameControllers();
+		if (battlePhases.Count > 0) {
+			battlePhases[0].StartBattlePhase();
 		}
+	}
+
+	private void InitPhases() {
+		battlePhases = new List<PhaseController>();
+		if (deploymentController) {
+			battlePhases.Add(deploymentController);
+		}
+		if (tutorial) {
+			if (tutorial.isBeforeDeployment) {
+				battlePhases.Insert(0, tutorial);
+			} else {
+				battlePhases.Add(tutorial);
+			}
+		}
+		battlePhases.Add(battleController);
+		phaseIndex = 0;
 	}
 
 	void Update() {
-		// move to the next phase
-		if (preBattlePhaseIndex < prebattlePhases.Count && !prebattlePhases[preBattlePhaseIndex].enabled) {
-			preBattlePhaseIndex++;
-			if (preBattlePhaseIndex < prebattlePhases.Count) {
-				prebattlePhases[preBattlePhaseIndex].StartPreBattlePhase();
-			} else {
-				EnableGameControllers();
-				player.StartTurn();
+		// move to the next phase after phase script finishes and disables itself
+		if (phaseIndex < battlePhases.Count && !battlePhases[phaseIndex].enabled) {
+			phaseIndex++;
+			if (phaseIndex < battlePhases.Count) {
+				battlePhases[phaseIndex].StartBattlePhase();
 			}
 		}
-	}
-
-	private void EnableGameControllers() {
-		player.enabled = true;
-		ai.enabled = true;
-		battleController.enabled = true;
-	}
-
-	private void DisableGameControllers() {
-		player.enabled = false;
-		ai.enabled = false;
-		battleController.enabled = false;
 	}
 }

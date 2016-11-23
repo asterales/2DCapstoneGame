@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TutorialController : PreBattleController {
+public class TutorialController : PhaseController {
 	public bool isBeforeDeployment;
 	private TutorialInfo info;
 	private ScriptedAIBattleController scriptedAI;
@@ -17,16 +17,16 @@ public class TutorialController : PreBattleController {
 	public GameObject selectionPromptObj;
 
 	protected override void Awake() {
-		base.Awake();
 		info = GetComponent<TutorialInfo>();
 		scriptedAI = GetComponent<ScriptedAIBattleController>();
 		unitLoader = GetComponent<CustomUnitLoader>();
 		eventsList = GetComponent<ScriptList>();
+		base.Awake();
 	}
 
-	public override void StartPreBattlePhase() {
+	public override void StartBattlePhase() {
 		if (!info.HasBeenCompleted()) {
-			base.StartPreBattlePhase();
+			base.StartBattlePhase();
 			if (scriptedAI) {
 				scriptedAI.InitUnits();
 			}
@@ -38,7 +38,7 @@ public class TutorialController : PreBattleController {
 			eventsList.dialogueMgr.SetSpeaker(info.tutorialAdvisor, info.advisorPortraitIndex);
 			eventsList.StartEvents();
 		} else {
-			base.EndPreBattlePhase();
+			base.EndBattlePhase();
 		}
 	}
 
@@ -87,17 +87,17 @@ public class TutorialController : PreBattleController {
 		}
 		if (eventsList.EventsCompleted){
 			if(eventsList.dialogueMgr.HasFinishedAllLines()) {
-				EndPreBattlePhase();
+				EndBattlePhase();
 			}
 		}
 	}
 
-	public override void EndPreBattlePhase() {
+	public override void EndBattlePhase() {
 		eventsList.dialogueMgr.HideGUI();
 		HideSelectionPrompt();
 		targetTile = null;
 		info.RegisterCompleted();
-		base.EndPreBattlePhase();
+		base.EndBattlePhase();
 	}
 
 }

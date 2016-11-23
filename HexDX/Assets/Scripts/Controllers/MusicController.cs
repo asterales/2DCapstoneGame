@@ -12,7 +12,7 @@ public class MusicController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        battleController = BattleControllerManager.instance.battleController;
+        battleController = BattleManager.instance.battleController;
         audio = GetComponent<AudioSource>();
         SetSteamPunk();
 	}

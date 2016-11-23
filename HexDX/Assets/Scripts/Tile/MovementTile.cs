@@ -26,8 +26,8 @@ public class MovementTile : MonoBehaviour {
                 }
             }
         }
-        TutorialController tutorial = BattleControllerManager.instance.tutorial;
-        if (tutorial && tutorial.IsTargetDestination(this)){
+        TutorialController tutorial = BattleManager.instance.tutorial;
+        if (tutorial && tutorial.enabled && tutorial.IsTargetDestination(this)){
             if (path != null && path[path.Count - 1] != tile && !HexMap.AreNeighbors(tile, path[path.Count - 1]) ){
                 path = sc.selectedUnit.GetShortestPath(tile);
                 DrawPath();
@@ -98,7 +98,7 @@ public class MovementTile : MonoBehaviour {
     }
 
     public static void DrawPath() {
-        PlayerBattleController pbc = BattleControllerManager.instance.player;
+        PlayerBattleController pbc = BattleManager.instance.player;
         Object.Destroy(GameObject.Find("path"));
         if (path!=null) {
             if (path.Count > 1)

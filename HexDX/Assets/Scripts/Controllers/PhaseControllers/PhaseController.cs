@@ -1,25 +1,24 @@
 using UnityEngine;
 using System.Collections;
 
-public abstract class PreBattleController : MonoBehaviour {
+public abstract class PhaseController : MonoBehaviour {
 	protected SelectionController sc;
-	protected PlayerBattleController player;
+	private bool isActive;
 
 	protected virtual void Awake() {
 		enabled = false;
 	}
 
-	public virtual void StartPreBattlePhase() {
+	public virtual void StartBattlePhase() {
 		Debug.Log("Starting phase for " + GetType());
-		player = BattleControllerManager.instance.player;
 		sc = SelectionController.instance;
 		sc.ClearAllSelections();
 		enabled = true;
 	}
 
-	public virtual void EndPreBattlePhase() {
+	public virtual void EndBattlePhase() {
 		Debug.Log("Ending phase for " + GetType());
-		sc.ClearAllSelections();
+		SelectionController.instance.ClearAllSelections();
 		enabled = false;
 	}
 }

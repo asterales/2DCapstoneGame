@@ -11,9 +11,9 @@ using System.Linq;
 
 public class LevelManager : MonoBehaviour {
     private static readonly string mainMenuSceneName = "MainMenu";
-	private static readonly string battleSceneName = "TestScene";
+	private static readonly string battleSceneName = "BattleMap";
 	private static readonly string worldMapSceneName = "WorldMap";
-	private static readonly string cutsceneSceneName = "TestCutscene";
+	private static readonly string cutsceneSceneName = "Cutscene";
 
 	public static LevelManager activeInstance;
 

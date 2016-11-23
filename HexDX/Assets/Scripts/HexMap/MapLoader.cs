@@ -7,7 +7,6 @@ using MovementEffects;
 public class MapLoader : MonoBehaviour {
     private static readonly string mapsDir = "Maps/";
     public string csvMapFile;
-    public bool isTutorial;
 
     public HexMap battleMap;
     private HexDimension hexDimension;
@@ -49,7 +48,7 @@ public class MapLoader : MonoBehaviour {
         LoadMapTiles(mapCsvRows, rows);
         currentLine += rows;
 
-        CustomUnitLoader unitLoader = BattleControllerManager.instance.unitLoader;
+        CustomUnitLoader unitLoader = BattleManager.instance.unitLoader;
         if (unitLoader && unitLoader.CanLoadUnits()) {
             unitLoader.LoadUnits();
         } else if (currentLine < mapCsvRows.Length){
@@ -195,7 +194,7 @@ public class MapLoader : MonoBehaviour {
             }
 
             // Pass tiles to deployment controller
-            DeploymentController deployController = BattleControllerManager.instance.deploymentController;
+            DeploymentController deployController = BattleManager.instance.deploymentController;
             if (deployController) {
                 deployController.LoadDeploymentTiles(deployZone);
             }

@@ -21,8 +21,8 @@ public class DeploymentUI : MonoBehaviour {
 	}
 
 	void Start() {
-		deploymentController = BattleControllerManager.instance.deploymentController;
-		startBattleButton.onClick.AddListener(deploymentController.EndPreBattlePhase);
+		deploymentController = BattleManager.instance.deploymentController;
+		startBattleButton.onClick.AddListener(deploymentController.EndBattlePhase);
 		HideUI();
 		if (!deploymentController.enabled) {
 			HideUI();

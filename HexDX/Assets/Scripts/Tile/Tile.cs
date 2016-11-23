@@ -63,8 +63,8 @@ public class Tile : MonoBehaviour {
         if (sc.selectedUnit && sc.selectedUnit.phase !=UnitTurn.Attacking) {
             sc.HideTarget();
         }
-        TutorialController tutorial = BattleControllerManager.instance.tutorial;
-        if (sc.TakingInput() || (tutorial && tutorial.IsTargetTile(this) && Input.GetMouseButtonDown(0))){
+        TutorialController tutorial = BattleManager.instance.tutorial;
+        if (sc.TakingInput() || (tutorial && tutorial.enabled && tutorial.IsTargetTile(this) && Input.GetMouseButtonDown(0))){
             if (currentUnit && !currentUnit.IsPlayerUnit()){
                 if (sc.selectedUnit && sc.selectedUnit.IsPlayerUnit() && sc.selectedUnit.HasInAttackRange(currentUnit)) {
                     sc.ShowTarget(currentUnit);
