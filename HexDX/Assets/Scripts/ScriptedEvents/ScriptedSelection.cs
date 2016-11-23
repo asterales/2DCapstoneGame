@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class ScriptedSelection : ScriptEvent {
 	/* Coordinates of tile to select */
 	public int row;
