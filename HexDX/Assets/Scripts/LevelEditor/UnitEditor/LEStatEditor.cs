@@ -162,8 +162,8 @@ public class LEStatEditor : MonoBehaviour {
                         mob.AddToMob();
                         if (prevMob.numInMob == 0) mobCache.mobs.Remove(prevMob);
                         currentInstance.instanceMobType = mob.mobType;
-                        Debug.Log("MobCache Size :: " + mobCache.mobs.Count);
-                        Debug.Log("Current Mob Type :: " + mob.mobType);
+                        //Debug.Log("MobCache Size :: " + mobCache.mobs.Count);
+                        //Debug.Log("Current Mob Type :: " + mob.mobType);
                         reference.UpdateText();
                     }
                     break;
