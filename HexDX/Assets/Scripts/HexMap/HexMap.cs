@@ -221,8 +221,7 @@ public class HexMap : MonoBehaviour {
         return attackable;
     }
 
-    public static void ShowAttackTiles(Unit unit)
-    {
+    public static void ShowAttackTiles(Unit unit) {
         ClearAttackTiles();
         foreach (Tile t in GetAttackTiles(unit)) {
             t.ShowAttackTile();

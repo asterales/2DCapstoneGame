@@ -25,18 +25,15 @@ public class MapLoader : MonoBehaviour {
         ////////////////////////
     }
 
-    public void LoadMap() {
+    public void LoadMap(CustomUnitLoader unitLoader = null) {
         if (battleMap != null && hexDimension != null) {
-            LevelManager lm = LevelManager.activeInstance;
-            if (lm) {
-                csvMapFile = lm.GetCurrentSceneFile();
-            }
-            LoadHexMap(csvMapFile);
-            Debug.Log("Finished Loading Map");
+            Debug.Log("MapLoader.cs - Loading Map: " + csvMapFile);
+            LoadHexMap(csvMapFile, unitLoader);
+            Debug.Log("MapLoader.cs - Finished Loading Map");
         }
     }
 
-    private void LoadHexMap(string hexMapFile) {
+    private void LoadHexMap(string hexMapFile, CustomUnitLoader unitLoader = null) {
         string[] mapCsvRows = GameResources.GetFileLines(mapsDir + hexMapFile);
         battleMap.ClearMap();
         int currentLine = 0;
@@ -48,7 +45,6 @@ public class MapLoader : MonoBehaviour {
         LoadMapTiles(mapCsvRows, rows);
         currentLine += rows;
 
-        CustomUnitLoader unitLoader = BattleManager.instance.unitLoader;
         if (unitLoader && unitLoader.CanLoadUnits()) {
             unitLoader.LoadUnits();
         } else if (currentLine < mapCsvRows.Length){
@@ -66,6 +62,7 @@ public class MapLoader : MonoBehaviour {
     }
 
     private void LoadMapTiles(string[] mapCsvRows, int numRows) {
+        Debug.Log("MapLoader.cs - Loading Map Tiles");
         List<Tile> row;
         float x = 0;
         float y = 0;
@@ -108,8 +105,7 @@ public class MapLoader : MonoBehaviour {
             tileObj.transform.parent = rowObj.transform;
             tileObj.transform.localPosition = pos;
             Animator animator = tileObj.GetComponent<Animator>();
-            if (animator)
-            {
+            if (animator) {
                Timing.RunCoroutine(OffsetTile(tileObj.GetComponent<Tile>(), (float)col % 6.0f / 6.0f));
             }
             TileLocation location = tileObj.GetComponent<TileLocation>();
@@ -119,8 +115,7 @@ public class MapLoader : MonoBehaviour {
         return tileObj;
     }
 
-    private IEnumerator<float> OffsetTile(Tile tile, float t)
-    {
+    private IEnumerator<float> OffsetTile(Tile tile, float t) {
         yield return Timing.WaitForSeconds(t);
         RuntimeAnimatorController controller =tile.GetComponent<Animator>().runtimeAnimatorController;
         tile.GetComponent<Animator>().runtimeAnimatorController = tile.animations[(tile.animations.IndexOf(controller)+1)%tile.animations.Count];
@@ -128,7 +123,7 @@ public class MapLoader : MonoBehaviour {
     }
 
     private void LoadEnemyUnits(string[] mapCvsLines, int startLineIndex, int numUnits) {
-        //Debug.Log("Number Of Units :: " + numUnits);
+        Debug.Log("MapLoader.cs - Loading Enemy Units - Number Of Units :: " + numUnits);
         for (int i = 0; i < numUnits; i++) {
             string[] data = mapCvsLines[startLineIndex + i].Split(',');
             int unitRow = Convert.ToInt32(data[0]);
@@ -144,7 +139,6 @@ public class MapLoader : MonoBehaviour {
             int direction = Convert.ToInt32(data[10]);
             string type = data[data.Length - 1].Trim();
             GameObject unitObject = null;
-            Debug.Log(type);
             unitObject = Instantiate(Resources.Load("Units/" + type)) as GameObject;
             Unit unit = unitObject.GetComponent<Unit>();
             // Read in the stats //
@@ -170,7 +164,7 @@ public class MapLoader : MonoBehaviour {
     }
 
     private void LoadDeploymentZone(string[] mapCvsLines, int startLineIndex, int numDep) {
-        //Debug.Log("Number Of Deployment Zones :: " + numDep);
+        Debug.Log("MapLoader.cs - Loading deployment zone - Number Of Deployment Zones :: " + numDep);
         // Read deployment tiles
         List<Tile> deployZone = new List<Tile>();
         for (int i = 0; i < numDep; i++) {

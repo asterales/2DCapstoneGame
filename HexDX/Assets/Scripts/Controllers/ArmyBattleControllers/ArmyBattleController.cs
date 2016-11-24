@@ -14,6 +14,7 @@ public abstract class ArmyBattleController : MonoBehaviour {
     }
 
     public virtual void InitUnits() {
+        Debug.Log("Initializing army for " + GetType());
         InitUnitList();
         units.ForEach(u => u.InitForBattle());
         sc = SelectionController.instance;

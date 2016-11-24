@@ -2,23 +2,16 @@
 using System.Collections;
 
 public class SpeedController : MonoBehaviour {
+    private const float DEFAULT_SPEED = 1.0f;
+    private const float ACCELERATED_SPEED = 4.0f;
 
-    public static float speed = 1.0f;
+    public static float speed = DEFAULT_SPEED;
 
-	// Use this for initialization
 	void Start () {
-        speed = 1.0f;
+        speed = DEFAULT_SPEED;
 	}
 	
-	// Update is called once per frame
 	void Update () {
-        if (Input.GetKey(KeyBindings.SPEED_UP)){
-            speed = 4.0f;
-        }
-        else
-        {
-            speed = 1.0f;
-        }
-	
+        speed = Input.GetKey(KeyBindings.SPEED_UP) ? ACCELERATED_SPEED : DEFAULT_SPEED;	
 	}
 }

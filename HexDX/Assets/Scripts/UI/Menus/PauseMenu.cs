@@ -31,6 +31,9 @@ public class PauseMenu : MonoBehaviour {
                 if (!bc.BattleIsDone) {
                     bc.player.RestoreInitialArmyState();
                 }
+                if (GameManager.instance) {
+                    GameManager.instance.UpdateArmyAfterBattle();
+                }
                 LevelManager.ReturnToWorldMap();
             }
             GUI.enabled = true;

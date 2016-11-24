@@ -32,6 +32,7 @@ public class CustomUnitLoader : MonoBehaviour {
 
 	public void LoadUnits() {
 		if (HexMap.mapArray != null && HexMap.mapArray.Count > 0) {
+			Debug.Log("CustomUnitLoader - Loading custom defined units");
 			foreach(CustomLoadInfo info in units) {
 				AddUnitToMap(info);
 			}

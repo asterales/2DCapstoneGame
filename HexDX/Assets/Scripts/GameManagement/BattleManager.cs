@@ -21,6 +21,7 @@ public class BattleManager : MonoBehaviour {
 	public TutorialController tutorial;
 	public ScriptedAIBattleController scriptedAI;
 	public CustomUnitLoader unitLoader;
+	public LevelManager lm;
 	
 	// Battle phase management
 	public List<PhaseController> battlePhases;
@@ -41,35 +42,63 @@ public class BattleManager : MonoBehaviour {
 	}
 
 	private void InitBattleScene() {
-		GetImportedControllers();
-		mapLoader.LoadMap();
+		GetImportedComponents();
+		LoadMap();
 		InitArmies();
-		List<Vector3> playerPositions = player.units.Where(p => p != null).Select(p => p.transform.position).ToList();
-		cameraController.InitCamera(playerPositions);
 		InitVictoryCondition();
+		InitCamera();
 	}
 
-	private void GetImportedControllers() {
+	private void GetImportedComponents() {
+		Debug.Log("BattleManager - Searching for optional components");
+		lm = LevelManager.activeInstance;
 		tutorial = tutorial != null ? tutorial : FindObjectOfType(typeof(TutorialController)) as TutorialController;
 		scriptedAI = scriptedAI != null ? scriptedAI : FindObjectOfType(typeof(ScriptedAIBattleController)) as ScriptedAIBattleController;
 		unitLoader = unitLoader != null ? unitLoader : FindObjectOfType(typeof(CustomUnitLoader)) as CustomUnitLoader;
+		if (!tutorial) {
+			Debug.Log("BattleManager - no TutorialController found");
+		}
+		if (!scriptedAI) {
+			Debug.Log("BattleManager - no ScriptedAIBattleController found");
+		}
+		if (!unitLoader) {
+			Debug.Log("BattleManager - no CustomUnitLoader found");
+		}
+	}
+
+	private void LoadMap() {
+		Debug.Log("BattleManager - Loading map");
+		if (lm) {
+			mapLoader.csvMapFile = lm.mapFileName;
+		}
+		mapLoader.LoadMap(unitLoader);
 	}
 
 	private void InitArmies() {
+		Debug.Log("BattleManager - Initializing player and AI armies");
 		player.InitUnits();
 		ai.InitUnits();
 	}
 
 	private void InitVictoryCondition() {
-		if (LevelManager.activeInstance && LevelManager.activeInstance.victoryCondition) {
-			battleController.victoryCondition = LevelManager.activeInstance.victoryCondition;
+		if (lm && lm.victoryCondition) {
+			battleController.victoryCondition = lm.victoryCondition;
+		} else {
+			Debug.Log("BattleManager - Using default victory condition - Annhilation");
 		}
+		Debug.Log("BattleManager - Initializing victory condition - " + battleController.victoryCondition.GetType());
 		battleController.victoryCondition.Init();
 	}
 
+	private void InitCamera() {
+		List<Vector3> playerPositions = player.units.Where(p => p != null).Select(p => p.transform.position).ToList();
+		Debug.Log("BattleManager - Initializing camera with " + playerPositions.Count + " player unit positions");
+		cameraController.InitCamera(playerPositions);
+	}
+
 	private void StartBattlePhases() {
+		Debug.Log("BattleManager - Initializing and starting battle map phases");
 		InitPhases();
-		Debug.Log("Starting battle map phases");
 		if (battlePhases.Count > 0) {
 			battlePhases[0].StartBattlePhase();
 		}

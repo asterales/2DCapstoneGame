@@ -14,13 +14,13 @@ public class DeploymentUI : MonoBehaviour {
 	private bool hoveredStartButton;
 
 	void Awake() {
-		gameDialogueMgr = FindObjectOfType(typeof(GameDialogueManager)) as GameDialogueManager;
 		phasePanelObj = transform.Find("Title Panel").gameObject;
 		startBattleButtonObj = transform.Find("Start Button").gameObject;
 		startBattleButton = startBattleButtonObj.GetComponent<Button>();
 	}
 
 	void Start() {
+		gameDialogueMgr = FindObjectOfType(typeof(GameDialogueManager)) as GameDialogueManager;
 		deploymentController = BattleManager.instance.deploymentController;
 		startBattleButton.onClick.AddListener(deploymentController.EndBattlePhase);
 		HideUI();
