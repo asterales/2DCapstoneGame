@@ -16,10 +16,7 @@ public class TutorialController : PhaseController {
 	public ScriptList eventsList;
 	public GameObject selectionPromptObj;
 
-	public bool SkipTutorial { get; private set; }
-
 	protected override void Awake() {
-		SkipTutorial = false;
 		info = GetComponent<TutorialInfo>();
 		scriptedAI = GetComponent<ScriptedAIBattleController>();
 		unitLoader = GetComponent<CustomUnitLoader>();
@@ -88,10 +85,8 @@ public class TutorialController : PhaseController {
 		} else {
 			HideSelectionPrompt();
 		}
-		if (eventsList.EventsCompleted){
-			if(eventsList.dialogueMgr.HasFinishedAllLines()) {
-				EndBattlePhase();
-			}
+		if (eventsList.IsFinished()){
+			EndBattlePhase();
 		}
 	}
 
@@ -102,5 +97,4 @@ public class TutorialController : PhaseController {
 		info.RegisterCompleted();
 		base.EndBattlePhase();
 	}
-
 }

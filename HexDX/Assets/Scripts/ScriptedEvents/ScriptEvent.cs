@@ -27,12 +27,14 @@ public abstract class ScriptEvent : MonoBehaviour {
     }
 
     public virtual void StartEvent() {
-        list.dialogueMgr.hidePromptOnFinish = true;
-        isActive = true;
-        if (isPlayerEvent) {
-            DoPlayerEvent();
-        } else {
-            DoEvent();
+        if (!list.EndEarly) {
+            list.dialogueMgr.hidePromptOnFinish = true;
+            isActive = true;
+            if (isPlayerEvent) {
+                DoPlayerEvent();
+            } else {
+                DoEvent();
+            }
         }
     }
 

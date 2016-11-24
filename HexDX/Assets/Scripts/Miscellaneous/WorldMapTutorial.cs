@@ -67,14 +67,12 @@ public class WorldMapTutorial : MonoBehaviour {
 	}
 
 	void Update() {
-		if (eventsList.EventsCompleted){
-			if(eventsList.dialogueMgr.HasFinishedAllLines()) {
-				eventsList.dialogueMgr.HideGUI();
-				disabledButtons.ForEach(b => b.enabled = true);
-				worldMap.territories.ForEach(t => t.clickDisabled = false);
-				info.RegisterCompleted();
-				gameObject.SetActive(false);
-			}
+		if (eventsList.IsFinished()){
+			eventsList.dialogueMgr.HideGUI();
+			disabledButtons.ForEach(b => b.enabled = true);
+			worldMap.territories.ForEach(t => t.clickDisabled = false);
+			info.RegisterCompleted();
+			gameObject.SetActive(false);
 		}
 	}
 }
