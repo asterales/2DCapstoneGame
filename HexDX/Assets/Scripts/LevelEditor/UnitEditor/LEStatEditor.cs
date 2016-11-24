@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class LEStatEditor : MonoBehaviour {
     public LEUnitSettingsEditor reference; // only needed for veterancy button
@@ -118,31 +119,121 @@ public class LEStatEditor : MonoBehaviour {
                 }
             case LEStatID.ATTACK:
                 {
-                    if (currentInstance == null) currentSettings.baseAttack[reference.currentVet] += val;
+                    if (currentInstance == null)
+                    {
+                        currentSettings.baseAttack[reference.currentVet] += val;
+                        List<LELevelCache> levels = mapCacheReference.levels;
+                        for (int i = 0; i < levels.Count; i++)
+                        {
+                            if (i != mapCacheReference.currentLevel)
+                            {
+                                List<LEBaseUnitData> unitData = levels[i].baseUnitData;
+                                for (int j = 0; j < unitData.Count; j++)
+                                {
+                                    if (unitData[j].id.Trim().Equals(currentSettings.id.Trim()))
+                                    {
+                                        unitData[j].attack += val;
+                                    }
+                                }
+                            }
+                        }
+                    }
                     else currentInstance.instanceAttack += val;
                     break;
                 }
             case LEStatID.DEFENSE:
                 {
-                    if (currentInstance == null) currentSettings.baseDefense[reference.currentVet] += val;
+                    if (currentInstance == null)
+                    {
+                        currentSettings.baseDefense[reference.currentVet] += val;
+                        List<LELevelCache> levels = mapCacheReference.levels;
+                        for (int i = 0; i < levels.Count; i++)
+                        {
+                            if (i != mapCacheReference.currentLevel)
+                            {
+                                List<LEBaseUnitData> unitData = levels[i].baseUnitData;
+                                for (int j = 0; j < unitData.Count; j++)
+                                {
+                                    if (unitData[j].id.Trim().Equals(currentSettings.id.Trim()))
+                                    {
+                                        unitData[j].defense += val;
+                                    }
+                                }
+                            }
+                        }
+                    }
                     else currentInstance.instanceDefense += val;
                     break;
                 }
             case LEStatID.HEALTH:
                 {
-                    if (currentInstance == null) currentSettings.baseHealth[reference.currentVet] += val;
+                    if (currentInstance == null)
+                    {
+                        currentSettings.baseHealth[reference.currentVet] += val;
+                        List<LELevelCache> levels = mapCacheReference.levels;
+                        for (int i = 0; i < levels.Count; i++)
+                        {
+                            if (i != mapCacheReference.currentLevel)
+                            {
+                                List<LEBaseUnitData> unitData = levels[i].baseUnitData;
+                                for (int j = 0; j < unitData.Count; j++)
+                                {
+                                    if (unitData[j].id.Trim().Equals(currentSettings.id.Trim()))
+                                    {
+                                        unitData[j].health += val;
+                                    }
+                                }
+                            }
+                        }
+                    }
                     else currentInstance.instanceHealth += val;
                     break;
                 }
             case LEStatID.POWER:
                 {
-                    if (currentInstance == null) currentSettings.basePower[reference.currentVet] += val;
+                    if (currentInstance == null)
+                    {
+                        currentSettings.basePower[reference.currentVet] += val;
+                        List<LELevelCache> levels = mapCacheReference.levels;
+                        for (int i = 0; i < levels.Count; i++)
+                        {
+                            if (i != mapCacheReference.currentLevel)
+                            {
+                                List<LEBaseUnitData> unitData = levels[i].baseUnitData;
+                                for (int j = 0; j < unitData.Count; j++)
+                                {
+                                    if (unitData[j].id.Trim().Equals(currentSettings.id.Trim()))
+                                    {
+                                        unitData[j].power += val;
+                                    }
+                                }
+                            }
+                        }
+                    }
                     else currentInstance.instancePower += val;
                     break;
                 }
             case LEStatID.RESISTANCE:
                 {
-                    if (currentInstance == null) currentSettings.baseResistance[reference.currentVet] += val;
+                    if (currentInstance == null)
+                    {
+                        currentSettings.baseResistance[reference.currentVet] += val;
+                        List<LELevelCache> levels = mapCacheReference.levels;
+                        for (int i = 0; i < levels.Count; i++)
+                        {
+                            if (i != mapCacheReference.currentLevel)
+                            {
+                                List<LEBaseUnitData> unitData = levels[i].baseUnitData;
+                                for (int j = 0; j < unitData.Count; j++)
+                                {
+                                    if (unitData[j].id.Trim().Equals(currentSettings.id.Trim()))
+                                    {
+                                        unitData[j].resistance += val;
+                                    }
+                                }
+                            }
+                        }
+                    }
                     else currentInstance.instanceResistance += val;
                     break;
                 }
