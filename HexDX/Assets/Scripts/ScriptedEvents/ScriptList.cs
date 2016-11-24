@@ -4,12 +4,14 @@ using System.Collections.Generic;
 
 public class ScriptList : MonoBehaviour {
     public static readonly Color highlightColor = new Color(1f, 0.84f, 0.87f);
+    public static readonly string skipPrompt = "<<Press 'Right Shift' to skip tutorial>>";
 
     public GameDialogueManager dialogueMgr;
     public List<ScriptEvent> scriptedEvents; // to be done in order and set in UI
     public SelectionController sc;
     public TutorialController tutorial;
     private int currentEvent;
+    private KeyPrompt keyPrompt;
 
     public bool EndEarly { get; private set; }
     public ScriptEvent currentScriptEvent { get { return currentEvent < scriptedEvents.Count ? scriptedEvents[currentEvent] : null; }}
@@ -37,6 +39,9 @@ public class ScriptList : MonoBehaviour {
         if (scriptedEvents.Count > 0) {
             enabled = true;
             sc = SelectionController.instance;
+            keyPrompt = KeyPrompt.instance;
+            keyPrompt.PromptText = skipPrompt;
+            keyPrompt.Show();
             EventsCompleted = false;
             currentEvent = 0;
             StartInstuctions(scriptedEvents[0]);
@@ -59,6 +64,7 @@ public class ScriptList : MonoBehaviour {
 
     private void CompletedScripts() {
         Debug.Log("All Scripts Complete");
+        keyPrompt.Hide();
         EventsCompleted = true;
         enabled = false;
     }
@@ -82,6 +88,8 @@ public class ScriptList : MonoBehaviour {
             EndEarly = true;
             if (sc.mode != SelectionMode.ScriptedPlayerInstruction) {
                 currentScriptEvent.FinishEvent();
+            } else {
+                CompletedScripts();
             }
         }
     }

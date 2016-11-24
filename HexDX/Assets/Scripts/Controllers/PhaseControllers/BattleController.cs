@@ -5,6 +5,7 @@ using System.Collections.Generic;
 // This class will be responsible for handling Game Loop States
 
 public class BattleController : PhaseController {
+    public static readonly string speedUpPrompt = "<<Press 'Space' to speed up>>";
 
     public static BattleController instance;
 
@@ -16,6 +17,7 @@ public class BattleController : PhaseController {
     public int numTurns = 0;
     
     private bool nextSceneLoaded;
+    private KeyPrompt keyPrompt;
 
     public bool IsPlayerTurn { get; private set; }
     public bool BattleIsDone { get; private set; }
@@ -66,6 +68,7 @@ public class BattleController : PhaseController {
         base.StartBattlePhase();
         player.enabled = true;
         ai.enabled = true;
+        keyPrompt = KeyPrompt.instance;
         player.StartTurn();
     }
 
@@ -112,6 +115,10 @@ public class BattleController : PhaseController {
 
     public void EndCurrentTurn() {
         if (!turnTransition.IsRunning) {
+            if (IsPlayerTurn) {
+                keyPrompt.PromptText = speedUpPrompt;
+                keyPrompt.Show();
+            }
             turnTransition.PlayTransition(IsPlayerTurn, SwitchTurns);
         }
     }
@@ -140,6 +147,7 @@ public class BattleController : PhaseController {
             player.StartTurn();
             IsPlayerTurn = true;
             numTurns++;
+            keyPrompt.Hide();
         }
     }
     
