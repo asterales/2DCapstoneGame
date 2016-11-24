@@ -15,7 +15,7 @@ public class ScriptedFace : ScriptEvent {
 	}
 
     void Update() {
-        if (isActive && isPlayerEvent) {
+        if (isPlayerEvent) {
             list.sc.RegisterFacing();
             if (Input.GetMouseButtonDown(1) && list.sc.selectedUnit.facing == direction) {
                 list.sc.selectedUnit = null;

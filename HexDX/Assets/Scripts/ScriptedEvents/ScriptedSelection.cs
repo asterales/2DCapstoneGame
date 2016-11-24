@@ -11,7 +11,7 @@ public class ScriptedSelection : ScriptEvent {
 	}
 
 	void Update() {
-		if(isActive && list.sc.selectedTile == targetTile) {
+		if(list.sc.selectedTile == targetTile) {
 			ShowSelection();
 			targetTile = null;
 			list.sc.selectedTile = null;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class ScriptList : MonoBehaviour {
     public static readonly Color highlightColor = new Color(1f, 0.84f, 0.87f);
-    public static readonly string skipPrompt = "<<Press 'Right Shift' to skip tutorial>>";
+    public static readonly string skipPrompt = "<<Press '" + KeyBindings.SKIP_TUTORIAL + "' to skip tutorial>>";
 
     public GameDialogueManager dialogueMgr;
     public List<ScriptEvent> scriptedEvents; // to be done in order and set in UI

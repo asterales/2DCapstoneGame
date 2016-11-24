@@ -8,7 +8,7 @@
 public class ScriptedDialogue : ScriptEvent {
 
 	void Update() {
-		if(isActive && Input.GetMouseButtonDown(0)){
+		if(Input.GetMouseButtonDown(0)){
 			FinishEvent();
 		}
 	}

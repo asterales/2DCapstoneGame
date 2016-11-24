@@ -19,7 +19,7 @@ public class ScriptedArmySelection : ScriptedButtonPress {
     }
 
     void Update() {
-    	if (isActive && panel.isActive) {
+    	if (panel.isActive) {
     		if(panel.minArmySize != minNumActiveUnits){
     			panel.minArmySize = minNumActiveUnits;
     		} else {

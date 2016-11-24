@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 public abstract class ScriptEvent : MonoBehaviour {
-    protected bool isActive;
     public bool isPlayerEvent;
     protected ScriptList list;
     public List<string> instructions;
@@ -10,15 +9,14 @@ public abstract class ScriptEvent : MonoBehaviour {
 	void Awake () {
         list = GetComponentInParent<ScriptList>();
         ////// DEBUG CODE //////
-        if (list == null)
-        {
+        if (list == null) {
             Debug.Log("List Component Needs to be defined -> ScriptEvent.cs");
         }
         ////////////////////////
 	}
 
     protected virtual void Start() {
-        isActive = false;
+        enabled = false;
     }
 
     protected void Complete() {
@@ -29,7 +27,7 @@ public abstract class ScriptEvent : MonoBehaviour {
     public virtual void StartEvent() {
         if (!list.EndEarly) {
             list.dialogueMgr.hidePromptOnFinish = true;
-            isActive = true;
+            enabled = true;
             if (isPlayerEvent) {
                 DoPlayerEvent();
             } else {
@@ -42,7 +40,7 @@ public abstract class ScriptEvent : MonoBehaviour {
         if (list.EndEarly) {
             EarlyCleanUp();
         }
-        isActive = false;
+        enabled = false;
         Complete();
     }
     

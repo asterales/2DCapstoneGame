@@ -5,12 +5,10 @@ using UnityEngine.UI;
 public class ScriptedRecruit : ScriptedButtonPress {
 	
 	void Update() {
-		if(isActive) {
-			if (mainButton.enabled && mainButton.interactable) {
-				mainButton.GetComponent<Image>().color = ScriptList.highlightColor;
-			} else {
-				mainButton.GetComponent<Image>().color = Color.white;
-			}
+		if (mainButton.enabled && mainButton.interactable) {
+			mainButton.GetComponent<Image>().color = ScriptList.highlightColor;
+		} else {
+			mainButton.GetComponent<Image>().color = Color.white;
 		}
 	}
 

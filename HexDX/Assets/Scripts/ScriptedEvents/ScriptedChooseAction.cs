@@ -9,7 +9,7 @@ public class ScriptedChooseAction : ScriptEvent {
     private bool[] actionEnabled = new bool[Enum.GetNames(typeof(Action)).Length];
 
     void OnGUI() {
-        if (isActive && isPlayerEvent) {
+        if (isPlayerEvent) {
             Vector3 pos = Camera.main.WorldToScreenPoint(unit.transform.position);
 
             if (player.GetSubmenuButton(pos, 1, "Attack", actionEnabled[(int)Action.Attack])) {

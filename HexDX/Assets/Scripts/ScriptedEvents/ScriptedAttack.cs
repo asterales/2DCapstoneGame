@@ -20,7 +20,7 @@ public class ScriptedAttack : ScriptEvent {
 	}
 
     void Update() {
-        if(isActive && isPlayerEvent){
+        if(isPlayerEvent){
             if (list.sc.target == victim && list.sc.target) {
                 attacker.MakeAttacking();   
                 Timing.RunCoroutine(attacker.PerformAttack(victim));
