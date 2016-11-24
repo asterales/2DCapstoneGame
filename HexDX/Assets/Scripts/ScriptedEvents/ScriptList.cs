@@ -10,7 +10,8 @@ public class ScriptList : MonoBehaviour {
     public SelectionController sc;
     public TutorialController tutorial;
     private int currentEvent;
-    
+
+    public bool EndEarly { get; private set; }
     public ScriptEvent currentScriptEvent { get { return currentEvent < scriptedEvents.Count ? scriptedEvents[currentEvent] : null; }}
     public bool EventsCompleted { get; private set; } // flag for completion
 
@@ -18,6 +19,8 @@ public class ScriptList : MonoBehaviour {
         SceneManager.sceneLoaded += OnSceneLoaded;
         EventsCompleted = false;
         tutorial = GetComponent<TutorialController>();
+        EndEarly = false;
+        enabled = false;
     }
 
     void OnDestroy() {
@@ -32,6 +35,7 @@ public class ScriptList : MonoBehaviour {
 
     public void StartEvents() {
         if (scriptedEvents.Count > 0) {
+            enabled = true;
             sc = SelectionController.instance;
             EventsCompleted = false;
             currentEvent = 0;
@@ -41,7 +45,7 @@ public class ScriptList : MonoBehaviour {
 
 	public void NextEvent() {
         currentEvent++;
-        if (scriptedEvents.Count > currentEvent && !tutorial.SkipTutorial) {
+        if (scriptedEvents.Count > currentEvent && !EndEarly) {
             if (scriptedEvents[currentEvent] == null) {
                 NextEvent();
                 return;
@@ -56,6 +60,7 @@ public class ScriptList : MonoBehaviour {
     private void CompletedScripts() {
         Debug.Log("All Scripts Complete");
         EventsCompleted = true;
+        enabled = false;
     }
 
     private void StartInstuctions(ScriptEvent scriptEvent){
@@ -66,5 +71,18 @@ public class ScriptList : MonoBehaviour {
         } else {
             scriptedEvents[currentEvent].StartEvent();
         } 
+    }
+
+    public bool IsFinished() {
+        return EventsCompleted || EndEarly;
+    }
+
+    void Update() {
+        if (Input.GetKeyDown(KeyBindings.SKIP_TUTORIAL)) {
+            EndEarly = true;
+            if (sc.mode != SelectionMode.ScriptedPlayerInstruction) {
+                currentScriptEvent.FinishEvent();
+            }
+        }
     }
 }
