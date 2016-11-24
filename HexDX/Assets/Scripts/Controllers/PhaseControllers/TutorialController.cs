@@ -16,7 +16,10 @@ public class TutorialController : PhaseController {
 	public ScriptList eventsList;
 	public GameObject selectionPromptObj;
 
+	public bool SkipTutorial { get; private set; }
+
 	protected override void Awake() {
+		SkipTutorial = false;
 		info = GetComponent<TutorialInfo>();
 		scriptedAI = GetComponent<ScriptedAIBattleController>();
 		unitLoader = GetComponent<CustomUnitLoader>();

@@ -41,9 +41,8 @@ public class ScriptList : MonoBehaviour {
 
 	public void NextEvent() {
         currentEvent++;
-        if (scriptedEvents.Count > currentEvent) {
-            if (scriptedEvents[currentEvent] == null)
-            {
+        if (scriptedEvents.Count > currentEvent && !tutorial.SkipTutorial) {
+            if (scriptedEvents[currentEvent] == null) {
                 NextEvent();
                 return;
             }

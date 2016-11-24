@@ -68,16 +68,16 @@ public class CameraController : MonoBehaviour {
     private Vector3 GetPanVector() {
         float newX, newY;
         newX = newY = 0;
-        if (Input.GetKey(KeyCode.W) || (enabledMousePan && Input.mousePosition.y > Screen.height * (1 - MOUSE_MOVE_MARGIN))) {
+        if (Input.GetKey(KeyBindings.CAMERA_UP) || (enabledMousePan && Input.mousePosition.y > Screen.height * (1 - MOUSE_MOVE_MARGIN))) {
             newY += .2f * transform.localScale.y;
         }
-        if (Input.GetKey(KeyCode.S) || (enabledMousePan && Input.mousePosition.y < Screen.height * MOUSE_MOVE_MARGIN)) {
+        if (Input.GetKey(KeyBindings.CAMERA_DOWN) || (enabledMousePan && Input.mousePosition.y < Screen.height * MOUSE_MOVE_MARGIN)) {
             newY -= .2f * transform.localScale.y;
         }
-        if (Input.GetKey(KeyCode.A) || (enabledMousePan && Input.mousePosition.x < Screen.width * MOUSE_MOVE_MARGIN)) {
+        if (Input.GetKey(KeyBindings.CAMERA_LEFT) || (enabledMousePan && Input.mousePosition.x < Screen.width * MOUSE_MOVE_MARGIN)) {
             newX -= .2f * transform.localScale.x;
         }
-        if (Input.GetKey(KeyCode.D) || (enabledMousePan && Input.mousePosition.x > Screen.width * (1 - MOUSE_MOVE_MARGIN))) {
+        if (Input.GetKey(KeyBindings.CAMERA_RIGHT) || (enabledMousePan && Input.mousePosition.x > Screen.width * (1 - MOUSE_MOVE_MARGIN))) {
             newX += .2f * transform.localScale.x;
         }
         return new Vector3(newX, newY, 0) * 2.0f;

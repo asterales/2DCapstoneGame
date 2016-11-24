@@ -5,7 +5,7 @@ public class PauseMenu : MonoBehaviour {
     private SelectionMode lastMode;
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
+        if (Input.GetKeyDown(KeyBindings.PAUSE)) {
             if (paused) {
                 Unpause();
             } else {

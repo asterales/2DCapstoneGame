@@ -36,7 +36,7 @@ public class PlayerBattleController : ArmyBattleController {
             && sc.mode != SelectionMode.TurnTransition
             && selectedUnit) {
             if (selectedUnit.phase == UnitTurn.Moving || selectedUnit.phase == UnitTurn.Facing || selectedUnit.phase == UnitTurn.ChoosingAction)
-                if (Input.GetKeyDown(KeyCode.LeftShift)||Input.GetMouseButtonDown(2)) {
+                if (Input.GetKeyDown(KeyBindings.UNDO)||Input.GetMouseButtonDown(2)) {
                     Undo();
                 }
                 switch (selectedUnit.phase) {

@@ -12,7 +12,7 @@ public class SpeedController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKey(KeyCode.Space)){
+        if (Input.GetKey(KeyBindings.SPEED_UP)){
             speed = 4.0f;
         }
         else
