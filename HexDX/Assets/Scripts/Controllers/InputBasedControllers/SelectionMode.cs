@@ -22,5 +22,6 @@
     ScriptedPlayerWait,
     ScriptedPlayerEndTurn,
     ScriptedDelay,
+    ScriptedButtonPress,
     ScriptedAI
 };

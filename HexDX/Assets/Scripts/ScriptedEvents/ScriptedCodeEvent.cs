@@ -14,6 +14,8 @@ public class ScriptedCodeEvent : ScriptedDialogue {
     	DoCodeEvent();
     }
 
+    protected override void EarlyCleanUp() { }
+
     private void DoCodeEvent() {
     	if (codeEvent != null) {
     		codeEvent();

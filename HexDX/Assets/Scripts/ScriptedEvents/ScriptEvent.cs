@@ -39,12 +39,16 @@ public abstract class ScriptEvent : MonoBehaviour {
     }
 
     public virtual void FinishEvent() {
+        if (list.EndEarly) {
+            EarlyCleanUp();
+        }
         isActive = false;
         Complete();
     }
     
     public abstract void DoEvent();
     public abstract void DoPlayerEvent();
+    protected abstract void EarlyCleanUp();
 
     public bool HasInstructions() {
         return instructions != null && instructions.Count > 0;

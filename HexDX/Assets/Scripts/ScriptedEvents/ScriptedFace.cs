@@ -24,6 +24,10 @@ public class ScriptedFace : ScriptEvent {
         }
     }
 
+    protected override void EarlyCleanUp() { 
+        list.sc.selectedUnit = null;
+    }
+
     public override void DoPlayerEvent() {
         list.sc.mode = SelectionMode.ScriptedPlayerFace;
         list.sc.selectedUnit = unit;

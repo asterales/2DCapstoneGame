@@ -19,6 +19,8 @@ public class ScriptedWait : ScriptEvent {
         FinishEvent();
     }
 
+    protected override void EarlyCleanUp() { }
+
     public override void DoEvent() {
         list.sc.mode = SelectionMode.ScriptedAI;
         unit.MakeDone();

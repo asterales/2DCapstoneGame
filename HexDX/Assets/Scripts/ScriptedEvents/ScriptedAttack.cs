@@ -34,6 +34,14 @@ public class ScriptedAttack : ScriptEvent {
         }
     }
 
+    protected override void EarlyCleanUp() {
+        if (isPlayerEvent) {
+            list.tutorial.targetTile = null;
+            list.sc.target = null;
+            list.sc.selectedUnit = null;
+        }
+    }
+
     public override void DoPlayerEvent() {
         list.sc.mode = SelectionMode.ScriptedPlayerAttack;
         list.sc.selectedUnit = attacker;

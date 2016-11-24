@@ -32,6 +32,11 @@ public class ScriptedArmySelection : ScriptedButtonPress {
     	}
     }
 
+    protected override void EarlyCleanUp() {
+        panel.minArmySize = GameManager.MIN_ARMY_SIZE;
+        base.EarlyCleanUp();
+    }
+
     public override void DoEvent() {
         FinishEvent();
     }

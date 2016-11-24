@@ -12,9 +12,13 @@ public class ScriptedDelay : ScriptEvent {
         Timing.RunCoroutine(Delay());
     }
 
+    protected override void EarlyCleanUp() { }
+
     public IEnumerator<float> Delay() {
         list.sc.mode = SelectionMode.ScriptedDelay;
         yield return Timing.WaitForSeconds(seconds);
-        FinishEvent();
+        if (!list.EndEarly) {
+            FinishEvent();
+        }
     }
 }

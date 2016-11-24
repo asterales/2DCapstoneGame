@@ -19,6 +19,11 @@ public class ScriptedSelection : ScriptEvent {
 		}
 	}
 
+	protected override void EarlyCleanUp() {
+		targetTile = null;
+		list.sc.selectedTile = null;
+	}
+
 	public override void DoEvent() {
 		FinishEvent();
 	}

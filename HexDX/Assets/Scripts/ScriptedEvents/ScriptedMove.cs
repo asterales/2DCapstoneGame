@@ -35,6 +35,12 @@ public class ScriptedMove : ScriptEvent {
         unit.MakeMoving(this);
     }
 
+    protected override void EarlyCleanUp() {
+        list.tutorial.targetTile = null;
+        list.sc.selectedTile = null;
+        list.sc.selectedUnit = null;
+    }
+
     public override void FinishEvent(){
         list.tutorial.targetTile = null;
         list.sc.selectedTile = null;

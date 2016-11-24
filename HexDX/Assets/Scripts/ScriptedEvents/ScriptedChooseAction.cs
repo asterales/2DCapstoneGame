@@ -27,6 +27,8 @@ public class ScriptedChooseAction : ScriptEvent {
         }
     }
 
+    protected override void EarlyCleanUp() { }
+
     public override void DoPlayerEvent() {
         player = BattleManager.instance.player;
         list.sc.mode = SelectionMode.ScriptedPlayerChooseAction;
