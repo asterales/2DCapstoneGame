@@ -54,6 +54,17 @@ public class LELevelCache {
             baseUnitData.Add(newData);
         }
 
+        mobCache.ClearCache();
+
+        for (int i = 0; i < baseUnitData.Count; i++)
+        {
+            if (!mobCache.ContainsID(baseUnitData[i].mobID))
+            {
+                mobCache.AddMob(baseUnitData[i].mobID, baseUnitData[i].mobType);
+            }
+            mobCache.GetMobForID(baseUnitData[i].mobID).AddToMob();
+        }
+
         int numDeps = Convert.ToInt32(lines[row++]);
 
         for (int i = 0; i < numDeps; i++)

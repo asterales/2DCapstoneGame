@@ -71,11 +71,19 @@ public class LEUnitSettingsEditor : MonoBehaviour {
 
     public void TurnOff()
     {
-        for (int i = 0; i < settingsStatEditors.Count; i++)
+        for (int i = 0; i < instanceStatEditors.Count; i++)
         {
-            settingsStatEditors[i].TurnOff();
+            instanceStatEditors[i].TurnOff();
         }
         directionEditor.TurnOff();
         onCounter = 10;
+    }
+
+    public void UpdateText()
+    {
+        for (int i = 0; i < instanceStatEditors.Count; i++)
+        {
+            instanceStatEditors[i].UpdateText();
+        }
     }
 }

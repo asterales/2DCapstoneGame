@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class LEStatEditor : MonoBehaviour {
     public LEUnitSettingsEditor reference; // only needed for veterancy button
+    public LEMapCache mapCacheReference;
+    public LEUnitCache unitCacheReference;
     public LEUnitSettings currentSettings;
     public LEUnitInstance currentInstance;
     public LEIncrementButton singleIncrement;
@@ -23,6 +25,14 @@ public class LEStatEditor : MonoBehaviour {
         if (text == null)
         {
             Debug.Log("ERROR :: Text Object needs to be defined -> LEStatEditor.cs");
+        }
+        if (mapCacheReference == null)
+        {
+            Debug.Log("ERROR :: Reference to Map Cache needs to be defined -> LEStatEditor.cs");
+        }
+        if (unitCacheReference == null)
+        {
+            Debug.Log("ERROR :: Reference to Unit Cache needs to be defined -> LEStatEditor.cs");
         }
         ////////////////////////
         if (singleIncrement != null)
@@ -136,7 +146,50 @@ public class LEStatEditor : MonoBehaviour {
                     else currentInstance.instanceResistance += val;
                     break;
                 }
+            case LEStatID.MOBID:
+                {
+                    if (currentInstance != null)
+                    {
+                        currentInstance.instanceMobID += val;
+                        LEMobCache mobCache = mapCacheReference.levels[mapCacheReference.currentLevel].mobCache;
+                        if (!mobCache.ContainsID(currentInstance.instanceMobID))
+                        {
+                            mobCache.AddMob(currentInstance.instanceMobID, currentInstance.instanceMobType);
+                        }
+                        LEMob mob = mobCache.GetMobForID(currentInstance.instanceMobID);
+                        LEMob prevMob = mobCache.GetMobForID(currentInstance.instanceMobID - val);
+                        prevMob.RemoveFromMob();
+                        mob.AddToMob();
+                        if (prevMob.numInMob == 0) mobCache.mobs.Remove(prevMob);
+                        currentInstance.instanceMobType = mob.mobType;
+                        Debug.Log("MobCache Size :: " + mobCache.mobs.Count);
+                        Debug.Log("Current Mob Type :: " + mob.mobType);
+                        reference.UpdateText();
+                    }
+                    break;
+                }
+            case LEStatID.MOBTYPE:
+                {
+                    if (currentInstance != null)
+                    {
+                        LEMob mob = mapCacheReference.levels[mapCacheReference.currentLevel].mobCache.GetMobForID(currentInstance.instanceMobID);
+                        mob.mobType += val;
+                        for (int i = 0; i < unitCacheReference.unitInstances.Count; i++)
+                        {
+                            if (unitCacheReference.unitInstances[i].instanceMobID == currentInstance.instanceMobID)
+                            {
+                                unitCacheReference.unitInstances[i].instanceMobType = mob.mobType;
+                            }
+                        }
+                    }
+                    break;
+                }
         }
+        text.text = statName + ": " + GetStatValue();
+    }
+
+    public void UpdateText()
+    {
         text.text = statName + ": " + GetStatValue();
     }
 
