@@ -3,9 +3,13 @@ using UnityEngine.UI;
 
 public class PlayerUIDrawer : UnitUIDrawer {
     public static PlayerUIDrawer instance;
-    public override void initInstance()
-    {
-        instance = this;
+    
+    public override void InitInstance() {
+        if (instance == null) {
+            instance = this;
+        } else {
+            Destroy(this);
+        }
     }
 
     void Update () {

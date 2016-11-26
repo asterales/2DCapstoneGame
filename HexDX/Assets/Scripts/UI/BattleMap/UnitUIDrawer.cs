@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UnitUIDrawer : MonoBehaviour {
+public abstract class UnitUIDrawer : MonoBehaviour {
 	protected Unit unit;
 	private Image portrait;
     private Image healthbar;
@@ -10,11 +10,13 @@ public class UnitUIDrawer : MonoBehaviour {
     private Image defensebar;
     private Image powerbar;
     private Image resistbar;
+    private Image nameCardPanel;
     private Text hp;
     private Text attack;
     private Text defense;
     private Text power;
     private Text resist;
+    private Text nameCard;
     public int damagePreview;
     protected SelectionController sc;
 
@@ -32,20 +34,19 @@ public class UnitUIDrawer : MonoBehaviour {
         defense = transform.Find("Defense").GetComponent<Text>();
         power = transform.Find("Power").GetComponent<Text>();
         resist = transform.Find("Resist").GetComponent<Text>();
+        nameCardPanel = portrait.transform.Find("Name Card").GetComponent<Image>();
+        nameCard = nameCardPanel.transform.Find("Text").GetComponent<Text>();
         damagePreview = 0;
-        initInstance();
+        InitInstance();
     }
 
     void Start() {
         sc = SelectionController.instance;
     }
 
-    public virtual void initInstance()
-    {
+    public abstract void InitInstance();
 
-    }
-    public void SetPreview(int preview)
-    {
+    public void SetPreview(int preview) {
         damagePreview = preview;
     }
 
@@ -53,8 +54,9 @@ public class UnitUIDrawer : MonoBehaviour {
         if (unit && unit.enabled) {
             portrait.color = Color.white;
             portrait.sprite = unit.sprites.portrait;
-            if (damagePreview < 0)
+            if (damagePreview < 0) {
                 damagePreview = 0;
+            }
             healthbar.fillAmount = (float)(unit.Health-damagePreview) / (float)unit.MaxHealth;
             previewbar.fillAmount = (float)unit.Health/ (float)unit.MaxHealth;
             attackbar.fillAmount = (float)unit.Attack / (float)UnitStats.MAX_ATTACK;
@@ -66,8 +68,11 @@ public class UnitUIDrawer : MonoBehaviour {
             defense.text = "" + unit.Defense;
             power.text = "" + unit.Power;
             resist.text = "" + unit.Resistance;
+            nameCard.text = "" + unit.ClassName.ToLower();
+            nameCardPanel.enabled = true;
         } else {
             portrait.color = Color.clear;
+            nameCardPanel.enabled = false;
             healthbar.fillAmount = 0;
             previewbar.fillAmount = 0;
             attackbar.fillAmount = 0;
@@ -79,6 +84,7 @@ public class UnitUIDrawer : MonoBehaviour {
             defense.text = "";
             power.text = "";
             resist.text = "";
+            nameCard.text = "";
         }
     }
 }

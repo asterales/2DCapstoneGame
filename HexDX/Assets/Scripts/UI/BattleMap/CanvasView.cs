@@ -1,42 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class CanvasView : MonoBehaviour {
     public List<Canvas> canvases; // set in ui
-    private bool enabled;
+    private bool enableHUD;
 
-    void Start()
-    {
-        foreach (Transform child in transform)
-        {
+    void Start() {
+        foreach (Transform child in transform) {
             Canvas canvas = child.gameObject.GetComponent<Canvas>();
             if (canvas != null) canvases.Add(canvas);
         }
-        enabled = true;
+        enableHUD = true;
     }
 	
 	void Update () {
-	    if (Input.GetKeyDown("h"))
-        {
-            if (enabled) DisableCanvas();
+	    if (Input.GetKeyDown(KeyBindings.HIDE_HUD)) {
+            if (enableHUD) DisableCanvas();
             else EnableCanvas();
-            enabled = !enabled;
+            enableHUD = !enableHUD;
         }
 	}
 
-    private void EnableCanvas()
-    {
-        foreach (Canvas canvas in canvases)
-        {
-            canvas.enabled = true;
-        }
+    private void EnableCanvas() {
+        canvases.ForEach(c => c.enabled = true);
     }
 
-    private void DisableCanvas()
-    {
-        foreach (Canvas canvas in canvases)
-        {
-            canvas.enabled = false;
-        }
+    private void DisableCanvas() {
+        canvases.ForEach(c => c.enabled = false);
     }
 }
