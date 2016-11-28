@@ -194,6 +194,33 @@ public class HexMap : MonoBehaviour {
         return output;
     }
 
+    public static int GetPathDamage(List<Tile> path)
+    {
+        int damage = 0;
+        List<Unit> attacking = new List<Unit>();
+        foreach (Unit unit in BattleController.instance.player.units)
+        {
+            if (unit.phase == UnitTurn.Open)
+            {
+                bool inrange = false;
+                foreach (Tile tile in path)
+                {
+                    if (HexMap.GetAttackTiles(unit).Contains(tile))
+                    {
+                        inrange = true;
+                        attacking.Add(unit);
+                        break;
+                    }
+                }
+                if (!inrange || path.Count == 1)
+                    attacking.Remove(unit);
+                if (attacking.Contains(unit)) 
+                    damage += unit.GetDamage(BattleController.instance.ai.GetUnit(), unit.ZOCModifer);
+            }
+        }
+        return damage;
+    }
+
     public static List<Tile> GetTotalRange(Unit unit)
     {
         List<Tile> mvtTiles = GetMovementTiles(unit);
