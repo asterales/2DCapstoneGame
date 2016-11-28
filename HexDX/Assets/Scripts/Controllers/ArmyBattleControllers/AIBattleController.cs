@@ -28,7 +28,7 @@ public class AIBattleController : ArmyBattleController {
             if (currentUnitIndex < units.Count) {
                 if (units[currentUnitIndex].enabled) {
                     UnitAI ai = GetAI(currentUnitIndex);
-                    if (!ai.mob || ai.mob.triggered())
+                    if (ai.mob==null || ai.mob.triggered())
                     {
                         switch (ai.unit.phase)
                         {
@@ -54,6 +54,7 @@ public class AIBattleController : ArmyBattleController {
                     }
                     else
                     {
+                        ai.unit.MakeDone();
                         currentUnitIndex++;
                     }
                 } else {

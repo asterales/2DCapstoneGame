@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Mob : MonoBehaviour {
+public class Mob {
     public List<Unit> members;
 	// Use this for initialization
 	void Start () {
@@ -14,6 +14,18 @@ public class Mob : MonoBehaviour {
 	void Update () {
 	
 	}
+
+    public static Mob GetMob(int type)
+    {
+        switch (type)
+        {
+            case 0: return new OffensiveMob();
+            case 1: return new DefensiveMob();
+            case 2: return new SuperDefensiveMob();
+        }
+        Debug.LogError("Invalid Mob Type");
+        return null;
+    }
 
     public void addMember(Unit unit)
     {

@@ -2,8 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class DefenseiveMob : Mob {
-
+public class DefensiveMob : Mob {
+    public DefensiveMob()
+    {
+        members = new List<Unit>();
+    }
     public override bool triggered()
     {
         foreach (Unit member in members)

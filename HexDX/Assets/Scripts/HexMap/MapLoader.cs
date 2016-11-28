@@ -7,14 +7,14 @@ using MovementEffects;
 public class MapLoader : MonoBehaviour {
     private static readonly string mapsDir = "Maps/";
     public string csvMapFile;
-
+    public Dictionary<int, Mob> mobList;
     public HexMap battleMap;
     private HexDimension hexDimension;
 
     void Awake() {
         battleMap = GetComponent<HexMap>();
         hexDimension = GetComponent<HexDimension>();
-
+        mobList = new Dictionary<int, Mob>();
         ////// DEBUG CODE //////
         if (battleMap == null) {
             Debug.Log("BattleMap needs to be set -> MapLoader.cs");
@@ -156,8 +156,20 @@ public class MapLoader : MonoBehaviour {
             unit.SetTile(HexMap.mapArray[unitRow][unitCol]);
             unit.facing = direction;
             // HEURISTIC AI TEST //
-            unitObject.AddComponent<HeuristicAI>();
-
+            UnitAI ai = unitObject.AddComponent<HeuristicAI>();
+            Mob mob = null;
+            if (!mobList.ContainsKey(mobID))
+            {
+                mob = Mob.GetMob(mobType);
+                mobList.Add(mobID, mob);
+            }
+            else
+            {
+                mob = mobList[mobID];
+            }
+            if (mob != null)
+                mob.addMember(unit);
+            ai.mob = mob;
             //unitObject.AddComponent<BasicUnitAI>();
         }
         //Debug.Log("LoadedEnemies");
