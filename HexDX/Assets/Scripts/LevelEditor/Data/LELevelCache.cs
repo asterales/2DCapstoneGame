@@ -54,6 +54,15 @@ public class LELevelCache {
             baseUnitData.Add(newData);
         }
 
+        int numDeps = Convert.ToInt32(lines[row++]);
+
+        for (int i = 0; i < numDeps; i++)
+        {
+            baseDepData.Parse(lines[row++]);
+        }
+
+        Debug.Log("NUMBER OF DEPS :: " + numDeps);
+
         mobCache.ClearCache();
 
         for (int i = 0; i < baseUnitData.Count; i++)
@@ -63,15 +72,6 @@ public class LELevelCache {
                 mobCache.AddMob(baseUnitData[i].mobID, baseUnitData[i].mobType);
             }
             mobCache.GetMobForID(baseUnitData[i].mobID).AddToMob();
-        }
-
-        int numDeps = Convert.ToInt32(lines[row++]);
-
-        for (int i = 0; i < numDeps; i++)
-        {
-            LEBaseDepData newData = new LEBaseDepData();
-            string[] lineData = lines[row++].Split(',');
-            newData.AddDep(Convert.ToInt32(lineData[0]), Convert.ToInt32(lineData[1]));
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 public class LEBaseDepData {
     public List<int> rowPositions;
@@ -24,6 +25,14 @@ public class LEBaseDepData {
         rowPositions.Clear();
         colPositions.Clear();
         count = 0;
+    }
+
+    public void Parse(string data)
+    {
+        string[] lines = data.Split(',');
+        int row = Convert.ToInt32(lines[0]);
+        int col = Convert.ToInt32(lines[1]);
+        AddDep(row, col);
     }
 
     public override string ToString()
