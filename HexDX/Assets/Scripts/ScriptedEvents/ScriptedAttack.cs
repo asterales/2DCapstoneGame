@@ -29,6 +29,7 @@ public class ScriptedAttack : ScriptEvent {
             } else if (attacker.phase == UnitTurn.Done) {
                 list.sc.mode = SelectionMode.ScriptedPlayerAttack;
                 list.sc.selectedUnit = null;
+                list.sc.HideTarget();
                 FinishEvent();
             }
         }
@@ -37,6 +38,7 @@ public class ScriptedAttack : ScriptEvent {
     protected override void EarlyCleanUp() {
         if (isPlayerEvent) {
             list.tutorial.targetTile = null;
+            list.sc.HideTarget();
             list.sc.target = null;
             list.sc.selectedUnit = null;
         }
