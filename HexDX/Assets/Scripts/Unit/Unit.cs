@@ -138,19 +138,11 @@ public class Unit : MonoBehaviour {
     }
 
     private void CheckZonesOfControl() {
-        if (IsPlayerUnit()) {
-            foreach (Unit unit in ai.units) {
-                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health > 0 && unit.Health > 0) {
-                    unit.MakeAttacking();
-                    Timing.RunCoroutine(unit.DoAttack(this, unit.ZOCModifer));
-                }
-            }
-        } else {
-            foreach (Unit unit in player.units) {
-                if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health > 0 && unit.Health > 0) {
-                    unit.MakeAttacking();
-                    Timing.RunCoroutine(unit.DoAttack(this, unit.ZOCModifer));
-                }
+        List<Unit> enemyUnits = IsPlayerUnit() ? ai.units : player.units;
+        foreach (Unit unit in enemyUnits) {
+            if (HexMap.GetAttackTiles(unit).Contains(lastTile) && unit.phase == UnitTurn.Open && Health > 0 && unit.Health > 0) {
+                unit.MakeAttacking();
+                Timing.RunCoroutine(unit.DoAttack(this, unit.ZOCModifer));
             }
         }
     }
