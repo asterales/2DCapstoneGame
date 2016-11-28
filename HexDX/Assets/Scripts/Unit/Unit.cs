@@ -102,8 +102,6 @@ public class Unit : MonoBehaviour {
         player = BattleManager.instance.player;
         ai = BattleManager.instance.ai;
         sc = SelectionController.instance;
-        unitStats.health = unitStats.maxHealth;
-        DrawHealth();
     }
 
     private void Move() {

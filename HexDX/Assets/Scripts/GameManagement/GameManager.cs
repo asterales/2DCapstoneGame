@@ -62,6 +62,7 @@ public class GameManager : MonoBehaviour {
 		unit.transform.parent = transform;
         unit.transform.position = GameResources.hidingPosition;
         unit.Health = unit.MaxHealth;
+        unit.DrawHealth();
         SetDefaultUnitView(unit);
 	}
 

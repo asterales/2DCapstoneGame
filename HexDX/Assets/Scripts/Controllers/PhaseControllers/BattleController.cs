@@ -5,7 +5,7 @@ using System.Collections.Generic;
 // This class will be responsible for handling Game Loop States
 
 public class BattleController : PhaseController {
-    public static readonly string speedUpPrompt = "<<Press '" + KeyBindings.SPEED_UP + "'' to speed up>>";
+    public static readonly string speedUpPrompt = "<<Hold '" + KeyBindings.SPEED_UP + "'' to speed up>>";
 
     public static BattleController instance;
 

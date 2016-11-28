@@ -53,13 +53,10 @@ public class BasicUnitAI : UnitAI {
     	attackStarted = false;
     }
 
-    public override void Initialize()
-    {
-        // does nothing
-    }
+    public override void Initialize() {  }
 
     private Tile GetNextDestination(out Unit nextEnemy) {
-        List<Unit> remainingEnemies = playerUnits.Where(p => p != null && p.Health > 0).ToList();
+        List<Unit> remainingEnemies = playerUnits.Where(p => p != null && (p.Health > 0 || p.enabled)).ToList();
         List<Tile> validDestinations = HexMap.GetMovementTiles(unit).Where(t => IsValidDestination(t)).ToList();
         if (validDestinations.Count == 0 || remainingEnemies.Count == 0){
             nextEnemy = null;
