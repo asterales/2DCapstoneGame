@@ -33,11 +33,9 @@ public class EndTurn : MonoBehaviour {
         }
     }
 
-    void OnMouseOver() {
-        Camera.main.GetComponent<CameraController>().enabledMousePan = false;
-    }
 
     void OnMouseEnter() {
+        Camera.main.GetComponent<CameraController>().enabledMousePan = false;
         spriteRenderer.color = hoverColor;
     }
 

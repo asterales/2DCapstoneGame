@@ -7,7 +7,7 @@ public class TutorialInfo : MonoBehaviour {
 
     void Awake() {
 		tutorialAdvisor = Character.characters[2];
-		advisorPortraitIndex = 7;
+		advisorPortraitIndex = 9;
 	}
 
 	public bool HasBeenCompleted() {

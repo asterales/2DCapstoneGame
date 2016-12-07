@@ -64,7 +64,10 @@ public class Tile : MonoBehaviour {
             sc.HideTarget();
         }
         TutorialController tutorial = BattleManager.instance.tutorial;
-        if (sc.TakingInput() || (tutorial && tutorial.enabled && tutorial.IsTargetTile(this) && Input.GetMouseButtonDown(0))){
+        if (sc.TakingInput() || 
+                (tutorial && tutorial.enabled && 
+                    ((tutorial.IsTargetTile(this) && Input.GetMouseButtonDown(0)) ||
+                    (attackTile && tutorial.IsAttackTarget(attackTile.GetComponent<AttackTile>()) && Input.GetMouseButtonDown(1))))){
             if (currentUnit && !currentUnit.IsPlayerUnit()){
                 if (sc.selectedUnit && sc.selectedUnit.IsPlayerUnit() && sc.selectedUnit.HasInAttackRange(currentUnit)) {
                     sc.ShowTarget(currentUnit);
@@ -72,7 +75,9 @@ public class Tile : MonoBehaviour {
                     MovementTile.path.Add(sc.selectedUnit.currentTile);
                     MovementTile.DrawPath();
                     if (Input.GetMouseButtonDown(1)) {
-                        sc.selectedUnit.phase = UnitTurn.Attacking;
+                        if (sc.mode != SelectionMode.ScriptedPlayerAttack) {
+                            sc.selectedUnit.phase = UnitTurn.Attacking;
+                        }
                         attackTile.GetComponent<AttackTile>().OnMouseOver();
                         return;
                     }

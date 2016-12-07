@@ -371,6 +371,38 @@ public class Unit : MonoBehaviour {
         }
     }
 
+    public int GetFacing(Vector2 directionVec)
+    {
+        int facing;
+        int angle = Angle(new Vector2(1, 0), directionVec);
+        if (angle < 18 || angle > 342)
+        {
+            facing = 0;
+        }
+        else if (angle < 91)
+        {
+            facing = 1;
+        }
+        else if (angle < 164)
+        {
+            facing = 2;
+        }
+        else if (angle < 198)
+        {
+            facing = 3;
+        }
+        else if (angle < 271)
+        {
+            facing = 4;
+        }
+        else
+        {
+            facing = 5;
+        }
+        return facing;
+    }
+
+
     private int Angle(Vector2 from, Vector2 to) {
         Vector2 diff = to - from;
         int output = (int)(Mathf.Atan2(diff.y, diff.x) * 57.2957795131f);
@@ -474,13 +506,14 @@ public class Unit : MonoBehaviour {
         int healthStart = target.Health;
         int basedamage = (int)(Attack * (50.0f / (50.0f + (float)target.Defense)))+ (int)(Power * (50.0f / (50.0f + (float)target.Resistance)));
         int damage = basedamage;
+        int attackdirection = GetFacing(target.transform.position - transform.position);
         string indicatorText = "-" + (int)(basedamage * modifier);
         HexMap.ClearAllTiles();
         if (target.phase != UnitTurn.Moving) {
-            if (target.facing == facing) {
+            if (target.facing == attackdirection) {
                 damage = basedamage * 2;
                 indicatorText = "-" + (int)(basedamage * modifier) + "\nSneak!\n-" + (int)((damage - basedamage) * modifier);
-            } else if (Mathf.Abs(target.facing - facing) == 1 || Mathf.Abs(target.facing - facing) == 5) {
+            } else if (Mathf.Abs(target.facing - attackdirection) == 1 || Mathf.Abs(target.facing - attackdirection) == 5) {
                 damage = basedamage * 3 / 2;
                 indicatorText = "-" + (int)(basedamage * modifier) + "\nFlank!\n-" + (int)((damage - basedamage) * modifier);
             }
@@ -535,6 +568,26 @@ public class Unit : MonoBehaviour {
         }
         return damage;
     }
+
+    public int GetDamage(Unit target, Tile dest, float modifier = 1.0f)
+    {
+        int basedamage = (int)(Attack * (50.0f / (50.0f + (float)target.Defense))) + (int)(Power * (50.0f / (50.0f + (float)target.Resistance)));
+        int damage = (int)(basedamage * modifier);
+        int attackdirection = GetFacing(target.transform.position - dest.transform.position);
+        if (target.phase != UnitTurn.Moving)
+        {
+            if (target.facing == attackdirection)
+            {
+                damage = (int)(basedamage * 2 * modifier);
+            }
+            else if (Mathf.Abs(target.facing - attackdirection) == 1 || Mathf.Abs(target.facing - attackdirection) == 5)
+            {
+                damage = (int)(basedamage * 3 * modifier) / 2;
+            }
+        }
+        return damage;
+    }
+
 
     public void DrawHealth() {
         Image healthBar = transform.Find("HealthBar").GetComponent<Image>(); // Find() is expensive
