@@ -141,4 +141,12 @@ public class LEUnitCache : MonoBehaviour
         unitInstances.Clear();
         Debug.Log("NUM OF UNITS " + unitInstances.Count);
     }
+
+    public void ResetSprites()
+    {
+        for (int i = 0; i < unitInstances.Count; i++)
+        {
+            unitInstances[i].spriteRenderer.color = Color.white;
+        }
+    }
 }

@@ -43,6 +43,11 @@ public class LEKillSpecificUnitEditor : LEEditor {
         incrementButton.TurnOn();
         decrementButton.TurnOn();
         text.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        if (mapCache.levels[mapCache.currentLevel].victoryData.indexOfDesiredUnit < unitCache.unitInstances.Count)
+        {
+            LEUnitInstance unit = unitCache.unitInstances[mapCache.levels[mapCache.currentLevel].victoryData.indexOfDesiredUnit];
+            unit.spriteRenderer.color = Color.blue;
+        }
     }
 
     public override void TurnOff()
@@ -50,6 +55,11 @@ public class LEKillSpecificUnitEditor : LEEditor {
         incrementButton.TurnOff();
         decrementButton.TurnOff();
         text.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        if (mapCache.levels[mapCache.currentLevel].victoryData.indexOfDesiredUnit < unitCache.unitInstances.Count)
+        {
+            LEUnitInstance unit = unitCache.unitInstances[mapCache.levels[mapCache.currentLevel].victoryData.indexOfDesiredUnit];
+            unit.spriteRenderer.color = Color.white;
+        }
     }
 
     public override void Decrement(int modifier)
@@ -59,6 +69,7 @@ public class LEKillSpecificUnitEditor : LEEditor {
         if (num > unitCache.unitInstances.Count - 1) num = unitCache.unitInstances.Count - 1;
         if (num < 0) num = 0;
         mapCache.levels[mapCache.currentLevel].victoryData.indexOfDesiredUnit = num;
+        unitCache.ResetSprites();
         reference.TurnOn(); // inefficient but i dont care
     }
 
@@ -69,6 +80,7 @@ public class LEKillSpecificUnitEditor : LEEditor {
         if (num > unitCache.unitInstances.Count - 1) num = unitCache.unitInstances.Count - 1;
         if (num < 0) num = 0;
         mapCache.levels[mapCache.currentLevel].victoryData.indexOfDesiredUnit = num;
+        unitCache.ResetSprites();
         reference.TurnOn(); // inefficient but i dont care
     }
 }

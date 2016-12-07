@@ -9,6 +9,7 @@ public class LEVictoryConditionButton : MonoBehaviour
     public LEUnitInstanceButton instanceButton;
     public SpriteRenderer spriteRenderer;
     public LEVictoryEditor victoryEditor;
+    public LEHexMap hexMap;
 
     void Start()
     {
@@ -38,6 +39,10 @@ public class LEVictoryConditionButton : MonoBehaviour
         {
             Debug.Log("ERROR :: Need reference to instance button -> LEVictoryConditionButton.cs");
         }
+        if (hexMap == null)
+        {
+            Debug.Log("ERROR :: Need reference to HexMap -> LEVictoryConditionButton.cs");
+        }
         ////////////////////////
     }
 
@@ -64,5 +69,6 @@ public class LEVictoryConditionButton : MonoBehaviour
         settingsButton.Deselect();
         instanceButton.Deselect();
         victoryEditor.TurnOn();
+        hexMap.TurnOnUnit();
     }
 }
