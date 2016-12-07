@@ -40,7 +40,14 @@ public class MapLoader : MonoBehaviour {
 
         // 0: Rout
         // 1: Survive
-        // 2: Assasinate
+        // 2: Assasin
+
+        // For Survive ::
+        // 1,x where x is the number of turns
+
+        // For Assasin ::
+        // 2,x where x is the index of desired enemy
+
         string[] levelTypeRow = mapCsvRows[currentLine++].Split(',');
         Debug.Log(levelTypeRow[0]);
 
