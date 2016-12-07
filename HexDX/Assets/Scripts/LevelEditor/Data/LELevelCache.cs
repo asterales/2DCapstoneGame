@@ -32,7 +32,10 @@ public class LELevelCache {
         int row = 0;
 
         string[] lines = data.Split('\n');
+        string[] victoryLines = lines[row++].Split(',');
         string[] mapDim = lines[row++].Split(',');
+
+        victoryData.Parse(victoryLines);
 
         height = Convert.ToInt32(mapDim[0]);
         width = Convert.ToInt32(mapDim[1]);
@@ -80,6 +83,7 @@ public class LELevelCache {
     public void WriteLevel()
     {
         string level = "";
+        level += victoryData.Write();
         level += baseTileData.ToString();
         level += baseUnitData.Count + "\n";
         Debug.Log("LEVEL :: " + "Resources/" + id + ".csv");

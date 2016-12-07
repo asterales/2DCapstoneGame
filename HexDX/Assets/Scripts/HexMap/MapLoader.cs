@@ -38,11 +38,18 @@ public class MapLoader : MonoBehaviour {
         battleMap.ClearMap();
         int currentLine = 0;
 
+        // 0: Rout
+        // 1: Survive
+        // 2: Assasinate
+        string[] levelTypeRow = mapCsvRows[currentLine++].Split(',');
+        Debug.Log(levelTypeRow[0]);
+
         string[] dimensionRow = mapCsvRows[currentLine++].Split(',');
+        Debug.Log(dimensionRow[0] + " " + dimensionRow[1]);
         if (dimensionRow.Length != 2) Debug.Log("ERROR :: INVALID FORMAT FOR LEVEL FILE");
         int rows = Convert.ToInt32(dimensionRow[0]);
         int cols = Convert.ToInt32(dimensionRow[1]);
-        LoadMapTiles(mapCsvRows, rows);
+        LoadMapTiles(mapCsvRows, rows, currentLine);
         currentLine += rows;
 
         if (unitLoader && unitLoader.CanLoadUnits()) {
@@ -61,7 +68,7 @@ public class MapLoader : MonoBehaviour {
         }
     }
 
-    private void LoadMapTiles(string[] mapCsvRows, int numRows) {
+    private void LoadMapTiles(string[] mapCsvRows, int numRows, int start) {
         Debug.Log("MapLoader.cs - Loading Map Tiles");
         List<Tile> row;
         float x = 0;
@@ -73,7 +80,7 @@ public class MapLoader : MonoBehaviour {
             ////////////////////////
             row = new List<Tile>();
             int columnIndex = 0;
-            string[] line = mapCsvRows[rowIndex + 1].Split(',');
+            string[] line = mapCsvRows[rowIndex + start].Split(',');
             foreach (string num in line) {
                 GameObject tileObj = CreateTile(int.Parse(num), new Vector3(x, y, z), rowObj, rowIndex, columnIndex);
                 Tile newTile = tileObj != null ? tileObj.GetComponent<Tile>() : null;
