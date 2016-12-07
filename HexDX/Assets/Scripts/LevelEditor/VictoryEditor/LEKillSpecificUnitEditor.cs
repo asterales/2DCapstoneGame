@@ -6,6 +6,7 @@ public class LEKillSpecificUnitEditor : LEEditor {
     public LEUnitCache unitCache;
     public LEEditorIncrementButton incrementButton;
     public LEEditorIncrementButton decrementButton;
+    public LEVictoryEditor reference;
     public Text text;
 
 	void Start () {
@@ -26,6 +27,10 @@ public class LEKillSpecificUnitEditor : LEEditor {
         {
             Debug.Log("ERROR :: Need Reference to DecrementButton -> LEKillSpecificUnitEditor.cs");
         }
+        if (reference == null)
+        {
+            Debug.Log("ERROR :: Need Reference to Victory Editor -> LEKillSpecificUnitEditor.cs");
+        }
         if (text == null)
         {
             Debug.Log("ERROR :: Need Reference to Text -> LEKillSpecificUnitEditor.cs");
@@ -37,23 +42,33 @@ public class LEKillSpecificUnitEditor : LEEditor {
     {
         incrementButton.TurnOn();
         decrementButton.TurnOn();
-        // implement for text
+        text.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     public override void TurnOff()
     {
         incrementButton.TurnOff();
         decrementButton.TurnOff();
-        // implement for text
+        text.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
     }
 
     public override void Decrement(int modifier)
     {
-        // to be implemented
+        int num = mapCache.levels[mapCache.currentLevel].victoryData.indexOfDesiredUnit;
+        num--;
+        if (num > unitCache.unitInstances.Count - 1) num = unitCache.unitInstances.Count - 1;
+        if (num < 0) num = 0;
+        mapCache.levels[mapCache.currentLevel].victoryData.indexOfDesiredUnit = num;
+        reference.TurnOn(); // inefficient but i dont care
     }
 
     public override void Increment(int modifier)
     {
-        // to be implemented
+        int num = mapCache.levels[mapCache.currentLevel].victoryData.indexOfDesiredUnit;
+        num++;
+        if (num > unitCache.unitInstances.Count - 1) num = unitCache.unitInstances.Count - 1;
+        if (num < 0) num = 0;
+        mapCache.levels[mapCache.currentLevel].victoryData.indexOfDesiredUnit = num;
+        reference.TurnOn(); // inefficient but i dont care
     }
 }

@@ -6,6 +6,7 @@ public class LESurvivalTurnEditor : LEEditor {
     public LEUnitCache unitCache;
     public LEEditorIncrementButton incrementButton;
     public LEEditorIncrementButton decrementButton;
+    public LEVictoryEditor reference;
     public Text text;
 
     void Start()
@@ -13,23 +14,27 @@ public class LESurvivalTurnEditor : LEEditor {
         ////// DEBUG CODE //////
         if (mapCache == null)
         {
-            Debug.Log("ERROR :: Need Reference to Map Cache -> LEKillSpecificUnitEditor.cs");
+            Debug.Log("ERROR :: Need Reference to Map Cache -> LESurvivalTurnEditor.cs");
         }
         if (unitCache == null)
         {
-            Debug.Log("ERROR :: Need Reference to Unit Cache -> LEKillSpecificUnitEditor.cs");
+            Debug.Log("ERROR :: Need Reference to Unit Cache -> LESurvivalTurnEditor.cs");
         }
         if (incrementButton == null)
         {
-            Debug.Log("ERROR :: Need Reference to IncrementButton -> LEKillSpecificUnitEditor.cs");
+            Debug.Log("ERROR :: Need Reference to IncrementButton -> LESurvivalTurnEditor.cs");
         }
         if (decrementButton == null)
         {
-            Debug.Log("ERROR :: Need Reference to DecrementButton -> LEKillSpecificUnitEditor.cs");
+            Debug.Log("ERROR :: Need Reference to DecrementButton -> LESurvivalTurnEditor.cs");
+        }
+        if (reference == null)
+        {
+            Debug.Log("ERROR :: Need Reference to VictoryEditor -> LESurvivalTurnEditor.cs");
         }
         if (text == null)
         {
-            Debug.Log("ERROR :: Need Reference to Text -> LEKillSpecificUnitEditor.cs");
+            Debug.Log("ERROR :: Need Reference to Text -> LESurvivalTurnEditor.cs");
         }
         ////////////////////////
     }
@@ -38,23 +43,26 @@ public class LESurvivalTurnEditor : LEEditor {
     {
         incrementButton.TurnOn();
         decrementButton.TurnOn();
-        // implement for text
+        text.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     public override void TurnOff()
     {
         incrementButton.TurnOff();
         decrementButton.TurnOff();
-        // implement for text
+        text.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
     }
 
     public override void Decrement(int modifier)
     {
-        // to be implemented
+        int num = mapCache.levels[mapCache.currentLevel].victoryData.turnsToSurvive;
+        if (num > 0) mapCache.levels[mapCache.currentLevel].victoryData.turnsToSurvive--;
+        reference.TurnOn(); // inefficient but i dont care
     }
 
     public override void Increment(int modifier)
     {
-        // to be implemented
+        mapCache.levels[mapCache.currentLevel].victoryData.turnsToSurvive++;
+        reference.TurnOn(); // inefficient but i dont care
     }
 }

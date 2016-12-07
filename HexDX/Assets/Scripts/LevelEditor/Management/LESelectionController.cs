@@ -89,7 +89,7 @@ public class LESelectionController : MonoBehaviour {
         tileButton.Deselect();
         instanceButton.Deselect();
         settingsButton.Deselect();
-        //victoryConditionButton.Deselect();
+        victoryConditionButton.Deselect();
     }
 
     public void SetSelectTile(int sprite, int variant)
@@ -99,6 +99,7 @@ public class LESelectionController : MonoBehaviour {
         isSettingsMode = false;
         isDepMode = false;
         isVCMode = false;
+        victoryEditor.TurnOff();
         tileButton.Select();
         selectedTileID = sprite;
         selectedTileVariantID = variant;
@@ -111,6 +112,7 @@ public class LESelectionController : MonoBehaviour {
         isSettingsMode = false;
         isDepMode = false;
         isVCMode = false;
+        victoryEditor.TurnOff();
         tileButton.Select();
     }
 
@@ -121,6 +123,7 @@ public class LESelectionController : MonoBehaviour {
         isDepMode = false;
         isTileMode = false;
         isVCMode = false;
+        victoryEditor.TurnOff();
         depButton.Deselect();
         instanceButton.Deselect();
         settingsButton.Deselect();
@@ -134,6 +137,7 @@ public class LESelectionController : MonoBehaviour {
         isDepMode = false;
         isSettingsMode = true;
         isVCMode = false;
+        victoryEditor.TurnOff();
         settingsButton.Select();
         selectedSettings = settings;
     }
@@ -145,6 +149,7 @@ public class LESelectionController : MonoBehaviour {
         isSettingsMode = false;
         isDepMode = false;
         isVCMode = false;
+        victoryEditor.TurnOff();
         instanceButton.Select();
         selectedUnit = unit;
     }
@@ -156,6 +161,7 @@ public class LESelectionController : MonoBehaviour {
         isInstanceMode = true;
         isDepMode = false;
         isVCMode = false;
+        victoryEditor.TurnOff();
         instanceButton.Select();
     }
 
@@ -168,6 +174,7 @@ public class LESelectionController : MonoBehaviour {
             isInstanceMode = false;
             isDepMode = false;
             isVCMode = false;
+            victoryEditor.TurnOff();
             settingsButton.Select();
         }
     }
@@ -179,6 +186,7 @@ public class LESelectionController : MonoBehaviour {
         isSettingsMode = false;
         isDepMode = true;
         isVCMode = false;
+        victoryEditor.TurnOff();
         depButton.Select();
     }
 
@@ -189,6 +197,7 @@ public class LESelectionController : MonoBehaviour {
         isSettingsMode = false;
         isDepMode = false;
         isVCMode = true;
+        victoryEditor.TurnOn();
         victoryConditionButton.Select();
     }
 

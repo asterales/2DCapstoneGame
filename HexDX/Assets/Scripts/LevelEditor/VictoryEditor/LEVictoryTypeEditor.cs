@@ -43,23 +43,23 @@ public class LEVictoryTypeEditor : LEEditor {
     {
         incrementButton.TurnOn();
         decrementButton.TurnOn();
-        // implement for text
+        text.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     public override void TurnOff()
     {
         incrementButton.TurnOff();
         decrementButton.TurnOff();
-        // implement for text
+        text.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
     }
 
     public override void Decrement(int modifier)
     {
-        // to be implemented
+        reference.TransitionToPrev();
     }
 
     public override void Increment(int modifier)
     {
-        // to be implemented
+        reference.TransitionToNext();
     }
 }

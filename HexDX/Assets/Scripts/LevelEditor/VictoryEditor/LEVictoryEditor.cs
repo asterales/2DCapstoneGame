@@ -29,16 +29,70 @@ public class LEVictoryEditor : MonoBehaviour {
         {
             Debug.Log("ERROR :: Need Reference to the KillSpecificUnitEditor -> LEVictoryEditor.cs");
         }
+        TurnOff();
         ////////////////////////
 	}
 
+    public void TransitionToNext()
+    {
+        TurnOff();
+        LEVictoryData data = mapCache.levels[mapCache.currentLevel].victoryData;
+        if (data.routAllEnemies)
+        {
+            data.routAllEnemies = false;
+            data.survival = true;
+        }
+        else if (data.survival)
+        {
+            data.survival = false;
+            data.killSpecifiedUnit = true;
+        }
+        TurnOn();
+    }
+
+    public void TransitionToPrev()
+    {
+        TurnOff();
+        LEVictoryData data = mapCache.levels[mapCache.currentLevel].victoryData;
+        if (data.killSpecifiedUnit)
+        {
+            data.killSpecifiedUnit = false;
+            data.survival = true;
+        }
+        else if (data.survival)
+        {
+            data.survival = false;
+            data.routAllEnemies = true;
+        }
+        TurnOn();
+    }
+
     public void TurnOn()
     {
-        // to be implemented
+        LEVictoryData data = mapCache.levels[mapCache.currentLevel].victoryData;
+        victoryTypeEditor.TurnOn();
+        if (data.routAllEnemies)
+        {
+            victoryTypeEditor.text.text = "Victory Type: Rout";
+        }
+        else if (data.survival)
+        {
+            victoryTypeEditor.text.text = "Victory Type: Survive";
+            survivalTurnEditor.text.text = "Survive For: " + data.turnsToSurvive;
+            survivalTurnEditor.TurnOn();
+        }
+        else if (data.killSpecifiedUnit)
+        {
+            victoryTypeEditor.text.text = "Victory Type: Assasin";
+            killSpecificUnitEditor.text.text = "Kill Unit: " + data.indexOfDesiredUnit;
+            killSpecificUnitEditor.TurnOn();
+        }
     }
 
     public void TurnOff()
     {
-        // to be implemented
+        victoryTypeEditor.TurnOff();
+        survivalTurnEditor.TurnOff();
+        killSpecificUnitEditor.TurnOff();
     }
 }
