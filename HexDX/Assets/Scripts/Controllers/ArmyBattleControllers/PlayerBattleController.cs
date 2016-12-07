@@ -29,7 +29,7 @@ public class PlayerBattleController : ArmyBattleController {
     }
 
     void Update() {
-        if (!sc.TakingAIInput() && sc.mode != SelectionMode.TurnTransition && selectedUnit == null) {
+        if (!sc.TakingAIInput() && sc.mode != SelectionMode.TurnTransition && sc.mode!=SelectionMode.Paused && selectedUnit == null) {
             sc.mode = SelectionMode.Open;
         }
         if (!sc.TakingAIInput()
@@ -95,7 +95,7 @@ public class PlayerBattleController : ArmyBattleController {
         MovementTile.path = new List<Tile>() { selectedUnit.currentTile };
     }
     public bool GetSubmenuButton(Vector3 basePosition, int menuButtonNumber, string text, bool active) {
-        float itemHeight = Screen.height*0.026f;
+        float itemHeight = Screen.height*0.04f;
         float itemWidth = itemHeight*3;
         float yOffset = itemHeight * 4f;
         float xOffset = itemWidth / 4;
