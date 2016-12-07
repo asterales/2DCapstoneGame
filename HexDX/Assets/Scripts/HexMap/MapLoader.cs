@@ -156,7 +156,7 @@ public class MapLoader : MonoBehaviour {
             unit.SetTile(HexMap.mapArray[unitRow][unitCol]);
             unit.facing = direction;
             // HEURISTIC AI TEST //
-            UnitAI ai = unitObject.AddComponent<HeuristicAI>();
+            UnitAI ai = unitObject.AddComponent<NewAI>();
             Mob mob = null;
             if (!mobList.ContainsKey(mobID))
             {

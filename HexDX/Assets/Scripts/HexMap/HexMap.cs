@@ -94,8 +94,11 @@ public class HexMap : MonoBehaviour {
             for (int i = 0; i < 6; i++)
             {
                 unit.facing = i;
-                foreach (Tile tile in HexMap.GetAttackTiles(unit))
-                    tile.ShowAttackSprite();
+                if (!t.currentUnit || t.currentUnit == unit)
+                    foreach (Tile tile in HexMap.GetAttackTiles(unit))
+                    {
+                        tile.ShowAttackSprite();
+                    }
             }
         }
         unit.facing = facing;
@@ -191,6 +194,32 @@ public class HexMap : MonoBehaviour {
             }
             catch { }
         }
+        return output;
+    }
+
+    public static List<Move> GetPossibleMoves(Unit unit)
+    {
+        List<Move> output = new List<Move>();
+        List<Tile> mvtTiles = GetMovementTiles(unit);
+        int facing = unit.facing;
+        Tile initial = unit.currentTile;
+        foreach (Tile t in mvtTiles)
+        {
+            unit.currentTile = t;
+            if (!t.currentUnit || t.currentUnit == unit)
+                for (int i = 0; i < 6; i++)
+                {
+                    unit.facing = i;
+                    foreach (Tile tile in HexMap.GetAttackTiles(unit)) {
+                        if (tile.currentUnit && tile.currentUnit.IsPlayerUnit()!=unit.IsPlayerUnit())
+                            output.Add(new Move(unit, t, i, tile.currentUnit));
+                        else
+                            output.Add(new Move(unit, t, i, null));
+                    }
+                }
+        }
+        unit.facing = facing;
+        unit.currentTile = initial;
         return output;
     }
 
