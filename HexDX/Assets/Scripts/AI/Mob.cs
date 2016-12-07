@@ -23,8 +23,7 @@ public class Mob {
             case 1: return new DefensiveMob();
             case 2: return new SuperDefensiveMob();
         }
-        Debug.LogError("Invalid Mob Type");
-        return null;
+        return new OffensiveMob();
     }
 
     public void addMember(Unit unit)
