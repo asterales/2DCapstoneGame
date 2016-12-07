@@ -2,10 +2,12 @@
 using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour {
-    public Texture pauseMenu;
-    public Texture mainMenu;
-    public Texture worldMap;
-    public Texture unpause;
+    public Texture2D mainMenu;
+    public Texture2D worldMap;
+    public Texture2D unpause;
+    public Texture2D mainMenuD;
+    public Texture2D worldMapD;
+    public Texture2D unpauseD;
     public Image background;
     private float width;
     private float height;
@@ -15,11 +17,11 @@ public class PauseMenu : MonoBehaviour {
     void Start()
     {
         width = Screen.width * 0.35f;
-        height = (width * pauseMenu.height) / pauseMenu.width;
+        height = (width * mainMenu.height) / mainMenu.width;
     }
     void Update() {
         width = Screen.width * 0.35f;
-        height = (width * pauseMenu.height) / pauseMenu.width;
+        height = (width * mainMenu.height) / mainMenu.width;
         if (Input.GetKeyDown(KeyBindings.PAUSE)) {
             if (paused) {
                 Unpause();
@@ -32,16 +34,14 @@ public class PauseMenu : MonoBehaviour {
     void OnGUI() {
         if (paused) {
             //Make a background box
-            GUI.backgroundColor = Color.clear;
-
             GUI.enabled = true;
             //Make Main Menu button
-            if (GUI.Button(new Rect(Screen.width / 2 - width/2, Screen.height/5, width, height), mainMenu)) {
+            if (GUI.Button(new Rect(Screen.width / 2 - width/2, Screen.height/5, width, height), "", GetGUIStyle(true, mainMenuD, mainMenu ))) {
                 LevelManager.ReturnToMainMenu();
             }
             
             GUI.enabled = GameManager.instance && GameManager.instance.HasPassedFirstLevel(); // prevent skip 1st tutorial 
-            if (GUI.Button(new Rect(Screen.width / 2 - width/2, Screen.height / 5 + height*0.9f, width, height), worldMap)) {
+            if (GUI.Button(new Rect(Screen.width / 2 - width/2, Screen.height / 5 + height, width, height),"", GetGUIStyle(GUI.enabled, worldMapD, worldMap))) {
                 Unpause();
                 BattleController bc = BattleController.instance;
                 if (!bc.BattleIsDone) {
@@ -55,10 +55,27 @@ public class PauseMenu : MonoBehaviour {
             GUI.enabled = true;
 
             //Make Change Graphics Quality button
-            if (GUI.Button(new Rect(Screen.width / 2 - width/2, Screen.height / 5 + 2*height*0.9f, width, height), unpause)) {
+            if (GUI.Button(new Rect(Screen.width / 2 - width/2, Screen.height / 5 + 2*height, width, height),"",GetGUIStyle(true, unpauseD, unpause))) {
                 Unpause();
             }
         }
+    }
+
+    private GUIStyle GetGUIStyle(bool active, Texture2D nohover, Texture2D hover)
+    {
+        GUIStyle style = new GUIStyle();
+        style.normal.background = nohover;
+        if (active)
+        {
+            GUI.enabled = true;
+            style.hover.background = hover;
+        }
+        else
+        {
+            GUI.enabled = false;
+            style.hover.background = nohover;
+        }
+        return style;
     }
 
     void Pause() {
