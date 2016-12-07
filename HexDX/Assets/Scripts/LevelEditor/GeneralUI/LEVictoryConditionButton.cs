@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 
-public class LEUnitInstanceButton : MonoBehaviour {
+public class LEVictoryConditionButton : MonoBehaviour
+{
     public LESelectionController selectionController;
     public LEDeploymentButton depButton;
     public LETileButton tileButton;
     public LEUnitSettingsButton settingsButton;
-    public LEVictoryConditionButton victoryConditionButton;
+    public LEUnitInstanceButton instanceButton;
     public SpriteRenderer spriteRenderer;
-    public LEHexMap hexMap;
+    public LEVictoryEditor victoryEditor;
 
     void Start()
     {
@@ -15,35 +16,35 @@ public class LEUnitInstanceButton : MonoBehaviour {
         ////// DEBUG CODE //////
         if (spriteRenderer == null)
         {
-            Debug.Log("ERROR :: Need reference to sprite renderer -> LEUnitInstanceButton.cs");
+            Debug.Log("ERROR :: Need reference to sprite renderer -> LEVictoryConditionButton.cs");
         }
         if (selectionController == null)
         {
-            Debug.Log("ERROR :: Need reference to selection controller -> LEUnitInstanceButton.cs");
+            Debug.Log("ERROR :: Need reference to selection controller -> LEVictoryConditionButton.cs");
         }
         if (depButton == null)
         {
-            Debug.Log("ERROR :: Need reference to unit button -> LEUnitInstanceButton.cs");
+            Debug.Log("ERROR :: Need reference to unit button -> LEVictoryConditionButton.cs");
         }
         if (tileButton == null)
         {
-            Debug.Log("ERROR :: Need reference to tile button -> LEUnitInstanceButton.cs");
+            Debug.Log("ERROR :: Need reference to tile button -> LEVictoryConditionButton.cs");
         }
         if (settingsButton == null)
         {
-            Debug.Log("ERROR :: Need reference to settings button -> LEUnitInstanceButton.cs");
+            Debug.Log("ERROR :: Need reference to settings button -> LEVictoryConditionButton.cs");
         }
-        if (victoryConditionButton == null)
+        if (instanceButton == null)
         {
-            Debug.Log("ERROR :: Need reference to victory condition button -> LEUnitInstanceButton.cs");
+            Debug.Log("ERROR :: Need reference to instance button -> LEVictoryConditionButton.cs");
         }
         ////////////////////////
     }
 
     void OnMouseDown()
     {
-        selectionController.SetUnitMode();
-        if (selectionController.isInstanceMode)
+        selectionController.SetVCMode();
+        if (selectionController.isVCMode)
         {
             Select();
         }
@@ -61,7 +62,7 @@ public class LEUnitInstanceButton : MonoBehaviour {
         depButton.Deselect();
         tileButton.Deselect();
         settingsButton.Deselect();
-        victoryConditionButton.Deselect();
-        hexMap.TurnOnUnit();
+        instanceButton.Deselect();
+        victoryEditor.TurnOn();
     }
 }

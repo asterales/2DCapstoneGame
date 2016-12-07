@@ -73,6 +73,10 @@ public class LETile : MonoBehaviour {
                 DestroyDeploymentTile();
             }
         }
+        else if (reference.selectionController.isVCMode)
+        {
+            // does nothing for now
+        }
     }
 
     void OnMouseEnter()

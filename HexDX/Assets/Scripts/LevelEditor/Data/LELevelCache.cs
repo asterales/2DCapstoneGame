@@ -8,6 +8,7 @@ public class LELevelCache {
     public LEMobCache mobCache;
     public LEBaseDepData baseDepData;
     public LEBaseTileData baseTileData;
+    public LEVictoryData victoryData;
     public int height;
     public int width;
     public string id;
@@ -18,6 +19,7 @@ public class LELevelCache {
         mobCache = new LEMobCache();
         baseTileData = new LEBaseTileData();
         baseDepData = new LEBaseDepData();
+        victoryData = new LEVictoryData();
         id = "fox.box";
         height = 0;
         width = 0;
