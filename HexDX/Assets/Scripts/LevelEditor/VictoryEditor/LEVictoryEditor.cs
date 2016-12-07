@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class LEVictoryEditor : MonoBehaviour {
     public LEMapCache mapCache;
@@ -32,4 +31,14 @@ public class LEVictoryEditor : MonoBehaviour {
         }
         ////////////////////////
 	}
+
+    public void TurnOn()
+    {
+        // to be implemented
+    }
+
+    public void TurnOff()
+    {
+        // to be implemented
+    }
 }

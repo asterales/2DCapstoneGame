@@ -6,6 +6,7 @@ public class LEDeploymentButton : MonoBehaviour {
     public LEUnitInstanceButton instanceButton;
     public LEUnitSettingsButton settingsButton;
     public LETileButton tileButton;
+    public LEVictoryConditionButton victoryConditionButton;
     private SpriteRenderer spriteRenderer;
 
 	void Start () {
@@ -30,6 +31,10 @@ public class LEDeploymentButton : MonoBehaviour {
         if (tileButton == null)
         {
             Debug.Log("ERROR :: Need reference to tile button -> LEDeploymentButton.cs");
+        }
+        if (victoryConditionButton == null)
+        {
+            Debug.Log("ERROR :: Need reference to victory condition button -> LEDeploymentButton.cs");
         }
         ////////////////////////
     }
@@ -56,6 +61,7 @@ public class LEDeploymentButton : MonoBehaviour {
         instanceButton.Deselect();
         settingsButton.Deselect();
         tileButton.Deselect();
+        victoryConditionButton.Deselect();
         hexMap.TurnOnDeployment();
     }
 }

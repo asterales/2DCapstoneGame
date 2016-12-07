@@ -16,6 +16,7 @@ public class LESelectionController : MonoBehaviour {
     public LEUnitSettings selectedSettings;
     public LEUnitInstance selectedUnit;
     //public int selectedUnitID;
+    public LEVictoryEditor victoryEditor;
     public LEUnitSettingsEditor unitEditor;
     public int selectedMapID;
     // reference to buttons
@@ -23,11 +24,13 @@ public class LESelectionController : MonoBehaviour {
     public LETileButton tileButton;
     public LEUnitInstanceButton instanceButton;
     public LEUnitSettingsButton settingsButton;
+    public LEVictoryConditionButton victoryConditionButton;
 
     public bool isTileMode;
     public bool isSettingsMode;
     public bool isInstanceMode;
     public bool isDepMode;
+    public bool isVCMode;
 
     void Start()
     {
@@ -72,15 +75,21 @@ public class LESelectionController : MonoBehaviour {
         {
             Debug.Log("ERROR :: Reference to Deployment Button needs to be defined -> LESelectionController.cs");
         }
+        if (victoryEditor == null)
+        {
+            Debug.Log("ERROR :: Reference to VictoryEditor needs to be defined -> LESelectionController.cs");
+        }
         ////////////////////////
         isTileMode = false;
         isInstanceMode = false;
         isSettingsMode = false;
         isDepMode = false;
+        isVCMode = false;
         depButton.Deselect();
         tileButton.Deselect();
         instanceButton.Deselect();
         settingsButton.Deselect();
+        //victoryConditionButton.Deselect();
     }
 
     public void SetSelectTile(int sprite, int variant)
@@ -89,6 +98,7 @@ public class LESelectionController : MonoBehaviour {
         isInstanceMode = false;
         isSettingsMode = false;
         isDepMode = false;
+        isVCMode = false;
         tileButton.Select();
         selectedTileID = sprite;
         selectedTileVariantID = variant;
@@ -100,6 +110,7 @@ public class LESelectionController : MonoBehaviour {
         isInstanceMode = false;
         isSettingsMode = false;
         isDepMode = false;
+        isVCMode = false;
         tileButton.Select();
     }
 
@@ -109,9 +120,11 @@ public class LESelectionController : MonoBehaviour {
         isSettingsMode = false;
         isDepMode = false;
         isTileMode = false;
+        isVCMode = false;
         depButton.Deselect();
         instanceButton.Deselect();
         settingsButton.Deselect();
+        victoryConditionButton.Deselect();
     }
 
     public void SetSettingsType(LEUnitSettings settings)
@@ -120,6 +133,7 @@ public class LESelectionController : MonoBehaviour {
         isInstanceMode = false;
         isDepMode = false;
         isSettingsMode = true;
+        isVCMode = false;
         settingsButton.Select();
         selectedSettings = settings;
     }
@@ -130,6 +144,7 @@ public class LESelectionController : MonoBehaviour {
         isInstanceMode = true;
         isSettingsMode = false;
         isDepMode = false;
+        isVCMode = false;
         instanceButton.Select();
         selectedUnit = unit;
     }
@@ -140,6 +155,7 @@ public class LESelectionController : MonoBehaviour {
         isSettingsMode = false;
         isInstanceMode = true;
         isDepMode = false;
+        isVCMode = false;
         instanceButton.Select();
     }
 
@@ -151,6 +167,7 @@ public class LESelectionController : MonoBehaviour {
             isSettingsMode = true;
             isInstanceMode = false;
             isDepMode = false;
+            isVCMode = false;
             settingsButton.Select();
         }
     }
@@ -161,7 +178,18 @@ public class LESelectionController : MonoBehaviour {
         isInstanceMode = false;
         isSettingsMode = false;
         isDepMode = true;
+        isVCMode = false;
         depButton.Select();
+    }
+
+    public void SetVCMode()
+    {
+        isTileMode = false;
+        isInstanceMode = false;
+        isSettingsMode = false;
+        isDepMode = false;
+        isVCMode = true;
+        victoryConditionButton.Select();
     }
 
     public int GetTileType()
