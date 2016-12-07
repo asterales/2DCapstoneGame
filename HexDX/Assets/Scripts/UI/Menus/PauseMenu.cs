@@ -1,9 +1,21 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour {
+    public Texture pauseMenu;
+    public Texture mainMenu;
+    public Texture worldMap;
+    public Texture unpause;
+    public Image background;
+    public float width;
+    private float height;
     private bool paused = false;
     private SelectionMode lastMode;
 
+    void Start()
+    {
+        height = (width * pauseMenu.height) / pauseMenu.width;
+    }
     void Update() {
         if (Input.GetKeyDown(KeyBindings.PAUSE)) {
             if (paused) {
@@ -17,15 +29,16 @@ public class PauseMenu : MonoBehaviour {
     void OnGUI() {
         if (paused) {
             //Make a background box
-            GUI.Box(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 100, 250, 200), "Pause Menu");
+            GUI.backgroundColor = Color.clear;
 
+            GUI.enabled = true;
             //Make Main Menu button
-            if (GUI.Button(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 50, 250, 50), "Main Menu")) {
+            if (GUI.Button(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 200+height*0.9f, width, height), mainMenu)) {
                 LevelManager.ReturnToMainMenu();
             }
             
             GUI.enabled = GameManager.instance && GameManager.instance.HasPassedFirstLevel(); // prevent skip 1st tutorial 
-            if (GUI.Button(new Rect(Screen.width / 2 - 100, Screen.height / 2, 250, 50), "Return To World Map")) {
+            if (GUI.Button(new Rect(Screen.width / 2 - 100, Screen.height / 2 -200+2*height*0.9f, width, height), worldMap)) {
                 Unpause();
                 BattleController bc = BattleController.instance;
                 if (!bc.BattleIsDone) {
@@ -39,7 +52,7 @@ public class PauseMenu : MonoBehaviour {
             GUI.enabled = true;
 
             //Make Change Graphics Quality button
-            if (GUI.Button(new Rect(Screen.width / 2 - 100, Screen.height / 2+50, 250, 50), "Unpause")) {
+            if (GUI.Button(new Rect(Screen.width / 2 - 100, Screen.height / 2-200+3*height*0.9f, width, height), unpause)) {
                 Unpause();
             }
         }
@@ -47,6 +60,8 @@ public class PauseMenu : MonoBehaviour {
 
     void Pause() {
         paused = true;
+        background.enabled = true;
+        background.color = Color.white;
         GetComponent<CameraController>().enabled = false;
         Unit[] allUnits = FindObjectsOfType(typeof(Unit)) as Unit[];
         foreach (Unit unit in allUnits) {
@@ -60,6 +75,8 @@ public class PauseMenu : MonoBehaviour {
 
     void Unpause() {
         paused = false;
+        background.enabled = false;
+        background.color = Color.clear;
         GetComponent<CameraController>().enabled = true;
         Unit[] allUnits = FindObjectsOfType(typeof(Unit)) as Unit[];
         foreach (Unit unit in allUnits) {
