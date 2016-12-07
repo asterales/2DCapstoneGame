@@ -30,7 +30,7 @@ public class Move
             distanceToEnemy = closestEnemyDist();
         else
             distanceToEnemy -= closestEnemyDist();
-        float score = 10000.0f * netkills + 10 * netdamage + distanceToEnemy;
+        float score = 10000.0f * netkills + 10 * netdamage + 100*distanceToEnemy;
         if (closestEnemy)
         {
             Vector3 directionVec = closestEnemy.transform.position - destination.transform.position;
@@ -47,7 +47,7 @@ public class Move
         damage -= HexMap.GetPathDamage(unit.GetShortestPath(destination));
         if (destination == unit.currentTile)
         {
-            if (target && unit.GetFaceDamage(target, facing)<target.Health && target.HasInAttackRange(unit))
+            if (target && unit.GetDamage(target, destination)<target.Health && target.HasInAttackRange(unit))
                 damage-= target.GetDamage(unit, target.ZOCModifer);
         }
         damage = Mathf.Max(-unit.Health, damage);
@@ -59,8 +59,8 @@ public class Move
 
         if (target && netkills >= 0)
         {
-            damage += Mathf.Min(unit.GetFaceDamage(target, facing), target.Health);
-            if (target.Health <= unit.GetFaceDamage(target, facing))
+            damage += Mathf.Min(unit.GetDamage(target, destination), target.Health);
+            if (target.Health <= unit.GetDamage(target, destination))
                 netkills += 1;
         }
         return damage;

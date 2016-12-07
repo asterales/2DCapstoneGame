@@ -506,13 +506,14 @@ public class Unit : MonoBehaviour {
         int healthStart = target.Health;
         int basedamage = (int)(Attack * (50.0f / (50.0f + (float)target.Defense)))+ (int)(Power * (50.0f / (50.0f + (float)target.Resistance)));
         int damage = basedamage;
+        int attackdirection = GetFacing(target.transform.position - transform.position);
         string indicatorText = "-" + (int)(basedamage * modifier);
         HexMap.ClearAllTiles();
         if (target.phase != UnitTurn.Moving) {
-            if (target.facing == facing) {
+            if (target.facing == attackdirection) {
                 damage = basedamage * 2;
                 indicatorText = "-" + (int)(basedamage * modifier) + "\nSneak!\n-" + (int)((damage - basedamage) * modifier);
-            } else if (Mathf.Abs(target.facing - facing) == 1 || Mathf.Abs(target.facing - facing) == 5) {
+            } else if (Mathf.Abs(target.facing - attackdirection) == 1 || Mathf.Abs(target.facing - attackdirection) == 5) {
                 damage = basedamage * 3 / 2;
                 indicatorText = "-" + (int)(basedamage * modifier) + "\nFlank!\n-" + (int)((damage - basedamage) * modifier);
             }
@@ -568,17 +569,18 @@ public class Unit : MonoBehaviour {
         return damage;
     }
 
-    public int GetFaceDamage(Unit target, int facing, float modifier = 1.0f)
+    public int GetDamage(Unit target, Tile dest, float modifier = 1.0f)
     {
         int basedamage = (int)(Attack * (50.0f / (50.0f + (float)target.Defense))) + (int)(Power * (50.0f / (50.0f + (float)target.Resistance)));
         int damage = (int)(basedamage * modifier);
+        int attackdirection = GetFacing(target.transform.position - dest.transform.position);
         if (target.phase != UnitTurn.Moving)
         {
-            if (target.facing == facing)
+            if (target.facing == attackdirection)
             {
                 damage = (int)(basedamage * 2 * modifier);
             }
-            else if (Mathf.Abs(target.facing - facing) == 1 || Mathf.Abs(target.facing - facing) == 5)
+            else if (Mathf.Abs(target.facing - attackdirection) == 1 || Mathf.Abs(target.facing - attackdirection) == 5)
             {
                 damage = (int)(basedamage * 3 * modifier) / 2;
             }

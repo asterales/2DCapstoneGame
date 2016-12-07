@@ -55,7 +55,15 @@ public class NewAI : UnitAI{
                 maxscore = m.score();
             }
         }
-        unit.SetPath(unit.GetShortestPath(move.destination));
-        unit.MakeMoving();
+        List<Tile> path = unit.GetShortestPath(move.destination);
+        if (path.Count > 1)
+        {
+            unit.SetPath(unit.GetShortestPath(move.destination));
+            unit.MakeMoving();
+        }
+        else
+        {
+            unit.MakeFacing();
+        }
     }
 }
