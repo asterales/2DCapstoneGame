@@ -12,6 +12,7 @@ public class BattleController : PhaseController {
     public AIBattleController ai;
     public PlayerBattleController player;
     public VictoryCondition victoryCondition;
+    public Text victoryConditionText;
     public EndBattleBanner endBanner;
     public TurnTransition turnTransition;
     public int numTurns = 0;

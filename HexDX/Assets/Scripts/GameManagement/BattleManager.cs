@@ -72,6 +72,7 @@ public class BattleManager : MonoBehaviour {
 		}
 		mapLoader.LoadMap(unitLoader);
 		battleController.victoryCondition = mapLoader.GetComponent<VictoryCondition>();
+        battleController.victoryCondition.victoryConditionText = battleController.victoryConditionText; 
 	}
 
 	private void InitArmies() {
