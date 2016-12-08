@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System;
 using UnityEngine.UI;
 
 /* Manages cutscene dialogue */
@@ -8,9 +10,13 @@ using UnityEngine.UI;
 public class CutsceneManager : DialogueManager {
 	private static readonly string cutsceneDir = "Cutscenes/";
 	private static readonly string backgroundsDir = "backgrounds/";
+	private static readonly string musicDir = "Music/";
 
 	public string cutsceneFile;
 	public Image bgImage;
+	public AudioSource bgm;
+	public AudioSource sfx;
+
 	private Queue<CutsceneDialogue> dialogues;
 	private SpeakerUI leftSpeaker;
 	private SpeakerUI rightSpeaker;
@@ -38,13 +44,8 @@ public class CutsceneManager : DialogueManager {
 		dialogues = new Queue<CutsceneDialogue>();
 		string[] cutsceneLines = GameResources.GetFileLines(cutsceneDir + file);
 		if (cutsceneLines != null) {
-			int startIndex = 0;
 			string bgLine = cutsceneLines[0];
-			if (!bgLine.Contains("|")) {
-				bgImage.sprite = Resources.Load<Sprite>(backgroundsDir + bgLine.Trim());
-				bgImage.color = Color.white;
-				startIndex = 1;
-			}
+			int startIndex = Convert.ToInt32(ParseBackgroundAssets(bgLine));
 			for(int i = startIndex; i < cutsceneLines.Length; i++) {
 				dialogues.Enqueue(new CutsceneDialogue(cutsceneLines[i]));
 			}
@@ -53,13 +54,26 @@ public class CutsceneManager : DialogueManager {
 		}
 	}
 
+	private bool ParseBackgroundAssets(string bgLine) {
+		if (!bgLine.Contains("|")) {
+			string[] bgTokens = bgLine.Split(',').Select(s => s.Trim()).ToArray();
+			bgImage.sprite = Resources.Load<Sprite>(backgroundsDir + bgTokens[0]);
+			bgImage.color = Color.white;
+			if (bgTokens.Length > 1) {
+				Debug.Log("found sound file: "+bgTokens[1]);
+			}
+			return true;
+		}
+		return false;
+	}
+
 	protected override void Update() {
 		if (dialogues.Count == 0 && SpeakerLinesFinished() && Input.GetMouseButtonDown(0) && !nextSceneLoaded) {
 			nextSceneLoaded = true; // prevents spam clicks from skipping scenes
 			if (LevelManager.activeInstance) {
 				LevelManager.activeInstance.NextScene();
 			} else {
-				Debug.Log("No active evel manager set");
+				Debug.Log("No active level manager set");
 			}
 		} else {
 			base.Update();
