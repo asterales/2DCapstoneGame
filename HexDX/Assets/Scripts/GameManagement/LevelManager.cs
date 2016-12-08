@@ -21,8 +21,8 @@ public class LevelManager : MonoBehaviour {
 	public int levelId;
 	public int moneyRewarded;
 	public string mapFileName;
-	public string introCutsceneFile;
-	public string outroCutsceneFile;
+	public List<string> introCutscenes;
+	public List<string> outroCutscenes;
 	
 	private bool levelStarted;
 	private bool destroyOnLoad;
@@ -48,9 +48,10 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	private void InitSceneList() {
-		scenes = new List<SceneInfo> { new SceneInfo(cutsceneSceneName, introCutsceneFile),
-									   new SceneInfo(battleSceneName, mapFileName),
-									   new SceneInfo(cutsceneSceneName, outroCutsceneFile)};
+		scenes = new List<SceneInfo>();
+		scenes.AddRange(introCutscenes.Select(s => new SceneInfo(cutsceneSceneName, s)));
+		scenes.Add(new SceneInfo(battleSceneName, mapFileName));
+		scenes.AddRange(outroCutscenes.Select(s => new SceneInfo(cutsceneSceneName, s)));
 		scenes = scenes.Where(s => s.fileName != null && s.fileName.Length > 0).ToList();
 	}
 

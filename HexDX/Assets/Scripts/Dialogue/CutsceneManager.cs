@@ -60,7 +60,8 @@ public class CutsceneManager : DialogueManager {
 			bgImage.sprite = Resources.Load<Sprite>(backgroundsDir + bgTokens[0]);
 			bgImage.color = Color.white;
 			if (bgTokens.Length > 1) {
-				Debug.Log("found sound file: "+bgTokens[1]);
+				bgm.clip = Resources.Load<AudioClip>(musicDir + bgTokens[1]);
+				bgm.Play();
 			}
 			return true;
 		}
