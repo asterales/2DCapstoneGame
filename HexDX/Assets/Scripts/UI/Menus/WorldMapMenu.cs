@@ -8,6 +8,7 @@ public class WorldMapMenu : MonoBehaviour {
 
 	public UnitSelectionPanel selectionPanel;
 	public RecruitingPanel recruitingPanel;
+	public QuitConfirmationBox quitConfirmPanel;
 
 	void Awake() {
 		selectActiveArmyButton = transform.Find("Select").GetComponent<Button>();
@@ -32,16 +33,12 @@ public class WorldMapMenu : MonoBehaviour {
 	private void InactivatePanels() {
 		selectionPanel.Hide();
 		recruitingPanel.Hide();
+		quitConfirmPanel.Hide();
 	}
 
 	private void RegisterListeners() {
 		selectActiveArmyButton.onClick.AddListener(selectionPanel.Show);
 		recruitButton.onClick.AddListener(recruitingPanel.Show);
-		quitButton.onClick.AddListener(Quit);
-	}
-
-	private void Quit() {
-		Debug.Log("Registered Quit Button");
-		Application.Quit();
+		quitButton.onClick.AddListener(quitConfirmPanel.Show);
 	}
 }
