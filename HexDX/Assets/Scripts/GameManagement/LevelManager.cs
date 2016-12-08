@@ -113,11 +113,8 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
-
-    public static void Credits()
-    {
-        DontDestroyOnLoad(GameManager.instance.gameObject);
-        SceneManager.LoadScene("Credits");
+    private static void Credits() {
+        Timing.RunCoroutine(activeInstance.LoadScene("Credits"));
     }
 
     private IEnumerator<float> LoadScene(string sceneName) {
@@ -147,8 +144,10 @@ public class LevelManager : MonoBehaviour {
 			currentSceneIndex++;
 			if (currentSceneIndex < scenes.Count) {
 				Timing.RunCoroutine(LoadScene(scenes[currentSceneIndex].sceneName));
-			} else{
+			} else if (levelId != GameManager.FINAL_LEVEL_ID) {
 				ReturnToWorldMap();
+			} else {
+				Credits();
 			}
 		}
 	}
