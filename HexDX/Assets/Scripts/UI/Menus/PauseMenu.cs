@@ -22,7 +22,7 @@ public class PauseMenu : MonoBehaviour {
     void Update() {
         width = Screen.width * 0.35f;
         height = (width * mainMenu.height) / mainMenu.width;
-        if (Input.GetKeyDown(KeyBindings.PAUSE)) {
+        if (Input.GetKeyDown(KeyBindings.PAUSE) && SelectionController.instance.mode!=SelectionMode.TurnTransition) {
             if (paused) {
                 Unpause();
             } else {
