@@ -7,7 +7,7 @@ public class CameraController : MonoBehaviour {
     private const float DECREASE_ZOOM_FACTOR = 0.9f;
     private const float INCREASE_ZOOM_FACTOR = 1.1f;
     private const float MIN_ZOOM = 2.0f;
-    private const float MAX_ZOOM = 20.0f;
+    private float MAX_ZOOM = 20.0f;
 
     public bool enabledMousePan;
 
@@ -35,6 +35,7 @@ public class CameraController : MonoBehaviour {
         ymax = HexMap.mapArray[0][0].transform.position.y;
         xmax = HexMap.mapArray[hexmapH-1][hexmapW-1].transform.position.x;
         ymin = HexMap.mapArray[hexmapH-1][hexmapW-1].transform.position.y;
+        MAX_ZOOM = Mathf.Max(hexmapH * 1.4f, hexmapW * 1.4f); 
     }
 
     private void CenterCamera(List<Vector3> positions) {
