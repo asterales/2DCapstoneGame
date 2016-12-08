@@ -89,9 +89,12 @@ public class BattleController : PhaseController {
     private void UpdateArmyAfterBattle() {
         if (GameManager.instance) {
             CustomUnitLoader unitLoader = BattleManager.instance.unitLoader;
-            if (PlayerWon && unitLoader && unitLoader.CanReplaceUnits()) {
+            if (PlayerWon && unitLoader && unitLoader.CanReplaceUnits())
+            {
                 unitLoader.ReplacePlayerArmy();
-            } else {
+            }
+            else
+            {
                 if (player.IsAnnihilated()) {
                     player.RestoreInitialArmyState();
                 }

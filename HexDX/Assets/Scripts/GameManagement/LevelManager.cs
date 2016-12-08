@@ -112,7 +112,14 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
-	private IEnumerator<float> LoadScene(string sceneName) {
+
+    public static void Credits()
+    {
+        DontDestroyOnLoad(GameManager.instance.gameObject);
+        SceneManager.LoadScene("Credits");
+    }
+
+    private IEnumerator<float> LoadScene(string sceneName) {
 		yield return Timing.WaitForSeconds(sceneFade.BeginFade(FadeDirection.Out));
 		SceneManager.LoadScene(sceneName);
 		Debug.Log("Loaded scene");

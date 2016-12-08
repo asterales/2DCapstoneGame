@@ -17,7 +17,8 @@ public class GameManager : MonoBehaviour {
 	public List<Unit> activeUnits;
 	public int funds;
     public List<string> randomNames = new List<string> { "Bob", "Steve", "Jerry", "Kyle", "Horatio", "Timmy", "Carl Jr.", "Paul", "Carl", "Toprac", "Dorito", "Mt. Dew" };
-  
+    public List<string> deadUnitNames = new List<string>();
+
 
     void Awake() {
 		if (instance == null) {
@@ -29,6 +30,8 @@ public class GameManager : MonoBehaviour {
 			GetComponentsInChildren<Unit>().ToList().ForEach(u => u.gameObject.SetActive(false));
 			Destroy(gameObject);
 		}
+        deadUnitNames = new List<string>();
+        deadUnitNames.Add("steve");
 	}
 
 	public static void SetDefaultUnitView(Unit unit) {
@@ -80,10 +83,17 @@ public class GameManager : MonoBehaviour {
         }
 	}
 
-	public void ClearDeadUnits() {
-		playerAllUnits = playerAllUnits.Where(u => u.enabled).ToList();
-		activeUnits = activeUnits.Where(u => u.enabled).ToList();
-	}
+    public void ClearDeadUnits()
+    {
+        foreach (Unit unit in activeUnits)
+        {
+            if (!unit.enabled)
+                deadUnitNames.Add(unit.ClassName);
+        }
+        playerAllUnits = playerAllUnits.Where(u => u.enabled).ToList();
+        activeUnits = activeUnits.Where(u => u.enabled).ToList();
+    }
+
 
     public void RestoreActiveUnits() {
         foreach (Unit unit in activeUnits) {
