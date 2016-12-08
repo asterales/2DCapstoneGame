@@ -10,6 +10,7 @@ public class Move
     public Unit target;
     private float netkills = 0;
     private Unit closestEnemy;
+    private float remainingHealth=300;
     public static Dictionary<Tile, Unit> closestEnemyCache;
     public static Dictionary<Tile, float> closestDistanceCache;
     public Move(Unit u, Tile d, int f, Unit t)
@@ -30,7 +31,7 @@ public class Move
             distanceToEnemy = closestEnemyDist();
         else
             distanceToEnemy -= closestEnemyDist();
-        float score = 10000.0f * netkills + 10 * netdamage + 100*distanceToEnemy;
+        float score = 10000.0f * netkills + 10 * netdamage + 100*distanceToEnemy-remainingHealth;
         if (closestEnemy)
         {
             Vector3 directionVec = closestEnemy.transform.position - destination.transform.position;
@@ -61,7 +62,11 @@ public class Move
         {
             damage += Mathf.Min(unit.GetDamage(target, destination), target.Health);
             if (target.Health <= unit.GetDamage(target, destination))
+            {
                 netkills += 1;
+                remainingHealth = 0;
+            }
+            remainingHealth = target.Health - unit.GetDamage(target, destination);
         }
         return damage;
     }
