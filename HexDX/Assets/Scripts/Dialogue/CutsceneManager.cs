@@ -21,6 +21,7 @@ public class CutsceneManager : DialogueManager {
 	private Queue<CutsceneDialogue> dialogues;
 	private SpeakerUI leftSpeaker;
 	private SpeakerUI rightSpeaker;
+	private bool hideCurrentSpeakerOnFinish;
 	private bool nextSceneLoaded;
 	private int moneyGained;
 	private int unitsLost;
@@ -94,16 +95,22 @@ public class CutsceneManager : DialogueManager {
 	}
 
 	protected override void Update() {
-		if (dialogues.Count == 0 && SpeakerLinesFinished() && !sfx.isPlaying && Input.GetMouseButtonDown(0) && !nextSceneLoaded) {
-			nextSceneLoaded = true; // prevents spam clicks from skipping scenes
-			ApplySideEffects();
-			if (LevelManager.activeInstance) {
-				LevelManager.activeInstance.NextScene();
+		if (!sfx.isPlaying) {
+			if (dialogues.Count == 0 && SpeakerLinesFinished() && Input.GetMouseButtonDown(0) && !nextSceneLoaded) {
+				nextSceneLoaded = true; // prevents spam clicks from skipping scenes
+				ApplySideEffects();
+				if (LevelManager.activeInstance) {
+					LevelManager.activeInstance.NextScene();
+				} else {
+					Debug.Log("No active level manager set");
+				}
 			} else {
-				Debug.Log("No active level manager set");
+				if (SpeakerLinesFinished() && Input.GetMouseButtonDown(0) && hideCurrentSpeakerOnFinish) {
+					hideCurrentSpeakerOnFinish = false;
+					activeSpeaker.HideGUI();
+				}
+				base.Update();
 			}
-		} else {
-			base.Update();
 		}
 	}
 
@@ -152,6 +159,7 @@ public class CutsceneManager : DialogueManager {
 		activeSpeaker = nextSpeaker;
 		activeSpeaker.SortingOrder = 2;
 		currentLine = dialogue.Line;
+		hideCurrentSpeakerOnFinish = dialogue.HideAfterFinish;
 		if (dialogue.SoundFile != null) {
 			PlaySfx(dialogue);
 		}

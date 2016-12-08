@@ -14,11 +14,12 @@ using System.Linq;
 		Lines afterwards: dialogue lines or sfx cues
 		All optional arguments can be left off if at the end of the line, but must still have a delimeter if it is a middle argument
 		Dialogue lines:	
-			character_id (int, REQUIRED, see characterIds.csv) | expression enum/portrait_index (int, OPTIONAL) | screen_location enum (int, REQUIRED) | spoken_line (string, OPTIONAL) | alternative displayed name (if not using default) (string, OPTIONAL) | sfx file to play with line (string, OPTIONAL)
+			character_id (int, REQUIRED, see characterIds.csv) | expression enum/portrait_index (int, OPTIONAL) | screen_location enum (int, REQUIRED) | spoken_line (string, OPTIONAL) | alternative displayed name (if not using default) (string, OPTIONAL) | sfx file to play with line (string, OPTIONAL) | hide after finish (int 0/1, OPTIONAL, default = no hide = 0)
 			cutscene ex: 1 | 0 | 1 | Hello
 			cutscene ex with alternative name:  1 | 0 | 1 | Hello | Other Name
 			cutscene ex with sfx: 1 | 0 | 1 | Hello || sfx_file_name
 			cutscene ex with alt name and sfx: 1 | 0 | 1 | Hello | Other name | sfx_file_name
+			cutscene ex with hide dialogue after finish: 1 | 0 | 1 | Hello | Other name | sfx_file_name | 1
 		Sfx cues:
 			sfx_file_name
 
@@ -35,6 +36,7 @@ using System.Linq;
 public class CutsceneDialogue {
 	public bool SfxOnly { get; private set; }
 	public string SoundFile { get; private set; }
+	public bool HideAfterFinish { get; private set; }
 
 	public string CharacterName { get; private set; }
 	public Sprite Portrait { get; private set; }
@@ -60,14 +62,21 @@ public class CutsceneDialogue {
 			Side = (ScreenLocation) int.Parse(tokens[2]);
 			Line = tokens[3];
 
-			if (tokens.Length > 4 ) {
+			// Parse alternate name
+			if (tokens.Length > 4 && tokens[4].Length > 0) {
 				CharacterName = tokens[4];
 			} else {
 				CharacterName = character.Name;
 			}
 
-			if (tokens.Length == 6) {
+			// Parse sound file
+			if (tokens.Length > 5 && tokens[5].Length > 0) {
 				SoundFile = tokens[5];
+			}
+
+			// Parse if hide UI after finish
+			if (tokens.Length > 6 && tokens[6].Length > 0) {
+				HideAfterFinish = Convert.ToBoolean(Convert.ToInt32(tokens[6]));
 			}
 		}
 	}
