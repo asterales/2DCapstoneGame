@@ -11,6 +11,7 @@ public class CutsceneManager : DialogueManager {
 	private static readonly string cutsceneDir = "Cutscenes/";
 	private static readonly string backgroundsDir = "backgrounds/";
 	private static readonly string musicDir = "Music/";
+	private static readonly string sfxDir = "SoundEffects/";
 
 	public string cutsceneFile;
 	public Image bgImage;
@@ -69,7 +70,7 @@ public class CutsceneManager : DialogueManager {
 	}
 
 	protected override void Update() {
-		if (dialogues.Count == 0 && SpeakerLinesFinished() && Input.GetMouseButtonDown(0) && !nextSceneLoaded) {
+		if (dialogues.Count == 0 && SpeakerLinesFinished() && !sfx.isPlaying && Input.GetMouseButtonDown(0) && !nextSceneLoaded) {
 			nextSceneLoaded = true; // prevents spam clicks from skipping scenes
 			if (LevelManager.activeInstance) {
 				LevelManager.activeInstance.NextScene();
@@ -82,15 +83,19 @@ public class CutsceneManager : DialogueManager {
 	}
 
 	protected override void SetNextLine() {
-		if(dialogues.Count > 0) {
+		if(dialogues.Count > 0 && !sfx.isPlaying) {
 			CutsceneDialogue dialogue = dialogues.Dequeue();
-			switch(dialogue.Side) {
-				case ScreenLocation.Left:
-					SwitchToSpeaker(leftSpeaker, dialogue);
-					break;
-				case ScreenLocation.Right:
-					SwitchToSpeaker(rightSpeaker, dialogue);
-					break;
+			if (dialogue.SfxOnly) {
+				PlaySfx(dialogue);
+			} else {
+				switch(dialogue.Side) {
+					case ScreenLocation.Left:
+						SwitchToSpeaker(leftSpeaker, dialogue);
+						break;
+					case ScreenLocation.Right:
+						SwitchToSpeaker(rightSpeaker, dialogue);
+						break;
+				}
 			}
 		}
 	}
@@ -105,7 +110,15 @@ public class CutsceneManager : DialogueManager {
 		activeSpeaker = nextSpeaker;
 		activeSpeaker.SortingOrder = 2;
 		currentLine = dialogue.Line;
+		if (dialogue.SoundFile != null) {
+			PlaySfx(dialogue);
+		}
 		StartSpeakerLines();
+	}
+
+	private void PlaySfx(CutsceneDialogue dialogue) {
+		sfx.clip = Resources.Load<AudioClip>(sfxDir + dialogue.SoundFile);
+		sfx.Play();
 	}
 }
 

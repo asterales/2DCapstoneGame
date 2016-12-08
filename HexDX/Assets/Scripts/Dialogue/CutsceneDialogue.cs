@@ -9,7 +9,7 @@ using System.Linq;
 	
 		Lines afterwards: dialogue lines or sfx cues
 		Dialogue lines:	
-			character_id (int) | expression enum/portrait_index (int), neg number if no portrait to be displayed | screen_location enum (int) | spoken_line (string) | alternative displayed name (if not using default) (string) | sfx file to play with line
+			character_id (int) | expression enum/portrait_index (int) | screen_location enum (int) | spoken_line (string) | alternative displayed name (if not using default) (string) | sfx file to play with line
 			cutscene ex: 1 | 0 | 1 | Hello
 			cutscene ex with alternative name:  1 | 0 | 1 | Hello | Other Name
 			cutscene ex with sfx: 1 | 0 | 1 | Hello || sfx_file_name
@@ -24,7 +24,6 @@ using System.Linq;
 public class CutsceneDialogue {
 	public bool SfxOnly { get; private set; }
 	public string SoundFile { get; private set; }
-	public bool HasSfx { get; private set; }
 
 	public string CharacterName { get; private set; }
 	public Sprite Portrait { get; private set; }
@@ -37,14 +36,14 @@ public class CutsceneDialogue {
 		// sound effects parsing
 		SfxOnly = tokens.Length == 1;
 		if (SfxOnly) {
-			HasSfx = true;
 			SoundFile = tokens[0];
 		} else {
 			Character character = Character.characters[int.Parse(tokens[0])];
-			int portraitIndex = int.Parse(tokens[1]);
-			Debug.Log(portraitIndex);
-			if (portraitIndex >= 0) {
-				Portrait = character.Portraits[portraitIndex];
+			if (tokens[1].Length > 0) {
+				int portraitIndex = int.Parse(tokens[1]);
+				if (portraitIndex >= 0) {
+					Portrait = character.Portraits[portraitIndex];
+				}
 			}
 
 			Side = (ScreenLocation) int.Parse(tokens[2]);
@@ -56,8 +55,7 @@ public class CutsceneDialogue {
 				CharacterName = character.Name;
 			}
 
-			HasSfx = tokens.Length == 6;
-			if (HasSfx) {
+			if (tokens.Length == 6) {
 				SoundFile = tokens[5];
 			}
 		}

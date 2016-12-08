@@ -1,4 +1,4 @@
 cutscenebackground,Trustandresolve(demo)
 0 | 0 | 0 | My name is William Murray, nice to meet you.
 1 | 0 | 1 | My name is Helena Walsh, nice to meet you.
-2 | -1 | 0 | My name is Schmidt, nice to meet you. | Colonel | hi
+2 || 0 | My name is Schmidt, nice to meet you. ||Death_Yell2
