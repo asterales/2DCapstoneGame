@@ -9,7 +9,7 @@ using System.Linq;
 	
 		Lines afterwards: dialogue lines or sfx cues
 		Dialogue lines:	
-			character_id (int) | expression enum/portrait_index (int) | screen_location enum (int) | spoken_line (string) | alternative displayed name (if not using default) (string) | sfx file to play with line
+			character_id (int) | expression enum/portrait_index (int), neg number if no portrait to be displayed | screen_location enum (int) | spoken_line (string) | alternative displayed name (if not using default) (string) | sfx file to play with line
 			cutscene ex: 1 | 0 | 1 | Hello
 			cutscene ex with alternative name:  1 | 0 | 1 | Hello | Other Name
 			cutscene ex with sfx: 1 | 0 | 1 | Hello || sfx_file_name
@@ -42,7 +42,11 @@ public class CutsceneDialogue {
 		} else {
 			Character character = Character.characters[int.Parse(tokens[0])];
 			int portraitIndex = int.Parse(tokens[1]);
-			Portrait = character.Portraits[portraitIndex];
+			Debug.Log(portraitIndex);
+			if (portraitIndex >= 0) {
+				Portrait = character.Portraits[portraitIndex];
+			}
+
 			Side = (ScreenLocation) int.Parse(tokens[2]);
 			Line = tokens[3];
 

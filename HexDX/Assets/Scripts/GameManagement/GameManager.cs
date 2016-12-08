@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour {
 	public List<Unit> activeUnits;
 	public int funds;
     public List<string> randomNames = new List<string> { "Bob", "Steve", "Jerry", "Kyle", "Horatio", "Timmy", "Carl Jr.", "Paul", "Carl", "Toprac", "Dorito", "Mt. Dew" };
-    public List<string> deadUnitNames = new List<string>();
+    public List<string> deadUnitNames;
 
 
     void Awake() {
@@ -84,17 +84,11 @@ public class GameManager : MonoBehaviour {
         }
 	}
 
-    public void ClearDeadUnits()
-    {
-        foreach (Unit unit in activeUnits)
-        {
-            if (!unit.enabled)
-                deadUnitNames.Add(unit.ClassName);
-        }
+    public void ClearDeadUnits() {
+    	deadUnitNames.AddRange(playerAllUnits.Where(u => !u.enabled).Select(u => u.ClassName));
         playerAllUnits = playerAllUnits.Where(u => u.enabled).ToList();
         activeUnits = activeUnits.Where(u => u.enabled).ToList();
     }
-
 
     public void RestoreActiveUnits() {
         foreach (Unit unit in activeUnits) {

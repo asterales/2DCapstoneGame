@@ -66,7 +66,12 @@ public class SpeakerUI : MonoBehaviour {
 	}
 
 	public void SetSpeaker(Sprite picture, string name) {
-		portrait.sprite = picture;
+		if (picture != null) {
+			portrait.color = Color.white;
+			portrait.sprite = picture;
+		} else {
+			portrait.color = Color.clear;
+		}
 		nameCard.textbox.text = name;
 	}
 
