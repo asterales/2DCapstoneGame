@@ -35,7 +35,6 @@ public class BattleController : PhaseController {
     private void Init() {
         GetArmyControllers();
         InitFlags();
-        victoryCondition = GetComponent<VictoryCondition>();
         numTurns = 0;
         ////// DEBUG CODE //////
         if (ai == null) {
@@ -43,9 +42,6 @@ public class BattleController : PhaseController {
         }
         if (player == null) {
             Debug.Log("Error :: Player Battle Controller not defined -> BattleController.cs");
-        }
-        if(victoryCondition == null) {
-            Debug.Log("Error :: VictoryCondition not defined -> BattleController.cs");
         }
         ////////////////////////
     }

@@ -45,7 +45,6 @@ public class BattleManager : MonoBehaviour {
 		GetImportedComponents();
 		LoadMap();
 		InitArmies();
-		InitVictoryCondition();
 		InitCamera();
 	}
 
@@ -67,27 +66,18 @@ public class BattleManager : MonoBehaviour {
 	}
 
 	private void LoadMap() {
-		Debug.Log("BattleManager - Loading map");
+		Debug.Log("BattleManager - Loading map and victory condition");
 		if (lm) {
 			mapLoader.csvMapFile = lm.mapFileName;
 		}
 		mapLoader.LoadMap(unitLoader);
+		battleController.victoryCondition = mapLoader.GetComponent<VictoryCondition>();
 	}
 
 	private void InitArmies() {
 		Debug.Log("BattleManager - Initializing player and AI armies");
 		player.InitUnits();
 		ai.InitUnits();
-	}
-
-	private void InitVictoryCondition() {
-		if (lm && lm.victoryCondition) {
-			battleController.victoryCondition = lm.victoryCondition;
-		} else {
-			Debug.Log("BattleManager - Using default victory condition - Annhilation");
-		}
-		Debug.Log("BattleManager - Initializing victory condition - " + battleController.victoryCondition.GetType());
-		battleController.victoryCondition.Init();
 	}
 
 	private void InitCamera() {
