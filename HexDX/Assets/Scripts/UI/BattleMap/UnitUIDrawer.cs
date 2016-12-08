@@ -52,8 +52,7 @@ public abstract class UnitUIDrawer : MonoBehaviour {
 
     protected void DrawUI() {
         if (unit && unit.enabled) {
-            portrait.color = Color.white;
-            portrait.sprite = unit.sprites.idle[2];
+            SetPortraitAnim(unit);
             if (damagePreview < 0) {
                 damagePreview = 0;
             }
@@ -71,7 +70,7 @@ public abstract class UnitUIDrawer : MonoBehaviour {
             nameCard.text = "" + unit.ClassName.ToLower();
             nameCardPanel.enabled = true;
         } else {
-            portrait.color = Color.clear;
+            SetPortraitAnim(null);
             nameCardPanel.enabled = false;
             healthbar.fillAmount = 0;
             previewbar.fillAmount = 0;
@@ -86,5 +85,11 @@ public abstract class UnitUIDrawer : MonoBehaviour {
             resist.text = "";
             nameCard.text = "";
         }
+    }
+
+    private void SetPortraitAnim(Unit unit) {
+        portrait.GetComponent<Animator>().runtimeAnimatorController = unit ? unit.sprites.idleAnim[2] : null;
+        portrait.sprite = portrait.GetComponent<SpriteRenderer>().sprite;
+        portrait.color = unit? Color.white : Color.clear;
     }
 }

@@ -30,6 +30,10 @@ public class CustomUnitLoader : MonoBehaviour {
 		return info != null ? !info.HasBeenCompleted() : true;
 	}
 
+	public List<Unit> GetEnemyUnits() {
+		return units.Where(u => u.unit != null && !u.unit.IsPlayerUnit()).Select(u => u.unit).ToList();
+	}
+
 	public void LoadUnits() {
 		if (HexMap.mapArray != null && HexMap.mapArray.Count > 0) {
 			Debug.Log("CustomUnitLoader - Loading custom defined units");

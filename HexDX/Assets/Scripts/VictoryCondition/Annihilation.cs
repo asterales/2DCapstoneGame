@@ -1,9 +1,8 @@
 public class Annihilation : VictoryCondition {
 	public AIBattleController ai;
-
-	public override void Init() {
-		ai = BattleManager.instance.ai;
-	}
+    void Update() {
+        victoryConditionText.text = "route the enemy!";
+    }
 
 	public override bool Achieved() {
 		return ai.IsAnnihilated();

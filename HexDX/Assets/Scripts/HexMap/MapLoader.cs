@@ -38,18 +38,7 @@ public class MapLoader : MonoBehaviour {
         battleMap.ClearMap();
         int currentLine = 0;
 
-        // 0: Rout
-        // 1: Survive
-        // 2: Assasin
-
-        // For Survive ::
-        // 1,x where x is the number of turns
-
-        // For Assasin ::
-        // 2,x where x is the index of desired enemy
-
-        string[] levelTypeRow = mapCsvRows[currentLine++].Split(',');
-        Debug.Log(levelTypeRow[0]);
+        string[] levelTypeRow = mapCsvRows[currentLine++].Split(','); // load victtory condition at the end
 
         string[] dimensionRow = mapCsvRows[currentLine++].Split(',');
         Debug.Log(dimensionRow[0] + " " + dimensionRow[1]);
@@ -59,12 +48,14 @@ public class MapLoader : MonoBehaviour {
         LoadMapTiles(mapCsvRows, rows, currentLine);
         currentLine += rows;
 
+        List<Unit> enemyUnits = null;
         if (unitLoader && unitLoader.CanLoadUnits()) {
             unitLoader.LoadUnits();
+            enemyUnits = unitLoader.GetEnemyUnits();
         } else if (currentLine < mapCsvRows.Length){
             /* Load enemy unit if specified */
             int numUnits = Convert.ToInt32(mapCsvRows[currentLine++]);
-            LoadEnemyUnits(mapCsvRows, currentLine, numUnits);
+            enemyUnits = LoadEnemyUnits(mapCsvRows, currentLine, numUnits);
             currentLine += numUnits;
 
             if(currentLine < mapCsvRows.Length) {
@@ -73,6 +64,47 @@ public class MapLoader : MonoBehaviour {
                 LoadDeploymentZone(mapCsvRows, currentLine, numDep);
             }
         }
+
+        // load victory condition after tiles and units loaded
+        LoadVictoryCondition(levelTypeRow, enemyUnits);
+    }
+
+    // Victory Conditions
+    // 0: Rout
+    // 1: Survive
+    // 2: Assasin
+
+    // For Survive ::
+    // 1,x where x is the number of turns
+
+    // For Assasin ::
+    // 2,x where x is the index of desired enemy
+    private void LoadVictoryCondition(string[] vcTokens, List<Unit> enemyUnits) {
+        int vcType = Convert.ToInt32(vcTokens[0]);
+        VictoryCondition vc;
+        switch(vcType) {
+            case 0:
+                Annihilation routVC = gameObject.AddComponent<Annihilation>();
+                routVC.ai = BattleManager.instance.ai;
+                vc = routVC;
+                break;
+            case 1:
+                Survive surviveVC = gameObject.AddComponent<Survive>();
+                surviveVC.numTurns = Convert.ToInt32(vcTokens[1]);
+                vc = surviveVC;
+                break;
+            case 2:
+                KillCommander killVC = gameObject.AddComponent<KillCommander>();
+                killVC.commander = enemyUnits[Convert.ToInt32(vcTokens[1])];
+                vc = killVC;
+                break;
+            default:
+                Annihilation defaultVC = gameObject.AddComponent<Annihilation>();
+                defaultVC.ai = BattleManager.instance.ai;
+                vc = defaultVC;
+                break;
+        }
+        Debug.Log("MapLoader.cs - Loaded victory condition: " + vc.GetType());
     }
 
     private void LoadMapTiles(string[] mapCsvRows, int numRows, int start) {
@@ -136,8 +168,9 @@ public class MapLoader : MonoBehaviour {
         tile.GetComponent<Animator>().runtimeAnimatorController = controller;
     }
 
-    private void LoadEnemyUnits(string[] mapCvsLines, int startLineIndex, int numUnits) {
+    private List<Unit> LoadEnemyUnits(string[] mapCvsLines, int startLineIndex, int numUnits) {
         Debug.Log("MapLoader.cs - Loading Enemy Units - Number Of Units :: " + numUnits);
+        List<Unit> enemiesLoaded = new List<Unit>();
         for (int i = 0; i < numUnits; i++) {
             string[] data = mapCvsLines[startLineIndex + i].Split(',');
             int unitRow = Convert.ToInt32(data[0]);
@@ -184,9 +217,11 @@ public class MapLoader : MonoBehaviour {
             if (mob != null)
                 mob.addMember(unit);
             ai.mob = mob;
+            enemiesLoaded.Add(unit);
             //unitObject.AddComponent<BasicUnitAI>();
         }
         //Debug.Log("LoadedEnemies");
+        return enemiesLoaded;
     }
 
     private void LoadDeploymentZone(string[] mapCvsLines, int startLineIndex, int numDep) {

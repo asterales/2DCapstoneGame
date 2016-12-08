@@ -1,7 +1,7 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class VictoryCondition : MonoBehaviour {
-
-	public abstract void Init(); 
+    public Text victoryConditionText;
 	public abstract bool Achieved(); 
 }
