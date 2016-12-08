@@ -22,6 +22,8 @@ public class CutsceneManager : DialogueManager {
 	private SpeakerUI leftSpeaker;
 	private SpeakerUI rightSpeaker;
 	private bool nextSceneLoaded;
+	private int moneyGained;
+	private int unitsLost;
 
 	void Awake() {
 		leftSpeaker = GameObject.Find("Left Speaker").GetComponent<SpeakerUI>();
@@ -44,25 +46,47 @@ public class CutsceneManager : DialogueManager {
 	private void LoadCutscene(string file) {
 		dialogues = new Queue<CutsceneDialogue>();
 		string[] cutsceneLines = GameResources.GetFileLines(cutsceneDir + file);
-		if (cutsceneLines != null) {
+		if (cutsceneLines != null && cutsceneLines.Length > 0) {
 			string bgLine = cutsceneLines[0];
+			string sideEffectsLine = cutsceneLines[cutsceneLines.Length - 1 ];
 			int startIndex = Convert.ToInt32(ParseBackgroundAssets(bgLine));
-			for(int i = startIndex; i < cutsceneLines.Length; i++) {
+			int endIndex = cutsceneLines.Length;
+			if (!sideEffectsLine.Equals(bgLine)) {
+				endIndex = endIndex - Convert.ToInt32(ParseSideEffects(sideEffectsLine));
+			}
+			for(int i = startIndex; i < endIndex; i++) {
 				dialogues.Enqueue(new CutsceneDialogue(cutsceneLines[i]));
 			}
 		} else {
-			Debug.Log("Error: cutscene file does not exist: " + cutsceneFile + " - CutsceneManager.cs");
+			Debug.Log("Error: cutscene file does not exist or is empty: " + cutsceneFile + " - CutsceneManager.cs");
 		}
 	}
 
 	private bool ParseBackgroundAssets(string bgLine) {
-		if (!bgLine.Contains("|")) {
+		if (!bgLine.Contains("|") && bgLine.Contains(",")) { // Not a dialogue line nor sfx
 			string[] bgTokens = bgLine.Split(',').Select(s => s.Trim()).ToArray();
-			bgImage.sprite = Resources.Load<Sprite>(backgroundsDir + bgTokens[0]);
-			bgImage.color = Color.white;
-			if (bgTokens.Length > 1) {
+			if (bgTokens[0].Length > 1) {
+				bgImage.sprite = Resources.Load<Sprite>(backgroundsDir + bgTokens[0]);
+				bgImage.color = Color.white;
+			}
+			if (bgTokens[1].Length > 1) {
 				bgm.clip = Resources.Load<AudioClip>(musicDir + bgTokens[1]);
 				bgm.Play();
+			}
+			return true;
+		}
+		return false;
+	}
+
+	private bool ParseSideEffects(string sideEffectsLine) {
+		if (!sideEffectsLine.Contains("|") && sideEffectsLine.Contains(",")) {  // Not a dialogue line nor sfx
+			string[] tokens = sideEffectsLine.Split(',').Select(s => s.Trim()).ToArray();
+			if (tokens[0].Length > 0) {
+				moneyGained = Convert.ToInt32(tokens[0]);
+			}
+			if (tokens[1].Length > 0) {
+				int unitsLostToken = Convert.ToInt32(tokens[1]);
+				unitsLost = unitsLostToken > 0 ? unitsLostToken : 0;
 			}
 			return true;
 		}
@@ -72,6 +96,7 @@ public class CutsceneManager : DialogueManager {
 	protected override void Update() {
 		if (dialogues.Count == 0 && SpeakerLinesFinished() && !sfx.isPlaying && Input.GetMouseButtonDown(0) && !nextSceneLoaded) {
 			nextSceneLoaded = true; // prevents spam clicks from skipping scenes
+			ApplySideEffects();
 			if (LevelManager.activeInstance) {
 				LevelManager.activeInstance.NextScene();
 			} else {
@@ -79,6 +104,23 @@ public class CutsceneManager : DialogueManager {
 			}
 		} else {
 			base.Update();
+		}
+	}
+
+	private void ApplySideEffects() {
+		GameManager gm = GameManager.instance;
+		if (gm) {
+			gm.funds += moneyGained;
+			unitsLost = (int)Mathf.Min(unitsLost, gm.playerAllUnits.Count);
+			if (unitsLost > 0) {
+				List<Unit> unitsByStrength = gm.playerAllUnits.OrderBy(p => p.Health).OrderBy(p => p.Veterancy).ToList();
+				for(int i = 0; i < unitsLost; i++) {
+					Unit unit = unitsByStrength[i];
+					gm.activeUnits.Remove(unit);
+					gm.playerAllUnits.Remove(unit);
+					unit.transform.parent = null;
+				}
+			}
 		}
 	}
 

@@ -4,18 +4,29 @@ using System.Linq;
 
 /* 	Container class for character cutscene dialogue lines and information
 	
-	CutsceneDialogue File txt Format: 
+	CutsceneDialogue File txt Format:
+		All specification for outside files are without extensions 
 		First line: <background image name>, <bgm>
-	
+			ex. bg image only: background image name>, 
+			ex. bgm only: , <bgm>
+			ex. both: <background image name>, <bgm>
+
 		Lines afterwards: dialogue lines or sfx cues
+		All optional arguments can be left off if at the end of the line, but must still have a delimeter if it is a middle argument
 		Dialogue lines:	
-			character_id (int) | expression enum/portrait_index (int) | screen_location enum (int) | spoken_line (string) | alternative displayed name (if not using default) (string) | sfx file to play with line
+			character_id (int, REQUIRED, see characterIds.csv) | expression enum/portrait_index (int, OPTIONAL) | screen_location enum (int, REQUIRED) | spoken_line (string, OPTIONAL) | alternative displayed name (if not using default) (string, OPTIONAL) | sfx file to play with line (string, OPTIONAL)
 			cutscene ex: 1 | 0 | 1 | Hello
 			cutscene ex with alternative name:  1 | 0 | 1 | Hello | Other Name
 			cutscene ex with sfx: 1 | 0 | 1 | Hello || sfx_file_name
 			cutscene ex with alt name and sfx: 1 | 0 | 1 | Hello | Other name | sfx_file_name
 		Sfx cues:
 			sfx_file_name
+
+		Last line (optiona): side effects
+			amount of gold +/-, num units lost (takes lowest health units first)
+			ex with only gold: 1000,
+			ex with only units: ,1
+			ex with both: 1000,1
 
 	Notes: refactor later if later including bgm and background image changes
 
