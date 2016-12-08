@@ -8,7 +8,7 @@ public class UnitStatDisplay : MonoBehaviour {
     public bool editableUnitName;
 
     private Image classPanel;
-    private InputField classText;
+    private InputField unitName;
     private Image statPanel;
     private Text statText;
     private Image unitCard;
@@ -30,13 +30,13 @@ public class UnitStatDisplay : MonoBehaviour {
     }
 
     private void InitClassTextPanel(Transform classPanelTransform) {
-        classText = classPanelTransform.Find("Text").GetComponent<InputField>();
-        classText.onEndEdit.AddListener(delegate { unit.ClassName = classText.text; });
-        classText.interactable = editableUnitName;
+        unitName = classPanelTransform.Find("Text").GetComponent<InputField>();
+        unitName.onEndEdit.AddListener(delegate { unit.ClassName = unitName.text; });
+        unitName.interactable = editableUnitName;
         if (!editableUnitName) {
-            ColorBlock cb = classText.colors;
+            ColorBlock cb = unitName.colors;
             cb.disabledColor = cb.normalColor;
-            classText.colors = cb;
+            unitName.colors = cb;
         } 
     }
 
@@ -55,7 +55,7 @@ public class UnitStatDisplay : MonoBehaviour {
         unit = unitToDisplay;
         if (unit) {
             classPanel.enabled = true;
-            classText.text = unit.ClassName;
+            unitName.text = unit.ClassName;
             statPanel.enabled = true;
             statText.text = GetStatsString();
             if (unitCard) {
@@ -71,7 +71,7 @@ public class UnitStatDisplay : MonoBehaviour {
 
     public void ClearDisplay() {
         classPanel.enabled = false;
-        classText.text = "";
+        unitName.text = "";
         statPanel.enabled = false;
         statText.text = "";
         if (unitCard) {

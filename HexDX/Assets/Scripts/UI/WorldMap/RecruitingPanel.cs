@@ -46,10 +46,13 @@ public class RecruitingPanel : WorldMapPopupPanel {
 			GameManager gm = GameManager.instance;
 			gm.funds -= selectedListing.cost;
 			GameObject newUnitObj = selectedListing.InstantiateRecruit();
-			gm.AddNewPlayerUnit(newUnitObj.GetComponent<Unit>());
+            Unit unit  = newUnitObj.GetComponent<Unit>();
+            string classname = unit.ClassName;
+            gm.AddNewPlayerUnit(unit);
 			worldMapActiveArmyDisplay.RefreshDisplay();
 			SetSelectedListing(null);
-		}
+            descriptionText.text = "You recruited <b>"+unit.ClassName+"</b> the "+classname+"!";
+        }
 	}
 
 	private bool CanPurchase() {
@@ -71,7 +74,6 @@ public class RecruitingPanel : WorldMapPopupPanel {
 			} else {
 				unitDisplay.unit = null;
 				statDisplay.ClearDisplay();
-				descriptionText.text = "";
 			}
 		}
 	}

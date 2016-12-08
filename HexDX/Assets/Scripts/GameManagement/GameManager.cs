@@ -15,9 +15,11 @@ public class GameManager : MonoBehaviour {
 	public List<int> completedTutorials;
 	public List<Unit> playerAllUnits;
 	public List<Unit> activeUnits;
-	public int funds; 
+	public int funds;
+    public List<string> randomNames = new List<string> { "Bob", "Steve", "Jerry", "Kyle", "Horatio", "Timmy", "Carl Jr.", "Paul", "Carl", "Toprac", "Dorito", "Mt. Dew" };
+  
 
-	void Awake() {
+    void Awake() {
 		if (instance == null) {
 			instance = this;
 			InitUnitList();
@@ -50,6 +52,7 @@ public class GameManager : MonoBehaviour {
 		playerAllUnits.Add(unit);
 		unit.transform.parent = transform;
         unit.transform.position = GameResources.hidingPosition;
+        unit.ClassName = randomNames[Random.Range(0, randomNames.Count)];
         if (activeUnits.Count < ACTIVE_UNIT_LIMIT) {
         	activeUnits.Add(unit);
         	unit.gameObject.SetActive(true);
