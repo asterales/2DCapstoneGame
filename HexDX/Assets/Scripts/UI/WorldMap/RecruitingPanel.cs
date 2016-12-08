@@ -48,10 +48,10 @@ public class RecruitingPanel : WorldMapPopupPanel {
 			GameObject newUnitObj = selectedListing.InstantiateRecruit();
             Unit unit  = newUnitObj.GetComponent<Unit>();
             string classname = unit.ClassName;
-            gm.AddNewPlayerUnit(unit);
+            gm.AddNewPlayerUnit(unit, true);
 			worldMapActiveArmyDisplay.RefreshDisplay();
 			SetSelectedListing(null);
-            descriptionText.text = "You recruited <b>"+unit.ClassName+"</b> the "+classname+"!";
+            descriptionText.text = "You've recruited <b>"+unit.ClassName+"</b> the "+classname+"!";
         }
 	}
 

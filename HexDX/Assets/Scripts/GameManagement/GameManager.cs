@@ -48,11 +48,13 @@ public class GameManager : MonoBehaviour {
 		return defeatedLevelIds.Count > 0;
 	}
 
-	public void AddNewPlayerUnit(Unit unit) {
+	public void AddNewPlayerUnit(Unit unit, bool randomName = false) {
 		playerAllUnits.Add(unit);
 		unit.transform.parent = transform;
         unit.transform.position = GameResources.hidingPosition;
-        unit.ClassName = randomNames[Random.Range(0, randomNames.Count)];
+        if (randomName) {
+        	unit.ClassName = randomNames[Random.Range(0, randomNames.Count)];
+        }
         if (activeUnits.Count < ACTIVE_UNIT_LIMIT) {
         	activeUnits.Add(unit);
         	unit.gameObject.SetActive(true);
