@@ -18,7 +18,7 @@ public class AttackTile : MonoBehaviour {
                     sc.ShowTarget(tile.currentUnit);
                 }
                 if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0)){
-                    MusicController.instance.PlaySelectSfx();
+                    GameManager.instance.PlayCursorSfx();
                     sc.target = null;
                     Timing.RunCoroutine(sc.selectedUnit.PerformAttack(tile.currentUnit));
                     sc.HideTarget();
@@ -37,7 +37,7 @@ public class AttackTile : MonoBehaviour {
                 }
             }
         } else if (tutorial && tutorial.enabled && tutorial.IsAttackTarget(this) && Input.GetMouseButtonDown(1)){
-            MusicController.instance.PlaySelectSfx();
+            GameManager.instance.PlayCursorSfx();
             sc.ShowTarget(tile.currentUnit);
         } else {
             tile.OnMouseOver();

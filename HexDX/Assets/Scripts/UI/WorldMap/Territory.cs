@@ -15,6 +15,7 @@ public class Territory : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
     public bool active;
     public bool clickDisabled;
     private SpriteRenderer spriteRenderer;
+    private bool levelStarted;
 
     public void Awake() {
         clickDisabled = false;
@@ -44,7 +45,8 @@ public class Territory : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        if (active && !clickDisabled) {
+        if (active && !clickDisabled && !levelStarted) {
+            levelStarted = true;
             lm.StartLevel();
         }
     }

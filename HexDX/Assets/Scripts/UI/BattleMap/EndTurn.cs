@@ -23,13 +23,13 @@ public class EndTurn : MonoBehaviour {
 
     void OnMouseDown() {
         if (SelectionController.instance.TakingInput()) {
-            MusicController.instance.PlaySelectSfx();
+            GameManager.instance.PlayClangSfx();
             spriteRenderer.color = clickColor;
             battleController.EndCurrentTurn();
         }
 
         if (SelectionController.instance.mode == SelectionMode.ScriptedPlayerEndTurn) {
-            MusicController.instance.PlaySelectSfx();
+            GameManager.instance.PlayClangSfx();
             spriteRenderer.color = clickColor;
             BattleManager.instance.tutorial.EndCurrentTurn();
         }

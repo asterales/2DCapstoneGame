@@ -38,7 +38,10 @@ public class WorldMapMenu : MonoBehaviour {
 
 	private void RegisterListeners() {
 		selectActiveArmyButton.onClick.AddListener(selectionPanel.Show);
+		selectActiveArmyButton.onClick.AddListener(GameManager.instance.PlayCursorSfx);
 		recruitButton.onClick.AddListener(recruitingPanel.Show);
+		recruitButton.onClick.AddListener(GameManager.instance.PlayCursorSfx);
 		quitButton.onClick.AddListener(quitConfirmPanel.Show);
+		quitButton.onClick.AddListener(GameManager.instance.PlayCursorSfx);
 	}
 }

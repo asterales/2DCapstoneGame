@@ -4,6 +4,9 @@ using System.Collections;
 using System.Linq;
 
 public class GameManager : MonoBehaviour {
+	private const float CURSOR_SFX_VOLUME = 0.2f;
+	private const float CLANG_SFX_VOLUME = 1f;
+
 	public const int DISPLAY_FACING = 5;
 	public const int ACTIVE_UNIT_LIMIT = 8;
 	public const int TOTAL_UNIT_LIMIT = 16;
@@ -22,6 +25,10 @@ public class GameManager : MonoBehaviour {
     public List<string> randomNames = new List<string> { "Bob", "Steve","Stevie", "Steven", "Steve Jr.", "Bandit Keith", "Stubert", "Jerry","Kaiser McDaniels the 14th", "Morton","Sally", "Barbie","Scooby Doo","Phillis",
         "Big Bertha","Peggy","Sue","Esmerelda","Olga","Agnis", "Jenkins", "Carl Sr.", "Sadjaz", "Kyle", "Horatio", "Timmy", "Guzzlord", "Carl Jr.",
         "Paul", "Carl", "Dr. Toprac", "Dr. Toprac", "Dr. Toprac", "Dorito", "Mt. Dew" };
+
+    public AudioClip clangSfx;
+    public AudioClip cursorSfx;
+    public AudioSource selectSfxSource;
    
     void Awake() {
 		if (instance == null) {
@@ -117,4 +124,16 @@ public class GameManager : MonoBehaviour {
 		instance = null;
 		Destroy(oldInstance.gameObject);
 	}
+
+	public void PlayClangSfx() {
+		selectSfxSource.clip = clangSfx;
+        selectSfxSource.Play();
+        selectSfxSource.volume = CLANG_SFX_VOLUME;
+    }
+
+	public void PlayCursorSfx() {
+		selectSfxSource.clip = cursorSfx;
+        selectSfxSource.Play();
+        selectSfxSource.volume = CURSOR_SFX_VOLUME;
+    }
 }

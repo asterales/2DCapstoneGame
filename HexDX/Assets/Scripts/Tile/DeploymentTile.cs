@@ -21,6 +21,7 @@ public class DeploymentTile : MonoBehaviour {
 
 	void OnMouseDown() {
 		if (tile.currentUnit && sc.mode == SelectionMode.DeploymentOpen) {
+			GameManager.instance.PlayCursorSfx();
 			draggedUnit = tile.currentUnit;
 		}
 	}
@@ -52,6 +53,7 @@ public class DeploymentTile : MonoBehaviour {
 		if (draggedUnit) {
 			DeploymentController dc = BattleManager.instance.deploymentController;
 			if (hoveredTile) {
+				GameManager.instance.PlayCursorSfx();
 				dc.SetSelectedUnitDestination(draggedUnit, hoveredTile);
 			} else {
 				dc.SetSelectedUnitDestination(draggedUnit, draggedUnit.currentTile);

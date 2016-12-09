@@ -19,7 +19,7 @@ public class MovementTile : MonoBehaviour {
                 tile.OnMouseOver();
             } else if (Input.GetMouseButtonDown(1)) {
                 if (path != null && (tile.currentUnit == sc.selectedUnit || tile.currentUnit == null)) {
-                    MusicController.instance.PlaySelectSfx();
+                    GameManager.instance.PlayCursorSfx();
                     StartCoroutine(CommitPath());
                 } else {
                     tile.OnMouseOver();
@@ -33,7 +33,7 @@ public class MovementTile : MonoBehaviour {
                 DrawPath();
             }
             if (Input.GetMouseButtonDown(1)){
-                MusicController.instance.PlaySelectSfx();
+                GameManager.instance.PlayCursorSfx();
                 StartCoroutine(CommitPath(tutorial.eventsList.currentScriptEvent as ScriptedMove));
             }
         }

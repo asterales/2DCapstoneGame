@@ -33,6 +33,7 @@ public class MainMenu : MonoBehaviour {
 		creditsButton.onClick.AddListener(CreditsOpen);
 		Button creditsBackButton = creditsPanel.GetComponentInChildren<Button>();
 		creditsBackButton.onClick.AddListener(CreditsClose);
+		creditsBackButton.onClick.AddListener(GameManager.instance.PlayCursorSfx);
 		quitButton.onClick.AddListener(Quit);
 		creditsPanel.SetActive(false);
 	}
@@ -43,15 +44,18 @@ public class MainMenu : MonoBehaviour {
 	}
 
 	private void CreditsOpen() {
+		GameManager.instance.PlayCursorSfx();
 		creditsPanel.SetActive(true);
 	}
 
 	private void CreditsClose() {
+		GameManager.instance.PlayCursorSfx();
 		creditsPanel.SetActive(false);
 	}
 
 	private void Quit() {
 		Debug.Log("Registered Quit Button");
+		GameManager.instance.PlayCursorSfx();
 		Application.Quit();
 	}
 }
