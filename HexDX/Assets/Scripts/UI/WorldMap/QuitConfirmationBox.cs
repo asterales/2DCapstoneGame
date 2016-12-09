@@ -13,6 +13,7 @@ public class QuitConfirmationBox : WorldMapPopupPanel {
 
 	private void Quit() {
 		Debug.Log("Registered Quit Button");
+		GameManager.instance.PlayCursorSfx();
 		Application.Quit();
 	}
 

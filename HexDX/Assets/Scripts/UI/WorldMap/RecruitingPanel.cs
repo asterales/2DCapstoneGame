@@ -29,9 +29,11 @@ public class RecruitingPanel : WorldMapPopupPanel {
 	private void InitRecruitButton() {
 		recruitButton = transform.Find("Recruit Button").GetComponent<Button>();
 		recruitButton.onClick.AddListener(RecruitUnit);
+		recruitButton.onClick.AddListener(GameManager.instance.PlayClangSfx);
 	}
 
-	void Start() {
+	protected override void Start() {
+		base.Start();
 		RegisterClickCallbacks();
 	}
 

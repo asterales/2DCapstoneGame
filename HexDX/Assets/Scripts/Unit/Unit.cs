@@ -449,7 +449,7 @@ public class Unit : MonoBehaviour {
         }
         phase = UnitTurn.ChoosingAction;
         if (IsPlayerUnit()) {
-            MusicController.instance.PlaySelectSfx();
+            GameManager.instance.PlayCursorSfx();
         }
     }
 

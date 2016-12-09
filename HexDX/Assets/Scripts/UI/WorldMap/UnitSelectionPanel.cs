@@ -21,7 +21,7 @@ public class UnitSelectionPanel : WorldMapPopupPanel {
 	}
 
 	void Update() {
-		returnButton.interactable = activeUnitsDisplay.GetUnits().Count >= minArmySize;
+		returnButton.interactable = activeUnitsDisplay.GetUnits().Count >= minArmySize || GameManager.instance.playerAllUnits.Count == 0;
 	}
 
 	public void SaveArmySelection() {

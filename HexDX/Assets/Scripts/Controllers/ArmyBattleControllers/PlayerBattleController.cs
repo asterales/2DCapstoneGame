@@ -72,16 +72,16 @@ public class PlayerBattleController : ArmyBattleController {
             bool canAttack = tile;
 
             if (GetSubmenuButton(pos, 1, "Attack", canAttack)) {
-                MusicController.instance.PlaySelectSfx();
+                GameManager.instance.PlayCursorSfx();
                 sc.target = tile.currentUnit;
                 selectedUnit.MakeAttacking();
             }
             if (GetSubmenuButton(pos, 2, "Wait", true)) {
-                MusicController.instance.PlaySelectSfx();
+                GameManager.instance.PlayCursorSfx();
                 selectedUnit.MakeDone();
             }
             if (GetSubmenuButton(pos, 3, "Undo", true)) {
-                MusicController.instance.PlaySelectSfx();
+                GameManager.instance.PlayCursorSfx();
                 Undo();
             }
         }
