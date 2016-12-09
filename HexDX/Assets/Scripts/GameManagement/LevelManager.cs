@@ -14,6 +14,8 @@ public class LevelManager : MonoBehaviour {
 	private static readonly string battleSceneName = "BattleMap";
 	private static readonly string worldMapSceneName = "WorldMap";
 	private static readonly string cutsceneSceneName = "Cutscene";
+	private static readonly List<string> penultimateCutscenes = new List<string> { "TestDialogue", "TestDialogue" };
+	private static readonly List<string> finalCutscenes = new List<string> { "TestDialogue"};
 
 	public static LevelManager activeInstance;
 
@@ -59,6 +61,14 @@ public class LevelManager : MonoBehaviour {
 		HideTutorialObjects();
 		destroyOnLoad = false;
 		levelStarted = false;
+		GameManager gm = GameManager.instance;
+		if (gm) {
+			if (gm.defeatedLevelIds.Count == GameManager.TOTAL_NUM_LEVELS - 2) {
+				scenes.AddRange(penultimateCutscenes.Select(s => new SceneInfo(cutsceneSceneName, s)));
+			} else if (gm.defeatedLevelIds.Count == GameManager.TOTAL_NUM_LEVELS - 1) {
+				scenes.AddRange(finalCutscenes.Select(s => new SceneInfo(cutsceneSceneName, s)));
+			}
+		}
 	}
 
 	private void HideTutorialObjects() {
@@ -144,10 +154,13 @@ public class LevelManager : MonoBehaviour {
 			currentSceneIndex++;
 			if (currentSceneIndex < scenes.Count) {
 				Timing.RunCoroutine(LoadScene(scenes[currentSceneIndex].sceneName));
-			} else if (levelId != GameManager.FINAL_LEVEL_ID) {
-				ReturnToWorldMap();
-			} else {
-				Credits();
+			} else if (GameManager.instance) {
+				GameManager gm = GameManager.instance;
+				if (gm.defeatedLevelIds.Count < GameManager.TOTAL_NUM_LEVELS) {
+					ReturnToWorldMap();
+				} else {
+					Credits();
+				}
 			}
 		}
 	}

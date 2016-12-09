@@ -8,7 +8,8 @@ public class GameManager : MonoBehaviour {
 	public const int ACTIVE_UNIT_LIMIT = 8;
 	public const int TOTAL_UNIT_LIMIT = 16;
 	public const int MIN_ARMY_SIZE = 1;
-	public const int FINAL_LEVEL_ID = 100; //temp
+
+	public const int TOTAL_NUM_LEVELS = 9; // temp
 	public static GameManager instance; //singleton
 
 	// public for debugging in editor
