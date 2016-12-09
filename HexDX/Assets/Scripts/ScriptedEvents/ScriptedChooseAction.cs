@@ -13,14 +13,17 @@ public class ScriptedChooseAction : ScriptEvent {
             Vector3 pos = Camera.main.WorldToScreenPoint(unit.transform.position);
 
             if (player.GetSubmenuButton(pos, 1, "Attack", actionEnabled[(int)Action.Attack])) {
+                MusicController.instance.PlaySelectSfx();
                 FinishEvent();
             }
             if (player.GetSubmenuButton(pos, 2, "Wait", actionEnabled[(int)Action.Wait])) {
                 Debug.Log("Waiting");
+                MusicController.instance.PlaySelectSfx();
                 list.sc.selectedUnit = null;
                 FinishEvent();
             }
             if (player.GetSubmenuButton(pos, 3, "Undo", actionEnabled[(int)Action.Undo])) {
+                MusicController.instance.PlaySelectSfx();
                 list.sc.ResetLastTile(unit);
                 FinishEvent();
             }

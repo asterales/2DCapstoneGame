@@ -15,7 +15,7 @@ public class LevelManager : MonoBehaviour {
 	private static readonly string worldMapSceneName = "WorldMap";
 	private static readonly string cutsceneSceneName = "Cutscene";
 	private static readonly List<string> penultimateCutscenes = new List<string> { "PortalAssembly" };
-	private static readonly string selectionSoundFile = "Clang_of_Metal";
+	private static readonly string selectionSoundFile = "SoundEffects/Clang_of_Metal";
 
 	public static LevelManager activeInstance;
 
@@ -133,6 +133,8 @@ public class LevelManager : MonoBehaviour {
 
 	// for binding to onclick() event trigger
 	public void StartLevel() {
+		sfxSource.clip = Resources.Load<AudioClip>(selectionSoundFile);
+		sfxSource.Play();
 		SetActiveLevel();
 		if (scenes.Count > 0) {
 			levelStarted = true;

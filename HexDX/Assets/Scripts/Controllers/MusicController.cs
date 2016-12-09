@@ -2,7 +2,12 @@
 using System.Collections;
 
 public class MusicController : MonoBehaviour {
+    private const float SELECT_SFX_VOLUME = 0.2f;
+
+    public static MusicController instance;
+
     public AudioSource audio;
+    public AudioSource selectSfx;
     public AudioClip victory;
     public AudioClip failure;
     public AudioClip steampunk;
@@ -10,7 +15,14 @@ public class MusicController : MonoBehaviour {
 
     private BattleController battleController;
 
-	// Use this for initialization
+    void Awake() {
+        if (instance == null) {
+            instance = this;
+        } else {
+            Destroy(this);
+        }
+    }
+
 	void Start () {
         battleController = BattleManager.instance.battleController;
         audio = GetComponent<AudioSource>();
@@ -41,6 +53,11 @@ public class MusicController : MonoBehaviour {
         audio.Play();
         audio.volume = 1.0f;
         audio.loop = true;
+    }
+
+    public void PlaySelectSfx() {
+        selectSfx.Play();
+        selectSfx.volume = SELECT_SFX_VOLUME;
     }
 
     // Update is called once per frame

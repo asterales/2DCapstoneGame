@@ -18,6 +18,7 @@ public class ScriptedFace : ScriptEvent {
         if (isPlayerEvent) {
             list.sc.RegisterFacing();
             if (Input.GetMouseButtonDown(1) && list.sc.selectedUnit.facing == direction) {
+                MusicController.instance.PlaySelectSfx();
                 list.sc.selectedUnit = null;
                 FinishEvent();
             }

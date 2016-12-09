@@ -5,7 +5,7 @@ cutscenebackground,cutscenemusic(better)
 Death_yell1
 4 | 4 | 1 | Commander Walsh! Lieutenant Murray has been captured! | Soldier
 1 | 1 | 0 | What!?
-4 | 4 | 1 | Lord Colonel, the enemy is armed with what appears to be swords and shields! | Soldier
+4 | 4 | 1 | Lord Colonel Schmidt, the enemy is armed with what appears to be swords and shields! | Soldier
 2 | 8 | 0 | Swords? Shields? What kind of barbaric lands are we in?
 2 | 8 | 0 | No matter, get organized! We've got to rescue Lieutenant Murray!
 4 | 4 | 1 | Yes, sir! | Soldier

@@ -448,6 +448,9 @@ public class Unit : MonoBehaviour {
             }
         }
         phase = UnitTurn.ChoosingAction;
+        if (IsPlayerUnit()) {
+            MusicController.instance.PlaySelectSfx();
+        }
     }
 
     public void MakeAttacking() {

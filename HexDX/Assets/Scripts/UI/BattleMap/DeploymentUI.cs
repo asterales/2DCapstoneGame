@@ -23,6 +23,7 @@ public class DeploymentUI : MonoBehaviour {
 		gameDialogueMgr = FindObjectOfType(typeof(GameDialogueManager)) as GameDialogueManager;
 		deploymentController = BattleManager.instance.deploymentController;
 		startBattleButton.onClick.AddListener(deploymentController.EndBattlePhase);
+		startBattleButton.onClick.AddListener(MusicController.instance.PlaySelectSfx);
 		HideUI();
 		if (!deploymentController.enabled) {
 			HideUI();

@@ -26,7 +26,6 @@ public class BattleManager : MonoBehaviour {
 	// Battle phase management
 	public List<PhaseController> battlePhases;
 	private int phaseIndex;
-	
 
 	void Awake() {
 		if (instance == null) {

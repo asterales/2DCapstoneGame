@@ -75,6 +75,7 @@ public class Tile : MonoBehaviour {
                     MovementTile.path.Add(sc.selectedUnit.currentTile);
                     MovementTile.DrawPath();
                     if (Input.GetMouseButtonDown(1)) {
+                        MusicController.instance.PlaySelectSfx();
                         if (sc.mode != SelectionMode.ScriptedPlayerAttack) {
                             sc.selectedUnit.phase = UnitTurn.Attacking;
                         }
@@ -84,6 +85,7 @@ public class Tile : MonoBehaviour {
                 }
             }
             if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
+                MusicController.instance.PlaySelectSfx();
                 EnemyUIDrawer.instance.SetPreview(0);
                 PlayerUIDrawer.instance.SetPreview(0);
                 //left click - selection
