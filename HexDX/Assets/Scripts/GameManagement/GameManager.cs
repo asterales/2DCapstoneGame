@@ -22,15 +22,15 @@ public class GameManager : MonoBehaviour {
 	public List<Unit> playerAllUnits;
 	public List<Unit> activeUnits;
 	public List<string> deadUnitNames;
-    public List<string> randomNames = new List<string> { "Bob", "Steve","Stevie", "Steven", "Steve Jr.", "Bandit Keith", "Stubert", "Jerry","Kaiser McDaniels the 14th", "Morton","Sally", "Barbie","Scooby Doo","Phillis",
-        "Big Bertha","Peggy","Sue","Esmerelda","Olga","Agnis", "Jenkins", "Carl Sr.", "Sadjaz", "Kyle", "Horatio", "Timmy", "Guzzlord", "Carl Jr.",
-        "Paul", "Carl", "Dr. Toprac", "Dr. Toprac", "Dr. Toprac", "Dorito", "Mt. Dew" };
-
     public AudioClip clangSfx;
     public AudioClip cursorSfx;
     public AudioSource selectSfxSource;
-   
+    public List<string> randomNames;
     void Awake() {
+         randomNames = new List<string> { "Bob", "Steve","Stevie", "Steven", "Steve Jr.", "Bandit Keith", "Stubert", "Jerry",
+        "Kaiser McDaniels the 14th","Morton","Sally", "Barbie","Scooby Doo","Phillis","Big Bertha","Peggy","Sue","Esmerelda","Olga","Agnis", "Jenkins", "Carl Sr.", "Sadjaz", "Kyle", "Horatio",
+        "Timmy", "Guzzlord", "Carl Jr.", "Paul", "Carl", "Dr. Toprac", "Dr. Toprac", "Dr. Toprac", "Dorito", "Mt. Dew" };
+
 		if (instance == null) {
 			instance = this;
 			InitUnitList();

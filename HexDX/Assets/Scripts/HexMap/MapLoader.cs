@@ -190,15 +190,29 @@ public class MapLoader : MonoBehaviour {
             Unit unit = unitObject.GetComponent<Unit>();
             // Read in the stats //
             UnitStats stats = unitObject.GetComponent<UnitStats>();
-            stats.maxHealth = health;
-            stats.health = health;
-            //Debug.Log("Health: " + stats.health);
-            stats.veterancy = veterancy;
-            stats.attack = attack;
-            stats.power = power;
-            stats.defense = defense;
-            stats.resistance = resist;
-            stats.className = type;
+            if (health == 30)
+            {
+                stats.maxHealth = health;
+                stats.health = health;
+                //Debug.Log("Health: " + stats.health);
+                stats.veterancy = veterancy;
+                stats.attack = attack;
+                stats.power = power;
+                stats.defense = defense;
+                stats.resistance = resist;
+                stats.className = type;
+            }
+            else
+            {
+                stats.maxHealth = (int)(stats.maxHealth * Math.Pow(1.3, veterancy));
+                stats.health = stats.maxHealth;
+                //Debug.Log("Health: " + stats.health);
+                stats.veterancy = veterancy;
+                stats.attack = (int)(stats.attack * Math.Pow(1.3, veterancy));
+                stats.power = (int)(stats.power * Math.Pow(1.3, veterancy));
+                stats.defense = (int)(stats.defense * Math.Pow(1.3, veterancy));
+                stats.resistance = (int)(stats.resistance * Math.Pow(1.3, veterancy));
+            }
             ///////////////////////
             unit.SetTile(HexMap.mapArray[unitRow][unitCol]);
             unit.facing = direction;
