@@ -1,35 +1,35 @@
 cutscenebackground, Morganna(demo2)
-1 | 1 | 1 | So this is the place...
+1 | 0 | 1 | So this is the place...
 0 | 0 | 1 | Ahem. Excuse me, Miss Morton?
-3 | 1 | 0 | Morton? There are none here by that name. I am Morganna, the all knowing.
+3 | 0 | 0 | Morton? There are none here by that name. I am Morganna, the all knowing.
 0 | 0 | 1 | Oh, my mistake. We heard you can help us.
-3 | 1 | 0 | Perhaps, for the right price. 
-3 | 1 | 0 | My, what… curious attire you have on. Your party seems like the foreign sort...
-2 | 8 | 1 | Yes, from another world entirely it seems, hmmph! 
-2 | 8 | 1 | We're here to find a way home. Do you have any information on our whereabouts?
-3 | 1 | 0 | Another world? Hmm...just one moment. ||| 1
-2 | 8 | 1 | ... 
-3 | 1 | 0 | Ah! Here's the spell. A portal home, but it will require a... <b>blood</b> <b>sacrifice</b>.
+3 | 0 | 0 | Perhaps, for the right price. 
+3 | 0 | 0 | My, what… curious attire you have on. Your party seems like the foreign sort...
+2 | 0 | 1 | Yes, from another world entirely it seems, hmmph! 
+2 | 0 | 1 | We're here to find a way home. Do you have any information on our whereabouts?
+3 | 0 | 0 | Another world? Hmm...just one moment. ||| 1
+2 | 0 | 1 | ... 
+3 | 0 | 0 | Ah! Here's the spell. A portal home, but it will require a... <b>blood</b> <b>sacrifice</b>.
 fireball
 Death_Yell2
-2 | 8 | 1 | Bollocks, my men! 
-1 | 1 | 1| How dare you?! Those were good people!
-3 | 1 | 0 | Oh, my mistake. That was the wrong spell. *giggle* 
-3 | 1 | 0 | Perhaps in the future your men would be wise to remember my name. 
+2 | 0 | 1 | Bollocks, my men! 
+1 | 0 | 1| How dare you?! Those were good people!
+3 | 0 | 0 | Oh, my mistake. That was the wrong spell. *giggle* 
+3 | 0 | 0 | Perhaps in the future your men would be wise to remember my name. 
 0 | 0 | 1 | Why, you--
-3 | 1 | 0 | Now, now, put those scary things down. You wouldn't want to end up like those men over there would you?
-1 | 1 | 1 | ...
+3 | 0 | 0 | Now, now, put those scary things down. You wouldn't want to end up like those men over there would you?
+1 | 0 | 1 | ...
 0 | 0 | 1 | Spell? Portal? What’s going on? How’d you --
-3 | 1 | 0 | Ether, my dear. It’s a rare and powerful source of magic. 
-3 | 1 | 0 | I see your forces utilize the same power.
-1 | 1 | 1 | Ether? What does that have to do with the men you killed?!
-3 | 1 | 0 | Nevermind that, you need to get home correct? Well, I need you to stop pestering me with your trivial problems. 
-1 | 1 | 1 | Why you!
-3 | 1 | 0 | Legend tells of a portal that can grant people the ability to traverse through worlds instantly, but it’s in pieces and scattered throughout haven. 
-3 | 1 | 0 | Bring them to me and I’ll gladly send you home. Good luck finding it!
-3 | 1 | 0 | Oh, and here’s <b>2000</b> <b>gold</b> for your loss. ||| 1
-2 | 8 | 1 | ...
+3 | 0 | 0 | Ether, my dear. It’s a rare and powerful source of magic. 
+3 | 0 | 0 | I see your forces utilize the same power.
+1 | 0 | 1 | Ether? What does that have to do with the men you killed?!
+3 | 0 | 0 | Nevermind that, you need to get home correct? Well, I need you to stop pestering me with your trivial problems. 
+1 | 0 | 1 | Why you!
+3 | 0 | 0 | Legend tells of a portal that can grant people the ability to traverse through worlds instantly, but it’s in pieces and scattered throughout haven. 
+3 | 0 | 0 | Bring them to me and I’ll gladly send you home. Good luck finding it!
+3 | 0 | 0 | Oh, and here’s <b>2000</b> <b>gold</b> for your loss. ||| 1
+2 | 0 | 1 | ...
 0 | 0 | 0 | Well, she sure is piece of work.
-1 | 1 | 1 | Tch... She’s a real piece of something all right...
-2 | 8 | 0 | Hmmph! Nevermind her. Let’s get to those portal pieces, and get home!
+1 | 0 | 1 | Tch... She’s a real piece of something all right...
+2 | 0 | 0 | Hmmph! Nevermind her. Let’s get to those portal pieces, and get home!
 2000,1

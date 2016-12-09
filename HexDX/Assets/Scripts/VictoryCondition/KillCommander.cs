@@ -9,7 +9,7 @@ public class KillCommander: VictoryCondition {
         {
             resized = true;
             commander.transform.localScale = new UnityEngine.Vector3(1.4f, 1.4f, 1.0f);
-            GameObject g = Instantiate<GameObject>(Resources.Load<GameObject>("CommanderMark"));
+            GameObject g = Instantiate<GameObject>(Resources.Load<GameObject>("Tiles/CommanderMark"));
             g.transform.SetParent(commander.transform);
             g.transform.localPosition = new Vector3(0, 0, 0.01f);
             g.GetComponent<SpriteRenderer>().sortingOrder = 1;
