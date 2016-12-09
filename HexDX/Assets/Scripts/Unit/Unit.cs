@@ -203,8 +203,8 @@ public class Unit : MonoBehaviour {
     public void AddExp(int exp) {
         if (Veterancy < 3) {
             Experience += exp;
-            if (Experience > (Veterancy + 1) * 100) {
-                Experience = Experience % ((Veterancy + 1) * 100);
+            if (Experience > 100+(Veterancy) * 50) {
+                Experience = Experience % (100+Veterancy*50);
                 Veterancy += 1;
                 LevelUp();
             }
@@ -508,12 +508,15 @@ public class Unit : MonoBehaviour {
         int damage = basedamage;
         int attackdirection = GetFacing(target.transform.position - transform.position);
         string indicatorText = "-" + (int)(basedamage * modifier);
+        float facingModifier = 1.0f; ;
         HexMap.ClearAllTiles();
         if (target.phase != UnitTurn.Moving) {
             if (target.facing == attackdirection) {
+                facingModifier = 2.0f;
                 damage = basedamage * 2;
                 indicatorText = "-" + (int)(basedamage * modifier) + "\nSneak!\n-" + (int)((damage - basedamage) * modifier);
             } else if (Mathf.Abs(target.facing - attackdirection) == 1 || Mathf.Abs(target.facing - attackdirection) == 5) {
+                facingModifier = 1.5f;
                 damage = basedamage * 3 / 2;
                 indicatorText = "-" + (int)(basedamage * modifier) + "\nFlank!\n-" + (int)((damage - basedamage) * modifier);
             }
@@ -532,10 +535,9 @@ public class Unit : MonoBehaviour {
         }
 
         if (IsPlayerUnit()) {
-            AddExp((int)(damage * modifier));
-        } else {
-            target.AddExp((int)(0.5f*damage * modifier));
+            AddExp((int)(25 * modifier *facingModifier* (1+.5f*target.Veterancy)));
         }
+
         yield return Timing.WaitForSeconds(animator.runtimeAnimatorController.animationClips[0].length / 5.0f/SpeedController.speed);
         Timing.RunCoroutine(FinishAttack());
         GameObject indicator = new GameObject();
