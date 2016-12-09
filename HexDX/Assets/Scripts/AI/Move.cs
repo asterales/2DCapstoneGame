@@ -19,8 +19,6 @@ public class Move
         destination = d;
         facing = f;
         target = t;
-        closestEnemyCache = new Dictionary<Tile, Unit>();
-        closestDistanceCache = new Dictionary<Tile, float>();
     }
 
     public float score()
