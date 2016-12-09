@@ -1,7 +1,7 @@
 public class Annihilation : VictoryCondition {
 	public AIBattleController ai;
     void Update() {
-        victoryConditionText.text = "route the enemy!";
+        victoryConditionText.text = "rout the enemy!";
     }
 
 	public override bool Achieved() {
