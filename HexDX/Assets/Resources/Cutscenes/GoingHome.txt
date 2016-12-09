@@ -1,0 +1,6 @@
+cutscenebackground,Trustandresolve(demo)
+2 | 8 | 0 | Okay soldiers, we’ve made it.
+0 | 0 | 1 | Finally….
+1 | 1 | 0 | Final headcount and status report!
+4 | 4 | 1 | All here ma’am! | Soldier
+2 | 8 | 0 | Hmph! Onwards home, you buggers! 

@@ -1,0 +1,6 @@
+cutscenebackground,Morganna(demo2)
+3 | 1 | 1 | So they’ve gone home...
+3 | 1 | 1 | Why that was fun! Nice of them to do all that work for me.
+3 | 1 | 1 | Now that I have this portal open...
+3 | 1 | 1 | I wonder what kind of fun I can have.
+3 | 1 | 1 | *giggle*

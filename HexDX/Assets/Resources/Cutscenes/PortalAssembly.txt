@@ -1,0 +1,13 @@
+cutscenebackground, steampunkfight1
+2 | 8 | 1 | All right, Morganna. Hmmph! We’ve got your portal pieces.
+3 | 1 | 0 | Excellent! Now all we need is another blood sacrifice!
+1 | 1 | 1 | ...
+0 | 0 | 0 | ...
+2 | 8 | 1 | ...
+3 | 1 | 0 | Oh, relax! I’m only teasing. *giggle* 
+1 | 1 | 1 | Maybe you should just focus on getting us out of here (before you regret it).
+3 | 1 | 0 | Very well.
+fireball2
+3 | 1 | 0 | Your portal is ready. 
+3 | 1 | 0 | You’ll find a new island on your map. Go there, and you will have your portal.
+2 | 8 | 1 | That fast? Great Scott! Well, men, let’s move out! 
