@@ -25,6 +25,8 @@ public abstract class ArmyBattleController : MonoBehaviour {
     }
 
     public virtual void EndTurn() {
+        Move.closestEnemyCache = new Dictionary<Tile, Unit>();
+        Move.closestDistanceCache = new Dictionary<Tile, float>();
         OpenAllUnits();
     }
 
