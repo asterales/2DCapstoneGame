@@ -125,6 +125,7 @@ public class CutsceneManager : DialogueManager {
 					Unit unit = unitsByStrength[i];
 					gm.activeUnits.Remove(unit);
 					gm.playerAllUnits.Remove(unit);
+					gm.deadUnitNames.Add(unit.ClassName);
 					unit.transform.parent = null;
 				}
 			}

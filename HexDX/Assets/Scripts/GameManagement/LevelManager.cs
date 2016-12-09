@@ -15,7 +15,6 @@ public class LevelManager : MonoBehaviour {
 	private static readonly string worldMapSceneName = "WorldMap";
 	private static readonly string cutsceneSceneName = "Cutscene";
 	private static readonly List<string> penultimateCutscenes = new List<string> { "TestDialogue", "TestDialogue" };
-	private static readonly List<string> finalCutscenes = new List<string> { "TestDialogue"};
 
 	public static LevelManager activeInstance;
 
@@ -62,12 +61,8 @@ public class LevelManager : MonoBehaviour {
 		destroyOnLoad = false;
 		levelStarted = false;
 		GameManager gm = GameManager.instance;
-		if (gm) {
-			if (gm.defeatedLevelIds.Count == GameManager.TOTAL_NUM_LEVELS - 2) {
-				scenes.AddRange(penultimateCutscenes.Select(s => new SceneInfo(cutsceneSceneName, s)));
-			} else if (gm.defeatedLevelIds.Count == GameManager.TOTAL_NUM_LEVELS - 1) {
-				scenes.AddRange(finalCutscenes.Select(s => new SceneInfo(cutsceneSceneName, s)));
-			}
+		if (gm && gm.defeatedLevelIds.Count == GameManager.TOTAL_NUM_LEVELS - 2) {
+			scenes.AddRange(penultimateCutscenes.Select(s => new SceneInfo(cutsceneSceneName, s)));
 		}
 	}
 
