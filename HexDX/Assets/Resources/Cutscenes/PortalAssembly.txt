@@ -9,5 +9,5 @@ cutscenebackground, steampunkfight1
 3 | 1 | 0 | Very well.
 fireball2
 3 | 1 | 0 | Your portal is ready. 
-3 | 1 | 0 | You’ll find a new island on your map. Go there, and you will have your portal.
+3 | 1 | 0 | You’ll find a <b>new</b> <b>island</b> on your map. Go there, and you will have your portal.
 2 | 8 | 1 | That fast? Great Scott! Well, men, let’s move out! 

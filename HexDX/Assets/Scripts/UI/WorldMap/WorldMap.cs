@@ -4,6 +4,7 @@ using System.Linq;
 
 public class WorldMap : MonoBehaviour {
 	public Territory rootTerritory;
+	public Territory finalTerritory;
 	public List<Territory> territories;
 
 	void Start() {
@@ -22,6 +23,11 @@ public class WorldMap : MonoBehaviour {
 					n.active = true;
 				}
 			}
+		}
+		if (gm && gm.defeatedLevelIds.Count == territories.Count - 1) {
+			finalTerritory.gameObject.SetActive(true);
+		} else {
+			finalTerritory.gameObject.SetActive(false);
 		}
 	}
 }
