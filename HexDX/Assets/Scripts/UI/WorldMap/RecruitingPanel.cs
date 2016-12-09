@@ -97,7 +97,7 @@ public class RecruitingPanel : WorldMapPopupPanel {
 
 	protected virtual void Update() {
 		recruitButton.interactable = CanPurchase();
-		fundsText.text = GameManager.instance.funds + " gold";
+		fundsText.text = "<b>" + GameManager.instance.funds + "</b>" + " gold";
 	}
 
 }
