@@ -555,15 +555,16 @@ public class Unit : MonoBehaviour {
     {
         int basedamage =(int)(Attack * (50.0f / (50.0f + (float)target.Defense))) + (int)(Power * (50.0f / (50.0f + (float)target.Resistance)));
         int damage = (int)(basedamage * modifier);
+        int attackdirection = GetFacing(target.transform.position - transform.position);
         if (target.phase != UnitTurn.Moving)
         {
-            if (target.facing == facing)
+            if (target.facing == attackdirection)
             {
                 damage = (int)(basedamage * 2 * modifier);
             }
-            else if (Mathf.Abs(target.facing - facing) == 1 || Mathf.Abs(target.facing - facing) == 5)
+            else if (Mathf.Abs(target.facing - attackdirection) == 1 || Mathf.Abs(target.facing - attackdirection) == 5)
             {
-                damage = (int)(basedamage * 3 * modifier) /2;
+                damage = (int)(basedamage * 3 * modifier) / 2;
             }
         }
         return damage;

@@ -10,7 +10,7 @@ public class AttackTile : MonoBehaviour {
         if (sc.selectedUnit && sc.selectedUnit.phase == UnitTurn.Attacking) {
             if (sc.selectedUnit.IsPlayerUnit() && HasEnemyUnit() && sc.target != null) {
                 sc.mode = SelectionMode.Attacking;
-                if (tile.currentUnit != sc.target){
+                if (tile.currentUnit != sc.target&&tile.currentUnit.phase==UnitTurn.Open){
                     sc.target.spriteRenderer.color = Color.white;
                     sc.ShowTarget(tile.currentUnit);
                 }
