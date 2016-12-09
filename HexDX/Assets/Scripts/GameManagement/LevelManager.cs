@@ -15,7 +15,8 @@ public class LevelManager : MonoBehaviour {
 	private static readonly string worldMapSceneName = "WorldMap";
 	private static readonly string cutsceneSceneName = "Cutscene";
 	private static readonly List<string> penultimateCutscenes = new List<string> { "PortalAssembly" };
-
+	private static readonly string selectionSoundFile = "Clang_of_Metal";
+	
 	public static LevelManager activeInstance;
 
 	// Level scene management
@@ -24,7 +25,7 @@ public class LevelManager : MonoBehaviour {
 	public string mapFileName;
 	public List<string> introCutscenes;
 	public List<string> outroCutscenes;
-	
+
 	private bool levelStarted;
 	private bool destroyOnLoad;
 	private int currentSceneIndex;
