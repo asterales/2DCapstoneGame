@@ -29,6 +29,10 @@ public abstract class ArmyDisplay : MonoBehaviour {
 		return unitPanels.FirstOrDefault(u => u.unit == null);
 	}
 
+	public UnitDisplay GetFirstOccupiedSlot() {
+		return unitPanels.FirstOrDefault(u => u.unit != null);
+	}
+
 	public List<Unit> GetUnits() {
 		return unitPanels.Where(p => p.unit != null).Select(p => p.unit).ToList();
 	}

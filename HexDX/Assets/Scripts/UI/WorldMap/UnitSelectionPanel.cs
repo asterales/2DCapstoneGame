@@ -32,9 +32,9 @@ public class UnitSelectionPanel : WorldMapPopupPanel {
 
 	public override void Show() {
 		base.Show();
-		ClearHighlightedUnit();
-		statDisplay.ClearDisplay();
 		RefreshDisplays();
+		UnitDisplay firstActiveUnit = activeUnitsDisplay.GetFirstOccupiedSlot();
+		SelectUnit(firstActiveUnit);
 	}
 
 	public override void Hide() {
@@ -57,6 +57,13 @@ public class UnitSelectionPanel : WorldMapPopupPanel {
 		ClearHighlightedUnit();
 		highlightedDisplay = display;
 		display.HighlightSelected();
+	}
+
+	public void SelectUnit(UnitDisplay display) {
+		if (display) {
+			SwitchHighlightedUnit(display);
+			statDisplay.DisplayUnitStats(display.unit);
+		}
 	}
 
 	private void ClearHighlightedUnit() {

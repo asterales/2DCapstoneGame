@@ -18,8 +18,8 @@ public class UnitSelectionMouseHandler : MonoBehaviour, IPointerClickHandler,
 
 	public void OnPointerClick(PointerEventData eventData) {
 		if (displayPanel.unit) {
-			selectionPanel.SwitchHighlightedUnit(displayPanel);
-	        selectionPanel.statDisplay.DisplayUnitStats(displayPanel.unit);
+			GameManager.instance.PlayCursorSfx();
+			selectionPanel.SelectUnit(displayPanel);
 		}
 	}
 
@@ -42,6 +42,7 @@ public class UnitSelectionMouseHandler : MonoBehaviour, IPointerClickHandler,
 
 	public void OnEndDrag(PointerEventData eventData) {
 		if (draggedRect) {
+			GameManager.instance.PlayCursorSfx();
 			draggedRect.anchoredPosition = formerPosition;
 			draggedImage.raycastTarget = true;
 			draggedRect = null;
