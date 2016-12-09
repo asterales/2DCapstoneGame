@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 public class BattleController : PhaseController {
     public static readonly string speedUpPrompt = "<<Hold '" + KeyBindings.SPEED_UP + "'' to speed up>>";
+    public static readonly string undoPrompt = "Press leftt shift to undo movement and facing";
 
     public static BattleController instance;
 
@@ -117,6 +118,11 @@ public class BattleController : PhaseController {
         if (!turnTransition.IsRunning) {
             if (IsPlayerTurn) {
                 keyPrompt.PromptText = speedUpPrompt;
+                keyPrompt.Show();
+            }
+            else
+            {
+                keyPrompt.PromptText = undoPrompt;
                 keyPrompt.Show();
             }
             turnTransition.PlayTransition(IsPlayerTurn, SwitchTurns);
