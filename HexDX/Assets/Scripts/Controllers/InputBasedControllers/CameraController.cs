@@ -58,7 +58,7 @@ public class CameraController : MonoBehaviour {
             }
         } else {
             Unit aiUnit = BattleManager.instance.ai.GetUnit();
-            if (aiUnit.enabled) {
+            if (aiUnit && aiUnit.enabled) {
                 aiMovedCamera = true;
                 MoveCameraTowards(aiUnit.transform.position);
             }

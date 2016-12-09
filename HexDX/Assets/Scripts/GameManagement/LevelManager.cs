@@ -16,13 +16,14 @@ public class LevelManager : MonoBehaviour {
 	private static readonly string cutsceneSceneName = "Cutscene";
 	private static readonly List<string> penultimateCutscenes = new List<string> { "PortalAssembly" };
 	private static readonly string selectionSoundFile = "Clang_of_Metal";
-	
+
 	public static LevelManager activeInstance;
 
 	// Level scene management
 	public int levelId;
 	public int moneyRewarded;
 	public string mapFileName;
+	public AudioSource sfxSource;
 	public List<string> introCutscenes;
 	public List<string> outroCutscenes;
 
