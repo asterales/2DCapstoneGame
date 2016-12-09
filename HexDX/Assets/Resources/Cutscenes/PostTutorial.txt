@@ -1,0 +1,20 @@
+
+cutscenebackground, worldtheme1
+0 | 0 | 0 | Thank you. I thought I was a goner... ||| 1
+4 | 4 | 1 | Sir! We've apprehended a few enemy soldiers. | Soldier
+2 | 8 | 0 | Excellent. Find out what those hooligans know!
+4 | 10 | 1 | Who-who are you people? | Swordsman
+2 | 8 | 0 | Folks you don’t want to trifle with if you don’t answer our questions. Where is this place?
+4 | 10 | 1 | This place? | Swordsman
+4 | 4 | 1 | Sir, we got a map off of them. | Soldier
+1 | 1 | 0 | ...I don’t recognize this land.
+1 | 1 | 0 | You there! What is this place?
+4 | 10 | 1 | You don’t know? This is the land of Haven! | Swordsman
+0 | 0 | 0 | Haven? I’ve never heard of this place. 
+1 | 1 | 0 | What else do you know, worm?
+4 | 10 | 1 | Er well… I hear there lies a witch in these lands. | Swordsman
+4 | 10 | 1 | Most choose not to engage her, for her magic is fierce. | Swordsman
+4 | 10 | 1 | But she is knowledgeable. Mayhaps she can assist you? | Swordsman
+0 | 0 | 1 | A witch? Sounds like a load of hoopla. 
+2 | 8 | 0 | Probably, but By George we don’t have much of a choice. 
+2 | 8 | 0 | Men, let’s move out and find that witch!
