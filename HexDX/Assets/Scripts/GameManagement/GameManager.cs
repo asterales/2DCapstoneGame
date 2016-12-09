@@ -35,7 +35,6 @@ public class GameManager : MonoBehaviour {
 			instance = this;
 			InitUnitList();
 			transform.position = GameResources.hidingPosition;
-			deadUnitNames = new List<string>();
 			DontDestroyOnLoad(gameObject);
 		} else if (instance != this) {
 			GetComponentsInChildren<Unit>().ToList().ForEach(u => u.gameObject.SetActive(false));
